@@ -60,3 +60,23 @@ We implemented the core intelligence layer using FastAPI in the folder [services
 *   **Responsive layouts:** Sidebar navigation collapses cleanly to a bottom navigation bar on mobile viewports.
 *   **Unified State Transitions:** Elements render shimmering placeholders on loading states, show descriptive messages on empty states, and render alert boxes on validation error states.
 
+---
+
+## 6. Git Synchronization & Production Deployment
+We successfully configured git and synchronized the entire monorepo codebase to GitHub:
+*   **Git Init:** Initialized a local git repository.
+*   **Staging Controls:** Created a root [.gitignore](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/.gitignore) file to prevent tracking unnecessary node packages, build outputs (`.next`, `dist`, `build`), database binaries, and local credential configurations.
+*   **GitHub Push:** Pushed the branch `main` to the remote repository: `https://github.com/SCHANDER2/Tejas.git`.
+
+### Vercel Deployment Instructions
+To deploy the Next.js web application (`apps/web`) to Vercel:
+1.  **Sign in to Vercel:** Go to [vercel.com](https://vercel.com) and log in using your GitHub account.
+2.  **Import Project:** Click **Add New** -> **Project**, select the repository `Tejas` from your GitHub account.
+3.  **Monorepo Configurations:**
+    *   Set **Root Directory** to `apps/web`.
+    *   Vercel will auto-detect Next.js as the framework.
+    *   Keep build and install settings as default (Vercel automatically supports npm workspace setups).
+4.  **Environment Variables:** Add any required runtime credentials.
+5.  **Deploy:** Click **Deploy**. Vercel will build the frontend and serve it globally with auto-SSL.
+
+
