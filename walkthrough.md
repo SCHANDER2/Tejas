@@ -76,7 +76,17 @@ To deploy the Next.js web application (`apps/web`) to Vercel:
     *   Set **Root Directory** to `apps/web`.
     *   Vercel will auto-detect Next.js as the framework.
     *   Keep build and install settings as default (Vercel automatically supports npm workspace setups).
-4.  **Environment Variables:** Add any required runtime credentials.
-5.  **Deploy:** Click **Deploy**. Vercel will build the frontend and serve it globally with auto-SSL.
+### Vercel Deployment Details
+The frontend web application was successfully deployed to Vercel and is fully functional at:
+*   **Live Deployment URL:** [https://tejas-web-blond.vercel.app/](https://tejas-web-blond.vercel.app/)
+*   **Vercel Scope:** `rajenderbana83-4133s-projects`
+
+---
+
+## 7. Local Infrastructure Orchestration (Docker Compose)
+We added a root [docker-compose.yml](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/docker-compose.yml) file to orchestrate the local environment for developer staging:
+*   **Primary Database:** PostgreSQL 15 container exposing port `5432` with pre-defined database `tejas_db`.
+*   **Caching & Sessions:** Redis container exposing port `6379`.
+*   **Message Broker:** RabbitMQ container exposing port `5672` (worker events queue) and `15672` (management dashboard portal).
 
 
