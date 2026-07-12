@@ -1,0 +1,15 @@
+{
+  "name": "tejas-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=services/backend",
+    "db:migrate": "npm run db:migrate --workspace=packages/database",
+    "db:generate": "npm run db:generate --workspace=packages/database"
+  }
+}

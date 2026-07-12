@@ -1,0 +1,305 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String        @id @default(uuid()) @db.Uuid
+  email         String        @unique
+  passwordHash  String?
+  role          String        @default("free_learner")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  
+  profile       UserProfile?
+  enrollments   UserExamEnrollment[]
+  subjects      AcademicSubject[]
+  sources       UploadedSource[]
+  quizzes       Quiz[]
+  attempts      UserQuizAttempt[]
+  cards         SpacedRepetitionCard[]
+  reviews       RevisionReview[]
+  events        ScheduleEvent[]
+  mastery       UserConceptMastery[]
+  snapshots     LearnerAnalyticsSnapshot[]
+  subscriptions Subscription[]
+  clicks        UserRecommendationClick[]
+
+  @@index([email])
+}
+
+model UserProfile {
+  userId                  String   @id @db.Uuid
+  fullName                String
+  dailyStudyGoalMinutes   Int      @default(60)
+  preferredLanguage       String   @default("en")
+  
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Exam {
+  id                String               @id @default(uuid()) @db.Uuid
+  name              String               @unique
+  conductingBody    String
+  currentVersion    Int                  @default(1)
+  createdAt         DateTime             @default(now())
+  
+  syllabus          SyllabusHierarchy[]
+  enrollments       UserExamEnrollment[]
+  mocks             MockTest[]
+}
+
+model SyllabusHierarchy {
+  id             String               @id @default(uuid()) @db.Uuid
+  examId         String               @db.Uuid
+  parentNodeId   String?              @db.Uuid
+  title          String
+  weightage      Decimal              @default(0.00) @db.Decimal(5, 2)
+  depthLevel     Int
+
+  exam           Exam                 @relation(fields: [examId], references: [id], onDelete: Cascade)
+  parent         SyllabusHierarchy?   @relation("SyllabusSubtopics", fields: [parentNodeId], references: [id], onDelete: Cascade)
+  children       SyllabusHierarchy[]  @relation("SyllabusSubtopics")
+  mastery        UserConceptMastery[]
+  resources      LearningResource[]
+
+  @@index([parentNodeId])
+  @@index([examId])
+}
+
+model UserExamEnrollment {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  examId      String   @db.Uuid
+  isPrimary   Boolean  @default(false)
+  enrolledAt  DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exam        Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, examId])
+  @@index([userId])
+}
+
+model AcademicSubject {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @db.Uuid
+  name      String
+  createdAt DateTime         @default(now())
+
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sources   UploadedSource[]
+
+  @@index([userId])
+}
+
+model UploadedSource {
+  id          String           @id @default(uuid()) @db.Uuid
+  userId      String           @db.Uuid
+  subjectId   String?          @db.Uuid
+  title       String
+  sourceType  String
+  fileUrl     String?
+  status      String           @default("pending")
+  createdAt   DateTime         @default(now())
+
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     AcademicSubject? @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  chunks      DocumentChunk[]
+
+  @@index([userId])
+}
+
+model DocumentChunk {
+  id          String         @id @default(uuid()) @db.Uuid
+  documentId  String         @db.Uuid
+  chunkIndex  Int
+  textContent String
+  tokenCount  Int
+
+  source      UploadedSource @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@index([documentId])
+}
+
+model Quiz {
+  id         String            @id @default(uuid()) @db.Uuid
+  userId     String            @db.Uuid
+  sourceId   String            @db.Uuid
+  sourceType String
+  difficulty String
+  createdAt  DateTime          @default(now())
+
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions  Question[]
+  attempts   UserQuizAttempt[]
+
+  @@index([userId])
+}
+
+model Question {
+  id           String                   @id @default(uuid()) @db.Uuid
+  quizId       String                   @db.Uuid
+  questionText String
+  questionType String
+  explanation  String?
+  createdAt    DateTime                 @default(now())
+
+  quiz         Quiz                     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options      Option[]
+  responses    UserQuestionResponse[]
+  cards        SpacedRepetitionCard[]
+}
+
+model Option {
+  id           String                 @id @default(uuid()) @db.Uuid
+  questionId   String                 @db.Uuid
+  optionText   String
+  isCorrect    Boolean                @default(false)
+
+  question     Question               @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  responses    UserQuestionResponse[]
+}
+
+model UserQuizAttempt {
+  id                String                 @id @default(uuid()) @db.Uuid
+  userId            String                 @db.Uuid
+  quizId            String                 @db.Uuid
+  score             Decimal                @db.Decimal(5, 2)
+  timeTakenSeconds  Int
+  startedAt         DateTime
+  completedAt       DateTime               @default(now())
+
+  user              User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quiz              Quiz                   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  responses         UserQuestionResponse[]
+
+  @@index([userId, completedAt(sort: Desc)])
+}
+
+model UserQuestionResponse {
+  id               String          @id @default(uuid()) @db.Uuid
+  attemptId        String          @db.Uuid
+  questionId       String          @db.Uuid
+  selectedOptionId String?         @db.Uuid
+  isCorrect        Boolean         @default(false)
+
+  attempt          UserQuizAttempt @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question         Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  option           Option?         @relation(fields: [selectedOptionId], references: [id], onDelete: SetNull)
+}
+
+model SpacedRepetitionCard {
+  id              String           @id @default(uuid()) @db.Uuid
+  userId          String           @db.Uuid
+  questionId      String?          @db.Uuid
+  frontText       String
+  backText        String
+  difficulty      Decimal          @default(0.00) @db.Decimal(5, 2)
+  stability       Decimal          @default(0.00) @db.Decimal(5, 2)
+  repetitionCount Int              @default(0)
+  nextReviewDue   DateTime
+  createdAt       DateTime         @default(now())
+
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question        Question?        @relation(fields: [questionId], references: [id], onDelete: SetNull)
+  reviews         RevisionReview[]
+
+  @@index([userId, nextReviewDue])
+}
+
+model RevisionReview {
+  id         String               @id @default(uuid()) @db.Uuid
+  cardId     String               @db.Uuid
+  userId     String               @db.Uuid
+  rating     Int
+  reviewedAt DateTime             @default(now())
+
+  card       SpacedRepetitionCard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  user       User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ScheduleEvent {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  title      String
+  startTime  DateTime
+  endTime    DateTime
+  taskRefId  String?  @db.Uuid
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startTime, endTime])
+}
+
+model UserConceptMastery {
+  id            String            @id @default(uuid()) @db.Uuid
+  userId        String            @db.Uuid
+  topicId       String            @db.Uuid
+  masteryScore  Decimal           @default(0.00) @db.Decimal(5, 2)
+  attemptsCount Int               @default(0)
+  lastEvaluated DateTime          @default(now())
+
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topic         SyllabusHierarchy @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId])
+  @@index([userId])
+}
+
+model LearnerAnalyticsSnapshot {
+  id              String   @id @default(uuid()) @db.Uuid
+  userId          String   @db.Uuid
+  snapshotDate    DateTime @db.Date
+  overallAccuracy Decimal  @db.Decimal(5, 2)
+  studyTimeMinutes Int
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, snapshotDate])
+}
+
+model Subscription {
+  id           String   @id @default(uuid()) @db.Uuid
+  userId       String   @db.Uuid
+  planType     String
+  status       String
+  billingStart DateTime
+  billingEnd   DateTime
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MockTest {
+  id              String   @id @default(uuid()) @db.Uuid
+  examId          String   @db.Uuid
+  title           String
+  durationMinutes Int
+
+  exam            Exam     @relation(fields: [examId], references: [id], onDelete: Cascade)
+}
+
+model LearningResource {
+  id        String            @id @default(uuid()) @db.Uuid
+  topicId   String            @db.Uuid
+  title     String
+  type      String
+  url       String
+  createdAt DateTime          @default(now())
+
+  topic     SyllabusHierarchy @relation(fields: [topicId], references: [id], onDelete: Cascade)
+}
+
+model UserRecommendationClick {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  resourceId String   @db.Uuid
+  action     String
+  clickedAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
