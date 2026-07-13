@@ -211,6 +211,68 @@ export default function WorkspacePage() {
   // Auth mock
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Admin section dashboard state
+  const [user, setUser] = useState({
+    name: 'Priya Sharma',
+    email: 'priya@example.com',
+    role: 'admin'
+  });
+
+  const [adminStats, setAdminStats] = useState({
+    totalUsers: 1420,
+    activePremium: 382,
+    totalRevenue: 3816.18,
+    totalTokensUsed: 1452000
+  });
+
+  const [adminUsers, setAdminUsers] = useState([
+    { id: '1', name: 'Priya Sharma', email: 'priya@example.com', role: 'admin', createdAt: '2026-07-01' },
+    { id: '2', name: 'Rahul Verma', email: 'rahul@example.com', role: 'free_learner', createdAt: '2026-07-10' },
+    { id: '3', name: 'Amit Singh', email: 'amit@example.com', role: 'free_learner', createdAt: '2026-07-11' },
+    { id: '4', name: 'Sneha Patel', email: 'sneha@example.com', role: 'free_learner', createdAt: '2026-07-12' }
+  ]);
+
+  const [adminSearch, setAdminSearch] = useState('');
+
+  // Load stats and users from backend on component mount / tab switch
+  useEffect(() => {
+    if (activeTab === 'admin' && isLoggedIn) {
+      // Fetch stats
+      fetch('http://localhost:3001/api/v1/admin/stats', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.kpis) {
+          setAdminStats(data.kpis);
+        }
+      })
+      .catch(err => console.log('Using local mock admin stats (backend offline)'));
+
+      // Fetch users
+      fetch('http://localhost:3001/api/v1/admin/users', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setAdminUsers(data.map((u: any) => ({
+            id: u.id,
+            name: u.profile?.fullName || 'N/A',
+            email: u.email,
+            role: u.role,
+            createdAt: new Date(u.createdAt).toISOString().split('T')[0]
+          })));
+        }
+      })
+      .catch(err => console.log('Using local mock admin users (backend offline)'));
+    }
+  }, [activeTab, isLoggedIn]);
+
   // Scroll detection for navbar
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -838,32 +900,38 @@ export default function WorkspacePage() {
 
             {/* Navigation */}
             <nav className="p-4 space-y-1">
-              {[
-                { id: 'dashboard', label: 'Dashboard', icon: BookOpen },
-                { id: 'planner', label: 'Study Planner', icon: Calendar },
-                { id: 'explorer', label: 'Exam Explorer', icon: Search },
-                { id: 'learning', label: 'Learning Hub', icon: BookMarked },
-                { id: 'pdf', label: 'PDF Workspace', icon: FileText },
-                { id: 'analytics', label: 'Analytics', icon: TrendingUp },
-                { id: 'profile', label: 'Profile', icon: User },
-              ].map((item) => {
-                const Icon = item.icon;
-                const isActive = activeTab === item.id;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => triggerLoadingState(item.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
-                      isActive 
-                        ? 'bg-[#dbd7c7]/50 text-[#262a2b] border-l-4 border-[#faa114]' 
-                        : 'text-[#786e67] hover:bg-[#dbd7c7]/30 hover:text-[#262a2b]'
-                    }`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    {item.label}
-                  </button>
-                );
-              })}
+              {(() => {
+                const navs = [
+                  { id: 'dashboard', label: 'Dashboard', icon: BookOpen },
+                  { id: 'planner', label: 'Study Planner', icon: Calendar },
+                  { id: 'explorer', label: 'Exam Explorer', icon: Search },
+                  { id: 'learning', label: 'Learning Hub', icon: BookMarked },
+                  { id: 'pdf', label: 'PDF Workspace', icon: FileText },
+                  { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+                  { id: 'profile', label: 'Profile', icon: User },
+                ];
+                if (user.role === 'admin') {
+                  navs.push({ id: 'admin', label: 'Admin Console', icon: Shield });
+                }
+                return navs.map((item) => {
+                  const Icon = item.icon;
+                  const isActive = activeTab === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => triggerLoadingState(item.id)}
+                      className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
+                        isActive 
+                          ? 'bg-[#dbd7c7]/50 text-[#262a2b] border-l-4 border-[#faa114]' 
+                          : 'text-[#786e67] hover:bg-[#dbd7c7]/30 hover:text-[#262a2b]'
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                      {item.label}
+                    </button>
+                  );
+                });
+              })()}
             </nav>
           </div>
 
@@ -1377,6 +1445,179 @@ export default function WorkspacePage() {
               </div>
             )}
 
+            {/* ADMIN CONSOLE */}
+            {activeTab === 'admin' && (
+              <div className="space-y-8">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                  <div>
+                    <h1 className="text-3xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>Admin Management Console</h1>
+                    <p className="text-sm text-[#786e67]">Monitor user activity, manage roles, and review AI analytics.</p>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      alert('Refreshing platform diagnostics...');
+                      triggerLoadingState('admin');
+                    }}
+                    className="px-4 py-2 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-semibold text-xs rounded-xl shadow-sm transition-all"
+                  >
+                    Refresh Diagnostics
+                  </button>
+                </div>
+
+                {/* KPI STATS CARDS */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                  {[
+                    { label: 'Total Registered Users', value: adminStats.totalUsers.toLocaleString(), change: '+12% this month', color: 'border-l-4 border-blue-500' },
+                    { label: 'Active Premium Subscribers', value: adminStats.activePremium.toLocaleString(), change: '+18% this month', color: 'border-l-4 border-emerald-500' },
+                    { label: 'Calculated Monthly Revenue', value: `₹${(adminStats.totalRevenue * 80).toLocaleString(undefined, { maximumFractionDigits: 0 })}`, change: '+22.4% ARR growth', color: 'border-l-4 border-amber-500' },
+                    { label: 'GenAI Token Consumptions', value: adminStats.totalTokensUsed.toLocaleString(), change: '99.4% success boundaries', color: 'border-l-4 border-indigo-500' },
+                  ].map((card, i) => (
+                    <div key={i} className={`bg-[#fcfcfb] border border-[#dbd7c7] p-5 rounded-2xl shadow-sm space-y-2 card-hover ${card.color}`}>
+                      <span className="text-xs font-semibold text-[#b3aa9e] uppercase tracking-wide">{card.label}</span>
+                      <div className="text-2xl md:text-3xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>{card.value}</div>
+                      <span className="text-[10px] font-semibold text-[#786e67] block">{card.change}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* USER MANAGEMENT & AI LOGS GROUP */}
+                <div className="grid xl:grid-cols-3 gap-8">
+                  {/* User Management */}
+                  <div className="xl:col-span-2 bg-[#fcfcfb] border border-[#dbd7c7] rounded-3xl p-6 shadow-sm space-y-4">
+                    <div className="flex justify-between items-center gap-4 border-b border-[#dbd7c7] pb-4">
+                      <h3 className="font-bold text-lg" style={{ fontFamily: 'Outfit' }}>User Account Directory</h3>
+                      <input 
+                        type="text"
+                        placeholder="Search user email..."
+                        value={adminSearch}
+                        onChange={(e) => setAdminSearch(e.target.value)}
+                        className="px-3 py-1.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-xs focus:outline-none focus:border-[#faa114] w-48 md:w-64"
+                      />
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left border-collapse text-xs">
+                        <thead>
+                          <tr className="border-b border-[#dbd7c7] text-[#786e67] font-semibold">
+                            <th className="pb-3 pr-4">User Name</th>
+                            <th className="pb-3 pr-4">Email Address</th>
+                            <th className="pb-3 pr-4">Joined Date</th>
+                            <th className="pb-3 pr-4">Account Role</th>
+                            <th className="pb-3 text-right">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {adminUsers
+                            .filter(u => u.email.toLowerCase().includes(adminSearch.toLowerCase()))
+                            .map((userRow) => (
+                              <tr key={userRow.id} className="border-b border-[#dbd7c7]/50 hover:bg-[#dbd7c7]/10 transition-colors">
+                                <td className="py-3 font-semibold pr-4">{userRow.name}</td>
+                                <td className="py-3 pr-4 text-[#786e67]">{userRow.email}</td>
+                                <td className="py-3 pr-4">{userRow.createdAt}</td>
+                                <td className="py-3 pr-4">
+                                  <select 
+                                    value={userRow.role}
+                                    onChange={(e) => {
+                                      const newRole = e.target.value;
+                                      // Local UI state update
+                                      setAdminUsers(adminUsers.map(u => u.id === userRow.id ? { ...u, role: newRole } : u));
+                                      
+                                      // Backend REST Call
+                                      fetch(`http://localhost:3001/api/v1/admin/users/${userRow.id}/role`, {
+                                        method: 'PUT',
+                                        headers: {
+                                          'Content-Type': 'application/json',
+                                          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                                        },
+                                        body: JSON.stringify({ role: newRole })
+                                      })
+                                      .then(res => res.json())
+                                      .then(() => alert(`Successfully changed user role to ${newRole}`))
+                                      .catch(() => console.log('Mock role update completed on client state.'));
+                                    }}
+                                    className="bg-transparent border border-[#dbd7c7] rounded px-1.5 py-0.5 font-medium focus:border-[#faa114] focus:outline-none"
+                                  >
+                                    <option value="free_learner">Free Learner</option>
+                                    <option value="premium">Premium</option>
+                                    <option value="admin">Admin</option>
+                                  </select>
+                                </td>
+                                <td className="py-3 text-right">
+                                  <button 
+                                    onClick={() => {
+                                      if (confirm(`Are you absolutely sure you want to delete user ${userRow.email}?`)) {
+                                        // Local UI update
+                                        setAdminUsers(adminUsers.filter(u => u.id !== userRow.id));
+                                        
+                                        // Backend REST Call
+                                        fetch(`http://localhost:3001/api/v1/admin/users/${userRow.id}`, {
+                                          method: 'DELETE',
+                                          headers: {
+                                            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+                                          }
+                                        })
+                                        .then(res => res.json())
+                                        .then(() => alert('User successfully deleted.'))
+                                        .catch(() => console.log('Mock delete completed on client state.'));
+                                      }
+                                    }}
+                                    className="text-red-500 hover:text-red-700 font-semibold hover:underline"
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  {/* AI Logs & Monitoring */}
+                  <div className="bg-[#fcfcfb] border border-[#dbd7c7] rounded-3xl p-6 shadow-sm space-y-4 flex flex-col justify-between">
+                    <div className="border-b border-[#dbd7c7] pb-4">
+                      <h3 className="font-bold text-lg" style={{ fontFamily: 'Outfit' }}>AI Operations Log</h3>
+                      <p className="text-[10px] text-[#786e67]">Real-time completion benchmarks and prompt thresholds.</p>
+                    </div>
+
+                    <div className="space-y-4 flex-1 overflow-y-auto max-h-[300px] pr-2 pt-2">
+                      {[
+                        { action: 'quiz.generate', model: 'gemini-1.5-flash', latency: '680ms', tokens: '4,281', status: 'Success', color: 'bg-emerald-500' },
+                        { action: 'document.summary', model: 'gpt-4o-mini', latency: '1.2s', tokens: '8,420', status: 'Success', color: 'bg-emerald-500' },
+                        { action: 'fsrs.recalculate', model: 'Heuristic-Engine', latency: '12ms', tokens: 'N/A', status: 'Success', color: 'bg-emerald-500' },
+                        { action: 'pdf.ocr_extract', model: 'PyPDF-Local', latency: '340ms', tokens: 'N/A', status: 'Success', color: 'bg-emerald-500' },
+                        { action: 'quiz.generate', model: 'gemini-1.5-flash', latency: '—', tokens: '—', status: 'Failed (Rate Limit)', color: 'bg-red-500' }
+                      ].map((log, index) => (
+                        <div key={index} className="flex justify-between items-start gap-4 text-xs border-b border-[#dbd7c7]/30 pb-2">
+                          <div className="space-y-0.5">
+                            <div className="flex items-center gap-1.5">
+                              <span className={`w-2 h-2 rounded-full ${log.color}`}></span>
+                              <span className="font-bold font-mono text-[10px] uppercase">{log.action}</span>
+                            </div>
+                            <div className="text-[10px] text-[#786e67]">{log.model}</div>
+                          </div>
+                          <div className="text-right text-[10px] font-semibold space-y-0.5">
+                            <div>{log.latency} latency</div>
+                            <div className="text-[#b3aa9e]">{log.tokens} tokens</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="bg-[#262a2b] rounded-2xl p-4 text-[#fcfcfb] space-y-2 mt-4">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="font-semibold">AI Pipeline Health</span>
+                        <span className="text-[#faa114] font-bold">99.4% OK</span>
+                      </div>
+                      <div className="w-full bg-[#dbd7c7]/20 rounded-full h-1.5">
+                        <div className="bg-[#faa114] h-1.5 rounded-full" style={{ width: '99.4%' }}></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
         )}
       </main>
@@ -1384,13 +1625,18 @@ export default function WorkspacePage() {
       {/* MOBILE BOTTOM NAV */}
       {activeTab !== 'auth' && activeTab !== 'pricing' && activeTab !== 'landing' && (
         <nav className="md:hidden h-16 border-t border-[#dbd7c7] bg-[#fcfcfb]/90 backdrop-blur-md flex items-center justify-around fixed bottom-0 left-0 right-0 z-50">
-          {[
-            { id: 'dashboard', icon: BookOpen },
-            { id: 'planner', icon: Calendar },
-            { id: 'quiz-gen', icon: Plus },
-            { id: 'explorer', icon: Search },
-            { id: 'profile', icon: User }
-          ].map((item) => {
+          {(() => {
+            const items = [
+              { id: 'dashboard', icon: BookOpen },
+              { id: 'planner', icon: Calendar },
+              { id: 'quiz-gen', icon: Plus },
+              { id: 'explorer', icon: Search },
+              { id: 'profile', icon: User }
+            ];
+            if (user.role === 'admin') {
+              items.push({ id: 'admin', icon: Shield });
+            }
+            return items.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
             return (
@@ -1404,8 +1650,9 @@ export default function WorkspacePage() {
                 <Icon className={`w-6 h-6 ${item.id === 'quiz-gen' && !isActive ? 'bg-[#faa114] text-[#262a2b] rounded-full p-1 w-8 h-8' : ''}`} />
               </button>
             );
-          })}
-        </nav>
+          });
+        })()}
+      </nav>
       )}
     </div>
   );

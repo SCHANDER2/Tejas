@@ -8,6 +8,7 @@ import quizRouter from './routes/quiz.routes.js';
 import analyticsRouter from './routes/analytics.routes.js';
 import recommendationRouter from './routes/recommendation.routes.js';
 import subscriptionRouter from './routes/subscription.routes.js';
+import adminRouter from './routes/admin.routes.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use('/api/v1/quizzes', quizRouter);
 app.use('/api/v1/analytics', analyticsRouter);
 app.use('/api/v1/recommendations', recommendationRouter);
 app.use('/api/v1/subscriptions', subscriptionRouter);
+app.use('/api/v1/admin', adminRouter);
 
 // Basic health check route
 app.get('/health', (req: Request, res: Response) => {
