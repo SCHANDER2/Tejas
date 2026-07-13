@@ -258,6 +258,18 @@ export default function WorkspacePage() {
   }, []);
 
   // Sync profile data with database on login
+  const [dashboardOverview, setDashboardOverview] = useState<any>({
+    overallAccuracy: 0,
+    averageTimeSeconds: 0,
+    quizzesCompleted: 0,
+    studyTimeMinutes: 0,
+    consistencyRating: 0,
+    completionRate: 0
+  });
+
+  const [dueCardsCount, setDueCardsCount] = useState(0);
+  const [recommendations, setRecommendations] = useState<string[]>([]);
+
   useEffect(() => {
     if (isLoggedIn) {
       fetch('http://localhost:3001/api/v1/profile', {
@@ -278,6 +290,35 @@ export default function WorkspacePage() {
         }
       })
       .catch(err => console.log('Backend profile sync offline'));
+
+      // Fetch dashboard overview stats
+      fetch('http://localhost:3001/api/v1/analytics/overview', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && typeof data.overallAccuracy !== 'undefined') {
+          setDashboardOverview(data);
+        }
+      })
+      .catch(err => console.log('Backend analytics overview offline'));
+
+      // Fetch AI recommendations & insights
+      fetch('http://localhost:3001/api/v1/analytics/insights', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data) {
+          setDueCardsCount(data.cardsDue || 0);
+          setRecommendations(data.suggestions || []);
+        }
+      })
+      .catch(err => console.log('Backend insights offline'));
     }
   }, [isLoggedIn]);
 
@@ -1160,9 +1201,11 @@ export default function WorkspacePage() {
                 <div className="bg-gradient-to-r from-[#faa114]/10 to-[#faa114]/5 border border-[#faa114]/20 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div className="space-y-1">
                     <h2 className="text-xl font-bold flex items-center gap-2" style={{ fontFamily: 'Outfit' }}>
-                      <Flame className="w-6 h-6 text-[#faa114]" /> Streak Active: 5 Days!
+                      <Flame className="w-6 h-6 text-[#faa114]" /> Consistency Rating: {dashboardOverview.consistencyRating}% (Past 30 Days)
                     </h2>
-                    <p className="text-sm text-[#786e67]">Keep going to stay on track for UPSC CSE 2026.</p>
+                    <p className="text-sm text-[#786e67]">
+                      Daily Target: {dashboardOverview.studyTimeMinutes} min completed / {profileGoal} min goal.
+                    </p>
                   </div>
                   <button onClick={() => triggerLoadingState('planner')} className="px-4 py-2 text-xs font-semibold bg-[#262a2b] text-[#fcfcfb] rounded-xl hover:bg-[#262a2b]/95 transition-all active:scale-[0.97]">
                     View Plan Calendar
@@ -1175,13 +1218,13 @@ export default function WorkspacePage() {
                     <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Today&apos;s Targets</h3>
                     <div className="space-y-3">
                       {[
-                        { title: 'Read Chapter 4: Indian Polity', duration: '60m', done: true },
-                        { title: 'Attempt Dynamic MCQ on Federalism', duration: '20m', done: false },
-                        { title: 'Review Spaced Repetition Due Cards', duration: '15m', done: false }
+                        { title: `Read and study primary topics: target ${profileGoal} minutes`, duration: `${profileGoal}m`, done: dashboardOverview.studyTimeMinutes >= profileGoal },
+                        { title: `Attempt competitive exam practice quizzes (Completed: ${dashboardOverview.quizzesCompleted})`, duration: '20m', done: dashboardOverview.quizzesCompleted > 0 },
+                        { title: `Review ${dueCardsCount} due spaced repetition flashcards`, duration: '15m', done: dueCardsCount === 0 }
                       ].map((task, idx) => (
                         <div key={idx} className="p-4 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl flex items-center justify-between hover:border-[#786e67] transition-colors">
                           <div className="flex items-center gap-3">
-                            <input type="checkbox" defaultChecked={task.done} className="accent-[#faa114] w-4 h-4" />
+                            <input type="checkbox" checked={task.done} readOnly className="accent-[#faa114] w-4 h-4" />
                             <span className={`text-sm ${task.done ? 'line-through text-[#b3aa9e]' : 'text-[#262a2b] font-medium'}`}>
                               {task.title}
                             </span>
@@ -1195,7 +1238,7 @@ export default function WorkspacePage() {
                   {/* Upload zone */}
                   <div className="space-y-4">
                     <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Quick Ingest</h3>
-                    <div className="border-2 border-dashed border-[#dbd7c7] p-8 rounded-2xl text-center space-y-4 hover:border-[#faa114] transition-colors cursor-pointer bg-[#fcfcfb]">
+                    <div onClick={() => triggerLoadingState('pdf')} className="border-2 border-dashed border-[#dbd7c7] p-8 rounded-2xl text-center space-y-4 hover:border-[#faa114] transition-colors cursor-pointer bg-[#fcfcfb]">
                       <UploadCloud className="w-10 h-10 text-[#786e67] mx-auto" />
                       <div className="space-y-1">
                         <p className="text-sm font-semibold">Upload PDF textbook</p>
