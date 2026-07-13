@@ -98,5 +98,15 @@ We resolved all mock layers to provide fully functional systems for production d
 *   **Database Seeding:** Created a comprehensive seeding script at [seed.js](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/packages/database/prisma/seed.js) pre-populating competitive exam syllabi (UPSC Civil Services, JEE Main & Advanced, NEET UG, GATE Engineering) with multi-level depth structures.
 *   **Notifications Dispatcher:** Implemented a new [notification.service.ts](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/services/backend/src/services/notification.service.ts) delivering SMTP Emails, Twilio SMS alerts, and Web Push notifications.
 
+---
+
+## 9. Admin Portal & Management Console (Phase 6 Extension)
+We built an administrative module to support platform moderation and analytical monitoring:
+*   **Administrative REST Endpoints:** Developed Express endpoints in [admin.routes.ts](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/services/backend/src/routes/admin.routes.ts) and [admin.controller.ts](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/services/backend/src/controllers/admin.controller.ts) allowing admins to query business metrics, change user roles, and cascade-delete user records.
+*   **Role-Based Security Guards:** Secured administrative API endpoints with Express `authenticateJWT` and `authorizeRoles('admin')` filters.
+*   **KPI Metrics Dashboard:** Added a dynamic stats grid to the Next.js client rendering total users, active premium counts, monthly revenue calculations, and AI token usages.
+*   **Moderation Directory & Logs:** Built an interactive table to search, change roles, or delete users, accompanied by an AI operations log detailing prompt latency and status codes.
+
+
 
 
