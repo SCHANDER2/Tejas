@@ -1,8 +1,10 @@
 import { Response } from 'express';
 import { AuthenticatedRequest } from '../middleware/auth.middleware.js';
 import { LearningService } from '../services/learning.service.js';
+import { QueueService } from '../services/queue.service.js';
 
 const learningService = new LearningService();
+const queueService = new QueueService();
 
 export async function createSubject(req: AuthenticatedRequest, res: Response) {
   const { name } = req.body;
@@ -54,9 +56,14 @@ export async function uploadSource(req: AuthenticatedRequest, res: Response) {
   try {
     const source = await learningService.createSource(user.id, subjectId || null, title, sourceType, fileUrl);
     
-    // In production, we dispatch a job to RabbitMQ queue: 'document.ingest'
-    // For local validation, we return the metadata log and print the task dispatch message.
-    console.log(`[QUEUE DISPATCH]: Triggered RabbitMQ 'document.ingest' job for file: ${title}`);
+    // Publish background ingestion job to RabbitMQ queue
+    await queueService.publishToQueue('document.ingest', {
+      sourceId: source.id,
+      userId: user.id,
+      title,
+      sourceType,
+      fileUrl
+    });
     
     return res.status(202).json({
       message: 'Source upload registered. Background processing started.',
@@ -66,3 +73,4 @@ export async function uploadSource(req: AuthenticatedRequest, res: Response) {
     return res.status(400).json({ error: 'Ingestion Failed', message: error.message });
   }
 }
+
