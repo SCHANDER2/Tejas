@@ -13,7 +13,7 @@ export async function listUsers(req: AuthenticatedRequest, res: Response) {
         profile: {
           select: {
             fullName: true,
-            studyGoalMinutes: true
+            dailyStudyGoalMinutes: true
           }
         }
       },
