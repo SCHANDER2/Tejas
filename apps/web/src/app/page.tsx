@@ -208,8 +208,11 @@ export default function WorkspacePage() {
     { name: 'Physics_Electromagnetism.pdf', size: '4.8 MB', status: 'Completed' }
   ]);
 
-  // Auth mock
+  // Auth state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profileFullName, setProfileFullName] = useState('Priya Sharma');
+  const [profileGoal, setProfileGoal] = useState(60);
+  const [profileLanguage, setProfileLanguage] = useState('en');
 
   // Admin section dashboard state
   const [user, setUser] = useState({
@@ -233,6 +236,50 @@ export default function WorkspacePage() {
   ]);
 
   const [adminSearch, setAdminSearch] = useState('');
+
+  // OAuth redirect token parsing & Session persistence check
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      if (token) {
+        localStorage.setItem('token', token);
+        setIsLoggedIn(true);
+        // Clear query parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setActiveTab('dashboard');
+      } else {
+        const storedToken = localStorage.getItem('token');
+        if (storedToken) {
+          setIsLoggedIn(true);
+        }
+      }
+    }
+  }, []);
+
+  // Sync profile data with database on login
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetch('http://localhost:3001/api/v1/profile', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.fullName) {
+          setProfileFullName(data.fullName);
+          setProfileGoal(data.dailyStudyGoalMinutes || 60);
+          setProfileLanguage(data.preferredLanguage || 'en');
+          setUser(prev => ({
+            ...prev,
+            name: data.fullName
+          }));
+        }
+      })
+      .catch(err => console.log('Backend profile sync offline'));
+    }
+  }, [isLoggedIn]);
 
   // Load stats and users from backend on component mount / tab switch
   useEffect(() => {
@@ -289,6 +336,35 @@ export default function WorkspacePage() {
       setActiveTab(targetTab);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 800);
+  };
+
+  const handleSaveProfile = () => {
+    fetch('http://localhost:3001/api/v1/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+      },
+      body: JSON.stringify({
+        fullName: profileFullName,
+        dailyStudyGoalMinutes: profileGoal,
+        preferredLanguage: profileLanguage
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.profile) {
+        alert('Profile saved to PostgreSQL!');
+        setProfileFullName(data.profile.fullName);
+        setProfileGoal(data.profile.dailyStudyGoalMinutes);
+        setProfileLanguage(data.profile.preferredLanguage);
+        setUser(prev => ({
+          ...prev,
+          name: data.profile.fullName
+        }));
+      }
+    })
+    .catch(err => alert('Failed to save profile configuration.'));
   };
 
   /* ────────────────────────────────────────
@@ -1427,18 +1503,40 @@ export default function WorkspacePage() {
                 <h1 className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>User Settings</h1>
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-[#786e67]">Target Goal (Minutes / Day)</label>
-                    <input type="number" defaultValue="60" className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" />
+                    <label className="text-xs font-semibold text-[#786e67]">Full Name</label>
+                    <input 
+                      type="text" 
+                      value={profileFullName} 
+                      onChange={(e) => setProfileFullName(e.target.value)} 
+                      className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" 
+                    />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-[#786e67]">Accent Color</label>
-                    <div className="flex gap-2">
-                      <span className="w-6 h-6 rounded-full bg-[#faa114] border-2 border-[#262a2b] cursor-pointer hover:scale-110 transition-transform"></span>
-                      <span className="w-6 h-6 rounded-full bg-[#786e67] cursor-pointer hover:scale-110 transition-transform"></span>
-                      <span className="w-6 h-6 rounded-full bg-[#b3aa9e] cursor-pointer hover:scale-110 transition-transform"></span>
-                    </div>
+                    <label className="text-xs font-semibold text-[#786e67]">Daily Target Goal (Minutes)</label>
+                    <input 
+                      type="number" 
+                      value={profileGoal} 
+                      onChange={(e) => setProfileGoal(parseInt(e.target.value, 10) || 0)} 
+                      className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" 
+                    />
                   </div>
-                  <button onClick={() => alert('Settings updated successfully.')} className="w-full py-3 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]">
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-[#786e67]">Preferred Language</label>
+                    <select 
+                      value={profileLanguage} 
+                      onChange={(e) => setProfileLanguage(e.target.value)} 
+                      className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                    >
+                      <option value="en">English</option>
+                      <option value="hi">Hindi (हिन्दी)</option>
+                      <option value="te">Telugu (తెలుగు)</option>
+                      <option value="ta">Tamil (தமிழ்)</option>
+                    </select>
+                  </div>
+                  <button 
+                    onClick={handleSaveProfile} 
+                    className="w-full py-3 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]"
+                  >
                     Save Configuration
                   </button>
                 </div>
