@@ -89,4 +89,14 @@ We added a root [docker-compose.yml](file:///c:/Users/laksh/OneDrive/Desktop/Tej
 *   **Caching & Sessions:** Redis container exposing port `6379`.
 *   **Message Broker:** RabbitMQ container exposing port `5672` (worker events queue) and `15672` (management dashboard portal).
 
+---
+
+## 8. Production-Grade Features & Integrations
+We resolved all mock layers to provide fully functional systems for production deployment:
+*   **AI Service Pipelines:** Connected `quiz_pipeline.py`, `study_pipeline.py`, and `recommendation_pipeline.py` to Google Gemini (`gemini-1.5-flash`) and OpenAI (`gpt-4o-mini`) APIs. Implemented robust local fallbacks if keys are missing or API boundaries fail.
+*   **Stripe & Razorpay Payments:** Replaced payment mock routes with actual Stripe Checkout Session creation, Razorpay order generations, HMAC payment verification handshakes, and public Stripe webhook callback listeners.
+*   **Database Seeding:** Created a comprehensive seeding script at [seed.js](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/packages/database/prisma/seed.js) pre-populating competitive exam syllabi (UPSC Civil Services, JEE Main & Advanced, NEET UG, GATE Engineering) with multi-level depth structures.
+*   **Notifications Dispatcher:** Implemented a new [notification.service.ts](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/services/backend/src/services/notification.service.ts) delivering SMTP Emails, Twilio SMS alerts, and Web Push notifications.
+
+
 
