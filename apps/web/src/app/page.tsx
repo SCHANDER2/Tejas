@@ -190,6 +190,11 @@ const testimonials = [
   },
 ];
 
+const API_BASE_URL = typeof window !== 'undefined' && 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3001'
+    : '/api/backend';
+
 /* ──────────────────────────────────────────────────
    MAIN PAGE COMPONENT
    ────────────────────────────────────────────────── */
@@ -252,7 +257,7 @@ export default function WorkspacePage() {
 
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/signup/initiate', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/signup/initiate`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: authEmail, fullName: authFullName })
@@ -280,7 +285,7 @@ export default function WorkspacePage() {
     }
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/signup/verify', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/signup/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: authEmail, otp: otpCode })
@@ -323,7 +328,7 @@ export default function WorkspacePage() {
 
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/signup/complete', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/signup/complete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ signupToken, password: authPassword })
@@ -354,7 +359,7 @@ export default function WorkspacePage() {
     setOtpError(null);
     setOtpSuccessMsg(null);
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/signup/resend', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/signup/resend`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: authEmail })
@@ -374,7 +379,7 @@ export default function WorkspacePage() {
     setErrorMsg(null);
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3001/api/v1/auth/login', {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: authEmail, password: authPassword })
@@ -383,7 +388,7 @@ export default function WorkspacePage() {
       if (!res.ok) {
         if (data.error === 'EmailNotVerified') {
           // Send OTP and transition to OTP verification page
-          await fetch('http://localhost:3001/api/v1/auth/signup/resend', {
+          await fetch(`${API_BASE_URL}/api/v1/auth/signup/resend`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email: authEmail })

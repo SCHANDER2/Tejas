@@ -27,6 +27,14 @@ app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
+// Strip Vercel service routing prefix if present
+app.use((req: Request, res: Response, next: NextFunction) => {
+  if (req.url.startsWith('/api/backend')) {
+    req.url = req.url.slice('/api/backend'.length);
+  }
+  next();
+});
+
 // Routes mapping
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/exams', examRouter);
