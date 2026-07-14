@@ -194,3 +194,34 @@ services:
 *   **Integration Tests:** API integrations validated using SuperTest frameworks checking payload boundaries.
 *   **End-to-End Tests:** Playwright tests checking critical workflows (onboarding, quiz submissions).
 *   **AI Quality Evaluation:** RAGAS metrics measuring answer correctness, accuracy, and latency thresholds.
+
+---
+
+## 10. Phase 6: Admin Portal & Management Services (New Extension)
+
+We will implement administrative controls and portals to manage users, monitor AI token consumption, and track business revenue metrics.
+
+### Proposed Changes
+
+#### [MODIFY] [page.tsx](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/apps/web/src/app/page.tsx)
+*   Add a new view state `ADMIN` in the dashboard sidebar menu, visible only if the authenticated user's role is `'admin'`.
+*   Build an Admin dashboard console layout rendering:
+    *   **KPI Cards:** Total Registered Users, Active Premium Subscriptions, Total Revenue ($/₹), Total AI tokens used.
+    *   **User Management Table:** List users, modify roles (Free, Basic, Pro, Admin), and ban/delete accounts.
+    *   **AI Monitoring Logs:** Lists recent AI completions, input/output token usage, and latency times.
+
+#### [NEW] [admin.routes.ts](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/services/backend/src/routes/admin.routes.ts)
+*   Define backend routes under `/api/v1/admin/` prefix:
+    *   `GET /users`: List users with pagination and search.
+    *   `PUT /users/:id/role`: Update user roles.
+    *   `DELETE /users/:id`: Delete a user.
+    *   `GET /stats`: Fetch aggregate business and usage statistics.
+
+#### [NEW] [admin.controller.ts](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/services/backend/src/controllers/admin.controller.ts)
+*   Implement Express route controller handlers:
+    *   Query database to calculate sum of active subscriptions and group users by role tier.
+    *   Expose administrative deletion and updates.
+
+#### [MODIFY] [app.ts](file:///c:/Users/laksh/OneDrive/Desktop/Tejas/services/backend/src/app.ts)
+*   Import and register the new `/api/v1/admin` routes handler.
+

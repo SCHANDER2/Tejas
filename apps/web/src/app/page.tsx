@@ -35,7 +35,10 @@ import {
   ExternalLink,
   ArrowUpRight,
   Quote,
-  Users
+  Users,
+  Lock,
+  Mail,
+  RefreshCw
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────────
@@ -196,6 +199,169 @@ export default function WorkspacePage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Auth custom fields
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+  const [authFullName, setAuthFullName] = useState('');
+  const [authEmail, setAuthEmail] = useState('');
+  const [authPassword, setAuthPassword] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [otpError, setOtpError] = useState<string | null>(null);
+  const [otpSuccessMsg, setOtpSuccessMsg] = useState<string | null>(null);
+  const [passRulesValid, setPassRulesValid] = useState({
+    length: false,
+    upper: false,
+    lower: false,
+    number: false,
+    special: false
+  });
+
+  // Reset auth error and state fields
+  const resetAuthState = () => {
+    setErrorMsg(null);
+    setOtpError(null);
+    setOtpSuccessMsg(null);
+    setOtpSent(false);
+    setOtpCode('');
+  };
+
+  // Run dynamic check for strong password criteria
+  useEffect(() => {
+    setPassRulesValid({
+      length: authPassword.length >= 8,
+      upper: /[A-Z]/.test(authPassword),
+      lower: /[a-z]/.test(authPassword),
+      number: /\d/.test(authPassword),
+      special: /[!@#$%^&*()_+\-=\[\]{};':",./<>?]/.test(authPassword)
+    });
+  }, [authPassword]);
+
+  const handleSignupInitiate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg(null);
+    setOtpError(null);
+    setOtpSuccessMsg(null);
+    
+    // Local password validation check
+    const isAllValid = Object.values(passRulesValid).every(Boolean);
+    if (!isAllValid) {
+      setErrorMsg('Please satisfy all password strength requirements.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:3001/api/v1/auth/signup/initiate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: authEmail, password: authPassword, fullName: authFullName })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to initiate signup.');
+      }
+      setOtpSent(true);
+      setOtpSuccessMsg('A 6-digit verification code has been sent to your email.');
+    } catch (err: any) {
+      setErrorMsg(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignupVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg(null);
+    setOtpError(null);
+    if (otpCode.length !== 6 || !/^\d+$/.test(otpCode)) {
+      setOtpError('OTP must be a 6-digit number.');
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:3001/api/v1/auth/signup/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: authEmail, otp: otpCode })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'OTP verification failed.');
+      }
+      localStorage.setItem('token', data.token);
+      setUser({
+        name: data.user.fullName,
+        email: data.user.email,
+        role: data.user.role
+      });
+      setProfileFullName(data.user.fullName);
+      setIsLoggedIn(true);
+      setActiveTab('dashboard');
+      setOtpSent(false);
+      setOtpCode('');
+    } catch (err: any) {
+      setOtpError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setErrorMsg(null);
+    setOtpError(null);
+    setOtpSuccessMsg(null);
+    try {
+      const res = await fetch('http://localhost:3001/api/v1/auth/signup/resend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: authEmail })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Failed to resend OTP.');
+      }
+      setOtpSuccessMsg('A new OTP has been sent to your email.');
+    } catch (err: any) {
+      setOtpError(err.message);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg(null);
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:3001/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: authEmail, password: authPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (data.error === 'EmailNotVerified') {
+          setOtpSent(true);
+          setOtpSuccessMsg('Your email is not verified. An OTP has been sent to your inbox.');
+          setLoading(false);
+          return;
+        }
+        throw new Error(data.message || 'Login failed.');
+      }
+      localStorage.setItem('token', data.token);
+      setUser({
+        name: data.user.fullName,
+        email: data.user.email,
+        role: data.user.role
+      });
+      setProfileFullName(data.user.fullName);
+      setIsLoggedIn(true);
+      setActiveTab('dashboard');
+    } catch (err: any) {
+      setErrorMsg(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Quiz state
   const [quizStarted, setQuizStarted] = useState(false);
@@ -483,13 +649,13 @@ export default function WorkspacePage() {
 
             <div className="hidden md:flex items-center gap-3">
               <button 
-                onClick={() => triggerLoadingState('auth')}
+                onClick={() => { setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }}
                 className="px-5 py-2.5 text-sm font-semibold text-[#786e67] hover:text-[#262a2b] transition-colors"
               >
                 Sign In
               </button>
               <button 
-                onClick={() => triggerLoadingState('auth')}
+                onClick={() => { setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }}
                 className="px-6 py-2.5 text-sm font-semibold bg-[#262a2b] text-[#fcfcfb] rounded-xl hover:bg-[#262a2b]/90 transition-all active:scale-[0.97] shadow-sm"
               >
                 Get Started Free
@@ -514,8 +680,8 @@ export default function WorkspacePage() {
                 <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-medium text-[#786e67]">Stories</a>
                 <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-medium text-[#786e67]">Pricing</a>
                 <div className="pt-4 border-t border-[#dbd7c7] space-y-3">
-                  <button onClick={() => triggerLoadingState('auth')} className="w-full py-3 text-sm font-semibold text-[#786e67]">Sign In</button>
-                  <button onClick={() => triggerLoadingState('auth')} className="w-full py-3 text-sm font-semibold bg-[#262a2b] text-[#fcfcfb] rounded-xl">Get Started Free</button>
+                  <button onClick={() => { setMobileMenuOpen(false); setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-semibold text-[#786e67]">Sign In</button>
+                  <button onClick={() => { setMobileMenuOpen(false); setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-semibold bg-[#262a2b] text-[#fcfcfb] rounded-xl">Get Started Free</button>
                 </div>
               </div>
             </div>
@@ -551,8 +717,9 @@ export default function WorkspacePage() {
             <div className="animate-fadeInUp delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
               <button 
                 onClick={() => {
-                  setIsLoggedIn(true);
-                  triggerLoadingState('dashboard');
+                  setAuthMode('signup');
+                  resetAuthState();
+                  triggerLoadingState('auth');
                 }}
                 className="group px-8 py-4 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-2xl flex items-center gap-3 shadow-lg shadow-[#faa114]/20 transition-all active:scale-[0.97] animate-pulse-glow text-base"
               >
@@ -907,7 +1074,11 @@ export default function WorkspacePage() {
                     </ul>
                   </div>
                   <button 
-                    onClick={() => { setIsLoggedIn(true); triggerLoadingState('dashboard'); }}
+                    onClick={() => {
+                      setAuthMode('signup');
+                      resetAuthState();
+                      triggerLoadingState('auth');
+                    }}
                     className="mt-10 w-full py-3.5 border border-[#dbd7c7] hover:border-[#786e67] text-[#262a2b] font-semibold rounded-xl transition-all active:scale-[0.97]"
                   >
                     Start Free
@@ -981,8 +1152,9 @@ export default function WorkspacePage() {
                   </p>
                   <button 
                     onClick={() => {
-                      setIsLoggedIn(true);
-                      triggerLoadingState('dashboard');
+                      setAuthMode('signup');
+                      resetAuthState();
+                      triggerLoadingState('auth');
                     }}
                     className="px-10 py-4 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-2xl shadow-lg shadow-[#faa114]/30 transition-all active:scale-[0.97] text-base"
                   >
@@ -1160,36 +1332,253 @@ export default function WorkspacePage() {
 
             {/* AUTH SCREEN */}
             {activeTab === 'auth' && (
-              <div className="min-h-[80vh] flex items-center justify-center">
+              <div className="min-h-[80vh] flex items-center justify-center py-12">
                 <div className="w-full max-w-md bg-[#fcfcfb] border border-[#dbd7c7] p-8 rounded-3xl space-y-6 shadow-lg shadow-[#262a2b]/5">
+                  
+                  {/* Title / Header */}
                   <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-1.5 mb-4">
                       <span className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Tejas</span>
                       <span className="w-2.5 h-2.5 rounded-full bg-[#faa114]"></span>
                     </div>
-                    <h1 className="text-2xl font-bold">Create Account</h1>
-                    <p className="text-sm text-[#786e67]">Start preparing for your targets today.</p>
+                    {otpSent ? (
+                      <>
+                        <h1 className="text-2xl font-bold">Verify Your Email</h1>
+                        <p className="text-sm text-[#786e67]">Enter the 6-digit OTP code sent to your inbox.</p>
+                      </>
+                    ) : authMode === 'signup' ? (
+                      <>
+                        <h1 className="text-2xl font-bold">Create Account</h1>
+                        <p className="text-sm text-[#786e67]">Start preparing for your targets today.</p>
+                      </>
+                    ) : (
+                      <>
+                        <h1 className="text-2xl font-bold">Welcome Back</h1>
+                        <p className="text-sm text-[#786e67]">Sign in to continue your exam preparation.</p>
+                      </>
+                    )}
                   </div>
-                  <form onSubmit={(e) => { e.preventDefault(); setIsLoggedIn(true); triggerLoadingState('dashboard'); }} className="space-y-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">Full Name</label>
-                      <input type="text" required placeholder="Priya Sharma" className="w-full px-4 py-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" />
+
+                  {/* Errors / Success Alerts */}
+                  {errorMsg && (
+                    <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs font-medium rounded-xl flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                      <span>{errorMsg}</span>
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">Email Address</label>
-                      <input type="email" required placeholder="priya@example.com" className="w-full px-4 py-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" />
+                  )}
+
+                  {otpSuccessMsg && (
+                    <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium rounded-xl flex items-start gap-2.5">
+                      <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                      <span>{otpSuccessMsg}</span>
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">Password</label>
-                      <input type="password" required placeholder="••••••••" className="w-full px-4 py-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" />
-                    </div>
-                    <button type="submit" className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97]">
-                      Sign Up
-                    </button>
-                  </form>
-                  <p className="text-xs text-center text-[#786e67]">
-                    Already have an account? <span onClick={() => triggerLoadingState('auth')} className="text-[#faa114] cursor-pointer hover:underline font-semibold">Log in</span>
-                  </p>
+                  )}
+
+                  {/* OTP Verification Form */}
+                  {otpSent ? (
+                    <form onSubmit={handleSignupVerify} className="space-y-4">
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Verification Code</label>
+                        <div className="relative">
+                          <input 
+                            type="text" 
+                            required 
+                            maxLength={6}
+                            placeholder="123456" 
+                            value={otpCode}
+                            onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm text-center tracking-[0.5em] font-mono transition-colors" 
+                          />
+                          <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                        </div>
+                        {otpError && (
+                          <p className="text-xs font-semibold text-red-500 mt-1 flex items-center gap-1">
+                            <AlertCircle className="w-3.5 h-3.5" /> {otpError}
+                          </p>
+                        )}
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none"
+                      >
+                        {loading ? 'Verifying...' : 'Verify OTP'}
+                      </button>
+
+                      <div className="pt-2 flex flex-col gap-2.5 text-center text-xs text-[#786e67]">
+                        <p>
+                          Didn&apos;t receive code?{' '}
+                          <button 
+                            type="button" 
+                            onClick={handleResendOtp}
+                            className="text-[#faa114] hover:underline font-semibold inline-flex items-center justify-center gap-1 mx-auto bg-transparent border-none p-0 cursor-pointer"
+                          >
+                            <RefreshCw className="w-3 h-3" /> Resend OTP
+                          </button>
+                        </p>
+                        <button 
+                          type="button" 
+                          onClick={resetAuthState}
+                          className="text-xs text-[#786e67] hover:text-[#262a2b] hover:underline mt-2 bg-transparent border-none p-0 cursor-pointer"
+                        >
+                          ← Change email / Edit details
+                        </button>
+                      </div>
+                    </form>
+                  ) : authMode === 'signup' ? (
+                    /* Sign Up Form */
+                    <form onSubmit={handleSignupInitiate} className="space-y-4">
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Full Name</label>
+                        <div className="relative">
+                          <input 
+                            type="text" 
+                            required 
+                            placeholder="Priya Sharma" 
+                            value={authFullName}
+                            onChange={(e) => setAuthFullName(e.target.value)}
+                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
+                          />
+                          <User className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Email Address</label>
+                        <div className="relative">
+                          <input 
+                            type="email" 
+                            required 
+                            placeholder="priya@example.com" 
+                            value={authEmail}
+                            onChange={(e) => setAuthEmail(e.target.value)}
+                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
+                          />
+                          <Mail className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Password</label>
+                        <div className="relative">
+                          <input 
+                            type="password" 
+                            required 
+                            placeholder="••••••••" 
+                            value={authPassword}
+                            onChange={(e) => setAuthPassword(e.target.value)}
+                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
+                          />
+                          <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                        </div>
+
+                        {/* Password rules dynamic display */}
+                        <div className="mt-2 space-y-1.5 p-3.5 bg-[#f9f8f5] border border-[#dbd7c7] rounded-xl text-xs">
+                          <p className="font-bold text-[#786e67] mb-1 uppercase tracking-wider text-[9px]">Password Strength Checklist:</p>
+                          <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
+                            <div className="flex items-center gap-1.5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.length ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
+                              <span className={`text-[10px] ${passRulesValid.length ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>Min 8 characters</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.upper ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
+                              <span className={`text-[10px] ${passRulesValid.upper ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>Uppercase letter</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.lower ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
+                              <span className={`text-[10px] ${passRulesValid.lower ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>Lowercase letter</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.number ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
+                              <span className={`text-[10px] ${passRulesValid.number ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>At least 1 number</span>
+                            </div>
+                            <div className="col-span-2 flex items-center gap-1.5">
+                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.special ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
+                              <span className={`text-[10px] ${passRulesValid.special ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>Special character (!@#$%)</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50"
+                      >
+                        {loading ? 'Creating...' : 'Sign Up'}
+                      </button>
+                    </form>
+                  ) : (
+                    /* Login Form */
+                    <form onSubmit={handleLogin} className="space-y-4">
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Email Address</label>
+                        <div className="relative">
+                          <input 
+                            type="email" 
+                            required 
+                            placeholder="priya@example.com" 
+                            value={authEmail}
+                            onChange={(e) => setAuthEmail(e.target.value)}
+                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
+                          />
+                          <Mail className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                        </div>
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Password</label>
+                        <div className="relative">
+                          <input 
+                            type="password" 
+                            required 
+                            placeholder="••••••••" 
+                            value={authPassword}
+                            onChange={(e) => setAuthPassword(e.target.value)}
+                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
+                          />
+                          <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                        </div>
+                      </div>
+
+                      <button 
+                        type="submit" 
+                        disabled={loading}
+                        className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50"
+                      >
+                        {loading ? 'Logging In...' : 'Log In'}
+                      </button>
+                    </form>
+                  )}
+
+                  {!otpSent && (
+                    <p className="text-xs text-center text-[#786e67]">
+                      {authMode === 'signup' ? (
+                        <>
+                          Already have an account?{' '}
+                          <button 
+                            type="button"
+                            onClick={() => { setAuthMode('login'); resetAuthState(); }} 
+                            className="text-[#faa114] hover:underline font-semibold bg-transparent border-none p-0 cursor-pointer"
+                          >
+                            Log in
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          Don&apos;t have an account?{' '}
+                          <button 
+                            type="button"
+                            onClick={() => { setAuthMode('signup'); resetAuthState(); }} 
+                            className="text-[#faa114] hover:underline font-semibold bg-transparent border-none p-0 cursor-pointer"
+                          >
+                            Sign up
+                          </button>
+                        </>
+                      )}
+                    </p>
+                  )}
                 </div>
               </div>
             )}

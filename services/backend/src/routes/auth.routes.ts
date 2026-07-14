@@ -1,14 +1,16 @@
 import { Router, Request, Response } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
-import { register, login } from '../controllers/auth.controller.js';
+import { signupInitiate, signupVerify, signupResend, login } from '../controllers/auth.controller.js';
 
 const router = Router();
 
 const jwtSecret = process.env.JWT_SECRET || 'tejas_jwt_secret_fallback_key';
 const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
-router.post('/signup', register);
+router.post('/signup/initiate', signupInitiate);
+router.post('/signup/verify', signupVerify);
+router.post('/signup/resend', signupResend);
 router.post('/login', login);
 
 // Google OAuth initiating route
