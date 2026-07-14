@@ -33,29 +33,21 @@ export class AuthService {
     return errors;
   }
 
-  async registerInitiate(email: string, password: string, fullName: string) {
+  async signupSendOtp(email: string, fullName: string) {
     if (!this.validateEmailFormat(email)) {
       throw new Error('Invalid email address format.');
     }
 
-    const passwordErrors = this.validatePasswordStrength(password);
-    if (passwordErrors.length > 0) {
-      throw new Error(passwordErrors.join(' '));
-    }
-
     const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing && existing.emailVerified) {
+    if (existing && existing.emailVerified && existing.passwordHash) {
       throw new Error('Email already registered.');
     }
 
-    const passwordHash = await bcrypt.hash(password, 10);
-    
     // Create user in unverified state or update existing unverified user
     if (existing) {
       await prisma.user.update({
         where: { email },
         data: {
-          passwordHash,
           profile: {
             upsert: {
               create: { fullName },
@@ -68,7 +60,6 @@ export class AuthService {
       await prisma.user.create({
         data: {
           email,
-          passwordHash,
           emailVerified: false,
           profile: {
             create: { fullName }
@@ -89,10 +80,10 @@ export class AuthService {
     });
 
     // Send OTP email
-    const subject = 'Verify your Tejas account';
+    const subject = 'Verify your email for Tejas';
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #dbd7c7; border-radius: 12px;">
-        <h2 style="color: #262a2b; font-family: 'Outfit', sans-serif;">Welcome to Tejas!</h2>
+        <h2 style="color: #262a2b; font-family: 'Outfit', sans-serif;">Email Verification</h2>
         <p style="font-size: 16px; color: #786e67;">Thank you for registering. Please use the following One-Time Password (OTP) to verify your email address:</p>
         <div style="font-size: 24px; font-weight: bold; color: #faa114; letter-spacing: 4px; padding: 15px; background-color: #fcfcfb; border: 1px dashed #dbd7c7; display: inline-block; margin: 10px 0;">
           ${otp}
@@ -106,10 +97,9 @@ export class AuthService {
     return { message: 'OTP sent to your email address.' };
   }
 
-  async registerVerify(email: string, otp: string) {
+  async signupVerifyOtp(email: string, otp: string) {
     const user = await prisma.user.findUnique({
-      where: { email },
-      include: { profile: true }
+      where: { email }
     });
 
     if (!user) {
@@ -121,7 +111,7 @@ export class AuthService {
     });
 
     if (!record) {
-      throw new Error('No OTP request found. Please initiate sign up again.');
+      throw new Error('No OTP request found. Please request a new OTP.');
     }
 
     if (record.otp !== otp) {
@@ -143,14 +133,63 @@ export class AuthService {
       where: { email }
     });
 
-    const token = this.generateToken(user.id, user.email, user.role);
+    // Generate short-lived signup token (expires in 15m)
+    const signupToken = jwt.sign(
+      { email, purpose: 'signup_password' },
+      this.jwtSecret,
+      { expiresIn: '15m' }
+    );
+
+    return { signupToken };
+  }
+
+  async signupComplete(signupToken: string, password: string) {
+    let decoded: any;
+    try {
+      decoded = jwt.verify(signupToken, this.jwtSecret);
+    } catch (err) {
+      throw new Error('Verification session has expired or is invalid. Please start signup again.');
+    }
+
+    if (decoded.purpose !== 'signup_password' || !decoded.email) {
+      throw new Error('Invalid verification session.');
+    }
+
+    const email = decoded.email;
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { profile: true }
+    });
+
+    if (!user) {
+      throw new Error('User not found.');
+    }
+
+    if (!user.emailVerified) {
+      throw new Error('Email is not verified. Please verify your email first.');
+    }
+
+    const passwordErrors = this.validatePasswordStrength(password);
+    if (passwordErrors.length > 0) {
+      throw new Error(passwordErrors.join(' '));
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const updatedUser = await prisma.user.update({
+      where: { email },
+      data: { passwordHash },
+      include: { profile: true }
+    });
+
+    const token = this.generateToken(updatedUser.id, updatedUser.email, updatedUser.role);
 
     return {
       user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        fullName: user.profile?.fullName,
+        id: updatedUser.id,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        fullName: updatedUser.profile?.fullName,
         emailVerified: true
       },
       token

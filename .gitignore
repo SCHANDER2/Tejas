@@ -47,3 +47,6 @@ Desktop.ini
 
 # Prisma generated schema files
 generated/
+
+.vercel
+.env*

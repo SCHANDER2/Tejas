@@ -202,9 +202,12 @@ export default function WorkspacePage() {
 
   // Auth custom fields
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
+  const [signupStep, setSignupStep] = useState<1 | 2>(1);
   const [authFullName, setAuthFullName] = useState('');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
+  const [authConfirmPassword, setAuthConfirmPassword] = useState('');
+  const [signupToken, setSignupToken] = useState<string | null>(null);
   const [otpSent, setOtpSent] = useState(false);
   const [otpCode, setOtpCode] = useState('');
   const [otpError, setOtpError] = useState<string | null>(null);
@@ -224,6 +227,10 @@ export default function WorkspacePage() {
     setOtpSuccessMsg(null);
     setOtpSent(false);
     setOtpCode('');
+    setSignupStep(1);
+    setSignupToken(null);
+    setAuthPassword('');
+    setAuthConfirmPassword('');
   };
 
   // Run dynamic check for strong password criteria
@@ -242,24 +249,17 @@ export default function WorkspacePage() {
     setErrorMsg(null);
     setOtpError(null);
     setOtpSuccessMsg(null);
-    
-    // Local password validation check
-    const isAllValid = Object.values(passRulesValid).every(Boolean);
-    if (!isAllValid) {
-      setErrorMsg('Please satisfy all password strength requirements.');
-      return;
-    }
 
     setLoading(true);
     try {
       const res = await fetch('http://localhost:3001/api/v1/auth/signup/initiate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: authEmail, password: authPassword, fullName: authFullName })
+        body: JSON.stringify({ email: authEmail, fullName: authFullName })
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message || 'Failed to initiate signup.');
+        throw new Error(data.message || 'Failed to send OTP.');
       }
       setOtpSent(true);
       setOtpSuccessMsg('A 6-digit verification code has been sent to your email.');
@@ -289,6 +289,49 @@ export default function WorkspacePage() {
       if (!res.ok) {
         throw new Error(data.message || 'OTP verification failed.');
       }
+      setSignupToken(data.signupToken);
+      setSignupStep(2);
+      setOtpSent(false);
+      setOtpCode('');
+      setOtpSuccessMsg('Email verified successfully! Please set up your password.');
+    } catch (err: any) {
+      setOtpError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignupComplete = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMsg(null);
+
+    if (authPassword !== authConfirmPassword) {
+      setErrorMsg('Passwords do not match.');
+      return;
+    }
+
+    const isAllValid = Object.values(passRulesValid).every(Boolean);
+    if (!isAllValid) {
+      setErrorMsg('Please satisfy all password strength requirements.');
+      return;
+    }
+
+    if (!signupToken) {
+      setErrorMsg('Signup session has expired. Please verify your email again.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:3001/api/v1/auth/signup/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ signupToken, password: authPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || 'Signup completion failed.');
+      }
       localStorage.setItem('token', data.token);
       setUser({
         name: data.user.fullName,
@@ -298,10 +341,9 @@ export default function WorkspacePage() {
       setProfileFullName(data.user.fullName);
       setIsLoggedIn(true);
       setActiveTab('dashboard');
-      setOtpSent(false);
-      setOtpCode('');
+      resetAuthState();
     } catch (err: any) {
-      setOtpError(err.message);
+      setErrorMsg(err.message);
     } finally {
       setLoading(false);
     }
@@ -340,8 +382,14 @@ export default function WorkspacePage() {
       const data = await res.json();
       if (!res.ok) {
         if (data.error === 'EmailNotVerified') {
+          // Send OTP and transition to OTP verification page
+          await fetch('http://localhost:3001/api/v1/auth/signup/resend', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: authEmail })
+          });
           setOtpSent(true);
-          setOtpSuccessMsg('Your email is not verified. An OTP has been sent to your inbox.');
+          setOtpSuccessMsg('Your email is not verified yet. We have sent an OTP. Please check your inbox.');
           setLoading(false);
           return;
         }
@@ -1341,16 +1389,18 @@ export default function WorkspacePage() {
                       <span className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Tejas</span>
                       <span className="w-2.5 h-2.5 rounded-full bg-[#faa114]"></span>
                     </div>
-                    {otpSent ? (
-                      <>
-                        <h1 className="text-2xl font-bold">Verify Your Email</h1>
-                        <p className="text-sm text-[#786e67]">Enter the 6-digit OTP code sent to your inbox.</p>
-                      </>
-                    ) : authMode === 'signup' ? (
-                      <>
-                        <h1 className="text-2xl font-bold">Create Account</h1>
-                        <p className="text-sm text-[#786e67]">Start preparing for your targets today.</p>
-                      </>
+                    {authMode === 'signup' ? (
+                      signupStep === 1 ? (
+                        <>
+                          <h1 className="text-2xl font-bold">Create Account</h1>
+                          <p className="text-sm text-[#786e67]">Verify your email address to get started.</p>
+                        </>
+                      ) : (
+                        <>
+                          <h1 className="text-2xl font-bold">Secure Your Account</h1>
+                          <p className="text-sm text-[#786e67]">Set up a strong password for {authFullName || 'your account'}.</p>
+                        </>
+                      )
                     ) : (
                       <>
                         <h1 className="text-2xl font-bold">Welcome Back</h1>
@@ -1374,103 +1424,128 @@ export default function WorkspacePage() {
                     </div>
                   )}
 
-                  {/* OTP Verification Form */}
-                  {otpSent ? (
-                    <form onSubmit={handleSignupVerify} className="space-y-4">
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Verification Code</label>
-                        <div className="relative">
-                          <input 
-                            type="text" 
-                            required 
-                            maxLength={6}
-                            placeholder="123456" 
-                            value={otpCode}
-                            onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm text-center tracking-[0.5em] font-mono transition-colors" 
-                          />
-                          <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                  {/* SIGN UP FLOW */}
+                  {authMode === 'signup' ? (
+                    signupStep === 1 ? (
+                      /* Sign Up Step 1: Verify Email */
+                      <form onSubmit={otpSent ? handleSignupVerify : handleSignupInitiate} className="space-y-4">
+                        <div className="space-y-1">
+                          <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Full Name</label>
+                          <div className="relative">
+                            <input 
+                              type="text" 
+                              required 
+                              disabled={otpSent || loading}
+                              placeholder="Priya Sharma" 
+                              value={authFullName}
+                              onChange={(e) => setAuthFullName(e.target.value)}
+                              className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors disabled:opacity-70" 
+                            />
+                            <User className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                          </div>
                         </div>
-                        {otpError && (
-                          <p className="text-xs font-semibold text-red-500 mt-1 flex items-center gap-1">
-                            <AlertCircle className="w-3.5 h-3.5" /> {otpError}
-                          </p>
+
+                        <div className="space-y-1">
+                          <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Email Address</label>
+                          <div className="relative">
+                            <input 
+                              type="email" 
+                              required 
+                              disabled={otpSent || loading}
+                              placeholder="priya@example.com" 
+                              value={authEmail}
+                              onChange={(e) => setAuthEmail(e.target.value)}
+                              className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors disabled:opacity-70" 
+                            />
+                            <Mail className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                          </div>
+                        </div>
+
+                        {/* OTP Verification on same page */}
+                        {otpSent && (
+                          <div className="space-y-1 pt-4 border-t border-[#dbd7c7] animate-fadeInUp">
+                            <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Verification Code (OTP)</label>
+                            <div className="relative">
+                              <input 
+                                type="text" 
+                                required 
+                                maxLength={6}
+                                placeholder="123456" 
+                                value={otpCode}
+                                onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                                className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm text-center tracking-[0.5em] font-mono transition-colors" 
+                              />
+                              <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                            </div>
+                            {otpError && (
+                              <p className="text-xs font-semibold text-red-500 mt-1 flex items-center gap-1">
+                                <AlertCircle className="w-3.5 h-3.5" /> {otpError}
+                              </p>
+                            )}
+                            
+                            <div className="pt-2 flex justify-between items-center text-xs">
+                              <button 
+                                type="button" 
+                                onClick={handleResendOtp}
+                                className="text-[#faa114] hover:underline font-semibold flex items-center gap-1 bg-transparent border-none p-0 cursor-pointer"
+                              >
+                                <RefreshCw className="w-3 h-3" /> Resend OTP
+                              </button>
+                              <button 
+                                type="button" 
+                                onClick={resetAuthState}
+                                className="text-[#786e67] hover:text-[#262a2b] hover:underline bg-transparent border-none p-0 cursor-pointer"
+                              >
+                                Edit details
+                              </button>
+                            </div>
+                          </div>
                         )}
-                      </div>
 
-                      <button 
-                        type="submit" 
-                        disabled={loading}
-                        className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50 disabled:pointer-events-none"
-                      >
-                        {loading ? 'Verifying...' : 'Verify OTP'}
-                      </button>
-
-                      <div className="pt-2 flex flex-col gap-2.5 text-center text-xs text-[#786e67]">
-                        <p>
-                          Didn&apos;t receive code?{' '}
-                          <button 
-                            type="button" 
-                            onClick={handleResendOtp}
-                            className="text-[#faa114] hover:underline font-semibold inline-flex items-center justify-center gap-1 mx-auto bg-transparent border-none p-0 cursor-pointer"
-                          >
-                            <RefreshCw className="w-3 h-3" /> Resend OTP
-                          </button>
-                        </p>
                         <button 
-                          type="button" 
-                          onClick={resetAuthState}
-                          className="text-xs text-[#786e67] hover:text-[#262a2b] hover:underline mt-2 bg-transparent border-none p-0 cursor-pointer"
+                          type="submit" 
+                          disabled={loading}
+                          className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50"
                         >
-                          ← Change email / Edit details
+                          {loading ? 'Processing...' : otpSent ? 'Verify OTP' : 'Send Verification OTP'}
                         </button>
-                      </div>
-                    </form>
-                  ) : authMode === 'signup' ? (
-                    /* Sign Up Form */
-                    <form onSubmit={handleSignupInitiate} className="space-y-4">
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Full Name</label>
-                        <div className="relative">
-                          <input 
-                            type="text" 
-                            required 
-                            placeholder="Priya Sharma" 
-                            value={authFullName}
-                            onChange={(e) => setAuthFullName(e.target.value)}
-                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
-                          />
-                          <User className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                      </form>
+                    ) : (
+                      /* Sign Up Step 2: Set Password */
+                      <form onSubmit={handleSignupComplete} className="space-y-4 animate-fadeInUp">
+                        <div className="space-y-1">
+                          <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Password</label>
+                          <div className="relative">
+                            <input 
+                              type="password" 
+                              required 
+                              placeholder="••••••••" 
+                              value={authPassword}
+                              onChange={(e) => setAuthPassword(e.target.value)}
+                              className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
+                            />
+                            <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Email Address</label>
-                        <div className="relative">
-                          <input 
-                            type="email" 
-                            required 
-                            placeholder="priya@example.com" 
-                            value={authEmail}
-                            onChange={(e) => setAuthEmail(e.target.value)}
-                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
-                          />
-                          <Mail className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
-                        </div>
-                      </div>
-
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Password</label>
-                        <div className="relative">
-                          <input 
-                            type="password" 
-                            required 
-                            placeholder="••••••••" 
-                            value={authPassword}
-                            onChange={(e) => setAuthPassword(e.target.value)}
-                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
-                          />
-                          <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                        <div className="space-y-1">
+                          <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Confirm Password</label>
+                          <div className="relative">
+                            <input 
+                              type="password" 
+                              required 
+                              placeholder="••••••••" 
+                              value={authConfirmPassword}
+                              onChange={(e) => setAuthConfirmPassword(e.target.value)}
+                              className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
+                            />
+                            <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                          </div>
+                          {authConfirmPassword && (
+                            <p className={`text-[10px] font-semibold mt-1 flex items-center gap-1 ${authPassword === authConfirmPassword ? 'text-[#10b981]' : 'text-red-500'}`}>
+                              {authPassword === authConfirmPassword ? '✓ Passwords match' : '✗ Passwords do not match'}
+                            </p>
+                          )}
                         </div>
 
                         {/* Password rules dynamic display */}
@@ -1499,18 +1574,28 @@ export default function WorkspacePage() {
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <button 
-                        type="submit" 
-                        disabled={loading}
-                        className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50"
-                      >
-                        {loading ? 'Creating...' : 'Sign Up'}
-                      </button>
-                    </form>
+                        <button 
+                          type="submit" 
+                          disabled={loading}
+                          className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50"
+                        >
+                          {loading ? 'Completing Sign Up...' : 'Complete Sign Up'}
+                        </button>
+                        
+                        <div className="text-center">
+                          <button 
+                            type="button" 
+                            onClick={resetAuthState}
+                            className="text-xs text-[#786e67] hover:text-[#262a2b] hover:underline bg-transparent border-none p-0 cursor-pointer"
+                          >
+                            ← Start over
+                          </button>
+                        </div>
+                      </form>
+                    )
                   ) : (
-                    /* Login Form */
+                    /* LOGIN FLOW */
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div className="space-y-1">
                         <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Email Address</label>
@@ -1552,7 +1637,8 @@ export default function WorkspacePage() {
                     </form>
                   )}
 
-                  {!otpSent && (
+                  {/* Toggle Link between Login/Signup */}
+                  {(!otpSent && signupStep === 1) && (
                     <p className="text-xs text-center text-[#786e67]">
                       {authMode === 'signup' ? (
                         <>

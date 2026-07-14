@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
-import { signupInitiate, signupVerify, signupResend, login } from '../controllers/auth.controller.js';
+import { signupInitiate, signupVerify, signupComplete, signupResend, login } from '../controllers/auth.controller.js';
 
 const router = Router();
 
@@ -10,6 +10,7 @@ const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
 router.post('/signup/initiate', signupInitiate);
 router.post('/signup/verify', signupVerify);
+router.post('/signup/complete', signupComplete);
 router.post('/signup/resend', signupResend);
 router.post('/login', login);
 

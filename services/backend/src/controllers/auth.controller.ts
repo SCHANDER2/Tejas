@@ -4,14 +4,14 @@ import { AuthService } from '../services/auth.service.js';
 const authService = new AuthService();
 
 export async function signupInitiate(req: Request, res: Response) {
-  const { email, password, fullName } = req.body;
+  const { email, fullName } = req.body;
 
-  if (!email || !password || !fullName) {
-    return res.status(400).json({ error: 'Bad Request', message: 'Email, password, and fullName are required.' });
+  if (!email || !fullName) {
+    return res.status(400).json({ error: 'Bad Request', message: 'Email and fullName are required.' });
   }
 
   try {
-    const result = await authService.registerInitiate(email, password, fullName);
+    const result = await authService.signupSendOtp(email, fullName);
     return res.status(200).json(result);
   } catch (error: any) {
     return res.status(400).json({ error: 'Registration Failed', message: error.message });
@@ -26,10 +26,25 @@ export async function signupVerify(req: Request, res: Response) {
   }
 
   try {
-    const result = await authService.registerVerify(email, otp);
+    const result = await authService.signupVerifyOtp(email, otp);
     return res.status(200).json(result);
   } catch (error: any) {
     return res.status(400).json({ error: 'Verification Failed', message: error.message });
+  }
+}
+
+export async function signupComplete(req: Request, res: Response) {
+  const { signupToken, password } = req.body;
+
+  if (!signupToken || !password) {
+    return res.status(400).json({ error: 'Bad Request', message: 'Signup token and password are required.' });
+  }
+
+  try {
+    const result = await authService.signupComplete(signupToken, password);
+    return res.status(200).json(result);
+  } catch (error: any) {
+    return res.status(400).json({ error: 'Signup Completion Failed', message: error.message });
   }
 }
 
