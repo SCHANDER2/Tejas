@@ -10,6 +10,7 @@ import recommendationRouter from './routes/recommendation.routes.js';
 import subscriptionRouter from './routes/subscription.routes.js';
 import adminRouter from './routes/admin.routes.js';
 import profileRouter from './routes/profile.routes.js';
+import revisionRouter from './routes/revision.routes.js';
 import passport from 'passport';
 import { initializePassport } from './services/passport.service.js';
 
@@ -36,6 +37,7 @@ app.use('/api/v1/recommendations', recommendationRouter);
 app.use('/api/v1/subscriptions', subscriptionRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/profile', profileRouter);
+app.use('/api/v1/revision', revisionRouter);
 
 // Basic health check route
 app.get('/health', (req: Request, res: Response) => {

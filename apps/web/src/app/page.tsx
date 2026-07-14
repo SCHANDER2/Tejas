@@ -214,6 +214,11 @@ export default function WorkspacePage() {
   const [profileGoal, setProfileGoal] = useState(60);
   const [profileLanguage, setProfileLanguage] = useState('en');
 
+  // Spaced Repetition / Revision states
+  const [dueCards, setDueCards] = useState<any[]>([]);
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
   // Admin section dashboard state
   const [user, setUser] = useState({
     name: 'Priya Sharma',
@@ -359,6 +364,23 @@ export default function WorkspacePage() {
       })
       .catch(err => console.log('Using local mock admin users (backend offline)'));
     }
+
+    if (activeTab === 'revision' && isLoggedIn) {
+      fetch('http://localhost:3001/api/v1/revision/due', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setDueCards(data);
+          setActiveCardIndex(0);
+          setShowAnswer(false);
+        }
+      })
+      .catch(err => console.log('Backend revision sync offline'));
+    }
   }, [activeTab, isLoggedIn]);
 
   // Scroll detection for navbar
@@ -406,6 +428,26 @@ export default function WorkspacePage() {
       }
     })
     .catch(err => alert('Failed to save profile configuration.'));
+  };
+
+  const handleReviewCard = (cardId: string, rating: number) => {
+    fetch('http://localhost:3001/api/v1/revision/review', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+      },
+      body: JSON.stringify({ cardId, rating })
+    })
+    .then(res => res.json())
+    .then(data => {
+      // Remove card from queue
+      setDueCards(prev => prev.filter(c => c.id !== cardId));
+      setShowAnswer(false);
+      // Decrement the cardsDueCount
+      setDueCardsCount(prev => Math.max(0, prev - 1));
+    })
+    .catch(err => alert('Failed to log review.'));
   };
 
   /* ────────────────────────────────────────
@@ -1024,6 +1066,7 @@ export default function WorkspacePage() {
                   { id: 'explorer', label: 'Exam Explorer', icon: Search },
                   { id: 'learning', label: 'Learning Hub', icon: BookMarked },
                   { id: 'pdf', label: 'PDF Workspace', icon: FileText },
+                  { id: 'revision', label: 'Revision Cards', icon: RotateCcw },
                   { id: 'analytics', label: 'Analytics', icon: TrendingUp },
                   { id: 'profile', label: 'Profile', icon: User },
                 ];
@@ -1540,6 +1583,92 @@ export default function WorkspacePage() {
               </div>
             )}
 
+            {/* REVISION MODULE */}
+            {activeTab === 'revision' && (
+              <div className="max-w-2xl mx-auto space-y-6">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h1 className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Revision Cards</h1>
+                    <p className="text-xs text-[#786e67]">FSRS algorithm spaced repetition queue.</p>
+                  </div>
+                  <span className="px-3 py-1 bg-[#dbd7c7]/50 text-xs font-semibold rounded-full text-[#262a2b]">
+                    {dueCards.length} due today
+                  </span>
+                </div>
+
+                {dueCards.length === 0 ? (
+                  <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-12 rounded-3xl text-center space-y-4 shadow-sm">
+                    <RotateCcw className="w-12 h-12 text-[#b3aa9e] mx-auto animate-spin-slow" />
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>All Caught Up!</h3>
+                      <p className="text-sm text-[#786e67] max-w-sm mx-auto">
+                        No flashcards are due for review. Take exam quizzes to auto-populate cards for topics you find challenging.
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  (() => {
+                    const card = dueCards[activeCardIndex] || dueCards[0];
+                    return (
+                      <div className="bg-[#fcfcfb] border border-[#dbd7c7] rounded-3xl overflow-hidden shadow-sm flex flex-col min-h-[300px] justify-between">
+                        {/* Header metadata */}
+                        <div className="p-4 bg-[#f5f4f0] border-b border-[#dbd7c7] flex justify-between items-center text-xs text-[#786e67]">
+                          <span>Difficulty: {Number(card.difficulty).toFixed(1)}/10</span>
+                          <span>Repetitions: {card.repetitionCount}</span>
+                        </div>
+
+                        {/* Front / Back text */}
+                        <div className="p-8 flex-1 flex flex-col justify-center space-y-6">
+                          <div className="space-y-2">
+                            <span className="text-[10px] font-bold text-[#faa114] uppercase tracking-wider">QUESTION / FRONT</span>
+                            <p className="text-base font-medium text-[#262a2b]">{card.frontText}</p>
+                          </div>
+
+                          {showAnswer && (
+                            <div className="pt-6 border-t border-[#dbd7c7] space-y-2 animate-fadeInUp">
+                              <span className="text-[10px] font-bold text-[#faa114] uppercase tracking-wider">ANSWER / BACK</span>
+                              <p className="text-sm text-[#786e67] leading-relaxed">{card.backText}</p>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Actions footer */}
+                        <div className="p-6 bg-[#f5f4f0] border-t border-[#dbd7c7]">
+                          {!showAnswer ? (
+                            <button
+                              onClick={() => setShowAnswer(true)}
+                              className="w-full py-3 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]"
+                            >
+                              Reveal Answer
+                            </button>
+                          ) : (
+                            <div className="space-y-4">
+                              <div className="grid grid-cols-4 gap-2">
+                                {[
+                                  { label: 'Again', rating: 1, color: 'bg-red-500 hover:bg-red-600' },
+                                  { label: 'Hard', rating: 2, color: 'bg-orange-500 hover:bg-orange-600' },
+                                  { label: 'Good', rating: 3, color: 'bg-emerald-500 hover:bg-emerald-600' },
+                                  { label: 'Easy', rating: 4, color: 'bg-blue-500 hover:bg-blue-600' }
+                                ].map((btn) => (
+                                  <button
+                                    key={btn.rating}
+                                    onClick={() => handleReviewCard(card.id, btn.rating)}
+                                    className={`py-2 px-1 text-[11px] font-bold text-white rounded-lg transition-colors ${btn.color}`}
+                                  >
+                                    {btn.label}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })()
+                )}
+              </div>
+            )}
+
             {/* PROFILE */}
             {activeTab === 'profile' && (
               <div className="max-w-xl mx-auto bg-[#fcfcfb] border border-[#dbd7c7] p-8 rounded-3xl space-y-6 shadow-sm">
@@ -1769,9 +1898,9 @@ export default function WorkspacePage() {
           {(() => {
             const items = [
               { id: 'dashboard', icon: BookOpen },
-              { id: 'planner', icon: Calendar },
-              { id: 'quiz-gen', icon: Plus },
               { id: 'explorer', icon: Search },
+              { id: 'quiz-gen', icon: Plus },
+              { id: 'revision', icon: RotateCcw },
               { id: 'profile', icon: User }
             ];
             if (user.role === 'admin') {
