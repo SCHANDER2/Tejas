@@ -4,7 +4,7 @@
   "private": true,
   "main": "dist/app.js",
   "scripts": {
-    "build": "tsc",
+    "build": "npx prisma generate --schema=../../packages/database/prisma/schema.prisma && tsc",
     "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only src/app.ts"
   },
