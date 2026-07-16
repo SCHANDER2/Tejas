@@ -432,6 +432,13 @@ export default function WorkspacePage() {
   const [profileFullName, setProfileFullName] = useState('Priya Sharma');
   const [profileGoal, setProfileGoal] = useState(60);
   const [profileLanguage, setProfileLanguage] = useState('en');
+  const [profilePhoneNumber, setProfilePhoneNumber] = useState('');
+  const [profileTargetExamId, setProfileTargetExamId] = useState('');
+  const [profileTargetYear, setProfileTargetYear] = useState<any>('');
+  const [profileState, setProfileState] = useState('');
+  const [profilePrepStatus, setProfilePrepStatus] = useState('');
+  const [profileOnboardingCompleted, setProfileOnboardingCompleted] = useState(false);
+  const [examsList, setExamsList] = useState<any[]>([]);
 
   // Spaced Repetition / Revision states
   const [dueCards, setDueCards] = useState<any[]>([]);
@@ -496,7 +503,7 @@ export default function WorkspacePage() {
 
   useEffect(() => {
     if (isLoggedIn) {
-      fetch('http://localhost:3001/api/v1/profile', {
+      fetch(`${API_BASE_URL}/api/v1/profile`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
@@ -507,6 +514,12 @@ export default function WorkspacePage() {
           setProfileFullName(data.fullName);
           setProfileGoal(data.dailyStudyGoalMinutes || 60);
           setProfileLanguage(data.preferredLanguage || 'en');
+          setProfilePhoneNumber(data.phoneNumber || '');
+          setProfileTargetExamId(data.targetExamId || '');
+          setProfileTargetYear(data.targetYear || '');
+          setProfileState(data.state || '');
+          setProfilePrepStatus(data.prepStatus || '');
+          setProfileOnboardingCompleted(data.onboardingCompleted || false);
           setUser(prev => ({
             ...prev,
             name: data.fullName
@@ -515,8 +528,22 @@ export default function WorkspacePage() {
       })
       .catch(err => console.log('Backend profile sync offline'));
 
+      // Fetch exams list
+      fetch(`${API_BASE_URL}/api/v1/exams`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setExamsList(data);
+        }
+      })
+      .catch(err => console.log('Failed to fetch exams list.'));
+
       // Fetch dashboard overview stats
-      fetch('http://localhost:3001/api/v1/analytics/overview', {
+      fetch(`${API_BASE_URL}/api/v1/analytics/overview`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
@@ -530,7 +557,7 @@ export default function WorkspacePage() {
       .catch(err => console.log('Backend analytics overview offline'));
 
       // Fetch AI recommendations & insights
-      fetch('http://localhost:3001/api/v1/analytics/insights', {
+      fetch(`${API_BASE_URL}/api/v1/analytics/insights`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
@@ -550,7 +577,7 @@ export default function WorkspacePage() {
   useEffect(() => {
     if (activeTab === 'admin' && isLoggedIn) {
       // Fetch stats
-      fetch('http://localhost:3001/api/v1/admin/stats', {
+      fetch(`${API_BASE_URL}/api/v1/admin/stats`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
@@ -564,7 +591,7 @@ export default function WorkspacePage() {
       .catch(err => console.log('Using local mock admin stats (backend offline)'));
 
       // Fetch users
-      fetch('http://localhost:3001/api/v1/admin/users', {
+      fetch(`${API_BASE_URL}/api/v1/admin/users`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
@@ -585,7 +612,7 @@ export default function WorkspacePage() {
     }
 
     if (activeTab === 'revision' && isLoggedIn) {
-      fetch('http://localhost:3001/api/v1/revision/due', {
+      fetch(`${API_BASE_URL}/api/v1/revision/due`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
         }
@@ -621,7 +648,7 @@ export default function WorkspacePage() {
   };
 
   const handleSaveProfile = () => {
-    fetch('http://localhost:3001/api/v1/profile', {
+    fetch(`${API_BASE_URL}/api/v1/profile`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -630,7 +657,13 @@ export default function WorkspacePage() {
       body: JSON.stringify({
         fullName: profileFullName,
         dailyStudyGoalMinutes: profileGoal,
-        preferredLanguage: profileLanguage
+        preferredLanguage: profileLanguage,
+        phoneNumber: profilePhoneNumber || null,
+        targetExamId: profileTargetExamId || null,
+        targetYear: profileTargetYear ? parseInt(profileTargetYear, 10) : null,
+        state: profileState || null,
+        prepStatus: profilePrepStatus || null,
+        onboardingCompleted: profileOnboardingCompleted
       })
     })
     .then(res => res.json())
@@ -640,6 +673,12 @@ export default function WorkspacePage() {
         setProfileFullName(data.profile.fullName);
         setProfileGoal(data.profile.dailyStudyGoalMinutes);
         setProfileLanguage(data.profile.preferredLanguage);
+        setProfilePhoneNumber(data.profile.phoneNumber || '');
+        setProfileTargetExamId(data.profile.targetExamId || '');
+        setProfileTargetYear(data.profile.targetYear || '');
+        setProfileState(data.profile.state || '');
+        setProfilePrepStatus(data.profile.prepStatus || '');
+        setProfileOnboardingCompleted(data.profile.onboardingCompleted || false);
         setUser(prev => ({
           ...prev,
           name: data.profile.fullName
@@ -650,7 +689,7 @@ export default function WorkspacePage() {
   };
 
   const handleReviewCard = (cardId: string, rating: number) => {
-    fetch('http://localhost:3001/api/v1/revision/review', {
+    fetch(`${API_BASE_URL}/api/v1/revision/review`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -2163,34 +2202,134 @@ export default function WorkspacePage() {
                       className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" 
                     />
                   </div>
+                  
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-[#786e67]">Daily Target Goal (Minutes)</label>
+                    <label className="text-xs font-semibold text-[#786e67]">Mobile Number</label>
                     <input 
-                      type="number" 
-                      value={profileGoal} 
-                      onChange={(e) => setProfileGoal(parseInt(e.target.value, 10) || 0)} 
+                      type="tel" 
+                      placeholder="+91 XXXXX XXXXX"
+                      value={profilePhoneNumber} 
+                      onChange={(e) => setProfilePhoneNumber(e.target.value)} 
                       className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" 
                     />
+                    <p className="text-[10px] text-[#b3aa9e]">Enter your phone number to receive a welcoming SMS/WhatsApp message.</p>
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-semibold text-[#786e67]">Preferred Language</label>
-                    <select 
-                      value={profileLanguage} 
-                      onChange={(e) => setProfileLanguage(e.target.value)} 
-                      className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-[#786e67]">Preferred Language</label>
+                      <select 
+                        value={profileLanguage} 
+                        onChange={(e) => setProfileLanguage(e.target.value)} 
+                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                      >
+                        <option value="en">English (Default)</option>
+                        <option value="hi">Hindi (हिन्दी)</option>
+                        <option value="te">Telugu (తెలుగు)</option>
+                        <option value="ta">Tamil (தமிழ்)</option>
+                        <option value="hinglish">Hinglish (Bilingual)</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-[#786e67]">Daily Target (Minutes)</label>
+                      <input 
+                        type="number" 
+                        value={profileGoal} 
+                        onChange={(e) => setProfileGoal(parseInt(e.target.value, 10) || 0)} 
+                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" 
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-[#786e67]">Primary Target Exam</label>
+                      <select 
+                        value={profileTargetExamId} 
+                        onChange={(e) => setProfileTargetExamId(e.target.value)} 
+                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                      >
+                        <option value="">Select Exam</option>
+                        {examsList.length > 0 ? (
+                          examsList.map((exam) => (
+                            <option key={exam.id} value={exam.id}>{exam.name}</option>
+                          ))
+                        ) : (
+                          <>
+                            <option value="upsc-cse">UPSC Civil Services</option>
+                            <option value="jee-advanced">JEE Advanced</option>
+                            <option value="neet-ug">NEET UG</option>
+                            <option value="gate-cse">GATE CSE</option>
+                          </>
+                        )}
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-[#786e67]">Target Attempt Year</label>
+                      <select 
+                        value={profileTargetYear} 
+                        onChange={(e) => setProfileTargetYear(e.target.value)} 
+                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                      >
+                        <option value="">Select Year</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-[#786e67]">State / Region</label>
+                      <select 
+                        value={profileState} 
+                        onChange={(e) => setProfileState(e.target.value)} 
+                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                      >
+                        <option value="">Select State</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Other">Other Region</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold text-[#786e67]">Preparation Status</label>
+                      <select 
+                        value={profilePrepStatus} 
+                        onChange={(e) => setProfilePrepStatus(e.target.value)} 
+                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                      >
+                        <option value="">Select Status</option>
+                        <option value="dropper">Dropper / Full-time Aspirant</option>
+                        <option value="college_student">College Student</option>
+                        <option value="school_student">School Student</option>
+                        <option value="working_professional">Working Professional</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="pt-2">
+                    <button 
+                      onClick={handleSaveProfile} 
+                      className="w-full py-3 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]"
                     >
-                      <option value="en">English</option>
-                      <option value="hi">Hindi (हिन्दी)</option>
-                      <option value="te">Telugu (తెలుగు)</option>
-                      <option value="ta">Tamil (தமிழ்)</option>
-                    </select>
+                      Save Configuration
+                    </button>
                   </div>
-                  <button 
-                    onClick={handleSaveProfile} 
-                    className="w-full py-3 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]"
-                  >
-                    Save Configuration
-                  </button>
                 </div>
               </div>
             )}
@@ -2273,7 +2412,7 @@ export default function WorkspacePage() {
                                       setAdminUsers(adminUsers.map(u => u.id === userRow.id ? { ...u, role: newRole } : u));
                                       
                                       // Backend REST Call
-                                      fetch(`http://localhost:3001/api/v1/admin/users/${userRow.id}/role`, {
+                                      fetch(`${API_BASE_URL}/api/v1/admin/users/${userRow.id}/role`, {
                                         method: 'PUT',
                                         headers: {
                                           'Content-Type': 'application/json',
@@ -2300,7 +2439,7 @@ export default function WorkspacePage() {
                                         setAdminUsers(adminUsers.filter(u => u.id !== userRow.id));
                                         
                                         // Backend REST Call
-                                        fetch(`http://localhost:3001/api/v1/admin/users/${userRow.id}`, {
+                                        fetch(`${API_BASE_URL}/api/v1/admin/users/${userRow.id}`, {
                                           method: 'DELETE',
                                           headers: {
                                             'Authorization': `Bearer ${localStorage.getItem('token') || ''}`

@@ -39,6 +39,15 @@ model UserProfile {
   dailyStudyGoalMinutes   Int      @default(60)
   preferredLanguage       String   @default("en")
   
+  // New Fields
+  phoneNumber             String?  @unique
+  phoneNumberVerified     Boolean  @default(false)
+  targetExamId            String?  @db.Uuid
+  targetYear              Int?
+  state                   String?
+  prepStatus              String?
+  onboardingCompleted     Boolean  @default(false)
+  
   user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

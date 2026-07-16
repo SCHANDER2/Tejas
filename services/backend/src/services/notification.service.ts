@@ -57,9 +57,9 @@ export class NotificationService {
   async sendSMS(phoneNumber: string, message: string) {
     const twilioSid = process.env.TWILIO_ACCOUNT_SID;
     const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
-    const twilioFromNumber = process.env.TWILIO_FROM_NUMBER;
+    const twilioFromNumber = process.env.TWILIO_FROM_NUMBER || '9079144245';
 
-    if (twilioSid && twilioAuthToken && twilioFromNumber) {
+    if (twilioSid && twilioAuthToken && process.env.TWILIO_FROM_NUMBER) {
       try {
         // Dynamically import Twilio to avoid dependency issues if not installed
         const twilio = require('twilio');
@@ -76,7 +76,8 @@ export class NotificationService {
         throw err;
       }
     } else {
-      console.log(`[SMS LOGGER (STAGING/FALLBACK)]:
+      console.log(`[SMS/WhatsApp Welcome Logger]:
+        FROM: ${twilioFromNumber} (Tejas Welcome Sender)
         TO: ${phoneNumber}
         MESSAGE: ${message}
       `);
