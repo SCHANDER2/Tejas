@@ -440,6 +440,17 @@ export default function WorkspacePage() {
   const [profileOnboardingCompleted, setProfileOnboardingCompleted] = useState(false);
   const [examsList, setExamsList] = useState<any[]>([]);
 
+  // Onboarding Wizard states
+  const [onboardingStep, setOnboardingStep] = useState(1);
+  const [onboardingCategory, setOnboardingCategory] = useState('');
+  const [onboardingExamId, setOnboardingExamId] = useState('');
+  const [onboardingYear, setOnboardingYear] = useState('2026');
+  const [onboardingLanguage, setOnboardingLanguage] = useState('en');
+  const [onboardingState, setOnboardingState] = useState('');
+  const [onboardingPrepStatus, setOnboardingPrepStatus] = useState('');
+  const [onboardingPhoneNumber, setOnboardingPhoneNumber] = useState('');
+  const [onboardingGenerating, setOnboardingGenerating] = useState(false);
+
   // Spaced Repetition / Revision states
   const [dueCards, setDueCards] = useState<any[]>([]);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
@@ -1300,6 +1311,318 @@ export default function WorkspacePage() {
             <p className="text-xs text-[#b3aa9e]">Made with 🔥 for Indian Learners</p>
           </div>
         </footer>
+      </div>
+    );
+  }
+
+  /* ────────────────────────────────────────
+     ONBOARDING WIZARD SCREEN
+     ──────────────────────────────────────── */
+  if (isLoggedIn && !profileOnboardingCompleted) {
+    const handleOnboardingSubmit = () => {
+      setOnboardingGenerating(true);
+      
+      setTimeout(() => {
+        fetch(`${API_BASE_URL}/api/v1/profile`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+          },
+          body: JSON.stringify({
+            fullName: profileFullName,
+            dailyStudyGoalMinutes: onboardingPrepStatus === 'dropper' ? 360 : 120,
+            preferredLanguage: onboardingLanguage,
+            phoneNumber: onboardingPhoneNumber || null,
+            targetExamId: onboardingExamId || null,
+            targetYear: parseInt(onboardingYear, 10) || null,
+            state: onboardingState || null,
+            prepStatus: onboardingPrepStatus || null,
+            onboardingCompleted: true
+          })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.profile) {
+            setProfileFullName(data.profile.fullName);
+            setProfileGoal(data.profile.dailyStudyGoalMinutes);
+            setProfileLanguage(data.profile.preferredLanguage);
+            setProfilePhoneNumber(data.profile.phoneNumber || '');
+            setProfileTargetExamId(data.profile.targetExamId || '');
+            setProfileTargetYear(data.profile.targetYear || '');
+            setProfileState(data.profile.state || '');
+            setProfilePrepStatus(data.profile.prepStatus || '');
+            setProfileOnboardingCompleted(true);
+            setOnboardingGenerating(false);
+            setActiveTab('dashboard');
+          }
+        })
+        .catch(err => {
+          alert('Failed to complete onboarding. Please try again.');
+          setOnboardingGenerating(false);
+        });
+      }, 2500);
+    };
+
+    return (
+      <div className="min-h-screen bg-[#fcfcfb] text-[#262a2b] flex items-center justify-center p-4 md:p-12 font-sans selection:bg-[#faa114]/20">
+        <div className="max-w-xl w-full bg-[#fcfcfb] border border-[#dbd7c7] p-8 md:p-12 rounded-[32px] shadow-xl space-y-8 relative overflow-hidden transition-all duration-300">
+          
+          <div className="absolute top-0 right-0 w-32 h-32 bg-[#faa114]/5 rounded-full blur-2xl -mr-16 -mt-16"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#786e67]/5 rounded-full blur-2xl -ml-16 -mb-16"></div>
+
+          <div className="flex justify-between items-center border-b border-[#dbd7c7]/60 pb-5">
+            <span className="text-xl font-bold tracking-tight flex items-center" style={{ fontFamily: 'Outfit' }}>
+              Tejas<span className="w-2.5 h-2.5 rounded-full bg-[#faa114] ml-1"></span>
+            </span>
+            <div className="flex gap-1.5">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <div 
+                  key={s} 
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    s === onboardingStep 
+                      ? 'w-6 bg-[#faa114]' 
+                      : s < onboardingStep 
+                        ? 'w-2.5 bg-[#786e67]' 
+                        : 'w-2.5 bg-[#dbd7c7]'
+                  }`}
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {onboardingStep === 1 && (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>What is your primary study goal?</h2>
+                <p className="text-sm text-[#786e67]">Select a vertical to customize your AI dashboard and roadmaps.</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { id: 'civil_services', label: 'UPSC & Civil Services', desc: 'IAS, IPS, State PSCs' },
+                  { id: 'engineering', label: 'JEE Engineering', desc: 'IIT JEE & state entrances' },
+                  { id: 'medical', label: 'NEET Medical', desc: 'NEET UG & PG' },
+                  { id: 'ssc_banking', label: 'SSC & Banking', desc: 'Govt jobs, PO, CGL' },
+                  { id: 'state_psc', label: 'State PSC Exams', desc: 'UPPSC, RPSC, BPSC' },
+                  { id: 'general', label: 'General / Others', desc: 'College subjects & research' }
+                ].map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => {
+                      setOnboardingCategory(cat.id);
+                      setOnboardingStep(2);
+                    }}
+                    className="p-5 border border-[#dbd7c7] bg-[#fcfcfb] hover:border-[#faa114] hover:bg-[#faa114]/5 rounded-2xl text-left space-y-2 transition-all card-hover group"
+                  >
+                    <span className="font-bold text-sm block group-hover:text-[#262a2b] transition-colors">{cat.label}</span>
+                    <span className="text-[11px] text-[#786e67] block">{cat.desc}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {onboardingStep === 2 && (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>Select your Target Exam</h2>
+                <p className="text-sm text-[#786e67]">This binds the correct syllabus roadmap to your calendar.</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-[#786e67]">Target Examination</label>
+                  <select 
+                    value={onboardingExamId}
+                    onChange={(e) => setOnboardingExamId(e.target.value)}
+                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                  >
+                    <option value="">Select Target Exam</option>
+                    {examsList.length > 0 ? (
+                      examsList.map((exam) => (
+                        <option key={exam.id} value={exam.id}>{exam.name}</option>
+                      ))
+                    ) : (
+                      <>
+                        <option value="upsc-cse">UPSC Civil Services Exam</option>
+                        <option value="jee-advanced">JEE Advanced (Engineering)</option>
+                        <option value="neet-ug">NEET UG (Medical)</option>
+                        <option value="gate-cse">GATE Computer Science</option>
+                        <option value="ssc-cgl">SSC CGL (Government)</option>
+                        <option value="general-study">General Subject Study</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-[#786e67]">Target Attempt Year</label>
+                  <select 
+                    value={onboardingYear}
+                    onChange={(e) => setOnboardingYear(e.target.value)}
+                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                  >
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
+                    <option value="2028">2028</option>
+                    <option value="2029">2029</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button onClick={() => setOnboardingStep(1)} className="flex-1 py-3 border border-[#dbd7c7] text-[#786e67] hover:bg-[#dbd7c7]/20 font-bold rounded-xl transition-all">← Back</button>
+                <button 
+                  onClick={() => setOnboardingStep(3)} 
+                  disabled={!onboardingExamId}
+                  className="flex-1 py-3 bg-[#262a2b] text-[#fcfcfb] hover:bg-[#262a2b]/95 font-bold rounded-xl disabled:opacity-50 transition-all"
+                >
+                  Continue
+                </button>
+              </div>
+            </div>
+          )}
+
+          {onboardingStep === 3 && (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>Set Your Preferences</h2>
+                <p className="text-sm text-[#786e67]">These values dictate your daily planner limits and learning medium.</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-[#786e67]">Preferred Study Medium / Language</label>
+                  <select 
+                    value={onboardingLanguage}
+                    onChange={(e) => setOnboardingLanguage(e.target.value)}
+                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                  >
+                    <option value="en">English (Default)</option>
+                    <option value="hi">Hindi (हिन्दी)</option>
+                    <option value="te">Telugu (తెలుగు)</option>
+                    <option value="ta">Tamil (தமிழ்)</option>
+                    <option value="hinglish">Hinglish (Bilingual)</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-[#786e67]">Preparation Status</label>
+                  <select 
+                    value={onboardingPrepStatus}
+                    onChange={(e) => setOnboardingPrepStatus(e.target.value)}
+                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                  >
+                    <option value="">Select Status</option>
+                    <option value="dropper">Dropper / Full-Time Aspirant</option>
+                    <option value="college_student">College Student</option>
+                    <option value="school_student">School Student</option>
+                    <option value="working_professional">Working Professional</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button onClick={() => setOnboardingStep(2)} className="flex-1 py-3 border border-[#dbd7c7] text-[#786e67] hover:bg-[#dbd7c7]/20 font-bold rounded-xl transition-all">← Back</button>
+                <button 
+                  onClick={() => setOnboardingStep(4)} 
+                  disabled={!onboardingPrepStatus}
+                  className="flex-1 py-3 bg-[#262a2b] text-[#fcfcfb] hover:bg-[#262a2b]/95 font-bold rounded-xl disabled:opacity-50 transition-all"
+                >
+                  Continue
+                </button>
+              </div>
+            </div>
+          )}
+
+          {onboardingStep === 4 && (
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>One Last Thing...</h2>
+                <p className="text-sm text-[#786e67]">Provide details to customize your notifications and state recommendations.</p>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-[#786e67]">State of Residence</label>
+                  <select 
+                    value={onboardingState}
+                    onChange={(e) => setOnboardingState(e.target.value)}
+                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                  >
+                    <option value="">Select State</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Other">Other Region</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-[#786e67]">Mobile Number (Optional)</label>
+                  <input 
+                    type="tel" 
+                    placeholder="+91 XXXXX XXXXX"
+                    value={onboardingPhoneNumber}
+                    onChange={(e) => setOnboardingPhoneNumber(e.target.value)}
+                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                  />
+                  <p className="text-[10px] text-[#b3aa9e]">Opt-in to receive a welcome notification from 9079144245.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button onClick={() => setOnboardingStep(3)} className="flex-1 py-3 border border-[#dbd7c7] text-[#786e67] hover:bg-[#dbd7c7]/20 font-bold rounded-xl transition-all">← Back</button>
+                <button 
+                  onClick={() => {
+                    setOnboardingStep(5);
+                    handleOnboardingSubmit();
+                  }} 
+                  disabled={!onboardingState}
+                  className="flex-1 py-3 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-xl disabled:opacity-50 transition-all"
+                >
+                  Generate My Workspace
+                </button>
+              </div>
+            </div>
+          )}
+
+          {onboardingStep === 5 && (
+            <div className="text-center py-12 space-y-6 flex flex-col items-center justify-center">
+              {onboardingGenerating ? (
+                <>
+                  <div className="w-16 h-16 border-4 border-[#faa114] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Personalizing Your Workspace</h3>
+                    <p className="text-xs text-[#786e67] animate-pulse">AI is compiling roadmaps, custom timetables, and spacing reviews...</p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="w-16 h-16 bg-[#faa114]/10 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-10 h-10 text-[#faa114]" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Setup Complete!</h3>
+                    <p className="text-xs text-[#786e67]">Your AI Learning Space is ready for launch.</p>
+                  </div>
+                  <button 
+                    onClick={() => setProfileOnboardingCompleted(true)}
+                    className="mt-6 px-8 py-3 bg-[#262a2b] text-[#fcfcfb] hover:bg-[#262a2b]/95 font-bold rounded-xl transition-all"
+                  >
+                    Enter Workspace
+                  </button>
+                </>
+              )}
+            </div>
+          )}
+
+        </div>
       </div>
     );
   }
