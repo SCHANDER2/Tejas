@@ -450,6 +450,7 @@ export default function WorkspacePage() {
   const [onboardingPrepStatus, setOnboardingPrepStatus] = useState('');
   const [onboardingPhoneNumber, setOnboardingPhoneNumber] = useState('');
   const [onboardingGenerating, setOnboardingGenerating] = useState(false);
+  const [profileSyncTrigger, setProfileSyncTrigger] = useState(0);
 
   // Spaced Repetition / Revision states
   const [dueCards, setDueCards] = useState<any[]>([]);
@@ -582,7 +583,7 @@ export default function WorkspacePage() {
       })
       .catch(err => console.log('Backend insights offline'));
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, profileSyncTrigger]);
 
   // Load stats and users from backend on component mount / tab switch
   useEffect(() => {
@@ -690,6 +691,7 @@ export default function WorkspacePage() {
         setProfileState(data.profile.state || '');
         setProfilePrepStatus(data.profile.prepStatus || '');
         setProfileOnboardingCompleted(data.profile.onboardingCompleted || false);
+        setProfileSyncTrigger(prev => prev + 1);
         setUser(prev => ({
           ...prev,
           name: data.profile.fullName
@@ -1353,6 +1355,7 @@ export default function WorkspacePage() {
             setProfileState(data.profile.state || '');
             setProfilePrepStatus(data.profile.prepStatus || '');
             setProfileOnboardingCompleted(true);
+            setProfileSyncTrigger(prev => prev + 1);
             setOnboardingGenerating(false);
             setActiveTab('dashboard');
           }
