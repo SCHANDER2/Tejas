@@ -84,6 +84,12 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
 
               <div className="space-y-2 pt-2 border-t border-[#e5e2d9]">
                 <button
+                  onClick={() => setActiveModelPaper(paper)}
+                  className="w-full py-2 px-4 rounded-xl bg-[#fcfcfb] hover:bg-[#e5e2d9]/50 text-[#262a2b] border border-[#e5e2d9] text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                >
+                  Preview Paper & Solutions <ExternalLink className="w-3.5 h-3.5" />
+                </button>
+                <button
                   onClick={() => handleDownload(paper)}
                   className="w-full py-2.5 px-4 rounded-xl bg-[#262a2b] hover:bg-[#1c2226] text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-sm"
                 >
@@ -92,7 +98,7 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
                 {onStartQuiz && (
                   <button
                     onClick={onStartQuiz}
-                    className="w-full py-2 px-4 rounded-xl bg-[#fcfcfb] hover:bg-[#e5e2d9]/50 text-[#262a2b] border border-[#e5e2d9] text-xs font-bold transition-all flex items-center justify-center gap-1.5"
+                    className="w-full py-2 px-4 rounded-xl bg-[#faa114]/15 hover:bg-[#faa114]/25 text-[#262a2b] text-xs font-bold transition-all flex items-center justify-center gap-1.5"
                   >
                     Attempt as Online Quiz <ArrowRight className="w-3.5 h-3.5" />
                   </button>
@@ -102,6 +108,61 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
           );
         })}
       </div>
+
+      {/* Solution Preview Modal */}
+      {activeModelPaper && (
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+            <div className="p-6 bg-[#262a2b] text-white flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-[#faa114]/20 text-[#faa114]">
+                  <FileCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">{activeModelPaper.title}</h3>
+                  <p className="text-xs text-white/70">AFCAT Standard Level Solution Key</p>
+                </div>
+              </div>
+              <button 
+                onClick={() => setActiveModelPaper(null)}
+                className="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-bold text-white transition-colors"
+              >
+                Close Preview ✕
+              </button>
+            </div>
+
+            <div className="p-8 overflow-y-auto space-y-6">
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9]">
+                  <div className="text-xs text-[#786e67]">Questions</div>
+                  <div className="text-xl font-bold text-[#262a2b] mt-1">{activeModelPaper.totalQuestions} Qs</div>
+                </div>
+                <div className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9]">
+                  <div className="text-xs text-[#786e67]">Duration</div>
+                  <div className="text-xl font-bold text-[#262a2b] mt-1">{activeModelPaper.durationMinutes} Mins</div>
+                </div>
+                <div className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9]">
+                  <div className="text-xs text-[#786e67]">Target Cutoff</div>
+                  <div className="text-xl font-bold text-emerald-600 mt-1">165+ Marks</div>
+                </div>
+              </div>
+
+              <div className="p-5 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 leading-relaxed">
+                <strong>Solution Highlights:</strong> This model test paper is modeled after recent IAF computer-based test memory papers. Includes 30 English, 20 Maths, 25 Reasoning, and 25 GA questions with step-by-step solution derivations.
+              </div>
+
+              <div className="flex items-center justify-center gap-4 pt-2">
+                <button
+                  onClick={() => handleDownload(activeModelPaper)}
+                  className="px-6 py-3 rounded-xl bg-[#262a2b] text-white text-xs font-bold hover:bg-[#1c2226] flex items-center gap-2 shadow-md"
+                >
+                  <Download className="w-4 h-4 text-[#faa114]" /> Download Complete Model Paper PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

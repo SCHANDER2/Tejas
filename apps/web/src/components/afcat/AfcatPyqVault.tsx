@@ -162,18 +162,51 @@ export default function AfcatPyqVault() {
                 </div>
               </div>
 
-              <div className="border border-dashed border-[#e5e2d9] rounded-2xl p-12 text-center bg-[#fcfcfb]">
-                <FileText className="w-12 h-12 text-[#faa114] mx-auto mb-3" />
-                <h4 className="font-bold text-[#262a2b] text-lg mb-1">{activePdfViewer.shift} Document Ready</h4>
-                <p className="text-xs text-[#786e67] max-w-md mx-auto mb-6">
-                  Contains all 100 questions (English, Numerical Ability, Reasoning, GA) with answer key and detailed explanations.
-                </p>
-                <div className="flex items-center justify-center gap-4">
+              <div className="border border-[#e5e2d9] rounded-2xl p-6 bg-[#fcfcfb] space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-bold text-[#262a2b] text-base">{activePdfViewer.shift} Sample Exam Questions</h4>
+                  <span className="text-xs text-[#786e67] bg-white px-2.5 py-1 rounded-lg border border-[#e5e2d9]">100 Qs • 300 Marks</span>
+                </div>
+
+                {/* Question Samples */}
+                <div className="space-y-3 pt-2">
+                  <div className="p-4 bg-white rounded-xl border border-[#e5e2d9] space-y-2 text-xs">
+                    <div className="font-bold text-[#262a2b]">Q1 (English). Select the synonym for "VALIANT":</div>
+                    <div className="grid grid-cols-2 gap-2 text-[#786e67]">
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">A) Cowardly</div>
+                      <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-300 font-bold text-emerald-800">B) Gallant ✓</div>
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">C) Timid</div>
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">D) Hesitant</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-white rounded-xl border border-[#e5e2d9] space-y-2 text-xs">
+                    <div className="font-bold text-[#262a2b]">Q2 (Maths). A train 150m long passes a post in 9s. Speed in km/h?</div>
+                    <div className="grid grid-cols-2 gap-2 text-[#786e67]">
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">A) 50 km/h</div>
+                      <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-300 font-bold text-emerald-800">B) 60 km/h ✓</div>
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">C) 72 km/h</div>
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">D) 80 km/h</div>
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-white rounded-xl border border-[#e5e2d9] space-y-2 text-xs">
+                    <div className="font-bold text-[#262a2b]">Q3 (GA). Where is the HQ of IAF Maintenance Command located?</div>
+                    <div className="grid grid-cols-2 gap-2 text-[#786e67]">
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">A) New Delhi</div>
+                      <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-300 font-bold text-emerald-800">B) Nagpur ✓</div>
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">C) Bengaluru</div>
+                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">D) Shillong</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-center gap-4 pt-4">
                   <button
                     onClick={() => handleDownload(activePdfViewer)}
                     className="px-6 py-3 rounded-xl bg-[#262a2b] text-white text-xs font-bold hover:bg-[#1c2226] flex items-center gap-2 shadow-md"
                   >
-                    <Download className="w-4 h-4 text-[#faa114]" /> Download PDF Paper
+                    <Download className="w-4 h-4 text-[#faa114]" /> Download Full PDF Paper with Answer Key
                   </button>
                 </div>
               </div>

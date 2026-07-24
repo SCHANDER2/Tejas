@@ -693,5 +693,181 @@ export const AFCAT_QUESTION_BANK: AfcatQuestion[] = [
     correctOptionIndex: 1,
     explanation: 'Hydraulic lifts and brakes operate on Pascal\'s Law, which states that pressure applied to an enclosed fluid is transmitted undiminished in all directions.',
     difficulty: 'Easy'
+  },
+  {
+    id: 'q_eng_6',
+    subjectId: 'english',
+    topicId: 'eng_one_word',
+    topicName: 'One Word Substitution',
+    questionText: 'Select the word which means "A person who is skilled in aerial navigation and piloting of aircraft":',
+    options: [
+      'Aeronaut',
+      'Aviator',
+      'Cosmonaut',
+      'Navigator'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'An "Aviator" is a person who operates or is certified to pilot an aircraft.',
+    difficulty: 'Easy'
+  },
+  {
+    id: 'q_eng_7',
+    subjectId: 'english',
+    topicId: 'eng_reading_comp',
+    topicName: 'Reading Comprehension',
+    questionText: 'In a passage discussing stealth air superiority, what is the primary purpose of Radar-Absorbent Material (RAM) applied to jet skin?',
+    options: [
+      'To increase aircraft speed',
+      'To reduce heat signature',
+      'To dissipate electromagnetic energy and minimize Radar Cross-Section (RCS)',
+      'To prevent air drag at supersonic speeds'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'RAM absorbs incoming radar electromagnetic waves and converts them into heat, significantly reducing the aircraft\'s Radar Cross-Section (RCS).',
+    difficulty: 'Hard'
+  },
+  {
+    id: 'q_math_5',
+    subjectId: 'maths',
+    topicId: 'math_ratio_prop',
+    topicName: 'Ratio, Proportion & Mixture',
+    questionText: 'In a mixture of 60 liters, the ratio of milk and water is 2:1. How much water must be added to make the ratio of milk and water 1:2?',
+    options: [
+      '40 liters',
+      '60 liters',
+      '50 liters',
+      '30 liters'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Milk = 40L, Water = 20L. We want Milk / (Water + x) = 1/2 => 40 / (20 + x) = 1/2 => 80 = 20 + x => x = 60 liters.',
+    difficulty: 'Medium'
+  },
+  {
+    id: 'q_math_6',
+    subjectId: 'maths',
+    topicId: 'math_decimal_fractions',
+    topicName: 'Decimal Fractions & Simplification',
+    questionText: 'Simplify the expression: (0.333... + 0.666...) * 0.5',
+    options: [
+      '0.45',
+      '0.50',
+      '1.00',
+      '0.75'
+    ],
+    correctOptionIndex: 1,
+    explanation: '0.333... = 1/3 and 0.666... = 2/3. Sum = 1/3 + 2/3 = 1.0. 1.0 * 0.5 = 0.50.',
+    difficulty: 'Easy'
+  },
+  {
+    id: 'q_math_7',
+    subjectId: 'maths',
+    topicId: 'math_average_percentage',
+    topicName: 'Average & Percentage',
+    questionText: 'The average weight of 8 cadet officers increases by 1.5 kg when a new cadet replaces one who weighs 65 kg. What is the weight of the new cadet?',
+    options: [
+      '75 kg',
+      '77 kg',
+      '80 kg',
+      '72 kg'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Total weight increase = 8 * 1.5 kg = 12 kg. Weight of new cadet = 65 + 12 = 77 kg.',
+    difficulty: 'Medium'
+  },
+  {
+    id: 'q_reas_4',
+    subjectId: 'reasoning',
+    topicId: 'reas_non_verbal_pattern',
+    topicName: 'Pattern Completion',
+    questionText: 'A figure is rotated 90 degrees clockwise in each step. After 3 rotations, what is its net orientation relative to original?',
+    options: [
+      '90 degrees Anti-clockwise',
+      '180 degrees Opposite',
+      '270 degrees Clockwise (same as 90 deg Anti-clockwise)',
+      '360 degrees Full Circle'
+    ],
+    correctOptionIndex: 2,
+    explanation: '3 * 90° clockwise = 270° clockwise, which is geometrically equivalent to a 90° anti-clockwise rotation.',
+    difficulty: 'Easy'
+  },
+  {
+    id: 'q_reas_5',
+    subjectId: 'reasoning',
+    topicId: 'reas_analogy',
+    topicName: 'Analogy & Series',
+    questionText: 'Complete the analogy: Flight Envelope : Aircraft :: Submarine : _____',
+    options: [
+      'Periscope',
+      'Depth Rating / Test Depth',
+      'Sonar',
+      'Torpedo'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'A Flight Envelope defines operational boundaries for an aircraft, just as Test Depth / Operating Depth defines operational limits for a submarine.',
+    difficulty: 'Medium'
+  },
+  {
+    id: 'q_reas_6',
+    subjectId: 'reasoning',
+    topicId: 'reas_blood_rel_coding',
+    topicName: 'Coding-Decoding',
+    questionText: 'If "RADAR" is coded as "SBETS", how will "PILOT" be coded in that same rule?',
+    options: [
+      'QJMPU',
+      'QJMPU',
+      'QJMPU',
+      'QJMPU (Each letter +1)'
+    ],
+    correctOptionIndex: 3,
+    explanation: 'Each letter is shifted by +1 (R->S, A->B, D->E, A->B, R->S). For PILOT: P->Q, I->J, L->M, O->P, T->U => QJMPU.',
+    difficulty: 'Easy'
+  },
+  {
+    id: 'q_ga_5',
+    subjectId: 'ga',
+    topicId: 'ga_geography',
+    topicName: 'Geography',
+    questionText: 'Which Indian river is known as the "Dakshin Ganga"?',
+    options: [
+      'Krishna',
+      'Godavari',
+      'Kaveri',
+      'Narmada'
+    ],
+    correctOptionIndex: 1,
+    explanation: 'Godavari is the longest river in Peninsular India and is known as "Dakshin Ganga" (Ganga of the South).',
+    difficulty: 'Easy'
+  },
+  {
+    id: 'ga_6',
+    subjectId: 'ga',
+    topicId: 'ga_polity',
+    topicName: 'Indian Polity',
+    questionText: 'Who is the Supreme Commander of the Indian Armed Forces?',
+    options: [
+      'Prime Minister of India',
+      'Chief of Defence Staff (CDS)',
+      'President of India',
+      'Defence Minister'
+    ],
+    correctOptionIndex: 2,
+    explanation: 'Under Article 53(2) of the Constitution of India, the supreme command of the Defence Forces of the Union is vested in the President of India.',
+    difficulty: 'Easy'
+  },
+  {
+    id: 'ga_7',
+    subjectId: 'ga',
+    topicId: 'ga_sports_static',
+    topicName: 'Sports & Awards',
+    questionText: 'Who was the first recipient of the Param Vir Chakra, India\'s highest military decoration?',
+    options: [
+      'Major Somnath Sharma',
+      'Captain Vikram Batra',
+      'Subedar Joginder Singh',
+      'Major Shaitan Singh'
+    ],
+    correctOptionIndex: 0,
+    explanation: 'Major Somnath Sharma was posthumously awarded the first Param Vir Chakra for bravery during the 1947 Battle of Badgam.',
+    difficulty: 'Medium'
   }
 ];
