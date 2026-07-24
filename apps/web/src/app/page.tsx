@@ -346,7 +346,7 @@ export default function WorkspacePage() {
       });
       setProfileFullName(data.user.fullName);
       setIsLoggedIn(true);
-      setActiveTab('dashboard');
+      setActiveTab('afcat');
       resetAuthState();
     } catch (err: any) {
       setErrorMsg(err.message);
@@ -409,7 +409,7 @@ export default function WorkspacePage() {
       });
       setProfileFullName(data.user.fullName);
       setIsLoggedIn(true);
-      setActiveTab('dashboard');
+      setActiveTab('afcat');
     } catch (err: any) {
       setErrorMsg(err.message);
     } finally {
@@ -438,8 +438,15 @@ export default function WorkspacePage() {
   const [profileTargetYear, setProfileTargetYear] = useState<any>('');
   const [profileState, setProfileState] = useState('');
   const [profilePrepStatus, setProfilePrepStatus] = useState('');
-  const [profileOnboardingCompleted, setProfileOnboardingCompleted] = useState(false);
+  const [profileOnboardingCompleted, setProfileOnboardingCompleted] = useState(true);
   const [examsList, setExamsList] = useState<any[]>([]);
+
+  const openAfcatWorkspace = () => {
+    setIsLoggedIn(true);
+    setProfileOnboardingCompleted(true);
+    setProfileTargetExamId('afcat');
+    triggerLoadingState('afcat');
+  };
 
   // Onboarding Wizard states
   const [onboardingStep, setOnboardingStep] = useState(1);
@@ -491,7 +498,7 @@ export default function WorkspacePage() {
         setIsLoggedIn(true);
         // Clear query parameters
         window.history.replaceState({}, document.title, window.location.pathname);
-        setActiveTab('dashboard');
+        setActiveTab('afcat');
       } else {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
@@ -973,10 +980,7 @@ export default function WorkspacePage() {
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <button 
-                    onClick={() => {
-                      setIsLoggedIn(true);
-                      triggerLoadingState('afcat');
-                    }}
+                    onClick={openAfcatWorkspace}
                     className="px-8 py-3.5 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-2xl shadow-lg shadow-[#faa114]/20 text-sm transition-all flex items-center gap-2"
                   >
                     Open AFCAT Prep Hub <ArrowRight className="w-4 h-4" />
@@ -1396,7 +1400,7 @@ export default function WorkspacePage() {
             setProfileOnboardingCompleted(true);
             setProfileSyncTrigger(prev => prev + 1);
             setOnboardingGenerating(false);
-            setActiveTab('dashboard');
+            setActiveTab('afcat');
             
             // Open WhatsApp support channel in a new tab
             if (typeof window !== 'undefined') {
