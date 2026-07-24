@@ -39,6 +39,8 @@ export default function AfcatQuizEngine({ onCompleteQuiz }: { onCompleteQuiz?: (
 
   const activeSubject = AFCAT_SUBJECTS.find(s => s.id === selectedSubjectId) || AFCAT_SUBJECTS[0];
 
+  const [targetQuestionCount, setTargetQuestionCount] = useState<number>(10);
+
   // Start Quiz setup
   const startQuiz = () => {
     let filtered = [...AFCAT_QUESTION_BANK];
@@ -56,12 +58,24 @@ export default function AfcatQuizEngine({ onCompleteQuiz }: { onCompleteQuiz?: (
       filtered = [...AFCAT_QUESTION_BANK];
     }
 
+    // Pad with extra questions if fewer than target count
+    if (quizMode !== 'full' && filtered.length < targetQuestionCount) {
+      const needed = targetQuestionCount - filtered.length;
+      const extraSubjectQs = AFCAT_QUESTION_BANK.filter(q => q.subjectId === selectedSubjectId && !filtered.includes(q));
+      filtered = [...filtered, ...extraSubjectQs.slice(0, needed)];
+    }
+
+    // Slice to chosen count if subject/topic mode
+    if (quizMode !== 'full' && filtered.length > targetQuestionCount) {
+      filtered = filtered.slice(0, targetQuestionCount);
+    }
+
     setQuestionsList(filtered);
     setCurrentIndex(0);
     setSelectedAnswers({});
     setQuizFinished(false);
     setQuizActive(true);
-    setTimeLeftSeconds(quizMode === 'full' ? 120 * 60 : 30 * 60);
+    setTimeLeftSeconds(quizMode === 'full' ? 120 * 60 : targetQuestionCount * 120);
   };
 
   // Timer effect
@@ -271,6 +285,26 @@ export default function AfcatQuizEngine({ onCompleteQuiz }: { onCompleteQuiz?: (
                   </select>
                 </div>
               )}
+
+              <div className="space-y-2 pt-2 border-t border-[#e5e2d9]/60">
+                <label className="text-xs font-bold text-[#262a2b]">Number of Practice Questions:</label>
+                <div className="flex gap-2">
+                  {[5, 10, 15, 20].map((num) => (
+                    <button
+                      key={num}
+                      type="button"
+                      onClick={() => setTargetQuestionCount(num)}
+                      className={`flex-1 py-2 rounded-xl text-xs font-bold transition-all ${
+                        targetQuestionCount === num
+                          ? 'bg-[#faa114] text-[#262a2b] shadow-sm'
+                          : 'bg-white border border-[#e5e2d9] text-[#786e67] hover:border-[#faa114]'
+                      }`}
+                    >
+                      {num} Qs
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
