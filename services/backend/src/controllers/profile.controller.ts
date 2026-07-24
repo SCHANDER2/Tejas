@@ -107,6 +107,39 @@ export async function updateProfile(req: AuthenticatedRequest, res: Response) {
       }
     }
 
+    // Send Welcome Email if onboarding completed now
+    if (onboardingCompleted && (!existingProfile || !existingProfile.onboardingCompleted)) {
+      try {
+        const { NotificationService } = await import('../services/notification.service.js');
+        const notificationService = new NotificationService();
+        const emailHtml = `
+          <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 30px; border: 1px solid #dbd7c7; border-radius: 24px; background-color: #fcfcfb; color: #262a2b;">
+            <div style="border-bottom: 2px solid #faa114; padding-bottom: 15px; margin-bottom: 20px;">
+              <h2 style="margin: 0; color: #262a2b; font-family: 'Outfit', sans-serif;">Tejas AI Learning OS</h2>
+            </div>
+            <p style="font-size: 16px; line-height: 1.6;">Hi ${fullName || user.email.split('@')[0]},</p>
+            <p style="font-size: 14px; line-height: 1.6; color: #786e67;">Your independent study workspace is now fully customized and ready for action!</p>
+            <div style="background-color: #f4f3f0; border-left: 4px solid #faa114; padding: 15px; border-radius: 8px; margin: 20px 0;">
+              <strong style="display: block; margin-bottom: 8px; font-size: 14px;">Here is what we have prepared for you:</strong>
+              <ul style="margin: 0; padding-left: 20px; font-size: 13px; color: #786e67; line-height: 1.6;">
+                <li><strong>Custom Syllabus Roadmaps</strong> bound directly to your timeline.</li>
+                <li><strong>Dynamic Study Planner</strong> to balance daily capacity.</li>
+                <li><strong>FSRS Spaced Repetition Cards</strong> for active recall reviews.</li>
+              </ul>
+            </div>
+            <p style="font-size: 14px; line-height: 1.6; color: #786e67;">If you have any questions or need queries resolved, feel free to tap the WhatsApp support chat inside your workspace, or connect directly via +91 9079144245.</p>
+            <p style="font-size: 14px; line-height: 1.6; font-weight: bold; color: #faa114; margin-top: 30px;">Let's study smart and achieve your goals!</p>
+            <hr style="border: 0; border-top: 1px solid #dbd7c7; margin: 30px 0 15px 0;" />
+            <p style="font-size: 11px; color: #b3aa9e; text-align: center; margin: 0;">© 2026 Tejas Learning. Made with 🔥 for Indian Learners</p>
+          </div>
+        `;
+        await notificationService.sendEmail(user.email, 'Welcome to Tejas!', emailHtml);
+        console.log(`[PROFILE EMAIL]: Dispatched welcoming email to ${user.email}.`);
+      } catch (emailErr: any) {
+        console.error('[PROFILE EMAIL]: Failed to dispatch welcome email:', emailErr.message);
+      }
+    }
+
     // Welcoming message integration: Send SMS if phone number is new/changed
     if (isNewPhone) {
       try {

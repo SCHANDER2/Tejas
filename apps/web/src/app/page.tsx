@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import AfcatHub from '../components/afcat/AfcatHub';
 import { 
   BookOpen, 
   Layers, 
@@ -956,6 +957,44 @@ export default function WorkspacePage() {
           </section>
         </RevealSection>
 
+        {/* ═══════════ FEATURED AFCAT SPECIAL EDITION BANNER ═══════════ */}
+        <RevealSection>
+          <section className="px-6 md:px-12 py-10">
+            <div className="max-w-7xl mx-auto bg-gradient-to-r from-[#1c2226] via-[#262a2b] to-[#343a40] text-white rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="relative z-10 max-w-2xl">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#faa114]/20 border border-[#faa114]/40 text-[#faa114] text-xs font-bold uppercase tracking-wider mb-4">
+                  ✈️ AFCAT Special Mentor Edition 2026
+                </div>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-3" style={{ fontFamily: 'Outfit' }}>
+                  Preparing for Air Force Common Admission Test (AFCAT)?
+                </h2>
+                <p className="text-white/80 text-sm md:text-base leading-relaxed mb-6">
+                  Explore our dedicated mentor-led AFCAT hub featuring complete syllabus roadmaps, 15 full-length model papers, authentic PYQ PDFs, subject YouTube playlists, and official AFCAT quiz simulations.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <button 
+                    onClick={() => {
+                      setIsLoggedIn(true);
+                      triggerLoadingState('afcat');
+                    }}
+                    className="px-8 py-3.5 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-2xl shadow-lg shadow-[#faa114]/20 text-sm transition-all flex items-center gap-2"
+                  >
+                    Open AFCAT Prep Hub <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+              <div className="relative z-10 bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl space-y-3 shrink-0 w-full md:w-72 text-center">
+                <div className="text-2xl font-bold text-[#faa114]">AFCAT 1 & 2</div>
+                <div className="text-xs text-white/70">Complete Air Force Officer Prep</div>
+                <div className="pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs">
+                  <div><strong className="text-white">15</strong> Mocks</div>
+                  <div><strong className="text-white">PYQs</strong> Included</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </RevealSection>
+
         {/* ═══════════ EXAM EXPLORER SLIDER ═══════════ */}
         <RevealSection>
           <section id="exams" className="py-16 md:py-24 px-6 md:px-12 bg-[#f9f8f5]">
@@ -1358,6 +1397,11 @@ export default function WorkspacePage() {
             setProfileSyncTrigger(prev => prev + 1);
             setOnboardingGenerating(false);
             setActiveTab('dashboard');
+            
+            // Open WhatsApp support channel in a new tab
+            if (typeof window !== 'undefined') {
+              window.open('https://wa.me/919079144245?text=Hello%20Tejas%20Support!%20I%20just%20completed%20my%20onboarding%20and%20need%20assistance.', '_blank');
+            }
           }
         })
         .catch(err => {
@@ -1651,6 +1695,7 @@ export default function WorkspacePage() {
             <nav className="p-4 space-y-1">
               {(() => {
                 const navs = [
+                  { id: 'afcat', label: 'AFCAT 2026 Hub', icon: Shield },
                   { id: 'dashboard', label: 'Dashboard', icon: BookOpen },
                   { id: 'planner', label: 'Study Planner', icon: Calendar },
                   { id: 'explorer', label: 'Exam Explorer', icon: Search },
@@ -1709,8 +1754,13 @@ export default function WorkspacePage() {
         {activeTab !== 'auth' && activeTab !== 'pricing' && (
           <header className="h-16 border-b border-[#dbd7c7] px-6 flex items-center justify-between bg-[#fcfcfb]/80 backdrop-blur-md sticky top-0 z-50">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#786e67]">Target:</span>
-              <span className="px-3 py-1 bg-[#dbd7c7]/50 text-xs font-semibold rounded-full text-[#262a2b]">UPSC CSE 2026</span>
+              <span className="text-sm font-medium text-[#786e67]">Target Exam:</span>
+              <button 
+                onClick={() => triggerLoadingState('afcat')}
+                className="px-3.5 py-1 bg-[#262a2b] text-[#faa114] border border-[#faa114]/40 text-xs font-bold rounded-full hover:bg-[#1a1d1e] transition-all flex items-center gap-1.5 shadow-sm"
+              >
+                ✈️ AFCAT 2026 (Indian Air Force)
+              </button>
             </div>
             <div className="flex items-center gap-4">
               <button 
@@ -2081,6 +2131,9 @@ export default function WorkspacePage() {
                 </div>
               </div>
             )}
+
+            {/* AFCAT 2026 HUB */}
+            {activeTab === 'afcat' && <AfcatHub />}
 
             {/* DASHBOARD */}
             {activeTab === 'dashboard' && (
