@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AFCAT_MODEL_PAPERS, AfcatModelPaper } from '../../data/afcatData';
-import { FileCheck, Download, Sparkles, Award, Clock, HelpCircle, CheckCircle, ExternalLink, ArrowRight } from 'lucide-react';
+import { AFCAT_MODEL_PAPERS, AFCAT_QUESTION_BANK, AfcatModelPaper, AfcatQuestion } from '../../data/afcatData';
+import { exportPaperToPdf } from '../../utils/pdfExporter';
+import { FileCheck, Download, Sparkles, Clock, HelpCircle, ExternalLink, ArrowRight } from 'lucide-react';
 
 export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => void }) {
   const [downloadedIds, setDownloadedIds] = useState<string[]>([]);
@@ -12,13 +13,14 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
     if (!downloadedIds.includes(paper.id)) {
       setDownloadedIds([...downloadedIds, paper.id]);
     }
-    const link = document.createElement('a');
-    link.href = paper.pdfUrl;
-    link.target = '_blank';
-    link.download = `AFCAT_Model_Paper_${paper.paperNumber}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const questionsToExport = paper.questions && paper.questions.length > 0 
+      ? paper.questions 
+      : AFCAT_QUESTION_BANK;
+    exportPaperToPdf(paper, questionsToExport);
+  };
+
+  const getModelQuestions = (paper: AfcatModelPaper): AfcatQuestion[] => {
+    return paper.questions && paper.questions.length > 0 ? paper.questions : AFCAT_QUESTION_BANK;
   };
 
   return (
@@ -42,8 +44,6 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
       {/* Model Papers Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {AFCAT_MODEL_PAPERS.map((paper) => {
-          const isDownloaded = downloadedIds.includes(paper.id);
-
           return (
             <div 
               key={paper.id}
@@ -120,7 +120,7 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">{activeModelPaper.title}</h3>
-                  <p className="text-xs text-white/70">AFCAT Standard Level Solution Key</p>
+                  <p className="text-xs text-white/70">AFCAT Standard Level Full Test & Key</p>
                 </div>
               </div>
               <button 
@@ -147,16 +147,39 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
                 </div>
               </div>
 
-              <div className="p-5 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 leading-relaxed">
-                <strong>Solution Highlights:</strong> This model test paper is modeled after recent IAF computer-based test memory papers. Includes 30 English, 20 Maths, 25 Reasoning, and 25 GA questions with step-by-step solution derivations.
+              {/* Questions List */}
+              <div className="space-y-4 pt-2">
+                <h4 className="font-bold text-[#262a2b] text-sm">Full Exam Questions & Explanations:</h4>
+                {getModelQuestions(activeModelPaper).map((q, idx) => (
+                  <div key={q.id || idx} className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9] space-y-2 text-xs">
+                    <div className="font-bold text-[#262a2b] text-sm">Q{idx + 1}. {q.questionText}</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[#786e67]">
+                      {q.options.map((opt, oIdx) => (
+                        <div 
+                          key={oIdx} 
+                          className={`p-2 rounded-xl border ${
+                            oIdx === q.correctOptionIndex 
+                              ? 'bg-emerald-50 border-emerald-300 font-bold text-emerald-800' 
+                              : 'bg-white border-[#e5e2d9]'
+                          }`}
+                        >
+                          <strong>{String.fromCharCode(65 + oIdx)})</strong> {opt} {oIdx === q.correctOptionIndex ? '✓' : ''}
+                        </div>
+                      ))}
+                    </div>
+                    <div className="p-2.5 bg-white rounded-xl border border-[#e5e2d9] text-[#262a2b]">
+                      <strong>Explanation:</strong> {q.explanation}
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              <div className="flex items-center justify-center gap-4 pt-2">
+              <div className="flex items-center justify-center gap-4 pt-4 border-t border-[#e5e2d9]">
                 <button
                   onClick={() => handleDownload(activeModelPaper)}
-                  className="px-6 py-3 rounded-xl bg-[#262a2b] text-white text-xs font-bold hover:bg-[#1c2226] flex items-center gap-2 shadow-md"
+                  className="px-8 py-3.5 rounded-2xl bg-[#262a2b] text-white text-xs font-bold hover:bg-[#1c2226] flex items-center gap-2 shadow-md"
                 >
-                  <Download className="w-4 h-4 text-[#faa114]" /> Download Complete Model Paper PDF
+                  <Download className="w-4 h-4 text-[#faa114]" /> Export & Download Complete Model Paper PDF
                 </button>
               </div>
             </div>

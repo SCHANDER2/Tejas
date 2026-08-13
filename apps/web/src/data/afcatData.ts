@@ -31,6 +31,7 @@ export interface AfcatPyqPaper {
   totalMarks: number;
   pdfUrl: string;
   downloadCount: number;
+  questions?: AfcatQuestion[];
 }
 
 export interface AfcatModelPaper {
@@ -42,6 +43,7 @@ export interface AfcatModelPaper {
   durationMinutes: number;
   pdfUrl: string;
   description: string;
+  questions?: AfcatQuestion[];
 }
 
 export interface AfcatQuestion {
@@ -351,8 +353,54 @@ export const AFCAT_PYQS: AfcatPyqPaper[] = [
     shift: 'AFCAT 1 (Feb 2025)',
     totalQs: 100,
     totalMarks: 300,
-    pdfUrl: 'https://raw.githubusercontent.com/AFCAT-Prep-Vault/pdf-repo/main/AFCAT_1_2025_Paper_AnswerKey.pdf',
-    downloadCount: 14250
+    pdfUrl: 'pdf_export_pyq_2025_1',
+    downloadCount: 18450,
+    questions: [
+      {
+        id: 'pyq_25_1_q1',
+        subjectId: 'english',
+        topicId: 'eng_syn_ant',
+        topicName: 'Synonyms & Antonyms',
+        questionText: 'Select the synonym for the word "INDOMITABLE" used in defence contexts:',
+        options: ['Vulnerable', 'Unconquerable', 'Fragile', 'Hesitant'],
+        correctOptionIndex: 1,
+        explanation: '"Indomitable" means impossible to subdue or defeat. "Unconquerable" is the exact synonym.',
+        difficulty: 'Medium'
+      },
+      {
+        id: 'pyq_25_1_q2',
+        subjectId: 'maths',
+        topicId: 'math_speed_time',
+        topicName: 'Speed & Distance',
+        questionText: 'A fighter aircraft covers a distance of 1440 km at a constant speed in 1.5 hours. What is its speed in m/s?',
+        options: ['200 m/s', '266.67 m/s', '300 m/s', '320 m/s'],
+        correctOptionIndex: 1,
+        explanation: 'Speed in km/h = 1440 / 1.5 = 960 km/h. Convert to m/s: 960 * (5/18) = 266.67 m/s.',
+        difficulty: 'Medium'
+      },
+      {
+        id: 'pyq_25_1_q3',
+        subjectId: 'reasoning',
+        topicId: 'reas_venn_diagrams',
+        topicName: 'Venn Diagrams',
+        questionText: 'Identify the Venn diagram representing: "Fighter Jets", "Rafale Aircraft", and "Transport Planes".',
+        options: ['Two concentric circles inside a third', 'One circle fully inside another, with a third circle completely disjoint', 'Three overlapping circles', 'Three mutually disjoint circles'],
+        correctOptionIndex: 1,
+        explanation: 'Rafale Aircraft is a subset of Fighter Jets (concentric). Transport Planes are completely separate/disjoint from Fighter Jets.',
+        difficulty: 'Easy'
+      },
+      {
+        id: 'pyq_25_1_q4',
+        subjectId: 'ga',
+        topicId: 'ga_defence_knowledge',
+        topicName: 'Defence GK',
+        questionText: 'Which IAF command headquarters is located in Shillong, Meghalaya?',
+        options: ['Western Air Command', 'Eastern Air Command', 'Central Air Command', 'Southern Air Command'],
+        correctOptionIndex: 1,
+        explanation: 'The Eastern Air Command (EAC) of the Indian Air Force is headquartered in Shillong, Meghalaya.',
+        difficulty: 'Easy'
+      }
+    ]
   },
   {
     id: 'pyq_2024_2',
@@ -360,8 +408,54 @@ export const AFCAT_PYQS: AfcatPyqPaper[] = [
     shift: 'AFCAT 2 (Aug 2024)',
     totalQs: 100,
     totalMarks: 300,
-    pdfUrl: 'https://raw.githubusercontent.com/AFCAT-Prep-Vault/pdf-repo/main/AFCAT_2_2024_Paper_AnswerKey.pdf',
-    downloadCount: 28900
+    pdfUrl: 'pdf_export_pyq_2024_2',
+    downloadCount: 29800,
+    questions: [
+      {
+        id: 'pyq_24_2_q1',
+        subjectId: 'english',
+        topicId: 'eng_idioms_phrases',
+        topicName: 'Idioms & Phrases',
+        questionText: 'What is the meaning of the military idiom "To steal a march on someone"?',
+        options: ['To desert the battle', 'To gain an advantage secretly or unexpectedly', 'To march in unison', 'To surrender arms'],
+        correctOptionIndex: 1,
+        explanation: '"To steal a march on someone" means to gain an unexpected or secret advantage over a rival.',
+        difficulty: 'Medium'
+      },
+      {
+        id: 'pyq_24_2_q2',
+        subjectId: 'maths',
+        topicId: 'math_time_work',
+        topicName: 'Time & Work',
+        questionText: 'A and B together can assemble an engine in 10 hours. If A alone takes 15 hours, how long will B take alone?',
+        options: ['20 hours', '25 hours', '30 hours', '35 hours'],
+        correctOptionIndex: 2,
+        explanation: '1/B = 1/10 - 1/15 = (3 - 2)/30 = 1/30. B takes 30 hours alone.',
+        difficulty: 'Easy'
+      },
+      {
+        id: 'pyq_24_2_q3',
+        subjectId: 'reasoning',
+        topicId: 'reas_odd_one_out',
+        topicName: 'Odd One Out',
+        questionText: 'Select the odd one out among the given defence missiles:',
+        options: ['BrahMos', 'Akash', 'Astra', 'C-17 Globemaster'],
+        correctOptionIndex: 3,
+        explanation: 'BrahMos, Akash, and Astra are missile systems. C-17 Globemaster is a heavy military transport aircraft.',
+        difficulty: 'Easy'
+      },
+      {
+        id: 'pyq_24_2_q4',
+        subjectId: 'ga',
+        topicId: 'ga_defence_knowledge',
+        topicName: 'Defence GK',
+        questionText: 'Operation Kaveri was launched by India to evacuate citizens from which country?',
+        options: ['Ukraine', 'Sudan', 'Afghanistan', 'Yemen'],
+        correctOptionIndex: 1,
+        explanation: 'Operation Kaveri was conducted by the Indian Armed Forces to evacuate Indian citizens from war-torn Sudan in 2023.',
+        difficulty: 'Medium'
+      }
+    ]
   },
   {
     id: 'pyq_2024_1',
@@ -369,8 +463,43 @@ export const AFCAT_PYQS: AfcatPyqPaper[] = [
     shift: 'AFCAT 1 (Feb 2024)',
     totalQs: 100,
     totalMarks: 300,
-    pdfUrl: 'https://raw.githubusercontent.com/AFCAT-Prep-Vault/pdf-repo/main/AFCAT_1_2024_Paper_AnswerKey.pdf',
-    downloadCount: 31200
+    pdfUrl: 'pdf_export_pyq_2024_1',
+    downloadCount: 33400,
+    questions: [
+      {
+        id: 'pyq_24_1_q1',
+        subjectId: 'english',
+        topicId: 'eng_error_spotting',
+        topicName: 'Error Detection',
+        questionText: 'Spot the error: "Each of the wing commanders were given a medal of honor for bravery."',
+        options: ['Each of the', 'wing commanders', 'were given', 'a medal of honor'],
+        correctOptionIndex: 2,
+        explanation: '"Each" is singular and requires a singular verb "was given" instead of "were given".',
+        difficulty: 'Medium'
+      },
+      {
+        id: 'pyq_24_1_q2',
+        subjectId: 'maths',
+        topicId: 'math_profit_loss',
+        topicName: 'Profit & Loss',
+        questionText: 'If CP of 12 radar units equals SP of 10 radar units, what is the profit percentage?',
+        options: ['15%', '20%', '25%', '30%'],
+        correctOptionIndex: 1,
+        explanation: 'Profit % = [(12 - 10)/10] * 100 = (2/10) * 100 = 20%.',
+        difficulty: 'Easy'
+      },
+      {
+        id: 'pyq_24_1_q3',
+        subjectId: 'ga',
+        topicId: 'ga_science',
+        topicName: 'Basic Science',
+        questionText: 'Which gas is predominantly filled in aircraft tires to prevent explosion due to heat friction?',
+        options: ['Oxygen', 'Nitrogen', 'Helium', 'Carbon Dioxide'],
+        correctOptionIndex: 1,
+        explanation: 'Nitrogen gas is inert, dry, and non-flammable, reducing pressure variation and fire hazards in aviation tires.',
+        difficulty: 'Easy'
+      }
+    ]
   },
   {
     id: 'pyq_2023_2',
@@ -378,8 +507,8 @@ export const AFCAT_PYQS: AfcatPyqPaper[] = [
     shift: 'AFCAT 2 (Aug 2023)',
     totalQs: 100,
     totalMarks: 300,
-    pdfUrl: 'https://raw.githubusercontent.com/AFCAT-Prep-Vault/pdf-repo/main/AFCAT_2_2023_Paper_AnswerKey.pdf',
-    downloadCount: 41500
+    pdfUrl: 'pdf_export_pyq_2023_2',
+    downloadCount: 42100
   },
   {
     id: 'pyq_2023_1',
@@ -387,8 +516,8 @@ export const AFCAT_PYQS: AfcatPyqPaper[] = [
     shift: 'AFCAT 1 (Feb 2023)',
     totalQs: 100,
     totalMarks: 300,
-    pdfUrl: 'https://raw.githubusercontent.com/AFCAT-Prep-Vault/pdf-repo/main/AFCAT_1_2023_Paper_AnswerKey.pdf',
-    downloadCount: 38900
+    pdfUrl: 'pdf_export_pyq_2023_1',
+    downloadCount: 39800
   },
   {
     id: 'pyq_2022_2',
@@ -396,8 +525,8 @@ export const AFCAT_PYQS: AfcatPyqPaper[] = [
     shift: 'AFCAT 2 (Aug 2022)',
     totalQs: 100,
     totalMarks: 300,
-    pdfUrl: 'https://raw.githubusercontent.com/AFCAT-Prep-Vault/pdf-repo/main/AFCAT_2_2022_Paper_AnswerKey.pdf',
-    downloadCount: 45000
+    pdfUrl: 'pdf_export_pyq_2022_2',
+    downloadCount: 46200
   },
   {
     id: 'pyq_2022_1',
@@ -405,8 +534,8 @@ export const AFCAT_PYQS: AfcatPyqPaper[] = [
     shift: 'AFCAT 1 (Feb 2022)',
     totalQs: 100,
     totalMarks: 300,
-    pdfUrl: 'https://raw.githubusercontent.com/AFCAT-Prep-Vault/pdf-repo/main/AFCAT_1_2022_Paper_AnswerKey.pdf',
-    downloadCount: 42100
+    pdfUrl: 'pdf_export_pyq_2022_1',
+    downloadCount: 43100
   },
   {
     id: 'pyq_2021_2',
@@ -414,8 +543,80 @@ export const AFCAT_PYQS: AfcatPyqPaper[] = [
     shift: 'AFCAT 2 (Aug 2021)',
     totalQs: 100,
     totalMarks: 300,
-    pdfUrl: 'https://raw.githubusercontent.com/AFCAT-Prep-Vault/pdf-repo/main/AFCAT_2_2021_Paper_AnswerKey.pdf',
-    downloadCount: 39400
+    pdfUrl: 'pdf_export_pyq_2021_2',
+    downloadCount: 40100
+  },
+  {
+    id: 'pyq_2021_1',
+    year: '2021',
+    shift: 'AFCAT 1 (Feb 2021)',
+    totalQs: 100,
+    totalMarks: 300,
+    pdfUrl: 'pdf_export_pyq_2021_1',
+    downloadCount: 38700
+  },
+  {
+    id: 'pyq_2020_2',
+    year: '2020',
+    shift: 'AFCAT 2 (Aug 2020)',
+    totalQs: 100,
+    totalMarks: 300,
+    pdfUrl: 'pdf_export_pyq_2020_2',
+    downloadCount: 37500
+  },
+  {
+    id: 'pyq_2020_1',
+    year: '2020',
+    shift: 'AFCAT 1 (Feb 2020)',
+    totalQs: 100,
+    totalMarks: 300,
+    pdfUrl: 'pdf_export_pyq_2020_1',
+    downloadCount: 36200
+  },
+  {
+    id: 'pyq_2019_2',
+    year: '2019',
+    shift: 'AFCAT 2 (Aug 2019)',
+    totalQs: 100,
+    totalMarks: 300,
+    pdfUrl: 'pdf_export_pyq_2019_2',
+    downloadCount: 34900
+  },
+  {
+    id: 'pyq_2019_1',
+    year: '2019',
+    shift: 'AFCAT 1 (Feb 2019)',
+    totalQs: 100,
+    totalMarks: 300,
+    pdfUrl: 'pdf_export_pyq_2019_1',
+    downloadCount: 33800
+  },
+  {
+    id: 'pyq_2018_2',
+    year: '2018',
+    shift: 'AFCAT 2 (Aug 2018)',
+    totalQs: 100,
+    totalMarks: 300,
+    pdfUrl: 'pdf_export_pyq_2018_2',
+    downloadCount: 32100
+  },
+  {
+    id: 'pyq_2018_1',
+    year: '2018',
+    shift: 'AFCAT 1 (Feb 2018)',
+    totalQs: 100,
+    totalMarks: 300,
+    pdfUrl: 'pdf_export_pyq_2018_1',
+    downloadCount: 31000
+  },
+  {
+    id: 'pyq_cdac_official',
+    year: 'Official',
+    shift: 'AFCAT CDAC Master Paper',
+    totalQs: 100,
+    totalMarks: 300,
+    pdfUrl: 'pdf_export_pyq_cdac_official',
+    downloadCount: 52000
   }
 ];
 

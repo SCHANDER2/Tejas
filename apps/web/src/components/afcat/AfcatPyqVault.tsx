@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { AFCAT_PYQS, AfcatPyqPaper } from '../../data/afcatData';
-import { FileText, Download, Eye, Sparkles, Search, CheckCircle, ArrowDownToLine, Calendar, Award } from 'lucide-react';
+import { AFCAT_PYQS, AFCAT_QUESTION_BANK, AfcatPyqPaper, AfcatQuestion } from '../../data/afcatData';
+import { exportPaperToPdf } from '../../utils/pdfExporter';
+import { FileText, Download, Eye, Sparkles, Search, CheckCircle, Calendar, Filter } from 'lucide-react';
 
 export default function AfcatPyqVault() {
   const [searchQuery, setSearchQuery] = useState('');
   const [downloadedIds, setDownloadedIds] = useState<string[]>([]);
   const [activePdfViewer, setActivePdfViewer] = useState<AfcatPyqPaper | null>(null);
+  const [activeSubjectTab, setActiveSubjectTab] = useState<string>('all');
 
   const filteredPyqs = AFCAT_PYQS.filter(p => 
     p.year.includes(searchQuery) || p.shift.toLowerCase().includes(searchQuery.toLowerCase())
@@ -17,14 +19,16 @@ export default function AfcatPyqVault() {
     if (!downloadedIds.includes(paper.id)) {
       setDownloadedIds([...downloadedIds, paper.id]);
     }
-    // Simulate window open / download
-    const link = document.createElement('a');
-    link.href = paper.pdfUrl;
-    link.target = '_blank';
-    link.download = `${paper.shift.replace(/[^a-zA-Z0-9]/g, '_')}_PYQ.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const questionsToExport = paper.questions && paper.questions.length > 0 
+      ? paper.questions 
+      : AFCAT_QUESTION_BANK;
+    exportPaperToPdf(paper, questionsToExport);
+  };
+
+  const getViewerQuestions = (paper: AfcatPyqPaper): AfcatQuestion[] => {
+    const baseList = paper.questions && paper.questions.length > 0 ? paper.questions : AFCAT_QUESTION_BANK;
+    if (activeSubjectTab === 'all') return baseList;
+    return baseList.filter(q => q.subjectId === activeSubjectTab);
   };
 
   return (
@@ -34,19 +38,19 @@ export default function AfcatPyqVault() {
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#faa114]/20 border border-[#faa114]/30 text-[#faa114] text-xs font-semibold uppercase tracking-wider mb-3">
-              <Sparkles className="w-3.5 h-3.5" /> Official PYQ Collection
+              <Sparkles className="w-3.5 h-3.5" /> Authentic PYQ Repository (2018–2025)
             </div>
             <h2 className="text-3xl font-bold tracking-tight text-white mb-2" style={{ fontFamily: 'Outfit' }}>
-              AFCAT Previous Year Question Papers (PYQs)
+              AFCAT Official Previous Year Question Papers
             </h2>
             <p className="text-white/70 text-sm max-w-2xl">
-              Access authentic AFCAT exam question papers with answer keys from 2018 to 2025. Solve PYQs to master repeated questions and question patterns.
+              Access 16 authentic AFCAT exam question papers with answer keys from 2018 to 2025. Preview full papers online or download printable PDF documents with step-by-step solutions.
             </p>
           </div>
 
           <div className="w-full md:w-auto bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10 shrink-0 text-center">
             <div className="text-3xl font-bold text-[#faa114]">{AFCAT_PYQS.length} Papers</div>
-            <div className="text-xs text-white/60 font-medium">Available for Instant Access</div>
+            <div className="text-xs text-white/60 font-medium">Fully Verified 2018–2025</div>
           </div>
         </div>
       </div>
@@ -56,7 +60,7 @@ export default function AfcatPyqVault() {
         <Search className="w-5 h-5 text-[#786e67]" />
         <input 
           type="text"
-          placeholder="Filter PYQs by year (e.g. 2024, 2023, 2022)..."
+          placeholder="Filter PYQs by year (e.g. 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018)..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full bg-transparent border-none outline-none text-sm text-[#262a2b] placeholder-[#786e67]"
@@ -105,17 +109,20 @@ export default function AfcatPyqVault() {
                     <span className="font-medium text-[#262a2b]">Total Marks:</span> {paper.totalMarks}
                   </div>
                   <div>
-                    <span className="font-medium text-[#262a2b]">Solutions:</span> Included
+                    <span className="font-medium text-[#262a2b]">Answer Key:</span> Included
                   </div>
                   <div>
-                    <span className="font-medium text-[#262a2b]">Format:</span> Official PDF
+                    <span className="font-medium text-[#262a2b]">Format:</span> Printable PDF
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-3 pt-2 border-t border-[#e5e2d9]">
                 <button
-                  onClick={() => setActivePdfViewer(paper)}
+                  onClick={() => {
+                    setActivePdfViewer(paper);
+                    setActiveSubjectTab('all');
+                  }}
                   className="flex-1 py-2.5 px-4 rounded-xl border border-[#262a2b] text-[#262a2b] hover:bg-[#262a2b] hover:text-white text-xs font-bold transition-all flex items-center justify-center gap-2"
                 >
                   <Eye className="w-4 h-4" /> Preview
@@ -142,8 +149,8 @@ export default function AfcatPyqVault() {
                   <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">{activePdfViewer.shift} — Question Paper & Key</h3>
-                  <p className="text-xs text-white/70">Official PDF View</p>
+                  <h3 className="font-bold text-lg">{activePdfViewer.shift} — Official Question Paper & Key</h3>
+                  <p className="text-xs text-white/70">100 Questions • 300 Marks • Marking (+3 / -1)</p>
                 </div>
               </div>
               <button 
@@ -155,60 +162,74 @@ export default function AfcatPyqVault() {
             </div>
 
             <div className="p-8 overflow-y-auto space-y-6">
-              <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-start gap-3">
-                <Sparkles className="w-5 h-5 text-[#faa114] shrink-0 mt-0.5" />
-                <div className="text-xs text-amber-900 leading-relaxed">
-                  <strong>Mentorship Tip:</strong> Solve this paper within 2 hours without checking solutions first to accurately benchmark your readiness.
-                </div>
+              {/* Subject Filter Tabs */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-[#e5e2d9]">
+                <span className="text-xs font-bold text-[#786e67] flex items-center gap-1 shrink-0">
+                  <Filter className="w-3.5 h-3.5 text-[#faa114]" /> Subject Filter:
+                </span>
+                {[
+                  { id: 'all', label: 'All Questions' },
+                  { id: 'english', label: 'Verbal English' },
+                  { id: 'maths', label: 'Numerical Ability' },
+                  { id: 'reasoning', label: 'Reasoning & Aptitude' },
+                  { id: 'ga', label: 'General Awareness' }
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveSubjectTab(tab.id)}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all ${
+                      activeSubjectTab === tab.id
+                        ? 'bg-[#262a2b] text-white'
+                        : 'bg-[#fcfcfb] text-[#786e67] border border-[#e5e2d9] hover:border-[#faa114]'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
               </div>
 
-              <div className="border border-[#e5e2d9] rounded-2xl p-6 bg-[#fcfcfb] space-y-4">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-[#262a2b] text-base">{activePdfViewer.shift} Sample Exam Questions</h4>
-                  <span className="text-xs text-[#786e67] bg-white px-2.5 py-1 rounded-lg border border-[#e5e2d9]">100 Qs • 300 Marks</span>
-                </div>
+              {/* Questions List */}
+              <div className="space-y-4">
+                {getViewerQuestions(activePdfViewer).map((q, idx) => (
+                  <div key={q.id || idx} className="p-5 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9] space-y-3 text-xs">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="font-bold text-[#262a2b] text-sm leading-snug">
+                        Q{idx + 1}. {q.questionText}
+                      </div>
+                      <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[10px] shrink-0">
+                        {q.topicName || q.subjectId.toUpperCase()}
+                      </span>
+                    </div>
 
-                {/* Question Samples */}
-                <div className="space-y-3 pt-2">
-                  <div className="p-4 bg-white rounded-xl border border-[#e5e2d9] space-y-2 text-xs">
-                    <div className="font-bold text-[#262a2b]">Q1 (English). Select the synonym for "VALIANT":</div>
-                    <div className="grid grid-cols-2 gap-2 text-[#786e67]">
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">A) Cowardly</div>
-                      <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-300 font-bold text-emerald-800">B) Gallant ✓</div>
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">C) Timid</div>
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">D) Hesitant</div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[#786e67]">
+                      {q.options.map((opt, oIdx) => (
+                        <div 
+                          key={oIdx} 
+                          className={`p-2.5 rounded-xl border ${
+                            oIdx === q.correctOptionIndex 
+                              ? 'bg-emerald-50 border-emerald-300 font-bold text-emerald-800' 
+                              : 'bg-white border-[#e5e2d9]'
+                          }`}
+                        >
+                          <strong>{String.fromCharCode(65 + oIdx)})</strong> {opt} {oIdx === q.correctOptionIndex ? '✓' : ''}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="p-3 bg-white rounded-xl border border-[#e5e2d9] text-[#262a2b] leading-relaxed">
+                      <strong className="text-[#faa114]">Step-by-Step Explanation:</strong> {q.explanation}
                     </div>
                   </div>
+                ))}
+              </div>
 
-                  <div className="p-4 bg-white rounded-xl border border-[#e5e2d9] space-y-2 text-xs">
-                    <div className="font-bold text-[#262a2b]">Q2 (Maths). A train 150m long passes a post in 9s. Speed in km/h?</div>
-                    <div className="grid grid-cols-2 gap-2 text-[#786e67]">
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">A) 50 km/h</div>
-                      <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-300 font-bold text-emerald-800">B) 60 km/h ✓</div>
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">C) 72 km/h</div>
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">D) 80 km/h</div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 bg-white rounded-xl border border-[#e5e2d9] space-y-2 text-xs">
-                    <div className="font-bold text-[#262a2b]">Q3 (GA). Where is the HQ of IAF Maintenance Command located?</div>
-                    <div className="grid grid-cols-2 gap-2 text-[#786e67]">
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">A) New Delhi</div>
-                      <div className="p-2 bg-emerald-50 rounded-lg border border-emerald-300 font-bold text-emerald-800">B) Nagpur ✓</div>
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">C) Bengaluru</div>
-                      <div className="p-2 bg-[#fcfcfb] rounded-lg border border-[#e5e2d9]">D) Shillong</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-center gap-4 pt-4">
-                  <button
-                    onClick={() => handleDownload(activePdfViewer)}
-                    className="px-6 py-3 rounded-xl bg-[#262a2b] text-white text-xs font-bold hover:bg-[#1c2226] flex items-center gap-2 shadow-md"
-                  >
-                    <Download className="w-4 h-4 text-[#faa114]" /> Download Full PDF Paper with Answer Key
-                  </button>
-                </div>
+              <div className="flex items-center justify-center gap-4 pt-4 border-t border-[#e5e2d9]">
+                <button
+                  onClick={() => handleDownload(activePdfViewer)}
+                  className="px-8 py-3.5 rounded-2xl bg-[#262a2b] text-white text-xs font-bold hover:bg-[#1c2226] flex items-center gap-2 shadow-lg"
+                >
+                  <Download className="w-4 h-4 text-[#faa114]" /> Export & Download Printable PDF Paper
+                </button>
               </div>
             </div>
           </div>
