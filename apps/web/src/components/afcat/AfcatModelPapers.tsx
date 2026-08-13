@@ -8,6 +8,7 @@ import { FileCheck, Download, Sparkles, Clock, HelpCircle, ExternalLink, ArrowRi
 export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => void }) {
   const [downloadedIds, setDownloadedIds] = useState<string[]>([]);
   const [activeModelPaper, setActiveModelPaper] = useState<AfcatModelPaper | null>(null);
+  const [activeViewMode, setActiveViewMode] = useState<'qp' | 'key' | 'exp'>('exp');
 
   const handleDownload = (paper: AfcatModelPaper) => {
     if (!downloadedIds.includes(paper.id)) {
@@ -84,7 +85,10 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
 
               <div className="space-y-2 pt-2 border-t border-[#e5e2d9]">
                 <button
-                  onClick={() => setActiveModelPaper(paper)}
+                  onClick={() => {
+                    setActiveModelPaper(paper);
+                    setActiveViewMode('exp');
+                  }}
                   className="w-full py-2 px-4 rounded-xl bg-[#fcfcfb] hover:bg-[#e5e2d9]/50 text-[#262a2b] border border-[#e5e2d9] text-xs font-bold transition-all flex items-center justify-center gap-1.5"
                 >
                   Preview Paper & Solutions <ExternalLink className="w-3.5 h-3.5" />
@@ -120,7 +124,7 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
                 </div>
                 <div>
                   <h3 className="font-bold text-lg">{activeModelPaper.title}</h3>
-                  <p className="text-xs text-white/70">AFCAT Standard Level Full Test & Key</p>
+                  <p className="text-xs text-white/70">100 Questions • 300 Marks • Marking (+3 / -1)</p>
                 </div>
               </div>
               <button 
@@ -132,54 +136,99 @@ export default function AfcatModelPapers({ onStartQuiz }: { onStartQuiz?: () => 
             </div>
 
             <div className="p-8 overflow-y-auto space-y-6">
-              <div className="grid grid-cols-3 gap-4 text-center">
-                <div className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9]">
-                  <div className="text-xs text-[#786e67]">Questions</div>
-                  <div className="text-xl font-bold text-[#262a2b] mt-1">{activeModelPaper.totalQuestions} Qs</div>
-                </div>
-                <div className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9]">
-                  <div className="text-xs text-[#786e67]">Duration</div>
-                  <div className="text-xl font-bold text-[#262a2b] mt-1">{activeModelPaper.durationMinutes} Mins</div>
-                </div>
-                <div className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9]">
-                  <div className="text-xs text-[#786e67]">Target Cutoff</div>
-                  <div className="text-xl font-bold text-emerald-600 mt-1">165+ Marks</div>
-                </div>
-              </div>
-
-              {/* Questions List */}
-              <div className="space-y-4 pt-2">
-                <h4 className="font-bold text-[#262a2b] text-sm">Full Exam Questions & Explanations:</h4>
-                {getModelQuestions(activeModelPaper).map((q, idx) => (
-                  <div key={q.id || idx} className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9] space-y-2 text-xs">
-                    <div className="font-bold text-[#262a2b] text-sm">Q{idx + 1}. {q.questionText}</div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[#786e67]">
-                      {q.options.map((opt, oIdx) => (
-                        <div 
-                          key={oIdx} 
-                          className={`p-2 rounded-xl border ${
-                            oIdx === q.correctOptionIndex 
-                              ? 'bg-emerald-50 border-emerald-300 font-bold text-emerald-800' 
-                              : 'bg-white border-[#e5e2d9]'
-                          }`}
-                        >
-                          <strong>{String.fromCharCode(65 + oIdx)})</strong> {opt} {oIdx === q.correctOptionIndex ? '✓' : ''}
-                        </div>
-                      ))}
-                    </div>
-                    <div className="p-2.5 bg-white rounded-xl border border-[#e5e2d9] text-[#262a2b]">
-                      <strong>Explanation:</strong> {q.explanation}
-                    </div>
-                  </div>
+              {/* 3 Main Part View Mode Selector */}
+              <div className="grid grid-cols-3 gap-2 p-1.5 bg-[#fcfcfb] border border-[#e5e2d9] rounded-2xl">
+                {[
+                  { id: 'qp', label: '1ST: QUESTION PAPER (100 Qs)' },
+                  { id: 'key', label: '2ND: ANSWER KEY (100 Qs)' },
+                  { id: 'exp', label: '3RD: SOLUTIONS & EXPLANATIONS' }
+                ].map(mode => (
+                  <button
+                    key={mode.id}
+                    onClick={() => setActiveViewMode(mode.id as any)}
+                    className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all text-center ${
+                      activeViewMode === mode.id
+                        ? 'bg-[#262a2b] text-white shadow-sm'
+                        : 'text-[#786e67] hover:text-[#262a2b]'
+                    }`}
+                  >
+                    {mode.label}
+                  </button>
                 ))}
               </div>
+
+              {/* VIEW MODE 1: QUESTION PAPER */}
+              {activeViewMode === 'qp' && (
+                <div className="space-y-4">
+                  <div className="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900">
+                    <strong>Question Paper Mode:</strong> Questions 1 to 100 presented without answer keys for self-testing.
+                  </div>
+                  {getModelQuestions(activeModelPaper).map((q, idx) => (
+                    <div key={q.id || idx} className="p-5 bg-white rounded-2xl border border-[#e5e2d9] space-y-3 text-xs">
+                      <div className="font-bold text-[#262a2b] text-sm">Q{idx + 1}. {q.questionText}</div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[#786e67]">
+                        {q.options.map((opt, oIdx) => (
+                          <div key={oIdx} className="p-2.5 bg-[#fcfcfb] rounded-xl border border-[#e5e2d9]">
+                            <strong>{String.fromCharCode(65 + oIdx)})</strong> {opt}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* VIEW MODE 2: ANSWER KEY MATRIX */}
+              {activeViewMode === 'key' && (
+                <div className="space-y-4">
+                  <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-900">
+                    <strong>Official Answer Key Table:</strong> Quick evaluation grid for Questions 1 to 100.
+                  </div>
+                  <div className="grid grid-cols-5 sm:grid-cols-10 gap-2 text-center text-xs">
+                    {getModelQuestions(activeModelPaper).map((q, idx) => (
+                      <div key={idx} className="p-2.5 bg-[#fcfcfb] rounded-xl border border-[#e5e2d9]">
+                        <div className="text-[10px] text-[#786e67]">Q{idx + 1}</div>
+                        <div className="font-bold text-emerald-700 text-sm">{String.fromCharCode(65 + q.correctOptionIndex)}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* VIEW MODE 3: SOLUTIONS & EXPLANATIONS */}
+              {activeViewMode === 'exp' && (
+                <div className="space-y-4">
+                  {getModelQuestions(activeModelPaper).map((q, idx) => (
+                    <div key={q.id || idx} className="p-4 bg-[#fcfcfb] rounded-2xl border border-[#e5e2d9] space-y-2 text-xs">
+                      <div className="font-bold text-[#262a2b] text-sm">Q{idx + 1}. {q.questionText}</div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[#786e67]">
+                        {q.options.map((opt, oIdx) => (
+                          <div 
+                            key={oIdx} 
+                            className={`p-2 rounded-xl border ${
+                              oIdx === q.correctOptionIndex 
+                                ? 'bg-emerald-50 border-emerald-300 font-bold text-emerald-800' 
+                                : 'bg-white border-[#e5e2d9]'
+                            }`}
+                          >
+                            <strong>{String.fromCharCode(65 + oIdx)})</strong> {opt} {oIdx === q.correctOptionIndex ? '✓' : ''}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="p-2.5 bg-white rounded-xl border border-[#e5e2d9] text-[#262a2b]">
+                        <strong>Explanation:</strong> {q.explanation}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <div className="flex items-center justify-center gap-4 pt-4 border-t border-[#e5e2d9]">
                 <button
                   onClick={() => handleDownload(activeModelPaper)}
                   className="px-8 py-3.5 rounded-2xl bg-[#262a2b] text-white text-xs font-bold hover:bg-[#1c2226] flex items-center gap-2 shadow-md"
                 >
-                  <Download className="w-4 h-4 text-[#faa114]" /> Export & Download Complete Model Paper PDF
+                  <Download className="w-4 h-4 text-[#faa114]" /> Export & Download Complete 3-Part Model Paper PDF
                 </button>
               </div>
             </div>
