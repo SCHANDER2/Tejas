@@ -2,6 +2,14 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import AfcatHub from '../components/afcat/AfcatHub';
+import CdsHub from '../components/cds/CdsHub';
+import NdaHub from '../components/nda/NdaHub';
+import JeeMainsHub from '../components/jee/JeeMainsHub';
+import NeetHub from '../components/neet/NeetHub';
+import UpscHub from '../components/upsc/UpscHub';
+import SscCglHub from '../components/ssc/SscCglHub';
+import GateHub from '../components/gate/GateHub';
+import CatHub from '../components/cat/CatHub';
 import { 
   BookOpen, 
   Layers, 
@@ -121,15 +129,108 @@ function AnimatedCounter({ end, suffix = '', label }: { end: number; suffix?: st
    EXAM CARD DATA
    ────────────────────────────────────────────────── */
 const examCategories = [
-  { name: 'UPSC Civil Services', icon: Shield, candidates: '12L+', color: '#faa114' },
-  { name: 'JEE Main & Advanced', icon: Zap, candidates: '25L+', color: '#786e67' },
-  { name: 'NEET UG', icon: GraduationCap, candidates: '20L+', color: '#faa114' },
-  { name: 'GATE Engineering', icon: Brain, candidates: '9L+', color: '#786e67' },
-  { name: 'SSC CGL/CHSL', icon: Target, candidates: '30L+', color: '#faa114' },
-  { name: 'Banking PO/Clerk', icon: BarChart3, candidates: '15L+', color: '#786e67' },
-  { name: 'State PSC', icon: BookMarked, candidates: '8L+', color: '#faa114' },
-  { name: 'Defence (NDA/CDS)', icon: Shield, candidates: '5L+', color: '#786e67' },
+  { id: 'afcat', name: 'AFCAT 2026 (Air Force)', icon: Shield, candidates: '5L+', color: '#faa114' },
+  { id: 'cds', name: 'CDS (IMA / OTA)', icon: Shield, candidates: '6L+', color: '#10b981' },
+  { id: 'nda', name: 'NDA & NA (UPSC)', icon: Shield, candidates: '8L+', color: '#f59e0b' },
+  { id: 'jee_mains', name: 'JEE Main & Advanced', icon: Zap, candidates: '25L+', color: '#3b82f6' },
+  { id: 'neet', name: 'NEET UG Medical', icon: GraduationCap, candidates: '21L+', color: '#10b981' },
+  { id: 'upsc', name: 'UPSC CSE (IAS / IPS)', icon: BookOpen, candidates: '12L+', color: '#8b5cf6' },
+  { id: 'ssc_cgl', name: 'SSC CGL Tier 1 & 2', icon: Target, candidates: '30L+', color: '#f97316' },
+  { id: 'gate', name: 'GATE (IISc / IITs)', icon: Brain, candidates: '9L+', color: '#6366f1' },
+  { id: 'cat', name: 'CAT (IIMs B-Schools)', icon: BarChart3, candidates: '3.5L+', color: '#ec4899' },
 ];
+
+const examHubDetails: Record<string, {
+  badge: string;
+  title: string;
+  description: string;
+  mocks: string;
+  features: string[];
+  emoji: string;
+  color: string;
+}> = {
+  afcat: {
+    badge: '✈️ AFCAT PREPARATION HUB',
+    title: 'Air Force Common Admission Test',
+    description: 'Explore our dedicated mentor-led AFCAT hub featuring complete syllabus roadmaps, 15 full-length model papers, authentic PYQ PDFs, subject YouTube playlists, and official AFCAT quiz simulations.',
+    mocks: '15 Mocks',
+    features: ['Topic Tests', 'Full Mocks', 'PYQ Papers', 'Daily Goals', 'AI Revision Plan', 'AI Explainer', 'Sectional Limits', 'Readiness Report'],
+    emoji: '✈️',
+    color: '#faa114'
+  },
+  cds: {
+    badge: '🛡️ CDS PREPARATION HUB',
+    title: 'Combined Defence Services (IMA / OTA / AFA)',
+    description: 'Access complete general knowledge maps, english vocabulary boosters, full-length OTA mock tests, and historical papers structured to simulate the actual UPSC CDAC exam environment.',
+    mocks: '12 Mocks',
+    features: ['GK Question Bank', 'English Vocab Boosters', 'OTA Mock Tests', 'FSRS Spaced Repetition', 'CDS Performance Ranker'],
+    emoji: '🛡️',
+    color: '#10b981'
+  },
+  nda: {
+    badge: '⚔️ NDA & NA PREPARATION PLATFORM',
+    title: 'National Defence Academy & Naval Academy',
+    description: 'Syllabus alignment for UPSC NDA Mathematics and General Ability Test. Train with dynamic formulas sheets, topic practice drills, and full-length CBT model papers.',
+    mocks: '10 Mocks',
+    features: ['Maths Concepts Explorer', 'GAT Practice Drills', 'Formula Cheatsheets', 'Daily Flashcards', 'Performance Tracker'],
+    emoji: '⚔️',
+    color: '#f59e0b'
+  },
+  jee_mains: {
+    badge: '⚛️ JEE MAIN & ADVANCED CORE ENGINE',
+    title: 'Joint Entrance Examination',
+    description: 'Master engineering physics, complex chemistry reaction pipelines, and logic-heavy mathematics matrices. Access step-by-step video solvers and AI-guided micro challenges.',
+    mocks: '20 Mocks',
+    features: ['Numerical Solvers', 'Mock Test Engine', 'Physics Visualizers', 'IIT Syllabus Mapping', 'Chapter-wise Quizzes'],
+    emoji: '⚛️',
+    color: '#3b82f6'
+  },
+  neet: {
+    badge: '🩺 NEET UG MEDICAL CORE ENGINE',
+    title: 'National Eligibility cum Entrance Test',
+    description: 'NCERT biology interactive mapping, high-yield organic/inorganic chemistry formula builders, and physics conceptual drills designed to scale active recall.',
+    mocks: '18 Mocks',
+    features: ['NCERT Map Engine', 'Biology Flashcards', 'Chemistry Drills', 'Weak-Topic Focus', 'CBT Test Simulator'],
+    emoji: '🩺',
+    color: '#10b981'
+  },
+  upsc: {
+    badge: '🏛️ UPSC CIVIL SERVICES EXAM HUB',
+    title: 'UPSC CSE (IAS / IPS / IFS)',
+    description: 'Deep Indian Polity analysis, modern history visual timelines, and weekly current affairs summaries. Practice mains answer generation with instant AI logic feedback.',
+    mocks: '10 Mocks',
+    features: ['Polity Timelines', 'Mains Answer Generator', 'CSAT Practice Portal', 'Current Affairs Hub', 'Syllabus Accordion'],
+    emoji: '🏛️',
+    color: '#8b5cf6'
+  },
+  ssc_cgl: {
+    badge: '📋 SSC CGL TIER 1 & 2 ENGINE',
+    title: 'Staff Selection Commission CGL',
+    description: 'Optimize quantitative aptitude speed, logical reasoning sequence solving, and general awareness memory logs. Take daily speed-math sprints and reasoning logical sequence drills.',
+    mocks: '25 Mocks',
+    features: ['Speed Math Drills', 'Reasoning Sprints', 'General Awareness Logs', 'Tier 2 Simulators', 'Syllabus Tracker'],
+    emoji: '📋',
+    color: '#f97316'
+  },
+  gate: {
+    badge: '⚡ GATE ENGINEERING ENGINE',
+    title: 'Graduate Aptitude Test in Engineering',
+    description: 'Subject-specific core engineering workflows, aptitude shortcuts, and previous-year numerical answer type questions with immediate step explanations.',
+    mocks: '15 Mocks',
+    features: ['Numerical Answers (NAT)', 'Aptitude Shortcuts', 'Core Topic Workspaces', 'Formula Sheets', 'Dynamic Assessments'],
+    emoji: '⚡',
+    color: '#6366f1'
+  },
+  cat: {
+    badge: '📊 CAT MBA ENTRANCE PLATFORM',
+    title: 'Common Admission Test (IIMs)',
+    description: 'High-difficulty Data Interpretation & Logical Reasoning (DILR) caselets, Quantitative Aptitude practice sets, and Verbal Ability reading comprehensions.',
+    mocks: '12 Mocks',
+    features: ['DILR Caselets', 'QA Speed Booster', 'VARC Comprehensions', 'Percentile Predictor', 'Adaptive Practice Sets'],
+    emoji: '📊',
+    color: '#ec4899'
+  }
+};
 
 const features = [
   {
@@ -201,6 +302,7 @@ const API_BASE_URL = typeof window !== 'undefined' &&
    ────────────────────────────────────────────────── */
 export default function WorkspacePage() {
   const [activeTab, setActiveTab] = useState('landing');
+  const [previewExam, setPreviewExam] = useState('afcat');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -441,12 +543,14 @@ export default function WorkspacePage() {
   const [profileOnboardingCompleted, setProfileOnboardingCompleted] = useState(true);
   const [examsList, setExamsList] = useState<any[]>([]);
 
-  const openAfcatWorkspace = () => {
+  const openExamWorkspace = (examId: string = 'afcat') => {
     setIsLoggedIn(true);
     setProfileOnboardingCompleted(true);
-    setProfileTargetExamId('afcat');
-    triggerLoadingState('afcat');
+    setProfileTargetExamId(examId);
+    triggerLoadingState(examId);
   };
+
+  const openAfcatWorkspace = () => openExamWorkspace('afcat');
 
   // Onboarding Wizard states
   const [onboardingStep, setOnboardingStep] = useState(1);
@@ -964,35 +1068,101 @@ export default function WorkspacePage() {
           </section>
         </RevealSection>
 
-        {/* ═══════════ FEATURED AFCAT SPECIAL EDITION BANNER ═══════════ */}
+        {/* ═══════════ INTERACTIVE EXAM EXPLORER SHOWCASE ═══════════ */}
         <RevealSection>
-          <section className="px-6 md:px-12 py-10">
-            <div className="max-w-7xl mx-auto bg-gradient-to-r from-[#1c2226] via-[#262a2b] to-[#343a40] text-white rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="relative z-10 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#faa114]/20 border border-[#faa114]/40 text-[#faa114] text-xs font-bold uppercase tracking-wider mb-4">
-                  ✈️ AFCAT Special Mentor Edition 2026
+          <section id="exams" className="px-6 md:px-12 py-16 md:py-24 bg-[#f9f8f5]">
+            <div className="max-w-7xl mx-auto space-y-12">
+              <div className="text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#faa114]/10 border border-[#faa114]/20 rounded-full mb-4">
+                  <Target className="w-3.5 h-3.5 text-[#faa114]" />
+                  <span className="text-xs font-semibold text-[#786e67] tracking-wide uppercase">Interactive Exam Explorer</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-3" style={{ fontFamily: 'Outfit' }}>
-                  Preparing for Air Force Common Admission Test (AFCAT)?
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ fontFamily: 'Outfit' }}>
+                  Choose Your Preparation Workspace
                 </h2>
-                <p className="text-white/80 text-sm md:text-base leading-relaxed mb-6">
-                  Explore our dedicated mentor-led AFCAT hub featuring complete syllabus roadmaps, 15 full-length model papers, authentic PYQ PDFs, subject YouTube playlists, and official AFCAT quiz simulations.
+                <p className="text-base text-[#786e67] max-w-2xl mx-auto">
+                  Select any examination below to preview its custom-tailored mentorship roadmap, simulated computer-based tests, and syllabus features.
                 </p>
-                <div className="flex flex-wrap gap-4">
-                  <button 
-                    onClick={openAfcatWorkspace}
-                    className="px-8 py-3.5 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-2xl shadow-lg shadow-[#faa114]/20 text-sm transition-all flex items-center gap-2"
-                  >
-                    Open AFCAT Prep Hub <ArrowRight className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
-              <div className="relative z-10 bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl space-y-3 shrink-0 w-full md:w-72 text-center">
-                <div className="text-2xl font-bold text-[#faa114]">AFCAT 1 & 2</div>
-                <div className="text-xs text-white/70">Complete Air Force Officer Prep</div>
-                <div className="pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs">
-                  <div><strong className="text-white">15</strong> Mocks</div>
-                  <div><strong className="text-white">PYQs</strong> Included</div>
+
+              {/* Grid Selector */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                {/* Left side: Exam List Selector (4 columns) */}
+                <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-y-auto lg:overflow-x-visible gap-2 pr-2 py-1 border-b lg:border-b-0 lg:border-r border-[#dbd7c7] no-scrollbar max-h-[500px]">
+                  {examCategories.map((exam) => {
+                    const isSelected = previewExam === exam.id;
+                    const Icon = exam.icon;
+                    return (
+                      <button
+                        key={exam.id}
+                        onClick={() => setPreviewExam(exam.id)}
+                        className={`flex items-center gap-3 px-4 py-3.5 text-left rounded-xl transition-all duration-200 shrink-0 lg:shrink-1 border ${
+                          isSelected
+                            ? 'bg-[#262a2b] text-white border-[#262a2b] shadow-sm border-l-4 border-l-[#faa114] scale-[1.01]'
+                            : 'text-[#786e67] border-transparent hover:bg-[#dbd7c7]/30 hover:text-[#262a2b]'
+                        }`}
+                      >
+                        <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-white/10 text-white' : 'bg-transparent text-[#786e67]'}`}>
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <span className="text-xs md:text-sm font-bold tracking-wide">{exam.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Right side: Dynamic Preview Area (8 columns) */}
+                <div className="lg:col-span-8 bg-[#262a2b] text-white rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 min-h-[420px]">
+                  {/* Subtle ambient light */}
+                  <div className="absolute -top-24 -right-24 w-72 h-72 bg-[#faa114]/10 rounded-full blur-3xl pointer-events-none"></div>
+                  
+                  {(() => {
+                    const info = examHubDetails[previewExam] || examHubDetails.afcat;
+                    return (
+                      <>
+                        <div className="relative z-10 max-w-xl space-y-5">
+                          <div 
+                            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
+                            style={{ backgroundColor: `${info.color}20`, border: `1px solid ${info.color}40`, color: info.color }}
+                          >
+                            {info.badge}
+                          </div>
+                          <h3 className="text-2xl md:text-4xl font-bold tracking-tight text-white" style={{ fontFamily: 'Outfit' }}>
+                            Prepare for {info.title}
+                          </h3>
+                          <p className="text-white/80 text-sm md:text-base leading-relaxed">
+                            {info.description}
+                          </p>
+                          
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {info.features.map((feature, idx) => (
+                              <span 
+                                key={idx} 
+                                className="px-3 py-1 bg-white/5 border border-white/10 hover:border-white/20 rounded-lg text-xs font-semibold text-white/95 transition-colors cursor-default"
+                              >
+                                {feature}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="relative z-10 bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl space-y-4 shrink-0 w-full md:w-64 text-center flex flex-col justify-between">
+                          <div>
+                            <div className="text-3xl font-extrabold" style={{ color: info.color }}>
+                              {info.mocks}
+                            </div>
+                            <div className="text-xs text-white/70 mt-2">Simulated CBT Exam Series & Syllabus Analytics</div>
+                          </div>
+                          <button
+                            onClick={() => openExamWorkspace(previewExam)}
+                            className="w-full py-3 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-extrabold rounded-xl shadow-lg text-xs transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
+                          >
+                            Launch {info.emoji} Workspace
+                          </button>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
@@ -1020,14 +1190,18 @@ export default function WorkspacePage() {
                 {examCategories.map((exam, i) => {
                   const Icon = exam.icon;
                   return (
-                    <div key={i} className="min-w-[260px] md:min-w-[280px] bg-[#fcfcfb] border border-[#dbd7c7] rounded-2xl p-6 card-hover cursor-pointer group">
+                    <div 
+                      key={i} 
+                      onClick={() => openExamWorkspace(exam.id)}
+                      className="min-w-[260px] md:min-w-[280px] bg-[#fcfcfb] border border-[#dbd7c7] rounded-2xl p-6 card-hover cursor-pointer group hover:border-[#faa114] transition-all"
+                    >
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors" style={{ backgroundColor: `${exam.color}15` }}>
                         <Icon className="w-6 h-6" style={{ color: exam.color }} />
                       </div>
                       <h3 className="text-base font-bold mb-1">{exam.name}</h3>
                       <p className="text-xs text-[#b3aa9e] mb-4">{exam.candidates} aspirants yearly</p>
                       <div className="flex items-center gap-1 text-xs font-semibold text-[#faa114] group-hover:gap-2 transition-all">
-                        Explore Syllabus <ArrowUpRight className="w-3.5 h-3.5" />
+                        Launch CBT Engine <ArrowUpRight className="w-3.5 h-3.5" />
                       </div>
                     </div>
                   );
@@ -1700,6 +1874,14 @@ export default function WorkspacePage() {
               {(() => {
                 const navs = [
                   { id: 'afcat', label: 'AFCAT 2026 Hub', icon: Shield },
+                  { id: 'cds', label: 'CDS (IMA/OTA) Hub', icon: Shield },
+                  { id: 'nda', label: 'NDA & NA Hub', icon: Shield },
+                  { id: 'jee_mains', label: 'JEE Main Hub', icon: Zap },
+                  { id: 'neet', label: 'NEET UG Hub', icon: Award },
+                  { id: 'upsc', label: 'UPSC CSE Hub', icon: BookOpen },
+                  { id: 'ssc_cgl', label: 'SSC CGL Hub', icon: FileText },
+                  { id: 'gate', label: 'GATE Engine', icon: Sparkles },
+                  { id: 'cat', label: 'CAT Engine', icon: TrendingUp },
                   { id: 'dashboard', label: 'Dashboard', icon: BookOpen },
                   { id: 'planner', label: 'Study Planner', icon: Calendar },
                   { id: 'explorer', label: 'Exam Explorer', icon: Search },
@@ -2138,6 +2320,14 @@ export default function WorkspacePage() {
 
             {/* AFCAT 2026 HUB */}
             {activeTab === 'afcat' && <AfcatHub />}
+            {activeTab === 'cds' && <CdsHub />}
+            {activeTab === 'nda' && <NdaHub />}
+            {activeTab === 'jee_mains' && <JeeMainsHub />}
+            {activeTab === 'neet' && <NeetHub />}
+            {activeTab === 'upsc' && <UpscHub />}
+            {activeTab === 'ssc_cgl' && <SscCglHub />}
+            {activeTab === 'gate' && <GateHub />}
+            {activeTab === 'cat' && <CatHub />}
 
             {/* DASHBOARD */}
             {activeTab === 'dashboard' && (
