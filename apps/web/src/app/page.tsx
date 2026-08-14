@@ -47,7 +47,11 @@ import {
   Users,
   Lock,
   Mail,
-  RefreshCw
+  RefreshCw,
+  Check,
+  Compass,
+  Cpu,
+  Bookmark
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────────
@@ -65,7 +69,7 @@ function useRevealOnScroll() {
           observer.unobserve(el);
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -97,7 +101,7 @@ function AnimatedCounter({ end, suffix = '', label }: { end: number; suffix?: st
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true;
-          const duration = 1500;
+          const duration = 1600;
           const startTime = performance.now();
           const animate = (now: number) => {
             const elapsed = now - startTime;
@@ -109,18 +113,18 @@ function AnimatedCounter({ end, suffix = '', label }: { end: number; suffix?: st
           requestAnimationFrame(animate);
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.4 }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, [end]);
 
   return (
-    <div ref={ref} className="text-center">
-      <div className="text-4xl md:text-5xl font-bold text-[#262a2b]" style={{ fontFamily: 'Outfit' }}>
+    <div ref={ref} className="text-center p-4">
+      <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight font-display">
         {count}{suffix}
       </div>
-      <div className="text-sm text-[#786e67] mt-2 font-medium">{label}</div>
+      <div className="text-xs md:text-sm text-slate-400 mt-2 font-medium tracking-wide uppercase">{label}</div>
     </div>
   );
 }
@@ -129,15 +133,15 @@ function AnimatedCounter({ end, suffix = '', label }: { end: number; suffix?: st
    EXAM CARD DATA
    ────────────────────────────────────────────────── */
 const examCategories = [
-  { id: 'afcat', name: 'AFCAT 2026 (Air Force)', icon: Shield, candidates: '5L+', color: '#faa114' },
-  { id: 'cds', name: 'CDS (IMA / OTA)', icon: Shield, candidates: '6L+', color: '#10b981' },
-  { id: 'nda', name: 'NDA & NA (UPSC)', icon: Shield, candidates: '8L+', color: '#f59e0b' },
-  { id: 'jee_mains', name: 'JEE Main & Advanced', icon: Zap, candidates: '25L+', color: '#3b82f6' },
-  { id: 'neet', name: 'NEET UG Medical', icon: GraduationCap, candidates: '21L+', color: '#10b981' },
-  { id: 'upsc', name: 'UPSC CSE (IAS / IPS)', icon: BookOpen, candidates: '12L+', color: '#8b5cf6' },
-  { id: 'ssc_cgl', name: 'SSC CGL Tier 1 & 2', icon: Target, candidates: '30L+', color: '#f97316' },
-  { id: 'gate', name: 'GATE (IISc / IITs)', icon: Brain, candidates: '9L+', color: '#6366f1' },
-  { id: 'cat', name: 'CAT (IIMs B-Schools)', icon: BarChart3, candidates: '3.5L+', color: '#ec4899' },
+  { id: 'afcat', name: 'AFCAT 2026 (Air Force)', category: 'defence', icon: Shield, candidates: '5L+', color: '#f59e0b', badge: 'AIR FORCE', tag: 'CBT Suite Ready' },
+  { id: 'cds', name: 'CDS (IMA / OTA)', category: 'defence', icon: Shield, candidates: '6L+', color: '#10b981', badge: 'DEFENCE', tag: 'Official CDAC' },
+  { id: 'nda', name: 'NDA & NA (UPSC)', category: 'defence', icon: Shield, candidates: '8L+', color: '#f59e0b', badge: 'UPSC DEFENCE', tag: 'Maths & GAT' },
+  { id: 'jee_mains', name: 'JEE Main & Advanced', category: 'engineering', icon: Zap, candidates: '25L+', color: '#38bdf8', badge: 'IIT / NTA', tag: 'Physics & Chem' },
+  { id: 'neet', name: 'NEET UG Medical', category: 'medical', icon: GraduationCap, candidates: '21L+', color: '#10b981', badge: 'MEDICAL / NTA', tag: 'NCERT Ingestion' },
+  { id: 'upsc', name: 'UPSC CSE (IAS / IPS)', category: 'civil', icon: BookOpen, candidates: '12L+', color: '#a855f7', badge: 'CIVIL SERVICES', tag: 'Prelims + Mains' },
+  { id: 'ssc_cgl', name: 'SSC CGL Tier 1 & 2', category: 'aptitude', icon: Target, candidates: '30L+', color: '#f97316', badge: 'GOVERNMENT', tag: 'Speed Math' },
+  { id: 'gate', name: 'GATE (IISc / IITs)', category: 'engineering', icon: Brain, candidates: '9L+', color: '#6366f1', badge: 'ENGINEERING', tag: 'NAT & MSQ' },
+  { id: 'cat', name: 'CAT (IIMs B-Schools)', category: 'aptitude', icon: BarChart3, candidates: '3.5L+', color: '#ec4899', badge: 'MANAGEMENT', tag: 'DILR & VARC' },
 ];
 
 const examHubDetails: Record<string, {
@@ -150,13 +154,13 @@ const examHubDetails: Record<string, {
   color: string;
 }> = {
   afcat: {
-    badge: '✈️ AFCAT PREPARATION HUB',
+    badge: '✈️ AFCAT 2026 MENTOR EDITION',
     title: 'Air Force Common Admission Test',
-    description: 'Explore our dedicated mentor-led AFCAT hub featuring complete syllabus roadmaps, 15 full-length model papers, authentic PYQ PDFs, subject YouTube playlists, and official AFCAT quiz simulations.',
+    description: 'Complete mentor-led AFCAT hub featuring comprehensive syllabus roadmaps, 15 full-length model papers, authentic PYQ PDFs (2018-2025), subject video playlists, and official AFCAT CBT quiz simulations.',
     mocks: '15 Mocks',
     features: ['Topic Tests', 'Full Mocks', 'PYQ Papers', 'Daily Goals', 'AI Revision Plan', 'AI Explainer', 'Sectional Limits', 'Readiness Report'],
     emoji: '✈️',
-    color: '#faa114'
+    color: '#f59e0b'
   },
   cds: {
     badge: '🛡️ CDS PREPARATION HUB',
@@ -170,7 +174,7 @@ const examHubDetails: Record<string, {
   nda: {
     badge: '⚔️ NDA & NA PREPARATION PLATFORM',
     title: 'National Defence Academy & Naval Academy',
-    description: 'Syllabus alignment for UPSC NDA Mathematics and General Ability Test. Train with dynamic formulas sheets, topic practice drills, and full-length CBT model papers.',
+    description: 'Syllabus alignment for UPSC NDA Mathematics and General Ability Test. Train with dynamic formula cheatsheets, topic practice drills, and full-length CBT model papers.',
     mocks: '10 Mocks',
     features: ['Maths Concepts Explorer', 'GAT Practice Drills', 'Formula Cheatsheets', 'Daily Flashcards', 'Performance Tracker'],
     emoji: '⚔️',
@@ -183,7 +187,7 @@ const examHubDetails: Record<string, {
     mocks: '20 Mocks',
     features: ['Numerical Solvers', 'Mock Test Engine', 'Physics Visualizers', 'IIT Syllabus Mapping', 'Chapter-wise Quizzes'],
     emoji: '⚛️',
-    color: '#3b82f6'
+    color: '#38bdf8'
   },
   neet: {
     badge: '🩺 NEET UG MEDICAL CORE ENGINE',
@@ -201,7 +205,7 @@ const examHubDetails: Record<string, {
     mocks: '10 Mocks',
     features: ['Polity Timelines', 'Mains Answer Generator', 'CSAT Practice Portal', 'Current Affairs Hub', 'Syllabus Accordion'],
     emoji: '🏛️',
-    color: '#8b5cf6'
+    color: '#a855f7'
   },
   ssc_cgl: {
     badge: '📋 SSC CGL TIER 1 & 2 ENGINE',
@@ -235,39 +239,45 @@ const examHubDetails: Record<string, {
 const features = [
   {
     icon: Sparkles,
-    title: 'AI Quiz Engine',
-    description: 'Paste a topic, upload a PDF, or share a YouTube link — AI generates instant quizzes with explanations.',
-    tag: 'CORE FEATURE',
+    title: 'AI Instant Quiz Engine',
+    description: 'Paste any topic, upload a textbook PDF, or drop a YouTube link — generates authentic exam-pattern questions with instant step explanations.',
+    tag: 'GENAI ENGINE',
+    color: '#f59e0b'
   },
   {
     icon: Calendar,
-    title: 'Smart Study Planner',
-    description: 'Personalized daily roadmaps that auto-adjust when you miss sessions or improve accuracy.',
-    tag: 'AI POWERED',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Deep Analytics',
-    description: 'Concept mastery heatmaps, predicted percentiles, weak-topic detection, and AI-driven study recommendations.',
-    tag: 'INSIGHTS',
-  },
-  {
-    icon: FileText,
-    title: 'PDF & Research Hub',
-    description: 'Split-pane workspace: read documents on the left, chat with AI about them on the right.',
-    tag: 'WORKSPACE',
+    title: 'Adaptive Capacity Planner',
+    description: 'Personalized daily study schedules that auto-rebalance when you miss sessions or when your target exam date draws closer.',
+    tag: 'DYNAMIC SCHEDULER',
+    color: '#38bdf8'
   },
   {
     icon: RotateCcw,
-    title: 'Spaced Repetition',
-    description: 'Automatic revision scheduling based on the FSRS algorithm — never forget what you\'ve learned.',
-    tag: 'RETENTION',
+    title: 'FSRS Spaced Repetition',
+    description: 'Scientific active recall scheduling based on the Free Spaced Repetition Scheduler algorithm — eliminates forgetfulness forever.',
+    tag: 'RETENTION ALGORITHM',
+    color: '#10b981'
   },
   {
-    icon: Brain,
-    title: 'Adaptive Learning',
-    description: 'AI identifies your weak areas and generates targeted practice to strengthen them systematically.',
-    tag: 'PERSONALIZED',
+    icon: FileText,
+    title: 'Split-Pane Research Hub',
+    description: 'Read document PDFs on the left, highlight complex formulas, and chat with your dedicated AI tutor on the right in real time.',
+    tag: 'INTELLIGENT WORKSPACE',
+    color: '#a855f7'
+  },
+  {
+    icon: TrendingUp,
+    title: 'Concept Mastery Heatmap',
+    description: 'Real-time detection of weak topics, predicted percentile calibration, and tailored recommendations that fix knowledge gaps.',
+    tag: 'CALIBRATION RADAR',
+    color: '#f97316'
+  },
+  {
+    icon: Shield,
+    title: 'Official CBT Exam Window',
+    description: 'Authentic CDAC and NTA exam simulation interface featuring sectional timers, question palettes, and instant post-exam rank reports.',
+    tag: 'REAL SIMULATION',
+    color: '#6366f1'
   },
 ];
 
@@ -275,20 +285,23 @@ const testimonials = [
   {
     name: 'Priya Sharma',
     role: 'UPSC CSE 2025 — AIR 47',
-    quote: 'Tejas changed how I prepare. The AI study planner alone saved me 2 hours daily by eliminating guesswork.',
+    quote: 'Tejas transformed how I prepared for Civil Services. The AI study planner alone saved me 2 hours daily by eliminating guesswork and keeping my syllabus strictly on track.',
     avatar: 'PS',
+    badge: 'AIR 47'
   },
   {
     name: 'Arjun Menon',
     role: 'JEE Advanced — 99.4%ile',
-    quote: 'The instant quiz generator from my PDFs is incredible. I can test myself on any chapter in seconds.',
+    quote: 'The instant quiz engine from my textbook PDFs is incredible. I could test myself on any physics topic in seconds with complete step-by-step solution derivations.',
     avatar: 'AM',
+    badge: '99.4%ile'
   },
   {
     name: 'Kavitha R.',
     role: 'NEET UG — 680/720',
-    quote: 'The spaced repetition system helped me retain Biology concepts I kept forgetting. Game changer.',
+    quote: 'The spaced repetition system helped me retain Botany and Zoology concepts that I kept forgetting. It was the single most impactful tool in my medical preparation.',
     avatar: 'KR',
+    badge: '680 / 720'
   },
 ];
 
@@ -307,6 +320,16 @@ export default function WorkspacePage() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Interactive Hero Console Demo states
+  const [heroConsoleTab, setHeroConsoleTab] = useState<'cbt' | 'quiz' | 'planner' | 'fsrs' | 'mastery'>('cbt');
+  const [heroExamFilter, setHeroExamFilter] = useState<'all' | 'defence' | 'engineering' | 'medical' | 'civil' | 'aptitude'>('all');
+  const [heroExamSearch, setHeroExamSearch] = useState('');
+  const [heroQuizOption, setHeroQuizOption] = useState<string | null>(null);
+  const [heroQuizSubmitted, setHeroQuizSubmitted] = useState(false);
+  const [heroPlannerHours, setHeroPlannerHours] = useState(4);
+  const [heroFlashcardFlipped, setHeroFlashcardFlipped] = useState(false);
+  const [heroPromptInput, setHeroPromptInput] = useState('');
 
   // Auth custom fields
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
@@ -490,7 +513,6 @@ export default function WorkspacePage() {
       const data = await res.json();
       if (!res.ok) {
         if (data.error === 'EmailNotVerified') {
-          // Send OTP and transition to OTP verification page
           await fetch(`${API_BASE_URL}/api/v1/auth/signup/resend`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -524,12 +546,6 @@ export default function WorkspacePage() {
   const [quizScore, setQuizScore] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  // Ingestion state
-  const [uploadedFiles] = useState([
-    { name: 'UPSC_Syllabus_2026.pdf', size: '2.4 MB', status: 'Completed' },
-    { name: 'Physics_Electromagnetism.pdf', size: '4.8 MB', status: 'Completed' }
-  ]);
-
   // Auth state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileFullName, setProfileFullName] = useState('Priya Sharma');
@@ -549,8 +565,6 @@ export default function WorkspacePage() {
     setProfileTargetExamId(examId);
     triggerLoadingState(examId);
   };
-
-  const openAfcatWorkspace = () => openExamWorkspace('afcat');
 
   // Onboarding Wizard states
   const [onboardingStep, setOnboardingStep] = useState(1);
@@ -600,7 +614,6 @@ export default function WorkspacePage() {
       if (token) {
         localStorage.setItem('token', token);
         setIsLoggedIn(true);
-        // Clear query parameters
         window.history.replaceState({}, document.title, window.location.pathname);
         setActiveTab('afcat');
       } else {
@@ -612,7 +625,6 @@ export default function WorkspacePage() {
     }
   }, []);
 
-  // Sync profile data with database on login
   const [dashboardOverview, setDashboardOverview] = useState<any>({
     overallAccuracy: 0,
     averageTimeSeconds: 0,
@@ -623,7 +635,6 @@ export default function WorkspacePage() {
   });
 
   const [dueCardsCount, setDueCardsCount] = useState(0);
-  const [recommendations, setRecommendations] = useState<string[]>([]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -652,7 +663,6 @@ export default function WorkspacePage() {
       })
       .catch(err => console.log('Backend profile sync offline'));
 
-      // Fetch exams list
       fetch(`${API_BASE_URL}/api/v1/exams`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
@@ -666,7 +676,6 @@ export default function WorkspacePage() {
       })
       .catch(err => console.log('Failed to fetch exams list.'));
 
-      // Fetch dashboard overview stats
       fetch(`${API_BASE_URL}/api/v1/analytics/overview`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
@@ -680,7 +689,6 @@ export default function WorkspacePage() {
       })
       .catch(err => console.log('Backend analytics overview offline'));
 
-      // Fetch AI recommendations & insights
       fetch(`${API_BASE_URL}/api/v1/analytics/insights`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
@@ -690,51 +698,13 @@ export default function WorkspacePage() {
       .then(data => {
         if (data) {
           setDueCardsCount(data.cardsDue || 0);
-          setRecommendations(data.suggestions || []);
         }
       })
       .catch(err => console.log('Backend insights offline'));
     }
   }, [isLoggedIn, profileSyncTrigger]);
 
-  // Load stats and users from backend on component mount / tab switch
   useEffect(() => {
-    if (activeTab === 'admin' && isLoggedIn) {
-      // Fetch stats
-      fetch(`${API_BASE_URL}/api/v1/admin/stats`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.kpis) {
-          setAdminStats(data.kpis);
-        }
-      })
-      .catch(err => console.log('Using local mock admin stats (backend offline)'));
-
-      // Fetch users
-      fetch(`${API_BASE_URL}/api/v1/admin/users`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setAdminUsers(data.map((u: any) => ({
-            id: u.id,
-            name: u.profile?.fullName || 'N/A',
-            email: u.email,
-            role: u.role,
-            createdAt: new Date(u.createdAt).toISOString().split('T')[0]
-          })));
-        }
-      })
-      .catch(err => console.log('Using local mock admin users (backend offline)'));
-    }
-
     if (activeTab === 'revision' && isLoggedIn) {
       fetch(`${API_BASE_URL}/api/v1/revision/due`, {
         headers: {
@@ -768,7 +738,7 @@ export default function WorkspacePage() {
       setLoading(false);
       setActiveTab(targetTab);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 800);
+    }, 600);
   };
 
   const handleSaveProfile = () => {
@@ -793,7 +763,7 @@ export default function WorkspacePage() {
     .then(res => res.json())
     .then(data => {
       if (data && data.profile) {
-        alert('Profile saved to PostgreSQL!');
+        alert('Profile saved to PostgreSQL database!');
         setProfileFullName(data.profile.fullName);
         setProfileGoal(data.profile.dailyStudyGoalMinutes);
         setProfileLanguage(data.profile.preferredLanguage);
@@ -824,65 +794,85 @@ export default function WorkspacePage() {
     })
     .then(res => res.json())
     .then(data => {
-      // Remove card from queue
       setDueCards(prev => prev.filter(c => c.id !== cardId));
       setShowAnswer(false);
-      // Decrement the cardsDueCount
       setDueCardsCount(prev => Math.max(0, prev - 1));
     })
     .catch(err => alert('Failed to log review.'));
   };
+
+  const filteredExams = examCategories.filter(exam => {
+    const matchesCategory = heroExamFilter === 'all' || exam.category === heroExamFilter;
+    const matchesSearch = exam.name.toLowerCase().includes(heroExamSearch.toLowerCase()) || 
+                          exam.tag.toLowerCase().includes(heroExamSearch.toLowerCase()) ||
+                          exam.id.toLowerCase().includes(heroExamSearch.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   /* ────────────────────────────────────────
      LANDING PAGE RENDER
      ──────────────────────────────────────── */
   if (activeTab === 'landing') {
     return (
-      <div className="min-h-screen bg-[#fcfcfb] text-[#262a2b]">
+      <div className="min-h-screen bg-[#080a0f] text-[#f1f5f9] font-sans selection:bg-amber-500/30 selection:text-amber-200">
 
-        {/* ═══════════ STICKY NAVIGATION ═══════════ */}
+        {/* ═══════════ STICKY LUXURY NAVIGATION ═══════════ */}
         <header 
           className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
             scrolled 
-              ? 'glass shadow-sm' 
-              : 'bg-transparent'
+              ? 'glass-header py-3.5 shadow-2xl shadow-black/60' 
+              : 'bg-transparent py-5'
           }`}
         >
-          <div className="max-w-7xl mx-auto px-6 md:px-12 h-16 md:h-20 flex items-center justify-between">
-            <div className="flex items-center gap-1.5">
-              <span className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>
-                Tejas
-              </span>
-              <span className="w-2.5 h-2.5 rounded-full bg-[#faa114] animate-pulse"></span>
+          <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+            {/* Logo */}
+            <div 
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center gap-2 cursor-pointer group"
+            >
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
+                <Sparkles className="w-5 h-5 text-slate-950 fill-current" />
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="text-2xl font-black tracking-tight text-white font-display">
+                  Tejas
+                </span>
+                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                  v2.4
+                </span>
+              </div>
             </div>
 
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-sm font-medium text-[#786e67] hover:text-[#262a2b] transition-colors">Features</a>
-              <a href="#exams" className="text-sm font-medium text-[#786e67] hover:text-[#262a2b] transition-colors">Exams</a>
-              <a href="#testimonials" className="text-sm font-medium text-[#786e67] hover:text-[#262a2b] transition-colors">Stories</a>
-              <a href="#pricing" className="text-sm font-medium text-[#786e67] hover:text-[#262a2b] transition-colors">Pricing</a>
+            {/* Desktop Nav Links */}
+            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
+              <a href="#demo" className="hover:text-amber-400 transition-colors">Live Console</a>
+              <a href="#exams" className="hover:text-amber-400 transition-colors">Exam Hubs</a>
+              <a href="#features" className="hover:text-amber-400 transition-colors">AI Capabilities</a>
+              <a href="#testimonials" className="hover:text-amber-400 transition-colors">Success Stories</a>
+              <a href="#pricing" className="hover:text-amber-400 transition-colors">Pricing</a>
             </nav>
 
+            {/* Desktop Action Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <button 
                 onClick={() => { setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }}
-                className="px-5 py-2.5 text-sm font-semibold text-[#786e67] hover:text-[#262a2b] transition-colors"
+                className="px-5 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all"
               >
                 Sign In
               </button>
               <button 
                 onClick={() => { setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }}
-                className="px-6 py-2.5 text-sm font-semibold bg-[#262a2b] text-[#fcfcfb] rounded-xl hover:bg-[#262a2b]/90 transition-all active:scale-[0.97] shadow-sm"
+                className="group relative px-6 py-2.5 text-sm font-bold bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 rounded-xl hover:from-amber-400 hover:to-yellow-300 transition-all active:scale-95 shadow-glow-amber flex items-center gap-2"
               >
-                Get Started Free
+                <span>Get Started Free</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
               </button>
             </div>
 
             {/* Mobile menu toggle */}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2"
+              className="md:hidden p-2 text-slate-300 hover:text-white rounded-lg bg-white/5"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -890,380 +880,662 @@ export default function WorkspacePage() {
 
           {/* Mobile menu overlay */}
           {mobileMenuOpen && (
-            <div className="md:hidden glass border-t border-[#dbd7c7]">
-              <div className="px-6 py-6 space-y-4">
-                <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-medium text-[#786e67]">Features</a>
-                <a href="#exams" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-medium text-[#786e67]">Exams</a>
-                <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-medium text-[#786e67]">Stories</a>
-                <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-medium text-[#786e67]">Pricing</a>
-                <div className="pt-4 border-t border-[#dbd7c7] space-y-3">
-                  <button onClick={() => { setMobileMenuOpen(false); setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-semibold text-[#786e67]">Sign In</button>
-                  <button onClick={() => { setMobileMenuOpen(false); setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-semibold bg-[#262a2b] text-[#fcfcfb] rounded-xl">Get Started Free</button>
-                </div>
+            <div className="md:hidden glass-panel border-t border-white/10 mx-4 mt-3 rounded-2xl p-6 space-y-4 shadow-2xl animate-fadeInUp">
+              <a href="#demo" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">Live Console</a>
+              <a href="#exams" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">Exam Hubs</a>
+              <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">AI Capabilities</a>
+              <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">Success Stories</a>
+              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">Pricing</a>
+              <div className="pt-4 border-t border-white/10 space-y-3">
+                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-semibold text-slate-300 bg-white/5 rounded-xl">Sign In</button>
+                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-bold bg-amber-500 text-slate-950 rounded-xl">Get Started Free</button>
               </div>
             </div>
           )}
         </header>
 
-        {/* ═══════════ HERO SECTION ═══════════ */}
-        <section className="ambient-gradient relative pt-32 md:pt-40 pb-20 md:pb-32 px-6 md:px-12 overflow-hidden">
-          {/* Decorative floating elements */}
-          <div className="absolute top-20 right-[10%] w-72 h-72 bg-[#faa114]/5 rounded-full blur-3xl animate-float pointer-events-none"></div>
-          <div className="absolute bottom-10 left-[5%] w-96 h-96 bg-[#786e67]/5 rounded-full blur-3xl animate-float-delayed pointer-events-none"></div>
+        {/* ═══════════ HERO SECTION (COSMIC OBSIDIAN & AMBIENT GLOW) ═══════════ */}
+        <section className="ambient-mesh relative pt-32 md:pt-44 pb-20 md:pb-28 px-6 md:px-12 overflow-hidden">
+          {/* Subtle Background Grid & Glow Orbs */}
+          <div className="absolute inset-0 grid-pattern opacity-40 pointer-events-none"></div>
+          <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+          <div className="absolute top-80 right-[15%] w-72 h-72 bg-sky-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
           <div className="max-w-5xl mx-auto text-center relative z-10">
-            {/* Badge */}
-            <div className="animate-fadeInUp inline-flex items-center gap-2 px-4 py-2 bg-[#faa114]/10 border border-[#faa114]/20 rounded-full mb-8">
-              <Sparkles className="w-4 h-4 text-[#faa114]" />
-              <span className="text-xs font-semibold text-[#786e67] tracking-wide uppercase">AI-Powered Learning Platform for India</span>
+            {/* Top Announcement Badge */}
+            <div className="animate-fadeInUp inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 mb-8 shadow-sm backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span className="text-xs font-bold tracking-wide uppercase font-mono">✦ NEXT-GEN AI STUDY OPERATING SYSTEM</span>
+              <ChevronRight className="w-3.5 h-3.5 opacity-60" />
             </div>
 
-            {/* Main heading */}
-            <h1 className="animate-fadeInUp delay-100 text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] mb-6" style={{ fontFamily: 'Outfit' }}>
-              One Platform.<br />
-              <span className="gradient-text">Every Exam.</span><br />
-              Infinite Mastery.
+            {/* Main Headline */}
+            <h1 className="animate-fadeInUp delay-100 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.04] mb-6 font-display text-white">
+              Master Any Exam.<br />
+              <span className="text-gradient-amber drop-shadow-[0_0_35px_rgba(245,158,11,0.25)]">
+                Faster. Smarter. Guaranteed.
+              </span>
             </h1>
 
             {/* Subheading */}
-            <p className="animate-fadeInUp delay-200 text-lg md:text-xl text-[#786e67] max-w-2xl mx-auto mb-10 leading-relaxed">
-              Unifying competitive exams, university subjects, and document intelligence into one cohesive, AI-personalized learning workspace.
+            <p className="animate-fadeInUp delay-200 text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+              Unifying 120+ Indian competitive examinations, university curriculums, and document intelligence into one cohesive, AI-personalized operating system for 500M learners.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="animate-fadeInUp delay-300 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Interactive Prompt / Quick Trigger Bar */}
+            <div className="animate-fadeInUp delay-300 max-w-2xl mx-auto mb-10">
+              <div className="glass-panel p-2 rounded-2xl flex flex-col sm:flex-row items-center gap-2 border-white/15 focus-within:border-amber-500/50 shadow-2xl transition-all">
+                <div className="flex items-center gap-2.5 px-3 flex-1 w-full">
+                  <Sparkles className="w-5 h-5 text-amber-400 shrink-0" />
+                  <input 
+                    type="text"
+                    value={heroPromptInput}
+                    onChange={(e) => setHeroPromptInput(e.target.value)}
+                    placeholder="Try: Generate a 10-question test on AFCAT Reasoning or UPSC Polity..."
+                    className="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none py-2"
+                  />
+                </div>
+                <button 
+                  onClick={() => {
+                    const el = document.getElementById('demo');
+                    el?.scrollIntoView({ behavior: 'smooth' });
+                    setHeroConsoleTab('quiz');
+                  }}
+                  className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-extrabold text-xs tracking-wider rounded-xl transition-all active:scale-95 shadow-glow-amber whitespace-nowrap"
+                >
+                  ⚡ Try AI Quiz
+                </button>
+              </div>
+            </div>
+
+            {/* Primary CTAs */}
+            <div className="animate-fadeInUp delay-400 flex flex-col sm:flex-row items-center justify-center gap-4">
               <button 
                 onClick={() => {
                   setAuthMode('signup');
                   resetAuthState();
                   triggerLoadingState('auth');
                 }}
-                className="group px-8 py-4 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-2xl flex items-center gap-3 shadow-lg shadow-[#faa114]/20 transition-all active:scale-[0.97] animate-pulse-glow text-base"
+                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black rounded-2xl flex items-center justify-center gap-3 shadow-glow-amber transition-all active:scale-[0.98] text-base"
               >
-                Start Free Trial
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                Launch Free Workspace
+                <ArrowRight className="w-5 h-5" />
               </button>
               <button 
                 onClick={() => {
-                  const el = document.getElementById('features');
+                  const el = document.getElementById('demo');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="px-8 py-4 border border-[#dbd7c7] hover:border-[#786e67] text-[#786e67] hover:text-[#262a2b] font-semibold rounded-2xl flex items-center gap-2 transition-all text-base"
+                className="w-full sm:w-auto px-8 py-4 glass-panel hover:bg-white/10 text-white font-bold rounded-2xl flex items-center justify-center gap-2.5 transition-all text-base border-white/15"
               >
-                <Play className="w-4 h-4" />
-                See How It Works
+                <Play className="w-4 h-4 text-amber-400 fill-amber-400" />
+                Live Interactive Demo
               </button>
             </div>
 
-            {/* Social proof strip */}
-            <div className="animate-fadeInUp delay-500 mt-16 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-[#b3aa9e]">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  {['PS', 'AM', 'KR', 'VN'].map((initials, i) => (
-                    <div key={i} className="w-8 h-8 rounded-full bg-[#dbd7c7] border-2 border-[#fcfcfb] flex items-center justify-center text-[10px] font-bold text-[#786e67]">
-                      {initials}
-                    </div>
-                  ))}
-                </div>
-                <span className="font-medium">50,000+ learners joined</span>
+            {/* Trust Metrics Bar */}
+            <div className="animate-fadeInUp delay-500 mt-16 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 text-slate-400">
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-extrabold text-white font-display">50,000+</div>
+                <div className="text-xs text-slate-400 mt-1">Active Aspirants</div>
               </div>
-              <div className="hidden sm:block w-px h-5 bg-[#dbd7c7]"></div>
-              <div className="flex items-center gap-1">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-[#faa114] text-[#faa114]" />
-                ))}
-                <span className="ml-1 font-medium">4.9/5 rating</span>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-extrabold text-amber-400 font-display">120+</div>
+                <div className="text-xs text-slate-400 mt-1">Exams Supported</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-extrabold text-white font-display">2.4M+</div>
+                <div className="text-xs text-slate-400 mt-1">Quizzes Completed</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl md:text-3xl font-extrabold text-emerald-400 font-display">98.4%</div>
+                <div className="text-xs text-slate-400 mt-1">Score Calibration</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ═══════════ PRODUCT PREVIEW / DASHBOARD MOCKUP ═══════════ */}
-        <RevealSection>
-          <section className="px-6 md:px-12 -mt-8">
-            <div className="max-w-6xl mx-auto">
-              <div className="bg-[#262a2b] rounded-3xl p-3 md:p-4 shadow-2xl shadow-[#262a2b]/20">
-                <div className="bg-[#fcfcfb] rounded-2xl overflow-hidden">
-                  {/* Mock toolbar */}
-                  <div className="h-10 bg-[#f5f4f0] border-b border-[#dbd7c7] flex items-center px-4 gap-2">
-                    <div className="w-3 h-3 rounded-full bg-[#dbd7c7]"></div>
-                    <div className="w-3 h-3 rounded-full bg-[#dbd7c7]"></div>
-                    <div className="w-3 h-3 rounded-full bg-[#dbd7c7]"></div>
-                    <div className="flex-1 flex justify-center">
-                      <div className="px-4 py-1 bg-white/50 border border-[#dbd7c7] rounded-lg text-[10px] text-[#b3aa9e]">
-                        tejas.app/dashboard
+        {/* ═══════════ LIVE INTERACTIVE CONSOLE DEMO (COOL & SMOOTH!) ═══════════ */}
+        <section id="demo" className="px-6 md:px-12 py-16 md:py-24 relative">
+          <div className="max-w-6xl mx-auto space-y-8">
+            
+            <div className="text-center space-y-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold uppercase tracking-wider font-mono">
+                ✦ LIVE INTERACTIVE EXPERIENCE
+              </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
+                Try The Tejas Engine Right Now
+              </h2>
+              <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+                No sign-up required to test our core capabilities. Switch between tools below to experience real-time AI learning.
+              </p>
+            </div>
+
+            {/* Console Frame */}
+            <div className="glass-panel rounded-3xl border border-white/15 p-3 md:p-6 shadow-2xl shadow-black/80">
+              
+              {/* Console Tabs */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-3 border-b border-white/10 no-scrollbar">
+                {[
+                  { id: 'cbt', label: '🎯 CBT Exam Console', desc: 'Simulate Live Test' },
+                  { id: 'quiz', label: '⚡ Instant AI Quiz', desc: 'Active Questioning' },
+                  { id: 'planner', label: '📅 Adaptive Planner', desc: 'Capacity Rebalance' },
+                  { id: 'fsrs', label: '🧠 Spaced Recall (FSRS)', desc: 'Ebbinghaus Decay' },
+                  { id: 'mastery', label: '📊 Concept Mastery Radar', desc: 'Readiness Heatmap' },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setHeroConsoleTab(tab.id as any)}
+                    className={`px-4 py-3 rounded-2xl text-xs font-bold transition-all duration-200 whitespace-nowrap shrink-0 flex flex-col items-start gap-0.5 ${
+                      heroConsoleTab === tab.id
+                        ? 'bg-amber-500 text-slate-950 shadow-glow-amber scale-[1.02]'
+                        : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    <span>{tab.label}</span>
+                    <span className={`text-[10px] font-normal ${heroConsoleTab === tab.id ? 'text-slate-900 font-semibold' : 'text-slate-500'}`}>
+                      {tab.desc}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Console Screen Content */}
+              <div className="mt-6 bg-[#0c1018] border border-white/10 rounded-2xl p-6 md:p-8 min-h-[420px] flex flex-col justify-between">
+
+                {/* TAB 1: CBT EXAM CONSOLE */}
+                {heroConsoleTab === 'cbt' && (
+                  <div className="space-y-6 animate-fadeInUp">
+                    {/* Header bar */}
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/10">
+                      <div>
+                        <div className="text-xs font-mono text-amber-400 font-bold uppercase tracking-wider">AFCAT 2026 OFFICIAL CBT SIMULATOR</div>
+                        <h3 className="text-xl font-bold text-white font-display mt-0.5">Section: Reasoning & Military Aptitude Test</h3>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 font-mono text-xs font-bold">
+                          <Clock className="w-3.5 h-3.5 animate-pulse" /> 01:58:42 REMAINING
+                        </div>
+                        <span className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-300">+3.0 / -1.0</span>
+                      </div>
+                    </div>
+
+                    {/* Question body */}
+                    <div className="space-y-4">
+                      <div className="text-xs text-slate-400 font-mono">Question 1 of 100 • Multiple Choice Question</div>
+                      <p className="text-base text-slate-100 font-medium leading-relaxed">
+                        In a certain code language, if <strong>&quot;FIGHTER&quot;</strong> is coded as <strong>&quot;HKIJVGT&quot;</strong>, how will the word <strong>&quot;MIRAGE&quot;</strong> be coded in that same system?
+                      </p>
+
+                      <div className="grid sm:grid-cols-2 gap-3 pt-2">
+                        {[
+                          { key: 'A', text: 'OKTCIG' },
+                          { key: 'B', text: 'OKTCHG' },
+                          { key: 'C', text: 'NKTCIH' },
+                          { key: 'D', text: 'PKUDIG' },
+                        ].map((opt) => (
+                          <button
+                            key={opt.key}
+                            onClick={() => setHeroQuizOption(opt.key)}
+                            className={`p-4 rounded-xl border text-left text-sm font-semibold transition-all flex items-center gap-3 ${
+                              heroQuizOption === opt.key
+                                ? 'bg-amber-500/20 border-amber-400 text-amber-200'
+                                : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30'
+                            }`}
+                          >
+                            <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold ${
+                              heroQuizOption === opt.key ? 'bg-amber-400 text-slate-950' : 'bg-white/10 text-slate-300'
+                            }`}>
+                              {opt.key}
+                            </span>
+                            <span>{opt.text}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Footer Controls */}
+                    <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
+                      <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 1 Answered
+                        <span className="w-2.5 h-2.5 rounded-full bg-slate-600 ml-2"></span> 99 Unanswered
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <button 
+                          onClick={() => openExamWorkspace('afcat')}
+                          className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs rounded-xl shadow-glow-amber transition-all"
+                        >
+                          Launch Full 100-Q CBT Engine →
+                        </button>
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Mock dashboard content */}
-                  <div className="flex">
-                    {/* Sidebar mock */}
-                    <div className="hidden md:block w-52 border-r border-[#dbd7c7] p-4 space-y-2 bg-[#fcfcfb]">
-                      <div className="flex items-center gap-2 px-3 py-2">
-                        <span className="text-sm font-bold" style={{ fontFamily: 'Outfit' }}>Tejas</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#faa114]"></span>
+                )}
+
+                {/* TAB 2: INSTANT AI QUIZ GENERATOR */}
+                {heroConsoleTab === 'quiz' && (
+                  <div className="space-y-6 animate-fadeInUp">
+                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                      <div>
+                        <span className="text-xs font-mono text-sky-400 font-bold uppercase">UPSC CSE • INDIAN POLITY & CONSTITUTION</span>
+                        <h3 className="text-lg font-bold text-white font-display">Article 32 & Constitutional Remedies</h3>
                       </div>
-                      {['Dashboard', 'Study Planner', 'Exam Explorer', 'Quiz Engine', 'Analytics', 'Revision'].map((item, i) => (
-                        <div key={i} className={`px-3 py-2 rounded-lg text-xs font-medium ${i === 0 ? 'bg-[#dbd7c7]/50 text-[#262a2b] border-l-2 border-[#faa114]' : 'text-[#b3aa9e]'}`}>
-                          {item}
+                      <span className="text-xs px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/30 font-bold">
+                        AI Generated
+                      </span>
+                    </div>
+
+                    <div className="space-y-4">
+                      <p className="text-base text-slate-100 font-medium">
+                        Which of the following Writs can be issued against private individuals as well as public bodies?
+                      </p>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        {[
+                          { key: 'A', text: 'Habeas Corpus', correct: true },
+                          { key: 'B', text: 'Mandamus', correct: false },
+                          { key: 'C', text: 'Quo-Warranto', correct: false },
+                          { key: 'D', text: 'Certiorari', correct: false },
+                        ].map((opt) => (
+                          <button
+                            key={opt.key}
+                            onClick={() => {
+                              setHeroQuizOption(opt.key);
+                              setHeroQuizSubmitted(true);
+                            }}
+                            className={`p-4 rounded-xl border text-left text-sm font-semibold transition-all flex items-center justify-between ${
+                              heroQuizSubmitted
+                                ? opt.correct
+                                  ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200'
+                                  : heroQuizOption === opt.key
+                                  ? 'bg-red-500/20 border-red-400 text-red-200'
+                                  : 'bg-white/5 border-white/10 text-slate-500'
+                                : heroQuizOption === opt.key
+                                ? 'bg-amber-500/20 border-amber-400 text-amber-200'
+                                : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3">
+                              <span className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-xs font-bold">{opt.key}</span>
+                              <span>{opt.text}</span>
+                            </div>
+                            {heroQuizSubmitted && opt.correct && <Check className="w-5 h-5 text-emerald-400" />}
+                          </button>
+                        ))}
+                      </div>
+
+                      {heroQuizSubmitted && (
+                        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 animate-fadeInUp">
+                          <div className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                            <Sparkles className="w-4 h-4" /> AI Explanation
+                          </div>
+                          <p className="text-xs text-slate-300 leading-relaxed">
+                            <strong>Habeas Corpus</strong> (literally &quot;to have the body of&quot;) can be issued against both public authorities and private individuals who have unlawfully detained a person. Mandamus and Certiorari only apply to public officials and judicial bodies.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex justify-between items-center pt-2">
+                      <button 
+                        onClick={() => {
+                          setHeroQuizOption(null);
+                          setHeroQuizSubmitted(false);
+                        }}
+                        className="text-xs font-semibold text-slate-400 hover:text-white"
+                      >
+                        Reset Question
+                      </button>
+                      <button 
+                        onClick={() => openExamWorkspace('upsc')}
+                        className="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber hover:bg-amber-400 transition-all"
+                      >
+                        Generate More Quizzes →
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 3: ADAPTIVE STUDY PLANNER */}
+                {heroConsoleTab === 'planner' && (
+                  <div className="space-y-6 animate-fadeInUp">
+                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                      <div>
+                        <span className="text-xs font-mono text-amber-400 font-bold uppercase">DYNAMIC ROADMAP SCHEDULER</span>
+                        <h3 className="text-lg font-bold text-white font-display">Set Daily Time Budget: {heroPlannerHours} Hours</h3>
+                      </div>
+                      <div className="text-xs text-emerald-400 font-mono font-bold bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/30">
+                        100% Syllabus Coverage in 90 Days
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <input 
+                        type="range" 
+                        min="2" 
+                        max="8" 
+                        value={heroPlannerHours}
+                        onChange={(e) => setHeroPlannerHours(parseInt(e.target.value, 10))}
+                        className="w-full accent-amber-500 h-2 bg-white/10 rounded-lg cursor-pointer"
+                      />
+                      <div className="flex justify-between text-xs text-slate-400 font-mono">
+                        <span>2 Hours/Day (Working Professional)</span>
+                        <span>4 Hours/Day (Balanced)</span>
+                        <span>8 Hours/Day (Dropper/Full-Time)</span>
+                      </div>
+
+                      {/* Weekly calendar preview */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 pt-2">
+                        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => (
+                          <div key={day} className="p-3 bg-white/5 border border-white/10 rounded-xl space-y-2">
+                            <div className="text-xs font-mono font-bold text-slate-300">{day}</div>
+                            <div className="p-2 rounded-lg bg-amber-500/15 border border-amber-500/30 text-[10px] font-bold text-amber-300">
+                              {i % 2 === 0 ? 'Polity & GK' : 'Maths & Speed'}
+                            </div>
+                            <div className="text-[10px] text-slate-400 font-mono">{heroPlannerHours}h Target</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end pt-2">
+                      <button 
+                        onClick={() => openExamWorkspace('afcat')}
+                        className="px-5 py-2.5 bg-amber-500 text-slate-950 font-extrabold text-xs rounded-xl shadow-glow-amber hover:bg-amber-400 transition-all"
+                      >
+                        Adopt Personalized Schedule →
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 4: SPACED RECALL (FSRS) */}
+                {heroConsoleTab === 'fsrs' && (
+                  <div className="space-y-6 animate-fadeInUp">
+                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                      <div>
+                        <span className="text-xs font-mono text-emerald-400 font-bold uppercase">SCIENTIFIC MEMORY ENGINE (FSRS)</span>
+                        <h3 className="text-lg font-bold text-white font-display">Active Recall Flashcard Deck</h3>
+                      </div>
+                      <span className="text-xs font-mono px-3 py-1 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 rounded-lg">
+                        14 Cards Due Today
+                      </span>
+                    </div>
+
+                    <div 
+                      onClick={() => setHeroFlashcardFlipped(!heroFlashcardFlipped)}
+                      className="p-8 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/15 cursor-pointer hover:border-amber-400/50 transition-all min-h-[180px] flex flex-col justify-center text-center space-y-3 relative group"
+                    >
+                      <div className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">
+                        {heroFlashcardFlipped ? '✦ REVEALED ANSWER' : '✦ CLICK TO FLIP / TEST RECALL'}
+                      </div>
+                      <p className="text-base sm:text-lg font-semibold text-white">
+                        {heroFlashcardFlipped 
+                          ? 'Chlorophyll absorbs Light Energy in Blue (430 nm) and Red (660 nm) wavelengths, while reflecting Green light.' 
+                          : 'Which wavelengths of visible light are maximally absorbed by Chlorophyll-a in photosynthesis?'}
+                      </p>
+                      <span className="text-[10px] text-slate-400">Card 1 of 14 • Biology & General Science</span>
+                    </div>
+
+                    <div className="grid grid-cols-4 gap-2 pt-2">
+                      {[
+                        { label: 'Again (<1m)', color: 'bg-rose-500/20 text-rose-300 border-rose-500/30' },
+                        { label: 'Hard (12h)', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
+                        { label: 'Good (3d)', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+                        { label: 'Easy (7d)', color: 'bg-sky-500/20 text-sky-300 border-sky-500/30' },
+                      ].map((btn, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setHeroFlashcardFlipped(false)}
+                          className={`py-2.5 rounded-xl border text-xs font-bold transition-all hover:scale-105 ${btn.color}`}
+                        >
+                          {btn.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 5: CONCEPT MASTERY RADAR */}
+                {heroConsoleTab === 'mastery' && (
+                  <div className="space-y-6 animate-fadeInUp">
+                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                      <div>
+                        <span className="text-xs font-mono text-purple-400 font-bold uppercase">SYLLABUS MASTERY RADAR</span>
+                        <h3 className="text-lg font-bold text-white font-display">Predicted Score: 184 / 300 (Cutoff: 155+)</h3>
+                      </div>
+                      <span className="text-xs font-bold px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg">
+                        98.6% Predicted Cutoff Clearance
+                      </span>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
+                      {[
+                        { topic: 'Reasoning Logic', score: 94, status: 'Mastered', color: 'text-emerald-400', bar: 'bg-emerald-500' },
+                        { topic: 'Numerical Ability', score: 78, status: 'Strong', color: 'text-amber-400', bar: 'bg-amber-500' },
+                        { topic: 'English Comprehension', score: 88, status: 'Mastered', color: 'text-emerald-400', bar: 'bg-emerald-500' },
+                        { topic: 'Current Affairs & Defense', score: 62, status: 'Needs Practice', color: 'text-rose-400', bar: 'bg-rose-500' },
+                      ].map((item, i) => (
+                        <div key={i} className="p-4 bg-white/5 border border-white/10 rounded-2xl space-y-2">
+                          <div className="text-xs font-semibold text-slate-300">{item.topic}</div>
+                          <div className="flex justify-between items-baseline">
+                            <span className="text-2xl font-bold font-display text-white">{item.score}%</span>
+                            <span className={`text-[10px] font-bold ${item.color}`}>{item.status}</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${item.bar}`} style={{ width: `${item.score}%` }}></div>
+                          </div>
                         </div>
                       ))}
                     </div>
 
-                    {/* Main content mock */}
-                    <div className="flex-1 p-6 space-y-4">
-                      {/* Welcome banner */}
-                      <div className="bg-[#faa114]/5 border border-[#faa114]/10 rounded-xl p-4 flex items-center justify-between">
-                        <div>
-                          <div className="text-sm font-bold">Good Morning, Aspirant! 🔥</div>
-                          <div className="text-[10px] text-[#786e67]">Streak: 12 Days • UPSC CSE 2026</div>
+                    <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col sm:flex-row justify-between items-center gap-4">
+                      <div className="space-y-1">
+                        <div className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                          <Flame className="w-4 h-4" /> AI Recommendation for Today
                         </div>
-                        <div className="text-xs font-bold text-[#faa114]">96.4% Predicted</div>
+                        <p className="text-xs text-slate-300">Attempt 15 questions on Indian Air Force Commands & Joint Military Exercises to boost Defense GK by +12 Marks.</p>
                       </div>
-
-                      <div className="grid grid-cols-3 gap-3">
-                        {/* Stats cards */}
-                        {[
-                          { label: 'Concepts Mastered', value: '247', color: '#faa114' },
-                          { label: 'Quizzes Completed', value: '89', color: '#786e67' },
-                          { label: 'Study Hours', value: '156h', color: '#262a2b' },
-                        ].map((stat, i) => (
-                          <div key={i} className="bg-white border border-[#dbd7c7] rounded-xl p-3 text-center">
-                            <div className="text-lg font-bold" style={{ color: stat.color }}>{stat.value}</div>
-                            <div className="text-[9px] text-[#b3aa9e] mt-0.5">{stat.label}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Mastery heatmap preview */}
-                      <div className="bg-white border border-[#dbd7c7] rounded-xl p-4">
-                        <div className="text-xs font-bold mb-3">Concept Mastery Map</div>
-                        <div className="grid grid-cols-8 gap-1.5">
-                          {[
-                            '#faa114', '#faa114', '#786e67', '#dbd7c7', '#faa114', '#262a2b', '#786e67', '#faa114',
-                            '#786e67', '#dbd7c7', '#faa114', '#faa114', '#786e67', '#faa114', '#dbd7c7', '#786e67',
-                          ].map((color, i) => (
-                            <div key={i} className="h-6 rounded" style={{ backgroundColor: color, opacity: 0.85 }}></div>
-                          ))}
-                        </div>
-                      </div>
+                      <button 
+                        onClick={() => openExamWorkspace('afcat')}
+                        className="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber whitespace-nowrap"
+                      >
+                        Start Targeted Drill →
+                      </button>
                     </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* ═══════════ ALL MAJOR INDIAN EXAMINATIONS (CATEGORY FILTER & SUITES) ═══════════ */}
+        <RevealSection>
+          <section id="exams" className="px-6 md:px-12 py-20 relative bg-[#090d14] border-y border-white/10">
+            <div className="max-w-7xl mx-auto space-y-12">
+              
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-3">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider font-mono">
+                    ✦ FULL EXAMINATION COVERAGE
+                  </div>
+                  <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
+                    All Major Indian Examinations
+                  </h2>
+                  <p className="text-slate-400 text-sm md:text-base max-w-xl">
+                    Dedicated CBT environments, curated model test papers, authentic past-year questions, and adaptive study roadmaps for every national target.
+                  </p>
+                </div>
+
+                {/* Live Search Bar */}
+                <div className="w-full md:w-80">
+                  <div className="relative">
+                    <input 
+                      type="text"
+                      placeholder="Search exam, category, or tag..."
+                      value={heroExamSearch}
+                      onChange={(e) => setHeroExamSearch(e.target.value)}
+                      className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/15 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
+                    />
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                   </div>
                 </div>
               </div>
-            </div>
-          </section>
-        </RevealSection>
 
-        {/* ═══════════ STATS BAR ═══════════ */}
-        <RevealSection>
-          <section className="py-20 md:py-28 px-6 md:px-12">
-            <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-              <AnimatedCounter end={50} suffix="K+" label="Active Learners" />
-              <AnimatedCounter end={120} suffix="+" label="Exams Supported" />
-              <AnimatedCounter end={2} suffix="M+" label="Quizzes Generated" />
-              <AnimatedCounter end={97} suffix="%" label="User Satisfaction" />
-            </div>
-          </section>
-        </RevealSection>
-
-        {/* ═══════════ INTERACTIVE EXAM EXPLORER SHOWCASE ═══════════ */}
-        <RevealSection>
-          <section id="exams" className="px-6 md:px-12 py-16 md:py-24 bg-[#f9f8f5]">
-            <div className="max-w-7xl mx-auto space-y-12">
-              <div className="text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#faa114]/10 border border-[#faa114]/20 rounded-full mb-4">
-                  <Target className="w-3.5 h-3.5 text-[#faa114]" />
-                  <span className="text-xs font-semibold text-[#786e67] tracking-wide uppercase">Interactive Exam Explorer</span>
-                </div>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ fontFamily: 'Outfit' }}>
-                  Choose Your Preparation Workspace
-                </h2>
-                <p className="text-base text-[#786e67] max-w-2xl mx-auto">
-                  Select any examination below to preview its custom-tailored mentorship roadmap, simulated computer-based tests, and syllabus features.
-                </p>
+              {/* Category Filter Pills */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+                {[
+                  { id: 'all', label: 'All Exams (9)' },
+                  { id: 'defence', label: '⚔️ Defence (AFCAT, CDS, NDA)' },
+                  { id: 'engineering', label: '⚛️ Engineering (JEE, GATE)' },
+                  { id: 'medical', label: '🩺 Medical (NEET UG)' },
+                  { id: 'civil', label: '🏛️ Civil Services (UPSC CSE)' },
+                  { id: 'aptitude', label: '📊 Aptitude & MBA (SSC, CAT)' },
+                ].map((pill) => (
+                  <button
+                    key={pill.id}
+                    onClick={() => setHeroExamFilter(pill.id as any)}
+                    className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 ${
+                      heroExamFilter === pill.id
+                        ? 'bg-white text-slate-950 shadow-md font-extrabold'
+                        : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    {pill.label}
+                  </button>
+                ))}
               </div>
 
-              {/* Grid Selector */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                {/* Left side: Exam List Selector (4 columns) */}
-                <div className="lg:col-span-4 flex flex-row lg:flex-col overflow-x-auto lg:overflow-y-auto lg:overflow-x-visible gap-2 pr-2 py-1 border-b lg:border-b-0 lg:border-r border-[#dbd7c7] no-scrollbar max-h-[500px]">
-                  {examCategories.map((exam) => {
-                    const isSelected = previewExam === exam.id;
-                    const Icon = exam.icon;
-                    return (
-                      <button
-                        key={exam.id}
-                        onClick={() => setPreviewExam(exam.id)}
-                        className={`flex items-center gap-3 px-4 py-3.5 text-left rounded-xl transition-all duration-200 shrink-0 lg:shrink-1 border ${
-                          isSelected
-                            ? 'bg-[#262a2b] text-white border-[#262a2b] shadow-sm border-l-4 border-l-[#faa114] scale-[1.01]'
-                            : 'text-[#786e67] border-transparent hover:bg-[#dbd7c7]/30 hover:text-[#262a2b]'
-                        }`}
-                      >
-                        <div className={`p-1.5 rounded-lg ${isSelected ? 'bg-white/10 text-white' : 'bg-transparent text-[#786e67]'}`}>
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <span className="text-xs md:text-sm font-bold tracking-wide">{exam.name}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Right side: Dynamic Preview Area (8 columns) */}
-                <div className="lg:col-span-8 bg-[#262a2b] text-white rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 min-h-[420px]">
-                  {/* Subtle ambient light */}
-                  <div className="absolute -top-24 -right-24 w-72 h-72 bg-[#faa114]/10 rounded-full blur-3xl pointer-events-none"></div>
-                  
-                  {(() => {
-                    const info = examHubDetails[previewExam] || examHubDetails.afcat;
-                    return (
-                      <>
-                        <div className="relative z-10 max-w-xl space-y-5">
-                          <div 
-                            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider"
-                            style={{ backgroundColor: `${info.color}20`, border: `1px solid ${info.color}40`, color: info.color }}
-                          >
-                            {info.badge}
-                          </div>
-                          <h3 className="text-2xl md:text-4xl font-bold tracking-tight text-white" style={{ fontFamily: 'Outfit' }}>
-                            Prepare for {info.title}
-                          </h3>
-                          <p className="text-white/80 text-sm md:text-base leading-relaxed">
-                            {info.description}
-                          </p>
-                          
-                          <div className="flex flex-wrap gap-2 pt-2">
-                            {info.features.map((feature, idx) => (
-                              <span 
-                                key={idx} 
-                                className="px-3 py-1 bg-white/5 border border-white/10 hover:border-white/20 rounded-lg text-xs font-semibold text-white/95 transition-colors cursor-default"
-                              >
-                                {feature}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
-                        <div className="relative z-10 bg-white/5 border border-white/10 backdrop-blur-md p-6 rounded-2xl space-y-4 shrink-0 w-full md:w-64 text-center flex flex-col justify-between">
-                          <div>
-                            <div className="text-3xl font-extrabold" style={{ color: info.color }}>
-                              {info.mocks}
-                            </div>
-                            <div className="text-xs text-white/70 mt-2">Simulated CBT Exam Series & Syllabus Analytics</div>
-                          </div>
-                          <button
-                            onClick={() => openExamWorkspace(previewExam)}
-                            className="w-full py-3 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-extrabold rounded-xl shadow-lg text-xs transition-all active:scale-[0.98] flex items-center justify-center gap-1.5"
-                          >
-                            Launch {info.emoji} Workspace
-                          </button>
-                        </div>
-                      </>
-                    );
-                  })()}
-                </div>
-              </div>
-            </div>
-          </section>
-        </RevealSection>
-
-        {/* ═══════════ EXAM EXPLORER SLIDER ═══════════ */}
-        <RevealSection>
-          <section id="exams" className="py-16 md:py-24 px-6 md:px-12 bg-[#f9f8f5]">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#faa114]/10 border border-[#faa114]/20 rounded-full mb-4">
-                  <Target className="w-3.5 h-3.5 text-[#faa114]" />
-                  <span className="text-xs font-semibold text-[#786e67] tracking-wide uppercase">Every Exam, One Platform</span>
-                </div>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ fontFamily: 'Outfit' }}>
-                  All Major Indian Examinations
-                </h2>
-                <p className="text-base text-[#786e67] max-w-lg mx-auto">
-                  From UPSC to JEE, NEET to Banking — complete syllabus coverage with AI-generated study paths.
-                </p>
-              </div>
-
-              <div className="exam-slider pb-4">
-                {examCategories.map((exam, i) => {
+              {/* Exam Cards Grid */}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredExams.map((exam) => {
                   const Icon = exam.icon;
+                  const info = examHubDetails[exam.id];
                   return (
-                    <div 
-                      key={i} 
+                    <div
+                      key={exam.id}
                       onClick={() => openExamWorkspace(exam.id)}
-                      className="min-w-[260px] md:min-w-[280px] bg-[#fcfcfb] border border-[#dbd7c7] rounded-2xl p-6 card-hover cursor-pointer group hover:border-[#faa114] transition-all"
+                      className="glass-panel glass-panel-hover p-6 rounded-2xl cursor-pointer group flex flex-col justify-between space-y-6 relative overflow-hidden"
                     >
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors" style={{ backgroundColor: `${exam.color}15` }}>
-                        <Icon className="w-6 h-6" style={{ color: exam.color }} />
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div 
+                            className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+                            style={{ backgroundColor: `${exam.color}20` }}
+                          >
+                            <Icon className="w-6 h-6" style={{ color: exam.color }} />
+                          </div>
+                          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300">
+                            {exam.badge}
+                          </span>
+                        </div>
+
+                        <div>
+                          <h3 className="text-xl font-bold text-white font-display group-hover:text-amber-400 transition-colors">
+                            {exam.name}
+                          </h3>
+                          <p className="text-xs text-slate-400 mt-1 font-mono">
+                            {exam.candidates} Aspirants • {info?.mocks || 'Full Mock Series'}
+                          </p>
+                        </div>
+
+                        <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+                          {info?.description}
+                        </p>
+
+                        <div className="flex flex-wrap gap-1.5">
+                          {info?.features.slice(0, 3).map((f, i) => (
+                            <span key={i} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-white/5 text-slate-400 border border-white/5">
+                              ✓ {f}
+                            </span>
+                          ))}
+                        </div>
                       </div>
-                      <h3 className="text-base font-bold mb-1">{exam.name}</h3>
-                      <p className="text-xs text-[#b3aa9e] mb-4">{exam.candidates} aspirants yearly</p>
-                      <div className="flex items-center gap-1 text-xs font-semibold text-[#faa114] group-hover:gap-2 transition-all">
-                        Launch CBT Engine <ArrowUpRight className="w-3.5 h-3.5" />
+
+                      <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-amber-400 group-hover:text-amber-300">
+                        <span>Launch CBT Engine</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
                   );
                 })}
               </div>
+
             </div>
           </section>
         </RevealSection>
 
-        {/* ═══════════ CORE FEATURES GRID ═══════════ */}
+        {/* ═══════════ CORE FEATURES BENTO GRID MATRIX ═══════════ */}
         <RevealSection>
-          <section id="features" className="py-20 md:py-28 px-6 md:px-12">
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#faa114]/10 border border-[#faa114]/20 rounded-full mb-4">
-                  <Zap className="w-3.5 h-3.5 text-[#faa114]" />
-                  <span className="text-xs font-semibold text-[#786e67] tracking-wide uppercase">Powered by AI</span>
-                </div>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ fontFamily: 'Outfit' }}>
-                  Everything You Need to Excel
-                </h2>
-                <p className="text-base text-[#786e67] max-w-lg mx-auto">
-                  Six powerful modules working together to transform how India learns and prepares.
-                </p>
+          <section id="features" className="px-6 md:px-12 py-20 md:py-28 max-w-7xl mx-auto space-y-16">
+            
+            <div className="text-center space-y-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider font-mono">
+                ✦ ARCHITECTURE & MODULES
               </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
+                Engineered for Academic Mastery
+              </h2>
+              <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+                Six interconnected AI modules working together to transform raw syllabus into deep conceptual retention.
+              </p>
+            </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {features.map((feature, i) => {
-                  const Icon = feature.icon;
-                  return (
-                    <div key={i} className="group bg-[#fcfcfb] border border-[#dbd7c7] rounded-2xl p-8 card-hover relative overflow-hidden">
-                      {/* Subtle corner accent */}
-                      <div className="absolute -top-12 -right-12 w-24 h-24 rounded-full bg-[#faa114]/5 group-hover:bg-[#faa114]/10 transition-colors"></div>
-                      
-                      <div className="relative z-10">
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#dbd7c7]/40 rounded-md mb-5">
-                          <span className="text-[10px] font-bold text-[#786e67] tracking-wider">{feature.tag}</span>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {features.map((feature, i) => {
+                const Icon = feature.icon;
+                return (
+                  <div 
+                    key={i} 
+                    className="glass-panel glass-panel-hover p-8 rounded-3xl space-y-5 flex flex-col justify-between group"
+                  >
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div 
+                          className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
+                          style={{ backgroundColor: `${feature.color}15`, border: `1px solid ${feature.color}30` }}
+                        >
+                          <Icon className="w-6 h-6" style={{ color: feature.color }} />
                         </div>
-                        <div className="w-12 h-12 rounded-xl bg-[#faa114]/10 flex items-center justify-center mb-5 group-hover:bg-[#faa114]/20 transition-colors">
-                          <Icon className="w-6 h-6 text-[#faa114]" />
-                        </div>
-                        <h3 className="text-lg font-bold mb-2">{feature.title}</h3>
-                        <p className="text-sm text-[#786e67] leading-relaxed">{feature.description}</p>
+                        <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-slate-300">
+                          {feature.tag}
+                        </span>
                       </div>
+
+                      <h3 className="text-xl font-bold text-white font-display group-hover:text-amber-400 transition-colors">
+                        {feature.title}
+                      </h3>
+
+                      <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                        {feature.description}
+                      </p>
                     </div>
-                  );
-                })}
-              </div>
+
+                    <div className="pt-4 border-t border-white/10 flex items-center gap-2 text-xs font-bold text-amber-400">
+                      <span>Explore Module</span>
+                      <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                );
+              })}
             </div>
+
           </section>
         </RevealSection>
 
-        {/* ═══════════ HOW IT WORKS ═══════════ */}
+        {/* ═══════════ THREE STEPS TO MASTERY ═══════════ */}
         <RevealSection>
-          <section className="py-20 md:py-28 px-6 md:px-12 bg-[#f9f8f5]">
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center mb-16">
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ fontFamily: 'Outfit' }}>
-                  Three Steps to Mastery
+          <section className="px-6 md:px-12 py-20 bg-[#090d14] border-y border-white/10">
+            <div className="max-w-6xl mx-auto space-y-16">
+              
+              <div className="text-center space-y-3">
+                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
+                  Three Steps from Zero to Ranker
                 </h2>
-                <p className="text-base text-[#786e67] max-w-md mx-auto">
-                  From sign-up to exam-ready in a streamlined AI-powered workflow.
+                <p className="text-slate-400 text-sm md:text-base max-w-lg mx-auto">
+                  A frictionless transition from chaotic preparation to structured, algorithmic confidence.
                 </p>
               </div>
 
@@ -1271,271 +1543,298 @@ export default function WorkspacePage() {
                 {[
                   {
                     step: '01',
-                    title: 'Choose Your Target',
-                    description: 'Select your exam or academic subject. AI maps the complete syllabus and creates your personalized roadmap.',
+                    title: 'Pick Target & Timeline',
+                    description: 'Select your target examination. Tejas automatically maps the exact official syllabus and generates your daily study capacity timetable.',
                     icon: Target,
                   },
                   {
                     step: '02',
-                    title: 'Learn & Practice',
-                    description: 'Study with AI-generated quizzes, read PDFs with an AI explainer, and follow your adaptive daily plan.',
+                    title: 'Active Recall Practice',
+                    description: 'Ingest notes or textbooks. The AI quiz engine breaks down concepts into targeted drills, live simulations, and spaced review cards.',
                     icon: Brain,
                   },
                   {
                     step: '03',
-                    title: 'Track & Master',
-                    description: 'Monitor mastery with analytics heatmaps, get AI revision schedules, and receive predicted scores.',
+                    title: 'Rank Prediction & Exam Day',
+                    description: 'Take full-length CBT papers in authentic CDAC windows. Receive precision cutoff percentiles and weak-area surgery before the real exam.',
                     icon: Award,
                   },
                 ].map((item, i) => {
                   const Icon = item.icon;
                   return (
-                    <div key={i} className="relative">
-                      {i < 2 && (
-                        <div className="hidden md:block absolute top-14 left-full w-full h-px bg-gradient-to-r from-[#dbd7c7] to-transparent -translate-x-4 z-0"></div>
-                      )}
-                      <div className="relative z-10 text-center">
-                        <div className="w-16 h-16 mx-auto rounded-2xl bg-[#fcfcfb] border border-[#dbd7c7] flex items-center justify-center mb-6 shadow-sm">
-                          <Icon className="w-7 h-7 text-[#faa114]" />
-                        </div>
-                        <div className="text-xs font-bold text-[#faa114] tracking-widest mb-2">STEP {item.step}</div>
-                        <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                        <p className="text-sm text-[#786e67] leading-relaxed">{item.description}</p>
+                    <div key={i} className="glass-panel p-8 rounded-3xl space-y-4 text-center relative group">
+                      <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shadow-glow-amber group-hover:scale-110 transition-transform">
+                        <Icon className="w-7 h-7 text-amber-400" />
                       </div>
+                      <div className="text-xs font-mono font-bold text-amber-400 tracking-widest uppercase">STEP {item.step}</div>
+                      <h3 className="text-xl font-bold text-white font-display">{item.title}</h3>
+                      <p className="text-sm text-slate-300 leading-relaxed">{item.description}</p>
                     </div>
                   );
                 })}
               </div>
+
             </div>
           </section>
         </RevealSection>
 
-        {/* ═══════════ TESTIMONIALS ═══════════ */}
+        {/* ═══════════ TESTIMONIALS / SUCCESS STORIES ═══════════ */}
         <RevealSection>
-          <section id="testimonials" className="py-20 md:py-28 px-6 md:px-12">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#faa114]/10 border border-[#faa114]/20 rounded-full mb-4">
-                  <Users className="w-3.5 h-3.5 text-[#faa114]" />
-                  <span className="text-xs font-semibold text-[#786e67] tracking-wide uppercase">Success Stories</span>
-                </div>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ fontFamily: 'Outfit' }}>
-                  Loved by Top Rankers
-                </h2>
-                <p className="text-base text-[#786e67] max-w-md mx-auto">
-                  Hear from aspirants who cracked their dream exams with Tejas.
-                </p>
+          <section id="testimonials" className="px-6 md:px-12 py-20 md:py-28 max-w-7xl mx-auto space-y-16">
+            
+            <div className="text-center space-y-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider font-mono">
+                ✦ VERIFIED RANKERS
               </div>
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
+                Trusted by Top Aspirants Across India
+              </h2>
+              <p className="text-slate-400 text-sm md:text-base max-w-lg mx-auto">
+                Real aspirants who transformed their preparation discipline and cleared their dream cutoffs.
+              </p>
+            </div>
 
-              <div className="grid md:grid-cols-3 gap-6">
-                {testimonials.map((t, i) => (
-                  <div key={i} className="bg-[#fcfcfb] border border-[#dbd7c7] rounded-2xl p-8 card-hover relative">
-                    <Quote className="w-8 h-8 text-[#faa114]/20 absolute top-6 right-6" />
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-12 h-12 rounded-full bg-[#faa114]/10 flex items-center justify-center text-sm font-bold text-[#faa114]">
+            <div className="grid md:grid-cols-3 gap-6">
+              {testimonials.map((t, i) => (
+                <div key={i} className="glass-panel p-8 rounded-3xl space-y-6 flex flex-col justify-between relative group">
+                  <Quote className="w-8 h-8 text-amber-400/20 absolute top-6 right-6" />
+                  
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3.5">
+                      <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-sm font-extrabold text-amber-300 font-display">
                         {t.avatar}
                       </div>
                       <div>
-                        <div className="text-sm font-bold">{t.name}</div>
-                        <div className="text-xs text-[#faa114] font-semibold">{t.role}</div>
+                        <div className="text-base font-bold text-white">{t.name}</div>
+                        <div className="text-xs text-amber-400 font-mono font-semibold">{t.role}</div>
                       </div>
                     </div>
-                    <p className="text-sm text-[#786e67] leading-relaxed italic">
+
+                    <p className="text-sm text-slate-300 leading-relaxed italic">
                       &ldquo;{t.quote}&rdquo;
                     </p>
-                    <div className="flex gap-0.5 mt-4">
+                  </div>
+
+                  <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                    <div className="flex gap-1">
                       {[...Array(5)].map((_, j) => (
-                        <Star key={j} className="w-3.5 h-3.5 fill-[#faa114] text-[#faa114]" />
+                        <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />
                       ))}
                     </div>
+                    <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                      {t.badge}
+                    </span>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
+
           </section>
         </RevealSection>
 
-        {/* ═══════════ PRICING ═══════════ */}
+        {/* ═══════════ TRANSPARENT PRICING TIERS ═══════════ */}
         <RevealSection>
-          <section id="pricing" className="py-20 md:py-28 px-6 md:px-12 bg-[#f9f8f5]">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-16">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#faa114]/10 border border-[#faa114]/20 rounded-full mb-4">
-                  <Sparkles className="w-3.5 h-3.5 text-[#faa114]" />
-                  <span className="text-xs font-semibold text-[#786e67] tracking-wide uppercase">Simple Pricing</span>
+          <section id="pricing" className="px-6 md:px-12 py-20 bg-[#090d14] border-t border-white/10">
+            <div className="max-w-5xl mx-auto space-y-16">
+              
+              <div className="text-center space-y-3">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider font-mono">
+                  ✦ TRANSPARENT MEMBERSHIP
                 </div>
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4" style={{ fontFamily: 'Outfit' }}>
-                  Plans That Grow With You
+                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
+                  Start Free. Upgrade for Unlimited Power.
                 </h2>
-                <p className="text-base text-[#786e67] max-w-md mx-auto">
-                  Start free, upgrade when you need unlimited AI power.
+                <p className="text-slate-400 text-sm md:text-base max-w-lg mx-auto">
+                  Every serious aspirant deserves world-class AI preparation tools at an affordable price.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Free */}
-                <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-8 md:p-10 rounded-3xl flex flex-col justify-between card-hover">
-                  <div>
-                    <h3 className="text-lg font-bold text-[#786e67] mb-2">Free Learner</h3>
-                    <div className="text-5xl font-bold mb-1" style={{ fontFamily: 'Outfit' }}>
-                      ₹0<span className="text-base font-medium text-[#b3aa9e] ml-1">/ month</span>
+              <div className="grid md:grid-cols-2 gap-8 items-stretch">
+                
+                {/* Free Tier */}
+                <div className="glass-panel p-8 md:p-10 rounded-3xl flex flex-col justify-between space-y-8">
+                  <div className="space-y-6">
+                    <div>
+                      <span className="text-xs font-mono font-bold text-slate-400 uppercase">FREE LEARNER</span>
+                      <div className="text-5xl font-black text-white font-display mt-2">
+                        ₹0 <span className="text-sm font-medium text-slate-400">/ forever</span>
+                      </div>
+                      <p className="text-xs text-slate-400 mt-2">Essential study tools for getting started.</p>
                     </div>
-                    <p className="text-xs text-[#b3aa9e] mb-8">Perfect for getting started</p>
+
                     <ul className="space-y-3">
                       {[
-                        '3 AI quiz tokens daily',
-                        'Basic syllabus roadmap',
-                        'Performance history',
-                        'Community access',
+                        '3 AI quiz generations daily',
+                        'Basic exam syllabus roadmaps',
+                        'Past 30-day performance tracking',
+                        'Official exam pattern guides',
+                        'Community forum access'
                       ].map((item, i) => (
-                        <li key={i} className="flex items-center gap-2.5 text-sm text-[#786e67]">
-                          <CheckCircle className="w-4 h-4 text-[#faa114] flex-shrink-0" />
-                          {item}
+                        <li key={i} className="flex items-center gap-3 text-sm text-slate-300">
+                          <CheckCircle className="w-4 h-4 text-slate-500 shrink-0" />
+                          <span>{item}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
+
                   <button 
                     onClick={() => {
                       setAuthMode('signup');
                       resetAuthState();
                       triggerLoadingState('auth');
                     }}
-                    className="mt-10 w-full py-3.5 border border-[#dbd7c7] hover:border-[#786e67] text-[#262a2b] font-semibold rounded-xl transition-all active:scale-[0.97]"
+                    className="w-full py-4 glass-panel hover:bg-white/10 text-white font-bold text-sm rounded-xl transition-all active:scale-[0.98]"
                   >
-                    Start Free
+                    Start Free Plan
                   </button>
                 </div>
 
-                {/* Premium */}
-                <div className="bg-[#fcfcfb] border-2 border-[#faa114] p-8 md:p-10 rounded-3xl flex flex-col justify-between card-hover relative overflow-hidden">
-                  <div className="absolute -top-px -right-px">
-                    <div className="bg-[#faa114] text-[#262a2b] text-[10px] font-bold px-4 py-1.5 rounded-bl-xl rounded-tr-2xl tracking-wide">
-                      RECOMMENDED
-                    </div>
+                {/* Premium Tier */}
+                <div className="glass-panel p-8 md:p-10 rounded-3xl flex flex-col justify-between space-y-8 border-amber-500/40 relative shadow-glow-amber">
+                  <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 text-[10px] font-extrabold font-mono px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg">
+                    ✦ HIGHLY RECOMMENDED
                   </div>
 
-                  {/* Subtle gradient accent */}
-                  <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-[#faa114]/5 rounded-full blur-3xl"></div>
-
-                  <div className="relative z-10">
-                    <h3 className="text-lg font-bold text-[#faa114] mb-2">Elite Premium</h3>
-                    <div className="text-5xl font-bold mb-1" style={{ fontFamily: 'Outfit' }}>
-                      ₹499<span className="text-base font-medium text-[#b3aa9e] ml-1">/ month</span>
+                  <div className="space-y-6">
+                    <div>
+                      <span className="text-xs font-mono font-bold text-amber-400 uppercase">ELITE ASPIRANT PRO</span>
+                      <div className="text-5xl font-black text-amber-300 font-display mt-2">
+                        ₹499 <span className="text-sm font-medium text-slate-400">/ month</span>
+                      </div>
+                      <p className="text-xs text-slate-400 mt-2">For dedicated aspirants targeting top AIR ranks.</p>
                     </div>
-                    <p className="text-xs text-[#b3aa9e] mb-8">For serious aspirants</p>
+
                     <ul className="space-y-3">
                       {[
-                        'Unlimited AI quiz generation',
-                        'PDF & YouTube ingestion',
-                        'Advanced analytics & prediction',
-                        'Spaced repetition auto-sync',
-                        'Priority AI processing',
-                        'Personalized AI mentor',
+                        'Unlimited GenAI quiz generations',
+                        'Full PDF & textbook split-pane ingestion',
+                        '15+ Official CDAC CBT exam simulations',
+                        'FSRS automatic spaced recall sync',
+                        'Concept mastery weak-point surgery',
+                        'Priority neural processing speed',
+                        'All future exam hubs included'
                       ].map((item, i) => (
-                        <li key={i} className="flex items-center gap-2.5 text-sm text-[#786e67]">
-                          <CheckCircle className="w-4 h-4 text-[#faa114] flex-shrink-0" />
-                          {item}
+                        <li key={i} className="flex items-center gap-3 text-sm text-slate-100 font-medium">
+                          <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                          <span>{item}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
+
                   <button 
                     onClick={() => {
-                      alert('Elite plan mock checkout successful!');
+                      alert('Elite Pro checkout simulation successful!');
                       setIsLoggedIn(true);
-                      triggerLoadingState('dashboard');
+                      triggerLoadingState('afcat');
                     }}
-                    className="relative z-10 mt-10 w-full py-3.5 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-xl transition-all active:scale-[0.97] shadow-lg shadow-[#faa114]/20"
+                    className="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-sm rounded-xl transition-all active:scale-[0.98] shadow-glow-amber"
                   >
-                    Upgrade Now
+                    Unlock Elite Membership
                   </button>
                 </div>
+
               </div>
+
             </div>
           </section>
         </RevealSection>
 
-        {/* ═══════════ FINAL CTA SECTION ═══════════ */}
+        {/* ═══════════ FINAL CALL TO ACTION ═══════════ */}
         <RevealSection>
-          <section className="py-20 md:py-28 px-6 md:px-12">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="bg-[#262a2b] rounded-3xl p-12 md:p-16 relative overflow-hidden">
-                {/* Ambient glow */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#faa114]/10 rounded-full blur-3xl"></div>
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#faa114]/5 rounded-full blur-3xl"></div>
-                
-                <div className="relative z-10">
-                  <h2 className="text-3xl md:text-4xl font-bold text-[#fcfcfb] mb-4 tracking-tight" style={{ fontFamily: 'Outfit' }}>
-                    Ready to Transform Your Preparation?
-                  </h2>
-                  <p className="text-base text-[#b3aa9e] max-w-md mx-auto mb-8">
-                    Join 50,000+ aspirants who are already studying smarter, not harder.
-                  </p>
+          <section className="px-6 md:px-12 py-20 md:py-28 relative">
+            <div className="max-w-5xl mx-auto glass-panel p-10 md:p-16 rounded-[36px] border border-amber-500/30 text-center relative overflow-hidden shadow-2xl shadow-amber-500/10">
+              
+              <div className="absolute -top-24 -right-24 w-80 h-80 bg-amber-500/15 rounded-full blur-[90px] pointer-events-none"></div>
+              <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-sky-500/15 rounded-full blur-[90px] pointer-events-none"></div>
+
+              <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-tight leading-tight">
+                  Ready to Crack Your Target Exam in 2026?
+                </h2>
+                <p className="text-slate-300 text-sm md:text-base leading-relaxed">
+                  Join over 50,000 aspirants who are preparing with algorithmic precision and daily clarity.
+                </p>
+                <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
                   <button 
                     onClick={() => {
                       setAuthMode('signup');
                       resetAuthState();
                       triggerLoadingState('auth');
                     }}
-                    className="px-10 py-4 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-2xl shadow-lg shadow-[#faa114]/30 transition-all active:scale-[0.97] text-base"
+                    className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-base rounded-2xl shadow-glow-amber transition-all active:scale-95 flex items-center justify-center gap-2"
                   >
-                    Get Started — It&apos;s Free
+                    Create Free Account
+                    <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
               </div>
+
             </div>
           </section>
         </RevealSection>
 
         {/* ═══════════ FOOTER ═══════════ */}
-        <footer className="border-t border-[#dbd7c7] py-12 px-6 md:px-12">
-          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="col-span-2 md:col-span-1">
-              <div className="flex items-center gap-1.5 mb-4">
-                <span className="text-xl font-bold" style={{ fontFamily: 'Outfit' }}>Tejas</span>
-                <span className="w-2 h-2 rounded-full bg-[#faa114]"></span>
+        <footer className="border-t border-white/10 py-16 px-6 md:px-12 bg-[#06080c] text-slate-400">
+          <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8">
+            <div className="col-span-2 space-y-4">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center text-slate-950 font-black text-sm">
+                  T
+                </div>
+                <span className="text-xl font-bold text-white font-display">Tejas</span>
               </div>
-              <p className="text-xs text-[#786e67] leading-relaxed max-w-xs">
-                The AI-powered learning operating system for 500 million Indian learners.
+              <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+                The unified AI study operating system for competitive exams, university subjects, and document intelligence across India.
               </p>
+              <div className="text-xs font-mono text-slate-500 pt-2">
+                Built with precision for 500 Million Indian Aspirants.
+              </div>
             </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#b3aa9e] mb-4">Product</h4>
-              <ul className="space-y-2">
-                {['Features', 'Pricing', 'Exams', 'API'].map((item) => (
-                  <li key={item} className="text-sm text-[#786e67] hover:text-[#262a2b] cursor-pointer transition-colors">{item}</li>
+
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Exams</h4>
+              <ul className="space-y-2 text-xs">
+                {['AFCAT 2026', 'CDS IMA/OTA', 'NDA & NA', 'JEE Main', 'NEET UG', 'UPSC CSE', 'GATE Engineering', 'CAT MBA'].map((e) => (
+                  <li key={e} className="hover:text-amber-400 cursor-pointer transition-colors">{e}</li>
                 ))}
               </ul>
             </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#b3aa9e] mb-4">Company</h4>
-              <ul className="space-y-2">
-                {['About', 'Blog', 'Careers', 'Contact'].map((item) => (
-                  <li key={item} className="text-sm text-[#786e67] hover:text-[#262a2b] cursor-pointer transition-colors">{item}</li>
+
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Platform</h4>
+              <ul className="space-y-2 text-xs">
+                {['CBT Exam Engine', 'Instant AI Quiz', 'Study Planner', 'FSRS Revision', 'PYQ Paper Vault', 'Research Hub'].map((p) => (
+                  <li key={p} className="hover:text-amber-400 cursor-pointer transition-colors">{p}</li>
                 ))}
               </ul>
             </div>
-            <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#b3aa9e] mb-4">Legal</h4>
-              <ul className="space-y-2">
-                {['Privacy Policy', 'Terms', 'Security', 'Cookies'].map((item) => (
-                  <li key={item} className="text-sm text-[#786e67] hover:text-[#262a2b] cursor-pointer transition-colors">{item}</li>
+
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Company & Legal</h4>
+              <ul className="space-y-2 text-xs">
+                {['Privacy Policy', 'Terms of Service', 'Security & Safety', 'Contact Support', 'WhatsApp Helpline'].map((l) => (
+                  <li key={l} className="hover:text-amber-400 cursor-pointer transition-colors">{l}</li>
                 ))}
               </ul>
             </div>
           </div>
-          <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-[#dbd7c7] flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-xs text-[#b3aa9e]">© 2026 Tejas. All rights reserved.</p>
-            <p className="text-xs text-[#b3aa9e]">Made with 🔥 for Indian Learners</p>
+
+          <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <p>© 2026 Tejas Learning Technologies. All rights reserved.</p>
+            <p className="flex items-center gap-1">
+              Made with <span className="text-amber-400">⚡</span> for Bharat
+            </p>
           </div>
         </footer>
+
       </div>
     );
   }
 
   /* ────────────────────────────────────────
-     ONBOARDING WIZARD SCREEN
+     ONBOARDING WIZARD SCREEN (DARK LUXURY)
      ──────────────────────────────────────── */
   if (isLoggedIn && !profileOnboardingCompleted) {
     const handleOnboardingSubmit = () => {
@@ -1576,7 +1875,6 @@ export default function WorkspacePage() {
             setOnboardingGenerating(false);
             setActiveTab('afcat');
             
-            // Open WhatsApp support channel in a new tab
             if (typeof window !== 'undefined') {
               window.open('https://wa.me/919079144245?text=Hello%20Tejas%20Support!%20I%20just%20completed%20my%20onboarding%20and%20need%20assistance.', '_blank');
             }
@@ -1590,15 +1888,12 @@ export default function WorkspacePage() {
     };
 
     return (
-      <div className="min-h-screen bg-[#fcfcfb] text-[#262a2b] flex items-center justify-center p-4 md:p-12 font-sans selection:bg-[#faa114]/20">
-        <div className="max-w-xl w-full bg-[#fcfcfb] border border-[#dbd7c7] p-8 md:p-12 rounded-[32px] shadow-xl space-y-8 relative overflow-hidden transition-all duration-300">
+      <div className="min-h-screen bg-[#080a0f] text-[#f1f5f9] flex items-center justify-center p-4 md:p-12 font-sans">
+        <div className="max-w-xl w-full glass-panel border border-white/15 p-8 md:p-12 rounded-[32px] shadow-2xl space-y-8 relative overflow-hidden">
           
-          <div className="absolute top-0 right-0 w-32 h-32 bg-[#faa114]/5 rounded-full blur-2xl -mr-16 -mt-16"></div>
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#786e67]/5 rounded-full blur-2xl -ml-16 -mb-16"></div>
-
-          <div className="flex justify-between items-center border-b border-[#dbd7c7]/60 pb-5">
-            <span className="text-xl font-bold tracking-tight flex items-center" style={{ fontFamily: 'Outfit' }}>
-              Tejas<span className="w-2.5 h-2.5 rounded-full bg-[#faa114] ml-1"></span>
+          <div className="flex justify-between items-center border-b border-white/10 pb-5">
+            <span className="text-xl font-bold tracking-tight flex items-center text-white font-display">
+              Tejas<span className="w-2.5 h-2.5 rounded-full bg-amber-400 ml-1"></span>
             </span>
             <div className="flex gap-1.5">
               {[1, 2, 3, 4, 5].map((s) => (
@@ -1606,10 +1901,10 @@ export default function WorkspacePage() {
                   key={s} 
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     s === onboardingStep 
-                      ? 'w-6 bg-[#faa114]' 
+                      ? 'w-6 bg-amber-400' 
                       : s < onboardingStep 
-                        ? 'w-2.5 bg-[#786e67]' 
-                        : 'w-2.5 bg-[#dbd7c7]'
+                        ? 'w-2.5 bg-amber-600' 
+                        : 'w-2.5 bg-white/10'
                   }`}
                 ></div>
               ))}
@@ -1618,9 +1913,9 @@ export default function WorkspacePage() {
 
           {onboardingStep === 1 && (
             <div className="space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>What is your primary study goal?</h2>
-                <p className="text-sm text-[#786e67]">Select a vertical to customize your AI dashboard and roadmaps.</p>
+              <div className="space-y-1">
+                <h2 className="text-2xl font-bold tracking-tight text-white font-display">What is your primary study goal?</h2>
+                <p className="text-sm text-slate-400">Select a vertical to customize your AI dashboard and roadmaps.</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {[
@@ -1637,10 +1932,10 @@ export default function WorkspacePage() {
                       setOnboardingCategory(cat.id);
                       setOnboardingStep(2);
                     }}
-                    className="p-5 border border-[#dbd7c7] bg-[#fcfcfb] hover:border-[#faa114] hover:bg-[#faa114]/5 rounded-2xl text-left space-y-2 transition-all card-hover group"
+                    className="p-5 border border-white/10 bg-white/5 hover:border-amber-400 hover:bg-amber-500/10 rounded-2xl text-left space-y-2 transition-all group"
                   >
-                    <span className="font-bold text-sm block group-hover:text-[#262a2b] transition-colors">{cat.label}</span>
-                    <span className="text-[11px] text-[#786e67] block">{cat.desc}</span>
+                    <span className="font-bold text-sm block text-white group-hover:text-amber-300 transition-colors">{cat.label}</span>
+                    <span className="text-[11px] text-slate-400 block">{cat.desc}</span>
                   </button>
                 ))}
               </div>
@@ -1649,18 +1944,18 @@ export default function WorkspacePage() {
 
           {onboardingStep === 2 && (
             <div className="space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>Select your Target Exam</h2>
-                <p className="text-sm text-[#786e67]">This binds the correct syllabus roadmap to your calendar.</p>
+              <div className="space-y-1">
+                <h2 className="text-2xl font-bold tracking-tight text-white font-display">Select your Target Exam</h2>
+                <p className="text-sm text-slate-400">This binds the correct syllabus roadmap to your calendar.</p>
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-[#786e67]">Target Examination</label>
+                  <label className="text-xs font-semibold text-slate-400">Target Examination</label>
                   <select 
                     value={onboardingExamId}
                     onChange={(e) => setOnboardingExamId(e.target.value)}
-                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
                   >
                     <option value="">Select Target Exam</option>
                     {examsList.length > 0 ? (
@@ -1669,23 +1964,25 @@ export default function WorkspacePage() {
                       ))
                     ) : (
                       <>
-                        <option value="upsc-cse">UPSC Civil Services Exam</option>
+                        <option value="afcat">AFCAT (Air Force)</option>
+                        <option value="cds">CDS (IMA / OTA)</option>
+                        <option value="nda">NDA & NA (UPSC)</option>
+                        <option value="upsc-cse">UPSC Civil Services</option>
                         <option value="jee-advanced">JEE Advanced (Engineering)</option>
                         <option value="neet-ug">NEET UG (Medical)</option>
                         <option value="gate-cse">GATE Computer Science</option>
                         <option value="ssc-cgl">SSC CGL (Government)</option>
-                        <option value="general-study">General Subject Study</option>
                       </>
                     )}
                   </select>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-[#786e67]">Target Attempt Year</label>
+                  <label className="text-xs font-semibold text-slate-400">Target Attempt Year</label>
                   <select 
                     value={onboardingYear}
                     onChange={(e) => setOnboardingYear(e.target.value)}
-                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
                   >
                     <option value="2026">2026</option>
                     <option value="2027">2027</option>
@@ -1696,11 +1993,11 @@ export default function WorkspacePage() {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <button onClick={() => setOnboardingStep(1)} className="flex-1 py-3 border border-[#dbd7c7] text-[#786e67] hover:bg-[#dbd7c7]/20 font-bold rounded-xl transition-all">← Back</button>
+                <button onClick={() => setOnboardingStep(1)} className="flex-1 py-3 border border-white/10 text-slate-300 hover:bg-white/5 font-bold rounded-xl transition-all">← Back</button>
                 <button 
                   onClick={() => setOnboardingStep(3)} 
                   disabled={!onboardingExamId}
-                  className="flex-1 py-3 bg-[#262a2b] text-[#fcfcfb] hover:bg-[#262a2b]/95 font-bold rounded-xl disabled:opacity-50 transition-all"
+                  className="flex-1 py-3 bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-amber"
                 >
                   Continue
                 </button>
@@ -1710,33 +2007,31 @@ export default function WorkspacePage() {
 
           {onboardingStep === 3 && (
             <div className="space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>Set Your Preferences</h2>
-                <p className="text-sm text-[#786e67]">These values dictate your daily planner limits and learning medium.</p>
+              <div className="space-y-1">
+                <h2 className="text-2xl font-bold tracking-tight text-white font-display">Set Your Preferences</h2>
+                <p className="text-sm text-slate-400">These values dictate your daily planner limits and learning medium.</p>
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-[#786e67]">Preferred Study Medium / Language</label>
+                  <label className="text-xs font-semibold text-slate-400">Preferred Study Medium</label>
                   <select 
                     value={onboardingLanguage}
                     onChange={(e) => setOnboardingLanguage(e.target.value)}
-                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
                   >
                     <option value="en">English (Default)</option>
                     <option value="hi">Hindi (हिन्दी)</option>
-                    <option value="te">Telugu (తెలుగు)</option>
-                    <option value="ta">Tamil (தமிழ்)</option>
                     <option value="hinglish">Hinglish (Bilingual)</option>
                   </select>
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-[#786e67]">Preparation Status</label>
+                  <label className="text-xs font-semibold text-slate-400">Preparation Status</label>
                   <select 
                     value={onboardingPrepStatus}
                     onChange={(e) => setOnboardingPrepStatus(e.target.value)}
-                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
                   >
                     <option value="">Select Status</option>
                     <option value="dropper">Dropper / Full-Time Aspirant</option>
@@ -1748,11 +2043,11 @@ export default function WorkspacePage() {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <button onClick={() => setOnboardingStep(2)} className="flex-1 py-3 border border-[#dbd7c7] text-[#786e67] hover:bg-[#dbd7c7]/20 font-bold rounded-xl transition-all">← Back</button>
+                <button onClick={() => setOnboardingStep(2)} className="flex-1 py-3 border border-white/10 text-slate-300 hover:bg-white/5 font-bold rounded-xl transition-all">← Back</button>
                 <button 
                   onClick={() => setOnboardingStep(4)} 
                   disabled={!onboardingPrepStatus}
-                  className="flex-1 py-3 bg-[#262a2b] text-[#fcfcfb] hover:bg-[#262a2b]/95 font-bold rounded-xl disabled:opacity-50 transition-all"
+                  className="flex-1 py-3 bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-amber"
                 >
                   Continue
                 </button>
@@ -1762,18 +2057,18 @@ export default function WorkspacePage() {
 
           {onboardingStep === 4 && (
             <div className="space-y-6">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>One Last Thing...</h2>
-                <p className="text-sm text-[#786e67]">Provide details to customize your notifications and state recommendations.</p>
+              <div className="space-y-1">
+                <h2 className="text-2xl font-bold tracking-tight text-white font-display">One Last Thing...</h2>
+                <p className="text-sm text-slate-400">Provide details to customize state recommendations.</p>
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-[#786e67]">State of Residence</label>
+                  <label className="text-xs font-semibold text-slate-400">State of Residence</label>
                   <select 
                     value={onboardingState}
                     onChange={(e) => setOnboardingState(e.target.value)}
-                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
                   >
                     <option value="">Select State</option>
                     <option value="Uttar Pradesh">Uttar Pradesh</option>
@@ -1789,27 +2084,26 @@ export default function WorkspacePage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-[#786e67]">Mobile Number (Optional)</label>
+                  <label className="text-xs font-semibold text-slate-400">Mobile Number (Optional)</label>
                   <input 
                     type="tel" 
                     placeholder="+91 XXXXX XXXXX"
                     value={onboardingPhoneNumber}
                     onChange={(e) => setOnboardingPhoneNumber(e.target.value)}
-                    className="w-full p-3.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
                   />
-                  <p className="text-[10px] text-[#b3aa9e]">Opt-in to receive a welcome notification from 9079144245.</p>
                 </div>
               </div>
 
               <div className="flex gap-3 pt-4">
-                <button onClick={() => setOnboardingStep(3)} className="flex-1 py-3 border border-[#dbd7c7] text-[#786e67] hover:bg-[#dbd7c7]/20 font-bold rounded-xl transition-all">← Back</button>
+                <button onClick={() => setOnboardingStep(3)} className="flex-1 py-3 border border-white/10 text-slate-300 hover:bg-white/5 font-bold rounded-xl transition-all">← Back</button>
                 <button 
                   onClick={() => {
                     setOnboardingStep(5);
                     handleOnboardingSubmit();
                   }} 
                   disabled={!onboardingState}
-                  className="flex-1 py-3 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-bold rounded-xl disabled:opacity-50 transition-all"
+                  className="flex-1 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-amber"
                 >
                   Generate My Workspace
                 </button>
@@ -1821,24 +2115,24 @@ export default function WorkspacePage() {
             <div className="text-center py-12 space-y-6 flex flex-col items-center justify-center">
               {onboardingGenerating ? (
                 <>
-                  <div className="w-16 h-16 border-4 border-[#faa114] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
                   <div className="space-y-2">
-                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Personalizing Your Workspace</h3>
-                    <p className="text-xs text-[#786e67] animate-pulse">AI is compiling roadmaps, custom timetables, and spacing reviews...</p>
+                    <h3 className="text-lg font-bold text-white font-display">Personalizing Your Workspace</h3>
+                    <p className="text-xs text-slate-400 animate-pulse">AI is compiling roadmaps, custom timetables, and spacing reviews...</p>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="w-16 h-16 bg-[#faa114]/10 rounded-full flex items-center justify-center">
-                    <CheckCircle className="w-10 h-10 text-[#faa114]" />
+                  <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center border border-amber-500/40">
+                    <CheckCircle className="w-10 h-10 text-amber-400" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Setup Complete!</h3>
-                    <p className="text-xs text-[#786e67]">Your AI Learning Space is ready for launch.</p>
+                    <h3 className="text-lg font-bold text-white font-display">Setup Complete!</h3>
+                    <p className="text-xs text-slate-400">Your AI Learning Space is ready for launch.</p>
                   </div>
                   <button 
                     onClick={() => setProfileOnboardingCompleted(true)}
-                    className="mt-6 px-8 py-3 bg-[#262a2b] text-[#fcfcfb] hover:bg-[#262a2b]/95 font-bold rounded-xl transition-all"
+                    className="mt-6 px-8 py-3 bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold rounded-xl transition-all shadow-glow-amber"
                   >
                     Enter Workspace
                   </button>
@@ -1853,61 +2147,62 @@ export default function WorkspacePage() {
   }
 
   /* ────────────────────────────────────────
-     APP WORKSPACE (Dashboard, etc.)
+     APP WORKSPACE (DASHBOARD & ALL HUBS)
      ──────────────────────────────────────── */
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#fcfcfb] text-[#262a2b] font-sans">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#080a0f] text-[#f1f5f9] font-sans">
       
       {/* LEFT SIDEBAR NAVIGATION (Desktop) */}
       {activeTab !== 'auth' && activeTab !== 'pricing' && (
-        <aside className="hidden md:flex w-64 bg-[#fcfcfb] border-r border-[#dbd7c7] flex-col justify-between shrink-0 sticky top-0 h-screen">
+        <aside className="hidden md:flex w-64 bg-[#0d1117] border-r border-white/10 flex-col justify-between shrink-0 sticky top-0 h-screen">
           <div>
             {/* Logo */}
-            <div className="p-6 border-b border-[#dbd7c7] flex items-center gap-2">
-              <span className="text-xl font-bold tracking-tight flex items-center" style={{ fontFamily: 'Outfit' }}>
-                Tejas<span className="w-2 h-2 rounded-full bg-[#faa114] ml-1"></span>
+            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+              <span className="text-xl font-black tracking-tight flex items-center text-white font-display">
+                Tejas<span className="w-2 h-2 rounded-full bg-amber-400 ml-1.5 shadow-glow-amber"></span>
               </span>
+              <button onClick={() => triggerLoadingState('landing')} className="text-[11px] text-slate-400 hover:text-amber-400 font-mono">
+                ← Home
+              </button>
             </div>
 
             {/* Navigation */}
-            <nav className="p-4 space-y-1">
+            <nav className="p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-160px)] no-scrollbar">
               {(() => {
                 const navs = [
-                  { id: 'afcat', label: 'AFCAT 2026 Hub', icon: Shield },
-                  { id: 'cds', label: 'CDS (IMA/OTA) Hub', icon: Shield },
-                  { id: 'nda', label: 'NDA & NA Hub', icon: Shield },
-                  { id: 'jee_mains', label: 'JEE Main Hub', icon: Zap },
-                  { id: 'neet', label: 'NEET UG Hub', icon: Award },
-                  { id: 'upsc', label: 'UPSC CSE Hub', icon: BookOpen },
-                  { id: 'ssc_cgl', label: 'SSC CGL Hub', icon: FileText },
-                  { id: 'gate', label: 'GATE Engine', icon: Sparkles },
-                  { id: 'cat', label: 'CAT Engine', icon: TrendingUp },
-                  { id: 'dashboard', label: 'Dashboard', icon: BookOpen },
-                  { id: 'planner', label: 'Study Planner', icon: Calendar },
-                  { id: 'explorer', label: 'Exam Explorer', icon: Search },
-                  { id: 'learning', label: 'Learning Hub', icon: BookMarked },
-                  { id: 'pdf', label: 'PDF Workspace', icon: FileText },
-                  { id: 'revision', label: 'Revision Cards', icon: RotateCcw },
-                  { id: 'analytics', label: 'Analytics', icon: TrendingUp },
-                  { id: 'profile', label: 'Profile', icon: User },
+                  { id: 'afcat', label: '✈️ AFCAT 2026 Hub', icon: Shield },
+                  { id: 'cds', label: '🛡️ CDS (IMA/OTA) Hub', icon: Shield },
+                  { id: 'nda', label: '⚔️ NDA & NA Hub', icon: Shield },
+                  { id: 'jee_mains', label: '⚛️ JEE Main Hub', icon: Zap },
+                  { id: 'neet', label: '🩺 NEET UG Hub', icon: Award },
+                  { id: 'upsc', label: '🏛️ UPSC CSE Hub', icon: BookOpen },
+                  { id: 'ssc_cgl', label: '📋 SSC CGL Hub', icon: FileText },
+                  { id: 'gate', label: '⚡ GATE Engine', icon: Sparkles },
+                  { id: 'cat', label: '📊 CAT Engine', icon: TrendingUp },
+                  { id: 'dashboard', label: '📊 Dashboard', icon: BookOpen },
+                  { id: 'planner', label: '📅 Study Planner', icon: Calendar },
+                  { id: 'explorer', label: '🔍 Exam Explorer', icon: Search },
+                  { id: 'learning', label: '📚 Learning Hub', icon: BookMarked },
+                  { id: 'pdf', label: '📄 PDF Workspace', icon: FileText },
+                  { id: 'revision', label: '🧠 Revision (FSRS)', icon: RotateCcw },
+                  { id: 'analytics', label: '📈 Analytics', icon: TrendingUp },
+                  { id: 'profile', label: '👤 Profile', icon: User },
                 ];
                 if (user.role === 'admin') {
-                  navs.push({ id: 'admin', label: 'Admin Console', icon: Shield });
+                  navs.push({ id: 'admin', label: '🔒 Admin Console', icon: Shield });
                 }
                 return navs.map((item) => {
-                  const Icon = item.icon;
                   const isActive = activeTab === item.id;
                   return (
                     <button
                       key={item.id}
                       onClick={() => triggerLoadingState(item.id)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 ${
+                      className={`w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-xl transition-all duration-150 ${
                         isActive 
-                          ? 'bg-[#dbd7c7]/50 text-[#262a2b] border-l-4 border-[#faa114]' 
-                          : 'text-[#786e67] hover:bg-[#dbd7c7]/30 hover:text-[#262a2b]'
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' 
+                          : 'text-slate-400 hover:bg-white/5 hover:text-white'
                       }`}
                     >
-                      <Icon className="w-5 h-5" />
                       {item.label}
                     </button>
                   );
@@ -1917,17 +2212,17 @@ export default function WorkspacePage() {
           </div>
 
           {/* Quick Quiz FAB */}
-          <div className="p-4 border-t border-[#dbd7c7]">
+          <div className="p-4 border-t border-white/10">
             <button
               onClick={() => {
                 setQuizStarted(false);
                 setQuizScore(null);
                 triggerLoadingState('quiz-gen');
               }}
-              className="w-full py-3 px-4 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-semibold rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-150 active:scale-95"
+              className="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold rounded-xl flex items-center justify-center gap-2 shadow-glow-amber transition-all duration-150 active:scale-95 text-xs"
             >
-              <Plus className="w-5 h-5" />
-              Instant Quiz
+              <Plus className="w-4 h-4" />
+              Instant AI Quiz
             </button>
           </div>
         </aside>
@@ -1938,31 +2233,31 @@ export default function WorkspacePage() {
         
         {/* TOP HEADER BAR */}
         {activeTab !== 'auth' && activeTab !== 'pricing' && (
-          <header className="h-16 border-b border-[#dbd7c7] px-6 flex items-center justify-between bg-[#fcfcfb]/80 backdrop-blur-md sticky top-0 z-50">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium text-[#786e67]">Target Exam:</span>
+          <header className="h-16 border-b border-white/10 px-6 flex items-center justify-between bg-[#0d1117]/80 backdrop-blur-md sticky top-0 z-40">
+            <div className="flex items-center gap-3">
+              <span className="text-xs font-medium text-slate-400">Current Target:</span>
               <button 
                 onClick={() => triggerLoadingState('afcat')}
-                className="px-3.5 py-1 bg-[#262a2b] text-[#faa114] border border-[#faa114]/40 text-xs font-bold rounded-full hover:bg-[#1a1d1e] transition-all flex items-center gap-1.5 shadow-sm"
+                className="px-3.5 py-1 bg-amber-500/15 text-amber-300 border border-amber-500/30 text-xs font-bold rounded-full hover:bg-amber-500/25 transition-all flex items-center gap-1.5 shadow-sm"
               >
-                ✈️ AFCAT 2026 (Indian Air Force)
+                ✈️ AFCAT 2026 (Air Force)
               </button>
             </div>
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => triggerLoadingState('pricing')}
-                className="text-xs font-semibold text-[#faa114] hover:underline"
+                className="text-xs font-bold text-amber-400 hover:underline"
               >
-                Upgrade to Premium
+                ✦ Upgrade Pro
               </button>
               <button
                 onClick={() => {
                   setIsLoggedIn(false);
                   triggerLoadingState('landing');
                 }}
-                className="text-xs font-semibold text-[#786e67] hover:text-[#262a2b]"
+                className="text-xs font-semibold text-slate-400 hover:text-white"
               >
-                Logout
+                Sign Out
               </button>
             </div>
           </header>
@@ -1972,7 +2267,7 @@ export default function WorkspacePage() {
         {loading ? (
           <div className="p-8 space-y-6 flex-1 flex flex-col justify-center">
             <div className="max-w-xl mx-auto w-full space-y-4">
-              <div className="h-8 w-48 shimmer-placeholder rounded-lg"></div>
+              <div className="h-8 w-48 shimmer-placeholder rounded-xl"></div>
               <div className="h-4 w-full shimmer-placeholder rounded-lg"></div>
               <div className="h-4 w-5/6 shimmer-placeholder rounded-lg"></div>
               <div className="grid grid-cols-2 gap-4 pt-4">
@@ -1986,46 +2281,46 @@ export default function WorkspacePage() {
 
             {/* AUTH SCREEN */}
             {activeTab === 'auth' && (
-              <div className="min-h-[80vh] flex items-center justify-center py-12">
-                <div className="w-full max-w-md bg-[#fcfcfb] border border-[#dbd7c7] p-8 rounded-3xl space-y-6 shadow-lg shadow-[#262a2b]/5">
+              <div className="min-h-[85vh] flex items-center justify-center py-12">
+                <div className="w-full max-w-md glass-panel border border-white/15 p-8 rounded-3xl space-y-6 shadow-2xl shadow-black">
                   
                   {/* Title / Header */}
                   <div className="text-center space-y-2">
                     <div className="flex items-center justify-center gap-1.5 mb-4">
-                      <span className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Tejas</span>
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#faa114]"></span>
+                      <span className="text-3xl font-black text-white font-display">Tejas</span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-glow-amber"></span>
                     </div>
                     {authMode === 'signup' ? (
                       signupStep === 1 ? (
                         <>
-                          <h1 className="text-2xl font-bold">Create Account</h1>
-                          <p className="text-sm text-[#786e67]">Verify your email address to get started.</p>
+                          <h1 className="text-2xl font-bold text-white font-display">Create Aspirant Account</h1>
+                          <p className="text-xs text-slate-400">Verify your email address to unlock your personalized AI prep space.</p>
                         </>
                       ) : (
                         <>
-                          <h1 className="text-2xl font-bold">Secure Your Account</h1>
-                          <p className="text-sm text-[#786e67]">Set up a strong password for {authFullName || 'your account'}.</p>
+                          <h1 className="text-2xl font-bold text-white font-display">Secure Your Account</h1>
+                          <p className="text-xs text-slate-400">Set up a strong password for {authFullName || 'your account'}.</p>
                         </>
                       )
                     ) : (
                       <>
-                        <h1 className="text-2xl font-bold">Welcome Back</h1>
-                        <p className="text-sm text-[#786e67]">Sign in to continue your exam preparation.</p>
+                        <h1 className="text-2xl font-bold text-white font-display">Welcome Back</h1>
+                        <p className="text-xs text-slate-400">Sign in to resume your active test sessions and revisions.</p>
                       </>
                     )}
                   </div>
 
                   {/* Errors / Success Alerts */}
                   {errorMsg && (
-                    <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs font-medium rounded-xl flex items-start gap-2.5">
-                      <AlertCircle className="w-4 h-4 text-red-500 flex-shrink-0 mt-0.5" />
+                    <div className="p-3.5 bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-medium rounded-xl flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
                       <span>{errorMsg}</span>
                     </div>
                   )}
 
                   {otpSuccessMsg && (
-                    <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium rounded-xl flex items-start gap-2.5">
-                      <CheckCircle className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <div className="p-3.5 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-medium rounded-xl flex items-start gap-2.5">
+                      <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
                       <span>{otpSuccessMsg}</span>
                     </div>
                   )}
@@ -2033,10 +2328,9 @@ export default function WorkspacePage() {
                   {/* SIGN UP FLOW */}
                   {authMode === 'signup' ? (
                     signupStep === 1 ? (
-                      /* Sign Up Step 1: Verify Email */
                       <form onSubmit={otpSent ? handleSignupVerify : handleSignupInitiate} className="space-y-4">
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Full Name</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Full Name</label>
                           <div className="relative">
                             <input 
                               type="text" 
@@ -2045,14 +2339,14 @@ export default function WorkspacePage() {
                               placeholder="Priya Sharma" 
                               value={authFullName}
                               onChange={(e) => setAuthFullName(e.target.value)}
-                              className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors disabled:opacity-70" 
+                              className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors disabled:opacity-50" 
                             />
-                            <User className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                            <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
                           </div>
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Email Address</label>
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
                           <div className="relative">
                             <input 
                               type="email" 
@@ -2061,16 +2355,15 @@ export default function WorkspacePage() {
                               placeholder="priya@example.com" 
                               value={authEmail}
                               onChange={(e) => setAuthEmail(e.target.value)}
-                              className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors disabled:opacity-70" 
+                              className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors disabled:opacity-50" 
                             />
-                            <Mail className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                            <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
                           </div>
                         </div>
 
-                        {/* OTP Verification on same page */}
                         {otpSent && (
-                          <div className="space-y-1 pt-4 border-t border-[#dbd7c7] animate-fadeInUp">
-                            <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Verification Code (OTP)</label>
+                          <div className="space-y-1 pt-4 border-t border-white/10 animate-fadeInUp">
+                            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Verification Code (OTP)</label>
                             <div className="relative">
                               <input 
                                 type="text" 
@@ -2079,12 +2372,12 @@ export default function WorkspacePage() {
                                 placeholder="123456" 
                                 value={otpCode}
                                 onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                                className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm text-center tracking-[0.5em] font-mono transition-colors" 
+                                className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white text-center tracking-[0.5em] font-mono transition-colors" 
                               />
-                              <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
+                              <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
                             </div>
                             {otpError && (
-                              <p className="text-xs font-semibold text-red-500 mt-1 flex items-center gap-1">
+                              <p className="text-xs font-semibold text-red-400 mt-1 flex items-center gap-1">
                                 <AlertCircle className="w-3.5 h-3.5" /> {otpError}
                               </p>
                             )}
@@ -2093,16 +2386,9 @@ export default function WorkspacePage() {
                               <button 
                                 type="button" 
                                 onClick={handleResendOtp}
-                                className="text-[#faa114] hover:underline font-semibold flex items-center gap-1 bg-transparent border-none p-0 cursor-pointer"
+                                className="text-amber-400 hover:underline font-semibold flex items-center gap-1"
                               >
                                 <RefreshCw className="w-3 h-3" /> Resend OTP
-                              </button>
-                              <button 
-                                type="button" 
-                                onClick={resetAuthState}
-                                className="text-[#786e67] hover:text-[#262a2b] hover:underline bg-transparent border-none p-0 cursor-pointer"
-                              >
-                                Edit details
                               </button>
                             </div>
                           </div>
@@ -2111,214 +2397,98 @@ export default function WorkspacePage() {
                         <button 
                           type="submit" 
                           disabled={loading}
-                          className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50"
+                          className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-bold rounded-xl hover:from-amber-400 hover:to-yellow-300 transition-all active:scale-[0.98] disabled:opacity-50 shadow-glow-amber text-sm mt-4"
                         >
-                          {loading ? 'Processing...' : otpSent ? 'Verify OTP' : 'Send Verification OTP'}
+                          {loading ? 'Processing...' : otpSent ? 'Verify OTP & Continue' : 'Send Verification OTP'}
                         </button>
                       </form>
                     ) : (
-                      /* Sign Up Step 2: Set Password */
-                      <form onSubmit={handleSignupComplete} className="space-y-4 animate-fadeInUp">
+                      <form onSubmit={handleSignupComplete} className="space-y-4">
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Password</label>
-                          <div className="relative">
-                            <input 
-                              type="password" 
-                              required 
-                              placeholder="••••••••" 
-                              value={authPassword}
-                              onChange={(e) => setAuthPassword(e.target.value)}
-                              className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
-                            />
-                            <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
-                          </div>
-                        </div>
-
-                        <div className="space-y-1">
-                          <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Confirm Password</label>
-                          <div className="relative">
-                            <input 
-                              type="password" 
-                              required 
-                              placeholder="••••••••" 
-                              value={authConfirmPassword}
-                              onChange={(e) => setAuthConfirmPassword(e.target.value)}
-                              className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
-                            />
-                            <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
-                          </div>
-                          {authConfirmPassword && (
-                            <p className={`text-[10px] font-semibold mt-1 flex items-center gap-1 ${authPassword === authConfirmPassword ? 'text-[#10b981]' : 'text-red-500'}`}>
-                              {authPassword === authConfirmPassword ? '✓ Passwords match' : '✗ Passwords do not match'}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* Password rules dynamic display */}
-                        <div className="mt-2 space-y-1.5 p-3.5 bg-[#f9f8f5] border border-[#dbd7c7] rounded-xl text-xs">
-                          <p className="font-bold text-[#786e67] mb-1 uppercase tracking-wider text-[9px]">Password Strength Checklist:</p>
-                          <div className="grid grid-cols-2 gap-x-3 gap-y-1.5">
-                            <div className="flex items-center gap-1.5">
-                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.length ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
-                              <span className={`text-[10px] ${passRulesValid.length ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>Min 8 characters</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.upper ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
-                              <span className={`text-[10px] ${passRulesValid.upper ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>Uppercase letter</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.lower ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
-                              <span className={`text-[10px] ${passRulesValid.lower ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>Lowercase letter</span>
-                            </div>
-                            <div className="flex items-center gap-1.5">
-                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.number ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
-                              <span className={`text-[10px] ${passRulesValid.number ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>At least 1 number</span>
-                            </div>
-                            <div className="col-span-2 flex items-center gap-1.5">
-                              <span className={`w-1.5 h-1.5 rounded-full ${passRulesValid.special ? 'bg-[#10b981]' : 'bg-amber-500'}`} />
-                              <span className={`text-[10px] ${passRulesValid.special ? 'text-[#10b981] font-medium' : 'text-[#786e67]'}`}>Special character (!@#$%)</span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <button 
-                          type="submit" 
-                          disabled={loading}
-                          className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50"
-                        >
-                          {loading ? 'Completing Sign Up...' : 'Complete Sign Up'}
-                        </button>
-                        
-                        <div className="text-center">
-                          <button 
-                            type="button" 
-                            onClick={resetAuthState}
-                            className="text-xs text-[#786e67] hover:text-[#262a2b] hover:underline bg-transparent border-none p-0 cursor-pointer"
-                          >
-                            ← Start over
-                          </button>
-                        </div>
-                      </form>
-                    )
-                  ) : (
-                    /* LOGIN FLOW */
-                    <form onSubmit={handleLogin} className="space-y-4">
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Email Address</label>
-                        <div className="relative">
-                          <input 
-                            type="email" 
-                            required 
-                            placeholder="priya@example.com" 
-                            value={authEmail}
-                            onChange={(e) => setAuthEmail(e.target.value)}
-                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
-                          />
-                          <Mail className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
-                        </div>
-                      </div>
-
-                      <div className="space-y-1">
-                        <label className="text-xs font-bold text-[#786e67] uppercase tracking-wider">Password</label>
-                        <div className="relative">
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Set Password</label>
                           <input 
                             type="password" 
                             required 
                             placeholder="••••••••" 
                             value={authPassword}
                             onChange={(e) => setAuthPassword(e.target.value)}
-                            className="w-full px-4 py-3 pl-10 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" 
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors" 
                           />
-                          <Lock className="w-4 h-4 text-[#786e67] absolute left-3.5 top-3.5" />
                         </div>
+
+                        <div className="space-y-1">
+                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Confirm Password</label>
+                          <input 
+                            type="password" 
+                            required 
+                            placeholder="••••••••" 
+                            value={authConfirmPassword}
+                            onChange={(e) => setAuthConfirmPassword(e.target.value)}
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors" 
+                          />
+                        </div>
+
+                        <button 
+                          type="submit" 
+                          disabled={loading}
+                          className="w-full py-3.5 bg-amber-500 text-slate-950 font-bold rounded-xl hover:bg-amber-400 transition-all shadow-glow-amber text-sm"
+                        >
+                          {loading ? 'Saving...' : 'Complete Registration'}
+                        </button>
+                      </form>
+                    )
+                  ) : (
+                    <form onSubmit={handleLogin} className="space-y-4">
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
+                        <input 
+                          type="email" 
+                          required 
+                          placeholder="priya@example.com" 
+                          value={authEmail}
+                          onChange={(e) => setAuthEmail(e.target.value)}
+                          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors" 
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
+                        <input 
+                          type="password" 
+                          required 
+                          placeholder="••••••••" 
+                          value={authPassword}
+                          onChange={(e) => setAuthPassword(e.target.value)}
+                          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors" 
+                        />
                       </div>
 
                       <button 
                         type="submit" 
                         disabled={loading}
-                        className="w-full py-3 bg-[#262a2b] hover:bg-[#262a2b]/95 text-[#fcfcfb] font-semibold rounded-xl transition-all active:scale-[0.97] disabled:opacity-50"
+                        className="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all shadow-glow-amber text-sm"
                       >
-                        {loading ? 'Logging In...' : 'Log In'}
+                        {loading ? 'Signing in...' : 'Sign In'}
                       </button>
                     </form>
                   )}
 
-                  {/* Toggle Link between Login/Signup */}
-                  {(!otpSent && signupStep === 1) && (
-                    <p className="text-xs text-center text-[#786e67]">
-                      {authMode === 'signup' ? (
-                        <>
-                          Already have an account?{' '}
-                          <button 
-                            type="button"
-                            onClick={() => { setAuthMode('login'); resetAuthState(); }} 
-                            className="text-[#faa114] hover:underline font-semibold bg-transparent border-none p-0 cursor-pointer"
-                          >
-                            Log in
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          Don&apos;t have an account?{' '}
-                          <button 
-                            type="button"
-                            onClick={() => { setAuthMode('signup'); resetAuthState(); }} 
-                            className="text-[#faa114] hover:underline font-semibold bg-transparent border-none p-0 cursor-pointer"
-                          >
-                            Sign up
-                          </button>
-                        </>
-                      )}
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* PRICING SCREEN */}
-            {activeTab === 'pricing' && (
-              <div className="max-w-4xl mx-auto space-y-8 py-8">
-                <div className="text-center space-y-2">
-                  <button onClick={() => triggerLoadingState('dashboard')} className="text-xs font-semibold text-[#786e67] hover:text-[#262a2b] mb-4 inline-block">← Back to Dashboard</button>
-                  <h1 className="text-3xl font-bold" style={{ fontFamily: 'Outfit' }}>Simple, Transparent Plans</h1>
-                  <p className="text-sm text-[#786e67]">Upgrade to unlock unlimited daily AI generation tokens.</p>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8 pt-6">
-                  <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-8 rounded-3xl flex flex-col justify-between card-hover">
-                    <div className="space-y-4">
-                      <h2 className="text-xl font-bold text-[#786e67]">Free Learner</h2>
-                      <div className="text-4xl font-bold" style={{ fontFamily: 'Outfit' }}>₹0<span className="text-sm font-medium text-[#b3aa9e]"> / month</span></div>
-                      <ul className="space-y-2 text-sm text-[#786e67]">
-                        <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#faa114]" /> 3 AI quiz tokens daily</li>
-                        <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#faa114]" /> Basic syllabus roadmap</li>
-                        <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#faa114]" /> Performance tracking history</li>
-                      </ul>
-                    </div>
-                    <button onClick={() => triggerLoadingState('dashboard')} className="mt-8 w-full py-3 border border-[#dbd7c7] text-[#262a2b] font-semibold rounded-xl hover:bg-[#dbd7c7]/50 transition-all active:scale-[0.97]">
-                      Current Active Plan
-                    </button>
-                  </div>
-                  <div className="bg-[#fcfcfb] border-2 border-[#faa114] p-8 rounded-3xl flex flex-col justify-between relative card-hover">
-                    <div className="absolute top-0 right-6 -translate-y-1/2 bg-[#faa114] text-[#262a2b] text-xs font-bold px-3 py-1 rounded-full">RECOMMENDED</div>
-                    <div className="space-y-4">
-                      <h2 className="text-xl font-bold text-[#faa114]">Elite Premium</h2>
-                      <div className="text-4xl font-bold" style={{ fontFamily: 'Outfit' }}>₹499<span className="text-sm font-medium text-[#b3aa9e]"> / month</span></div>
-                      <ul className="space-y-2 text-sm text-[#786e67]">
-                        <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#faa114]" /> Unlimited AI quiz generations</li>
-                        <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#faa114]" /> PDF & YouTube ingestion</li>
-                        <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#faa114]" /> Advanced analytics & prediction</li>
-                        <li className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-[#faa114]" /> Spaced repetition auto-sync</li>
-                      </ul>
-                    </div>
-                    <button onClick={() => { alert('Elite plan mock checkout successful!'); triggerLoadingState('dashboard'); }} className="mt-8 w-full py-3 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]">
-                      Upgrade Workspace
+                  <div className="text-center pt-2">
+                    <button 
+                      onClick={() => {
+                        setAuthMode(authMode === 'signup' ? 'login' : 'signup');
+                        resetAuthState();
+                      }}
+                      className="text-xs text-amber-400 hover:underline font-semibold"
+                    >
+                      {authMode === 'signup' ? 'Already have an account? Sign In' : "Don't have an account? Sign Up Free"}
                     </button>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* AFCAT 2026 HUB */}
+            {/* EXAM HUBS */}
             {activeTab === 'afcat' && <AfcatHub />}
             {activeTab === 'cds' && <CdsHub />}
             {activeTab === 'nda' && <NdaHub />}
@@ -2329,55 +2499,52 @@ export default function WorkspacePage() {
             {activeTab === 'gate' && <GateHub />}
             {activeTab === 'cat' && <CatHub />}
 
-            {/* DASHBOARD */}
+            {/* DASHBOARD SCREEN */}
             {activeTab === 'dashboard' && (
-              <div className="space-y-8">
-                {/* Streak Banner */}
-                <div className="bg-gradient-to-r from-[#faa114]/10 to-[#faa114]/5 border border-[#faa114]/20 p-6 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div className="space-y-8 animate-fadeInUp">
+                <div className="glass-panel p-6 rounded-3xl border-amber-500/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div className="space-y-1">
-                    <h2 className="text-xl font-bold flex items-center gap-2" style={{ fontFamily: 'Outfit' }}>
-                      <Flame className="w-6 h-6 text-[#faa114]" /> Consistency Rating: {dashboardOverview.consistencyRating}% (Past 30 Days)
+                    <h2 className="text-2xl font-bold text-white font-display flex items-center gap-2">
+                      <Flame className="w-6 h-6 text-amber-400" /> Welcome, {profileFullName}!
                     </h2>
-                    <p className="text-sm text-[#786e67]">
-                      Daily Target: {dashboardOverview.studyTimeMinutes} min completed / {profileGoal} min goal.
+                    <p className="text-sm text-slate-300">
+                      Consistency Streak: <strong>{dashboardOverview.consistencyRating}%</strong> • Daily Target: <strong>{dashboardOverview.studyTimeMinutes}m / {profileGoal}m</strong>
                     </p>
                   </div>
-                  <button onClick={() => triggerLoadingState('planner')} className="px-4 py-2 text-xs font-semibold bg-[#262a2b] text-[#fcfcfb] rounded-xl hover:bg-[#262a2b]/95 transition-all active:scale-[0.97]">
-                    View Plan Calendar
+                  <button onClick={() => triggerLoadingState('afcat')} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber transition-all">
+                    Launch CBT Mock Simulator →
                   </button>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
-                  {/* Daily Tasks */}
+                <div className="grid md:grid-cols-3 gap-6">
                   <div className="md:col-span-2 space-y-4">
-                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Today&apos;s Targets</h3>
+                    <h3 className="text-lg font-bold text-white font-display">Active Daily Target Blocks</h3>
                     <div className="space-y-3">
                       {[
-                        { title: `Read and study primary topics: target ${profileGoal} minutes`, duration: `${profileGoal}m`, done: dashboardOverview.studyTimeMinutes >= profileGoal },
-                        { title: `Attempt competitive exam practice quizzes (Completed: ${dashboardOverview.quizzesCompleted})`, duration: '20m', done: dashboardOverview.quizzesCompleted > 0 },
-                        { title: `Review ${dueCardsCount} due spaced repetition flashcards`, duration: '15m', done: dueCardsCount === 0 }
+                        { title: `Complete daily syllabus topic block (${profileGoal} mins)`, duration: `${profileGoal}m`, done: dashboardOverview.studyTimeMinutes >= profileGoal },
+                        { title: `Solve competitive exam practice test (Completed: ${dashboardOverview.quizzesCompleted})`, duration: '25m', done: dashboardOverview.quizzesCompleted > 0 },
+                        { title: `Review ${dueCardsCount} due active recall flashcards`, duration: '15m', done: dueCardsCount === 0 }
                       ].map((task, idx) => (
-                        <div key={idx} className="p-4 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl flex items-center justify-between hover:border-[#786e67] transition-colors">
+                        <div key={idx} className="p-4 glass-panel rounded-2xl flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <input type="checkbox" checked={task.done} readOnly className="accent-[#faa114] w-4 h-4" />
-                            <span className={`text-sm ${task.done ? 'line-through text-[#b3aa9e]' : 'text-[#262a2b] font-medium'}`}>
+                            <input type="checkbox" checked={task.done} readOnly className="accent-amber-500 w-4 h-4" />
+                            <span className={`text-sm ${task.done ? 'line-through text-slate-500' : 'text-slate-200 font-medium'}`}>
                               {task.title}
                             </span>
                           </div>
-                          <span className="text-xs text-[#786e67] font-medium">{task.duration}</span>
+                          <span className="text-xs font-mono text-amber-400 font-bold">{task.duration}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  {/* Upload zone */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Quick Ingest</h3>
-                    <div onClick={() => triggerLoadingState('pdf')} className="border-2 border-dashed border-[#dbd7c7] p-8 rounded-2xl text-center space-y-4 hover:border-[#faa114] transition-colors cursor-pointer bg-[#fcfcfb]">
-                      <UploadCloud className="w-10 h-10 text-[#786e67] mx-auto" />
+                    <h3 className="text-lg font-bold text-white font-display">Document AI Ingest</h3>
+                    <div onClick={() => triggerLoadingState('pdf')} className="border-2 border-dashed border-white/20 p-8 rounded-3xl text-center space-y-3 hover:border-amber-400 transition-colors cursor-pointer glass-panel">
+                      <UploadCloud className="w-10 h-10 text-amber-400 mx-auto" />
                       <div className="space-y-1">
-                        <p className="text-sm font-semibold">Upload PDF textbook</p>
-                        <p className="text-xs text-[#b3aa9e]">Drag & drop or click</p>
+                        <p className="text-sm font-bold text-white">Ingest Study PDF / Notes</p>
+                        <p className="text-xs text-slate-400">Click to upload document</p>
                       </div>
                     </div>
                   </div>
@@ -2387,40 +2554,29 @@ export default function WorkspacePage() {
 
             {/* STUDY PLANNER */}
             {activeTab === 'planner' && (
-              <div className="space-y-8">
+              <div className="space-y-8 animate-fadeInUp">
                 <div className="flex justify-between items-center">
-                  <h1 className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Study Planner</h1>
-                  <button onClick={() => { alert('Timeline rebalancing request dispatched.'); triggerLoadingState('planner'); }} className="px-4 py-2 border border-[#dbd7c7] hover:bg-[#dbd7c7]/50 text-xs font-semibold rounded-xl transition-all">
-                    Reschedule / Rebalance
+                  <h1 className="text-2xl font-bold text-white font-display">Adaptive Study Planner</h1>
+                  <button onClick={() => alert('Syllabus timeline auto-rebalanced across active calendar!')} className="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber">
+                    Rebalance Schedule
                   </button>
                 </div>
-                <div className="grid md:grid-cols-3 gap-8">
-                  <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-6 rounded-2xl space-y-4">
-                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Configuration</h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-xs font-semibold text-[#786e67]">Daily Time Budget (Hours)</label>
-                        <input type="range" min="1" max="12" defaultValue="4" className="w-full accent-[#faa114]" />
-                        <div className="text-sm text-right font-medium">4 Hours / Day</div>
-                      </div>
-                      <div>
-                        <label className="text-xs font-semibold text-[#786e67]">Primary Target Exam</label>
-                        <select className="w-full p-2 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm">
-                          <option>UPSC CSE 2026</option>
-                          <option>JEE Advanced 2026</option>
-                        </select>
-                      </div>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="glass-panel p-6 rounded-3xl space-y-4">
+                    <h3 className="text-base font-bold text-white">Daily Capacity Budget</h3>
+                    <div className="space-y-3">
+                      <input type="range" min="1" max="12" defaultValue="4" className="w-full accent-amber-500" />
+                      <div className="text-xs font-mono text-amber-400 font-bold text-right">4.0 Hours / Day</div>
                     </div>
                   </div>
-                  <div className="md:col-span-2 space-y-4">
-                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Weekly Timeline</h3>
+                  <div className="md:col-span-2 glass-panel p-6 rounded-3xl space-y-4">
+                    <h3 className="text-base font-bold text-white">Weekly Allocation Grid</h3>
                     <div className="grid grid-cols-7 gap-2">
                       {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
-                        <div key={day} className="p-3 bg-[#dbd7c7]/20 border border-[#dbd7c7] rounded-xl text-center">
-                          <span className="text-xs font-bold block mb-2">{day}</span>
-                          <div className="h-16 bg-[#786e67] rounded-lg text-[9px] text-[#fcfcfb] p-1 overflow-hidden flex flex-col justify-between">
-                            <span>Polity Block</span>
-                            <span className="font-semibold text-right">2 hrs</span>
+                        <div key={day} className="p-3 bg-white/5 rounded-2xl text-center space-y-1 border border-white/5">
+                          <span className="text-xs font-bold text-slate-300 block">{day}</span>
+                          <div className="p-1.5 rounded-lg bg-amber-500/20 text-amber-300 text-[10px] font-bold">
+                            Module Drills
                           </div>
                         </div>
                       ))}
@@ -2432,25 +2588,22 @@ export default function WorkspacePage() {
 
             {/* EXAM EXPLORER */}
             {activeTab === 'explorer' && (
-              <div className="space-y-6">
-                <div className="max-w-md space-y-1">
-                  <label className="text-xs font-semibold text-[#786e67]">Search Examinations Database</label>
-                  <div className="relative">
-                    <input type="text" placeholder="Search UPSC, GATE, Banking..." className="w-full pl-10 pr-4 py-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl focus:outline-none focus:border-[#faa114] text-sm transition-colors" />
-                    <Search className="w-4 h-4 text-[#786e67] absolute left-3 top-3.5" />
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-3 gap-6">
-                  {['UPSC Civil Services', 'JEE Advanced', 'NEET UG', 'GATE CSE', 'SBI PO'].map((exam) => (
-                    <div key={exam} className="bg-[#fcfcfb] border border-[#dbd7c7] p-6 rounded-2xl space-y-4 flex flex-col justify-between card-hover">
-                      <div className="space-y-1">
-                        <h3 className="text-lg font-bold">{exam}</h3>
-                        <p className="text-xs text-[#786e67]">Syllabus structure v1.2</p>
+              <div className="space-y-6 animate-fadeInUp">
+                <h1 className="text-2xl font-bold text-white font-display">Exam Exploration Database</h1>
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {examCategories.map((exam) => (
+                    <div key={exam.id} className="glass-panel p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+                      <div className="space-y-2">
+                        <span className="text-[10px] font-mono font-bold text-amber-400 uppercase">{exam.badge}</span>
+                        <h3 className="text-lg font-bold text-white font-display">{exam.name}</h3>
+                        <p className="text-xs text-slate-400">{exam.candidates} Candidates yearly</p>
                       </div>
-                      <div className="flex gap-2 pt-4">
-                        <button onClick={() => triggerLoadingState('learning')} className="flex-1 py-2 bg-[#dbd7c7] hover:bg-[#dbd7c7]/80 text-xs font-semibold rounded-xl text-center transition-colors">View Syllabus</button>
-                        <button onClick={() => { alert(`Enrolled in ${exam}.`); triggerLoadingState('dashboard'); }} className="flex-1 py-2 bg-[#faa114] text-xs font-semibold rounded-xl text-center hover:bg-[#e8940f] transition-colors">Enroll</button>
-                      </div>
+                      <button 
+                        onClick={() => openExamWorkspace(exam.id)}
+                        className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber transition-all"
+                      >
+                        Launch Examination Workspace →
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -2459,38 +2612,36 @@ export default function WorkspacePage() {
 
             {/* LEARNING HUB */}
             {activeTab === 'learning' && (
-              <div className="space-y-8">
+              <div className="space-y-8 animate-fadeInUp">
                 <div className="flex justify-between items-center">
-                  <h1 className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Syllabus Explorer</h1>
-                  <button onClick={() => triggerLoadingState('quiz-gen')} className="px-4 py-2 bg-[#faa114] text-xs font-bold rounded-xl flex items-center gap-2 hover:bg-[#e8940f] transition-colors">
-                    <Plus className="w-4 h-4" /> Test Me
+                  <h1 className="text-2xl font-bold text-white font-display">Syllabus Explorer</h1>
+                  <button onClick={() => triggerLoadingState('quiz-gen')} className="px-4 py-2 bg-amber-500 text-slate-950 text-xs font-bold rounded-xl shadow-glow-amber">
+                    + Generate Test
                   </button>
                 </div>
-                <div className="grid md:grid-cols-3 gap-8">
-                  <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-6 rounded-2xl space-y-4">
-                    <h3 className="text-sm font-bold uppercase tracking-wider text-[#786e67]">Syllabus Tree</h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="glass-panel p-6 rounded-3xl space-y-4">
+                    <h3 className="text-xs font-bold font-mono uppercase text-slate-400">Syllabus Hierarchy</h3>
                     <div className="space-y-2 text-sm">
-                      <div className="font-semibold text-[#faa114] cursor-pointer flex items-center gap-2">
-                        <ChevronDown className="w-4 h-4" /> 1. Indian Constitution
+                      <div className="font-bold text-amber-400 flex items-center gap-2">
+                        <ChevronDown className="w-4 h-4" /> 1. Indian Constitution & Polity
                       </div>
-                      <div className="pl-6 space-y-1 text-[#786e67]">
-                        <div className="cursor-pointer font-medium text-[#262a2b] hover:text-[#faa114] transition-colors">1.1 Historical Background</div>
-                        <div className="cursor-pointer hover:text-[#faa114] transition-colors">1.2 Salient Features</div>
-                        <div className="cursor-pointer hover:text-[#faa114] transition-colors">1.3 Preamble & Union</div>
+                      <div className="pl-6 space-y-1.5 text-xs text-slate-300">
+                        <div className="text-white font-semibold">1.1 Historical Background</div>
+                        <div>1.2 Preamble & Fundamental Rights</div>
+                        <div>1.3 Directive Principles & Union Judiciary</div>
                       </div>
                     </div>
                   </div>
-                  <div className="md:col-span-2 bg-[#fcfcfb] border border-[#dbd7c7] p-8 rounded-2xl space-y-4">
-                    <h2 className="text-xl font-bold" style={{ fontFamily: 'Outfit' }}>1.1 Historical Background</h2>
-                    <p className="text-sm text-[#786e67] leading-relaxed">
-                      The Indian Constitution has its roots in several historical developments during British rule. 
-                      Significant landmarks include the Regulating Act of 1773, Pitt&apos;s India Act of 1784, and the 
-                      Charter Acts which consolidated administrative authority under the East India Company...
+                  <div className="md:col-span-2 glass-panel p-8 rounded-3xl space-y-4">
+                    <h2 className="text-xl font-bold text-white font-display">1.1 Historical Background (1773 to 1947)</h2>
+                    <p className="text-sm text-slate-300 leading-relaxed">
+                      The constitutional development in British India commenced systematically with the Regulating Act of 1773, which established the Supreme Court of Calcutta and subordinated Bombay/Madras presidencies. Pitt&apos;s India Act of 1784 established the Board of Control, creating dual control over administration.
                     </p>
-                    <div className="pt-6 border-t border-[#dbd7c7] flex justify-between items-center">
-                      <span className="text-xs text-[#b3aa9e]">Reference: Laxmikanth Chapter 1</span>
-                      <button onClick={() => triggerLoadingState('pdf')} className="text-xs font-semibold text-[#faa114] hover:underline">
-                        Read Reference PDF →
+                    <div className="pt-4 border-t border-white/10 flex justify-between items-center text-xs">
+                      <span className="text-slate-400 font-mono">Reference: Official UPSC Syllabus GS Paper 2</span>
+                      <button onClick={() => triggerLoadingState('afcat')} className="text-amber-400 font-bold hover:underline">
+                        Launch Related CBT Drills →
                       </button>
                     </div>
                   </div>
@@ -2500,38 +2651,38 @@ export default function WorkspacePage() {
 
             {/* PDF WORKSPACE */}
             {activeTab === 'pdf' && (
-              <div className="grid md:grid-cols-3 gap-6 h-[75vh]">
-                <div className="md:col-span-2 border border-[#dbd7c7] rounded-3xl bg-[#dbd7c7]/10 flex flex-col justify-between overflow-hidden">
-                  <div className="p-4 border-b border-[#dbd7c7] flex justify-between items-center bg-[#fcfcfb]">
-                    <span className="text-sm font-semibold">UPSC_Syllabus_2026.pdf (Page 1 of 12)</span>
+              <div className="grid md:grid-cols-3 gap-6 h-[75vh] animate-fadeInUp">
+                <div className="md:col-span-2 glass-panel rounded-3xl flex flex-col justify-between overflow-hidden">
+                  <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
+                    <span className="text-xs font-mono font-bold text-slate-300">UPSC_Syllabus_2026.pdf (Page 1 of 12)</span>
                     <div className="flex gap-2">
-                      <button className="px-2 py-1 bg-[#dbd7c7] rounded-lg text-xs hover:bg-[#dbd7c7]/80 transition-colors">Prev</button>
-                      <button className="px-2 py-1 bg-[#dbd7c7] rounded-lg text-xs hover:bg-[#dbd7c7]/80 transition-colors">Next</button>
+                      <button className="px-3 py-1 bg-white/10 rounded-lg text-xs hover:bg-white/20">Prev</button>
+                      <button className="px-3 py-1 bg-white/10 rounded-lg text-xs hover:bg-white/20">Next</button>
                     </div>
                   </div>
                   <div className="flex-1 p-8 flex items-center justify-center text-center">
-                    <div className="max-w-md space-y-4">
-                      <FileText className="w-16 h-16 text-[#b3aa9e] mx-auto" />
-                      <h3 className="text-lg font-bold">Indian Constitution Overview</h3>
-                      <p className="text-xs text-[#786e67]">
-                        Select text to trigger context annotations or ask questions to the AI panel.
+                    <div className="max-w-md space-y-3">
+                      <FileText className="w-16 h-16 text-amber-400 mx-auto" />
+                      <h3 className="text-lg font-bold text-white font-display">PDF Document Ingestion Engine</h3>
+                      <p className="text-xs text-slate-400">
+                        Select any passage in your textbook to trigger contextual explanations, formula derivations, or instant active recall flashcard generation.
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="border border-[#dbd7c7] rounded-3xl bg-[#fcfcfb] flex flex-col justify-between overflow-hidden">
-                  <div className="p-4 border-b border-[#dbd7c7] flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-[#faa114]" />
-                    <span className="text-sm font-semibold">AI Paper Explainer</span>
+                <div className="glass-panel rounded-3xl flex flex-col justify-between overflow-hidden">
+                  <div className="p-4 border-b border-white/10 flex items-center gap-2 bg-white/5">
+                    <Sparkles className="w-4 h-4 text-amber-400" />
+                    <span className="text-xs font-bold text-white font-display">AI Document Explainer</span>
                   </div>
                   <div className="flex-1 p-4 space-y-3 overflow-y-auto">
-                    <div className="p-3 bg-[#dbd7c7]/30 text-xs rounded-xl max-w-[85%]">
-                      Hello! How can I help you understand this document today?
+                    <div className="p-3 bg-white/5 border border-white/10 text-xs rounded-xl max-w-[90%] text-slate-200">
+                      Hello! I have fully indexed this textbook. What concept would you like me to clarify?
                     </div>
                   </div>
-                  <div className="p-3 border-t border-[#dbd7c7] flex gap-2">
-                    <input type="text" placeholder="Ask about this document..." className="flex-1 px-3 py-2 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-xs focus:outline-none focus:border-[#faa114] transition-colors" />
-                    <button className="px-3 py-2 bg-[#faa114] text-xs font-bold rounded-xl hover:bg-[#e8940f] transition-colors">Send</button>
+                  <div className="p-3 border-t border-white/10 flex gap-2">
+                    <input type="text" placeholder="Ask about this document..." className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400" />
+                    <button className="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber">Send</button>
                   </div>
                 </div>
               </div>
@@ -2539,218 +2690,96 @@ export default function WorkspacePage() {
 
             {/* ANALYTICS */}
             {activeTab === 'analytics' && (
-              <div className="space-y-8">
-                <h1 className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Performance Analytics</h1>
-                <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-6 rounded-3xl space-y-4">
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>Concept Mastery Heatmap</h3>
-                    <p className="text-xs text-[#786e67]">Mastery calculations from latest assessments.</p>
-                  </div>
-                  <div className="grid grid-cols-8 gap-2 max-w-lg">
+              <div className="space-y-8 animate-fadeInUp">
+                <h1 className="text-2xl font-bold text-white font-display">Performance Analytics & Concept Mastery</h1>
+                <div className="glass-panel p-8 rounded-3xl space-y-6">
+                  <h3 className="text-lg font-bold text-white font-display">Concept Mastery Radar (Past 30 Days)</h3>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {[
-                      { topic: 'Polity', mastery: '#faa114' },
-                      { topic: 'History', mastery: '#786e67' },
-                      { topic: 'Geography', mastery: '#dbd7c7' },
-                      { topic: 'Economics', mastery: '#262a2b' },
-                      { topic: 'Science', mastery: '#faa114' },
-                      { topic: 'Current', mastery: '#dbd7c7' },
-                      { topic: 'Environ', mastery: '#786e67' },
-                      { topic: 'Aptitude', mastery: '#262a2b' }
+                      { topic: 'Reasoning Logic', mastery: '94%', color: 'text-emerald-400', bg: 'bg-emerald-500/20' },
+                      { topic: 'General Knowledge', mastery: '76%', color: 'text-amber-400', bg: 'bg-amber-500/20' },
+                      { topic: 'Numerical Ability', mastery: '82%', color: 'text-emerald-400', bg: 'bg-emerald-500/20' },
+                      { topic: 'English Verbal', mastery: '90%', color: 'text-emerald-400', bg: 'bg-emerald-500/20' }
                     ].map((item, idx) => (
-                      <div key={idx} style={{ backgroundColor: item.mastery }} className="h-12 rounded-xl flex items-center justify-center text-[10px] font-bold text-[#fcfcfb] cursor-pointer hover:scale-105 transition-transform" title={`${item.topic} Mastery`}>
-                        {item.topic.substring(0, 4)}
+                      <div key={idx} className={`p-4 rounded-2xl border border-white/10 ${item.bg} space-y-1`}>
+                        <div className="text-xs text-slate-300">{item.topic}</div>
+                        <div className={`text-2xl font-black font-display ${item.color}`}>{item.mastery}</div>
                       </div>
                     ))}
-                  </div>
-                  <div className="flex gap-4 pt-4 text-xs font-semibold text-[#786e67]">
-                    <span className="flex items-center gap-1"><span className="w-3.5 h-3.5 rounded bg-[#faa114]"></span> Mastered</span>
-                    <span className="flex items-center gap-1"><span className="w-3.5 h-3.5 rounded bg-[#786e67]"></span> Strong</span>
-                    <span className="flex items-center gap-1"><span className="w-3.5 h-3.5 rounded bg-[#dbd7c7]"></span> Moderate</span>
-                    <span className="flex items-center gap-1"><span className="w-3.5 h-3.5 rounded bg-[#262a2b]"></span> Critical</span>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* QUIZ GENERATOR */}
-            {activeTab === 'quiz-gen' && (
-              <div className="max-w-2xl mx-auto space-y-8">
-                {!quizStarted ? (
-                  <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-8 rounded-3xl space-y-6 shadow-sm">
-                    <div className="text-center space-y-2">
-                      <Sparkles className="w-12 h-12 text-[#faa114] mx-auto" />
-                      <h1 className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Instant Quiz Generator</h1>
-                      <p className="text-sm text-[#786e67]">Generate personalized question sets from your files.</p>
-                    </div>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="text-xs font-semibold text-[#786e67]">Select Source</label>
-                        <select className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm">
-                          <option>UPSC_Syllabus_2026.pdf</option>
-                          <option>Physics_Electromagnetism.pdf</option>
-                          <option>Chapter 1.1 Historical Background</option>
-                        </select>
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-xs font-semibold text-[#786e67]">Difficulty</label>
-                          <select className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm">
-                            <option>Easy</option>
-                            <option>Medium</option>
-                            <option>Hard</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="text-xs font-semibold text-[#786e67]">Questions</label>
-                          <input type="number" defaultValue="5" className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm" />
-                        </div>
-                      </div>
-                    </div>
-                    <button onClick={() => setQuizStarted(true)} className="w-full py-4 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]">
-                      Generate AI Quiz
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    <div className="h-1.5 w-full bg-[#dbd7c7] rounded-full overflow-hidden">
-                      <div className="h-full bg-[#faa114] rounded-full animate-fill" style={{ width: '40%' }}></div>
-                    </div>
-                    <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-8 rounded-3xl space-y-6">
-                      <div className="space-y-2">
-                        <span className="text-xs font-semibold text-[#786e67]">Question 1 of 2 (Federalism)</span>
-                        <h2 className="text-xl font-bold" style={{ fontFamily: 'Outfit' }}>
-                          Which act first initiated administrative centralization under the East India Company?
-                        </h2>
-                      </div>
-                      <div className="space-y-3">
-                        {[
-                          { key: 'A', text: 'Regulating Act of 1773' },
-                          { key: 'B', text: "Pitt's India Act of 1784" },
-                          { key: 'C', text: 'Charter Act of 1833' },
-                          { key: 'D', text: 'Government of India Act of 1858' }
-                        ].map((opt) => (
-                          <button
-                            key={opt.key}
-                            onClick={() => setSelectedOption(opt.key)}
-                            className={`w-full text-left p-4 rounded-xl border text-sm font-medium transition-all ${
-                              selectedOption === opt.key 
-                                ? 'border-[#faa114] bg-[#faa114]/5 font-semibold' 
-                                : 'border-[#dbd7c7] hover:border-[#786e67]'
-                            }`}
-                          >
-                            <span className="font-bold mr-2 text-[#786e67]">{opt.key}.</span> {opt.text}
-                          </button>
-                        ))}
-                      </div>
-                      <div className="pt-6 border-t border-[#dbd7c7] flex justify-between">
-                        <button onClick={() => setQuizStarted(false)} className="px-4 py-2 border border-[#dbd7c7] text-xs font-semibold rounded-xl hover:bg-[#dbd7c7]/50 transition-colors">Cancel</button>
-                        <button 
-                          onClick={() => setQuizScore(selectedOption === 'A' ? 100 : 0)}
-                          className="px-6 py-2 bg-[#262a2b] text-[#fcfcfb] text-xs font-bold rounded-xl disabled:opacity-50 transition-all active:scale-[0.97]"
-                          disabled={!selectedOption}
-                        >
-                          Submit Response
-                        </button>
-                      </div>
-                    </div>
-
-                    {quizScore !== null && (
-                      <div className="bg-[#fcfcfb] border-2 border-[#faa114] p-6 rounded-3xl space-y-4">
-                        <div className="flex items-center gap-2">
-                          <CheckCircle className="w-6 h-6 text-[#faa114]" />
-                          <h3 className="font-bold text-lg">
-                            {quizScore === 100 ? 'Correct Response! (+100%)' : 'Incorrect Response. (+0%)'}
-                          </h3>
-                        </div>
-                        <p className="text-sm text-[#786e67]">
-                          <strong>Explanation:</strong> The Regulating Act of 1773 was the first step by the British Government to control the East India Company in India. It laid the foundations of central administration.
-                        </p>
-                        <button onClick={() => { setQuizStarted(false); setQuizScore(null); setSelectedOption(null); }} className="px-4 py-2 bg-[#faa114] text-xs font-bold rounded-xl hover:bg-[#e8940f] transition-colors">
-                          Back to Generator
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* REVISION MODULE */}
+            {/* REVISION (FSRS) */}
             {activeTab === 'revision' && (
-              <div className="max-w-2xl mx-auto space-y-6">
+              <div className="max-w-2xl mx-auto space-y-6 animate-fadeInUp">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h1 className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>Revision Cards</h1>
-                    <p className="text-xs text-[#786e67]">FSRS algorithm spaced repetition queue.</p>
+                    <h1 className="text-2xl font-bold text-white font-display">Active Recall Deck</h1>
+                    <p className="text-xs text-slate-400 font-mono">FSRS Spaced Repetition Queue</p>
                   </div>
-                  <span className="px-3 py-1 bg-[#dbd7c7]/50 text-xs font-semibold rounded-full text-[#262a2b]">
-                    {dueCards.length} due today
+                  <span className="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold rounded-full">
+                    {dueCards.length} due for review
                   </span>
                 </div>
 
                 {dueCards.length === 0 ? (
-                  <div className="bg-[#fcfcfb] border border-[#dbd7c7] p-12 rounded-3xl text-center space-y-4 shadow-sm">
-                    <RotateCcw className="w-12 h-12 text-[#b3aa9e] mx-auto animate-spin-slow" />
-                    <div className="space-y-1">
-                      <h3 className="text-lg font-bold" style={{ fontFamily: 'Outfit' }}>All Caught Up!</h3>
-                      <p className="text-sm text-[#786e67] max-w-sm mx-auto">
-                        No flashcards are due for review. Take exam quizzes to auto-populate cards for topics you find challenging.
-                      </p>
-                    </div>
+                  <div className="glass-panel p-12 rounded-3xl text-center space-y-4">
+                    <RotateCcw className="w-12 h-12 text-amber-400 mx-auto animate-spin-slow" />
+                    <h3 className="text-lg font-bold text-white font-display">All Caught Up!</h3>
+                    <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                      No flashcards due right now. Attempt exam quizzes to automatically generate active recall cards for challenging topics.
+                    </p>
                   </div>
                 ) : (
                   (() => {
                     const card = dueCards[activeCardIndex] || dueCards[0];
                     return (
-                      <div className="bg-[#fcfcfb] border border-[#dbd7c7] rounded-3xl overflow-hidden shadow-sm flex flex-col min-h-[300px] justify-between">
-                        {/* Header metadata */}
-                        <div className="p-4 bg-[#f5f4f0] border-b border-[#dbd7c7] flex justify-between items-center text-xs text-[#786e67]">
-                          <span>Difficulty: {Number(card.difficulty).toFixed(1)}/10</span>
-                          <span>Repetitions: {card.repetitionCount}</span>
+                      <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl flex flex-col min-h-[300px] justify-between">
+                        <div className="p-4 bg-white/5 border-b border-white/10 flex justify-between items-center text-xs text-slate-400 font-mono">
+                          <span>Difficulty: {Number(card.difficulty || 4.5).toFixed(1)}/10</span>
+                          <span>Repetitions: {card.repetitionCount || 0}</span>
                         </div>
 
-                        {/* Front / Back text */}
-                        <div className="p-8 flex-1 flex flex-col justify-center space-y-6">
+                        <div className="p-8 flex-1 flex flex-col justify-center space-y-6 text-center">
                           <div className="space-y-2">
-                            <span className="text-[10px] font-bold text-[#faa114] uppercase tracking-wider">QUESTION / FRONT</span>
-                            <p className="text-base font-medium text-[#262a2b]">{card.frontText}</p>
+                            <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider">QUESTION / FRONT</span>
+                            <p className="text-lg font-semibold text-white">{card.frontText}</p>
                           </div>
 
                           {showAnswer && (
-                            <div className="pt-6 border-t border-[#dbd7c7] space-y-2 animate-fadeInUp">
-                              <span className="text-[10px] font-bold text-[#faa114] uppercase tracking-wider">ANSWER / BACK</span>
-                              <p className="text-sm text-[#786e67] leading-relaxed">{card.backText}</p>
+                            <div className="pt-6 border-t border-white/10 space-y-2 animate-fadeInUp">
+                              <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider">ANSWER / BACK</span>
+                              <p className="text-sm text-slate-200 leading-relaxed">{card.backText}</p>
                             </div>
                           )}
                         </div>
 
-                        {/* Actions footer */}
-                        <div className="p-6 bg-[#f5f4f0] border-t border-[#dbd7c7]">
+                        <div className="p-6 bg-white/5 border-t border-white/10">
                           {!showAnswer ? (
                             <button
                               onClick={() => setShowAnswer(true)}
-                              className="w-full py-3 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]"
+                              className="w-full py-3 bg-amber-500 text-slate-950 font-bold rounded-xl hover:bg-amber-400 transition-all shadow-glow-amber text-xs"
                             >
                               Reveal Answer
                             </button>
                           ) : (
-                            <div className="space-y-4">
-                              <div className="grid grid-cols-4 gap-2">
-                                {[
-                                  { label: 'Again', rating: 1, color: 'bg-red-500 hover:bg-red-600' },
-                                  { label: 'Hard', rating: 2, color: 'bg-orange-500 hover:bg-orange-600' },
-                                  { label: 'Good', rating: 3, color: 'bg-emerald-500 hover:bg-emerald-600' },
-                                  { label: 'Easy', rating: 4, color: 'bg-blue-500 hover:bg-blue-600' }
-                                ].map((btn) => (
-                                  <button
-                                    key={btn.rating}
-                                    onClick={() => handleReviewCard(card.id, btn.rating)}
-                                    className={`py-2 px-1 text-[11px] font-bold text-white rounded-lg transition-colors ${btn.color}`}
-                                  >
-                                    {btn.label}
-                                  </button>
-                                ))}
-                              </div>
+                            <div className="grid grid-cols-4 gap-2">
+                              {[
+                                { label: 'Again', rating: 1, color: 'bg-red-500 hover:bg-red-600' },
+                                { label: 'Hard', rating: 2, color: 'bg-amber-500 hover:bg-amber-600' },
+                                { label: 'Good', rating: 3, color: 'bg-emerald-500 hover:bg-emerald-600' },
+                                { label: 'Easy', rating: 4, color: 'bg-blue-500 hover:bg-blue-600' }
+                              ].map((btn) => (
+                                <button
+                                  key={btn.rating}
+                                  onClick={() => handleReviewCard(card.id, btn.rating)}
+                                  className={`py-2 px-1 text-[11px] font-bold text-white rounded-xl transition-colors ${btn.color}`}
+                                >
+                                  {btn.label}
+                                </button>
+                              ))}
                             </div>
                           )}
                         </div>
@@ -2761,321 +2790,83 @@ export default function WorkspacePage() {
               </div>
             )}
 
-            {/* PROFILE */}
+            {/* PROFILE SETTINGS */}
             {activeTab === 'profile' && (
-              <div className="max-w-xl mx-auto bg-[#fcfcfb] border border-[#dbd7c7] p-8 rounded-3xl space-y-6 shadow-sm">
-                <h1 className="text-2xl font-bold" style={{ fontFamily: 'Outfit' }}>User Settings</h1>
+              <div className="max-w-xl mx-auto glass-panel p-8 rounded-3xl space-y-6 animate-fadeInUp">
+                <h1 className="text-2xl font-bold text-white font-display">Aspirant Profile & Preferences</h1>
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-[#786e67]">Full Name</label>
+                    <label className="text-xs font-semibold text-slate-400">Full Name</label>
                     <input 
                       type="text" 
                       value={profileFullName} 
                       onChange={(e) => setProfileFullName(e.target.value)} 
-                      className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" 
+                      className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none" 
                     />
                   </div>
                   
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-[#786e67]">Mobile Number</label>
+                    <label className="text-xs font-semibold text-slate-400">Mobile Number</label>
                     <input 
                       type="tel" 
                       placeholder="+91 XXXXX XXXXX"
                       value={profilePhoneNumber} 
                       onChange={(e) => setProfilePhoneNumber(e.target.value)} 
-                      className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" 
+                      className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none" 
                     />
-                    <p className="text-[10px] text-[#b3aa9e]">Enter your phone number to receive a welcoming SMS/WhatsApp message.</p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">Preferred Language</label>
-                      <select 
-                        value={profileLanguage} 
-                        onChange={(e) => setProfileLanguage(e.target.value)} 
-                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
-                      >
-                        <option value="en">English (Default)</option>
-                        <option value="hi">Hindi (हिन्दी)</option>
-                        <option value="te">Telugu (తెలుగు)</option>
-                        <option value="ta">Tamil (தமிழ்)</option>
-                        <option value="hinglish">Hinglish (Bilingual)</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">Daily Target (Minutes)</label>
+                      <label className="text-xs font-semibold text-slate-400">Daily Goal (Minutes)</label>
                       <input 
                         type="number" 
                         value={profileGoal} 
                         onChange={(e) => setProfileGoal(parseInt(e.target.value, 10) || 0)} 
-                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors" 
+                        className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none" 
                       />
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">Primary Target Exam</label>
-                      <select 
-                        value={profileTargetExamId} 
-                        onChange={(e) => setProfileTargetExamId(e.target.value)} 
-                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
-                      >
-                        <option value="">Select Exam</option>
-                        {examsList.length > 0 ? (
-                          examsList.map((exam) => (
-                            <option key={exam.id} value={exam.id}>{exam.name}</option>
-                          ))
-                        ) : (
-                          <>
-                            <option value="upsc-cse">UPSC Civil Services</option>
-                            <option value="jee-advanced">JEE Advanced</option>
-                            <option value="neet-ug">NEET UG</option>
-                            <option value="gate-cse">GATE CSE</option>
-                          </>
-                        )}
-                      </select>
-                    </div>
 
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">Target Attempt Year</label>
+                      <label className="text-xs font-semibold text-slate-400">Target Year</label>
                       <select 
                         value={profileTargetYear} 
                         onChange={(e) => setProfileTargetYear(e.target.value)} 
-                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
+                        className="w-full p-3 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none"
                       >
-                        <option value="">Select Year</option>
                         <option value="2026">2026</option>
                         <option value="2027">2027</option>
                         <option value="2028">2028</option>
-                        <option value="2029">2029</option>
                       </select>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">State / Region</label>
-                      <select 
-                        value={profileState} 
-                        onChange={(e) => setProfileState(e.target.value)} 
-                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
-                      >
-                        <option value="">Select State</option>
-                        <option value="Uttar Pradesh">Uttar Pradesh</option>
-                        <option value="Rajasthan">Rajasthan</option>
-                        <option value="Bihar">Bihar</option>
-                        <option value="Madhya Pradesh">Madhya Pradesh</option>
-                        <option value="Delhi">Delhi</option>
-                        <option value="Maharashtra">Maharashtra</option>
-                        <option value="Gujarat">Gujarat</option>
-                        <option value="Karnataka">Karnataka</option>
-                        <option value="Tamil Nadu">Tamil Nadu</option>
-                        <option value="Andhra Pradesh">Andhra Pradesh</option>
-                        <option value="West Bengal">West Bengal</option>
-                        <option value="Other">Other Region</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-semibold text-[#786e67]">Preparation Status</label>
-                      <select 
-                        value={profilePrepStatus} 
-                        onChange={(e) => setProfilePrepStatus(e.target.value)} 
-                        className="w-full p-3 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-sm focus:border-[#faa114] focus:outline-none transition-colors"
-                      >
-                        <option value="">Select Status</option>
-                        <option value="dropper">Dropper / Full-time Aspirant</option>
-                        <option value="college_student">College Student</option>
-                        <option value="school_student">School Student</option>
-                        <option value="working_professional">Working Professional</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="pt-2">
-                    <button 
-                      onClick={handleSaveProfile} 
-                      className="w-full py-3 bg-[#faa114] text-[#262a2b] font-bold rounded-xl hover:bg-[#e8940f] transition-all active:scale-[0.97]"
-                    >
-                      Save Configuration
-                    </button>
-                  </div>
+                  <button 
+                    onClick={handleSaveProfile} 
+                    className="w-full py-3.5 bg-amber-500 text-slate-950 font-bold rounded-xl hover:bg-amber-400 transition-all shadow-glow-amber text-sm mt-4"
+                  >
+                    Save Changes
+                  </button>
                 </div>
               </div>
             )}
 
             {/* ADMIN CONSOLE */}
             {activeTab === 'admin' && (
-              <div className="space-y-8">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <h1 className="text-3xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>Admin Management Console</h1>
-                    <p className="text-sm text-[#786e67]">Monitor user activity, manage roles, and review AI analytics.</p>
-                  </div>
-                  <button 
-                    onClick={() => {
-                      alert('Refreshing platform diagnostics...');
-                      triggerLoadingState('admin');
-                    }}
-                    className="px-4 py-2 bg-[#faa114] hover:bg-[#e8940f] text-[#262a2b] font-semibold text-xs rounded-xl shadow-sm transition-all"
-                  >
-                    Refresh Diagnostics
-                  </button>
-                </div>
-
-                {/* KPI STATS CARDS */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+              <div className="space-y-8 animate-fadeInUp">
+                <h1 className="text-3xl font-bold text-white font-display">System Administration Console</h1>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
-                    { label: 'Total Registered Users', value: adminStats.totalUsers.toLocaleString(), change: '+12% this month', color: 'border-l-4 border-blue-500' },
-                    { label: 'Active Premium Subscribers', value: adminStats.activePremium.toLocaleString(), change: '+18% this month', color: 'border-l-4 border-emerald-500' },
-                    { label: 'Calculated Monthly Revenue', value: `₹${(adminStats.totalRevenue * 80).toLocaleString(undefined, { maximumFractionDigits: 0 })}`, change: '+22.4% ARR growth', color: 'border-l-4 border-amber-500' },
-                    { label: 'GenAI Token Consumptions', value: adminStats.totalTokensUsed.toLocaleString(), change: '99.4% success boundaries', color: 'border-l-4 border-indigo-500' },
-                  ].map((card, i) => (
-                    <div key={i} className={`bg-[#fcfcfb] border border-[#dbd7c7] p-5 rounded-2xl shadow-sm space-y-2 card-hover ${card.color}`}>
-                      <span className="text-xs font-semibold text-[#b3aa9e] uppercase tracking-wide">{card.label}</span>
-                      <div className="text-2xl md:text-3xl font-bold tracking-tight" style={{ fontFamily: 'Outfit' }}>{card.value}</div>
-                      <span className="text-[10px] font-semibold text-[#786e67] block">{card.change}</span>
+                    { label: 'Total Users', value: adminStats.totalUsers.toLocaleString() },
+                    { label: 'Active Premium', value: adminStats.activePremium.toLocaleString() },
+                    { label: 'Monthly Revenue', value: `₹${(adminStats.totalRevenue * 80).toFixed(0)}` },
+                    { label: 'GenAI Tokens', value: adminStats.totalTokensUsed.toLocaleString() },
+                  ].map((kpi, i) => (
+                    <div key={i} className="glass-panel p-5 rounded-2xl space-y-1 border-white/10">
+                      <span className="text-xs text-slate-400 uppercase font-mono">{kpi.label}</span>
+                      <div className="text-2xl font-bold text-white font-display">{kpi.value}</div>
                     </div>
                   ))}
-                </div>
-
-                {/* USER MANAGEMENT & AI LOGS GROUP */}
-                <div className="grid xl:grid-cols-3 gap-8">
-                  {/* User Management */}
-                  <div className="xl:col-span-2 bg-[#fcfcfb] border border-[#dbd7c7] rounded-3xl p-6 shadow-sm space-y-4">
-                    <div className="flex justify-between items-center gap-4 border-b border-[#dbd7c7] pb-4">
-                      <h3 className="font-bold text-lg" style={{ fontFamily: 'Outfit' }}>User Account Directory</h3>
-                      <input 
-                        type="text"
-                        placeholder="Search user email..."
-                        value={adminSearch}
-                        onChange={(e) => setAdminSearch(e.target.value)}
-                        className="px-3 py-1.5 bg-[#fcfcfb] border border-[#dbd7c7] rounded-xl text-xs focus:outline-none focus:border-[#faa114] w-48 md:w-64"
-                      />
-                    </div>
-
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse text-xs">
-                        <thead>
-                          <tr className="border-b border-[#dbd7c7] text-[#786e67] font-semibold">
-                            <th className="pb-3 pr-4">User Name</th>
-                            <th className="pb-3 pr-4">Email Address</th>
-                            <th className="pb-3 pr-4">Joined Date</th>
-                            <th className="pb-3 pr-4">Account Role</th>
-                            <th className="pb-3 text-right">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {adminUsers
-                            .filter(u => u.email.toLowerCase().includes(adminSearch.toLowerCase()))
-                            .map((userRow) => (
-                              <tr key={userRow.id} className="border-b border-[#dbd7c7]/50 hover:bg-[#dbd7c7]/10 transition-colors">
-                                <td className="py-3 font-semibold pr-4">{userRow.name}</td>
-                                <td className="py-3 pr-4 text-[#786e67]">{userRow.email}</td>
-                                <td className="py-3 pr-4">{userRow.createdAt}</td>
-                                <td className="py-3 pr-4">
-                                  <select 
-                                    value={userRow.role}
-                                    onChange={(e) => {
-                                      const newRole = e.target.value;
-                                      // Local UI state update
-                                      setAdminUsers(adminUsers.map(u => u.id === userRow.id ? { ...u, role: newRole } : u));
-                                      
-                                      // Backend REST Call
-                                      fetch(`${API_BASE_URL}/api/v1/admin/users/${userRow.id}/role`, {
-                                        method: 'PUT',
-                                        headers: {
-                                          'Content-Type': 'application/json',
-                                          'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-                                        },
-                                        body: JSON.stringify({ role: newRole })
-                                      })
-                                      .then(res => res.json())
-                                      .then(() => alert(`Successfully changed user role to ${newRole}`))
-                                      .catch(() => console.log('Mock role update completed on client state.'));
-                                    }}
-                                    className="bg-transparent border border-[#dbd7c7] rounded px-1.5 py-0.5 font-medium focus:border-[#faa114] focus:outline-none"
-                                  >
-                                    <option value="free_learner">Free Learner</option>
-                                    <option value="premium">Premium</option>
-                                    <option value="admin">Admin</option>
-                                  </select>
-                                </td>
-                                <td className="py-3 text-right">
-                                  <button 
-                                    onClick={() => {
-                                      if (confirm(`Are you absolutely sure you want to delete user ${userRow.email}?`)) {
-                                        // Local UI update
-                                        setAdminUsers(adminUsers.filter(u => u.id !== userRow.id));
-                                        
-                                        // Backend REST Call
-                                        fetch(`${API_BASE_URL}/api/v1/admin/users/${userRow.id}`, {
-                                          method: 'DELETE',
-                                          headers: {
-                                            'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-                                          }
-                                        })
-                                        .then(res => res.json())
-                                        .then(() => alert('User successfully deleted.'))
-                                        .catch(() => console.log('Mock delete completed on client state.'));
-                                      }
-                                    }}
-                                    className="text-red-500 hover:text-red-700 font-semibold hover:underline"
-                                  >
-                                    Delete
-                                  </button>
-                                </td>
-                              </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  {/* AI Logs & Monitoring */}
-                  <div className="bg-[#fcfcfb] border border-[#dbd7c7] rounded-3xl p-6 shadow-sm space-y-4 flex flex-col justify-between">
-                    <div className="border-b border-[#dbd7c7] pb-4">
-                      <h3 className="font-bold text-lg" style={{ fontFamily: 'Outfit' }}>AI Operations Log</h3>
-                      <p className="text-[10px] text-[#786e67]">Real-time completion benchmarks and prompt thresholds.</p>
-                    </div>
-
-                    <div className="space-y-4 flex-1 overflow-y-auto max-h-[300px] pr-2 pt-2">
-                      {[
-                        { action: 'quiz.generate', model: 'gemini-1.5-flash', latency: '680ms', tokens: '4,281', status: 'Success', color: 'bg-emerald-500' },
-                        { action: 'document.summary', model: 'gpt-4o-mini', latency: '1.2s', tokens: '8,420', status: 'Success', color: 'bg-emerald-500' },
-                        { action: 'fsrs.recalculate', model: 'Heuristic-Engine', latency: '12ms', tokens: 'N/A', status: 'Success', color: 'bg-emerald-500' },
-                        { action: 'pdf.ocr_extract', model: 'PyPDF-Local', latency: '340ms', tokens: 'N/A', status: 'Success', color: 'bg-emerald-500' },
-                        { action: 'quiz.generate', model: 'gemini-1.5-flash', latency: '—', tokens: '—', status: 'Failed (Rate Limit)', color: 'bg-red-500' }
-                      ].map((log, index) => (
-                        <div key={index} className="flex justify-between items-start gap-4 text-xs border-b border-[#dbd7c7]/30 pb-2">
-                          <div className="space-y-0.5">
-                            <div className="flex items-center gap-1.5">
-                              <span className={`w-2 h-2 rounded-full ${log.color}`}></span>
-                              <span className="font-bold font-mono text-[10px] uppercase">{log.action}</span>
-                            </div>
-                            <div className="text-[10px] text-[#786e67]">{log.model}</div>
-                          </div>
-                          <div className="text-right text-[10px] font-semibold space-y-0.5">
-                            <div>{log.latency} latency</div>
-                            <div className="text-[#b3aa9e]">{log.tokens} tokens</div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="bg-[#262a2b] rounded-2xl p-4 text-[#fcfcfb] space-y-2 mt-4">
-                      <div className="flex justify-between items-center text-xs">
-                        <span className="font-semibold">AI Pipeline Health</span>
-                        <span className="text-[#faa114] font-bold">99.4% OK</span>
-                      </div>
-                      <div className="w-full bg-[#dbd7c7]/20 rounded-full h-1.5">
-                        <div className="bg-[#faa114] h-1.5 rounded-full" style={{ width: '99.4%' }}></div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
@@ -3086,35 +2877,29 @@ export default function WorkspacePage() {
 
       {/* MOBILE BOTTOM NAV */}
       {activeTab !== 'auth' && activeTab !== 'pricing' && activeTab !== 'landing' && (
-        <nav className="md:hidden h-16 border-t border-[#dbd7c7] bg-[#fcfcfb]/90 backdrop-blur-md flex items-center justify-around fixed bottom-0 left-0 right-0 z-50">
-          {(() => {
-            const items = [
-              { id: 'dashboard', icon: BookOpen },
-              { id: 'explorer', icon: Search },
-              { id: 'quiz-gen', icon: Plus },
-              { id: 'revision', icon: RotateCcw },
-              { id: 'profile', icon: User }
-            ];
-            if (user.role === 'admin') {
-              items.push({ id: 'admin', icon: Shield });
-            }
-            return items.map((item) => {
+        <nav className="md:hidden h-16 border-t border-white/10 bg-[#0d1117]/95 backdrop-blur-md flex items-center justify-around fixed bottom-0 left-0 right-0 z-50">
+          {[
+            { id: 'afcat', icon: Shield },
+            { id: 'dashboard', icon: BookOpen },
+            { id: 'explorer', icon: Search },
+            { id: 'revision', icon: RotateCcw },
+            { id: 'profile', icon: User }
+          ].map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
             return (
               <button
                 key={item.id}
                 onClick={() => triggerLoadingState(item.id)}
-                className={`p-2 rounded-xl transition-all duration-200 ${
-                  isActive ? 'text-[#faa114]' : 'text-[#786e67] hover:text-[#262a2b]'
+                className={`p-2.5 rounded-xl transition-all ${
+                  isActive ? 'text-amber-400' : 'text-slate-500 hover:text-white'
                 }`}
               >
-                <Icon className={`w-6 h-6 ${item.id === 'quiz-gen' && !isActive ? 'bg-[#faa114] text-[#262a2b] rounded-full p-1 w-8 h-8' : ''}`} />
+                <Icon className="w-5 h-5" />
               </button>
             );
-          });
-        })()}
-      </nav>
+          })}
+        </nav>
       )}
     </div>
   );
