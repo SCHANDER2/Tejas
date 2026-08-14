@@ -35,6 +35,81 @@ export interface GateModelPaper {
   description: string;
 }
 
+export interface GateSubject {
+  id: 'aptitude' | 'maths' | 'technical';
+  name: string;
+  totalQs: number;
+  totalMarks: number;
+  iconName: string;
+  description: string;
+  topics: { id: string; name: string; weightage: string; expectedQs: number; importance: 'High' | 'Medium' | 'Critical'; keyConcepts: string[] }[];
+  youtubePlaylist: {
+    title: string;
+    channel: string;
+    url: string;
+    videoCount: string;
+  };
+}
+
+export const GATE_SUBJECTS: GateSubject[] = [
+  {
+    id: 'aptitude',
+    name: 'General Aptitude (10 Qs / 15M)',
+    totalQs: 10,
+    totalMarks: 15,
+    iconName: 'Brain',
+    description: 'Verbal Ability (Grammar & Vocabulary) and Numerical Ability (Quant, Reasoning & Spatial Aptitude).',
+    topics: [
+      { id: 'numerical_aptitude', name: 'Numerical Computation & Estimation', weightage: '50%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Percentages, Ratios & Powers', 'Logarithms & Permutations', 'Data Interpretation'] },
+      { id: 'verbal_spatial', name: 'Verbal Deduction & Spatial Reasoning', weightage: '50%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Grammar & Word Analogy', 'Mirror Images & Paper Folding', 'Critical Reasoning'] }
+    ],
+    youtubePlaylist: {
+      title: 'GATE General Aptitude Numerical & Verbal Ability',
+      channel: 'Gate Smashers Official',
+      url: 'https://www.youtube.com/@GateSmashers/playlists',
+      videoCount: '30 Lectures'
+    }
+  },
+  {
+    id: 'maths',
+    name: 'Engineering Mathematics (13M - 15M)',
+    totalQs: 8,
+    totalMarks: 13,
+    iconName: 'Calculator',
+    description: 'Linear Algebra, Calculus, Differential Equations, Complex Variables, Probability and Statistics.',
+    topics: [
+      { id: 'linear_algebra', name: 'Matrices, Eigenvalues & Eigenvectors', weightage: '35%', expectedQs: 3, importance: 'Critical', keyConcepts: ['Cayley-Hamilton Theorem', 'Rank of Matrix & System of Equations', 'Diagonalization'] },
+      { id: 'calculus_de', name: 'Calculus & Differential Equations', weightage: '35%', expectedQs: 3, importance: 'Critical', keyConcepts: ['Maxima/Minima & Mean Value Theorems', 'First Order DE & Integrating Factor', 'Vector Calculus (Greens/Stokes Theorems)'] },
+      { id: 'prob_stats', name: 'Probability & Numerical Methods', weightage: '30%', expectedQs: 2, importance: 'High', keyConcepts: ['Bayes Theorem & Poisson Distribution', 'Newton-Raphson Method'] }
+    ],
+    youtubePlaylist: {
+      title: 'GATE Engineering Mathematics Master Course',
+      channel: 'GATE Wallah Official',
+      url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+      videoCount: '50 Lectures'
+    }
+  },
+  {
+    id: 'technical',
+    name: 'Technical Core (CS/IT/Core Engg - 72M)',
+    totalQs: 47,
+    totalMarks: 72,
+    iconName: 'Zap',
+    description: 'Data Structures & Algorithms, Operating Systems, DBMS, Computer Networks, Theory of Computation, and Computer Organization.',
+    topics: [
+      { id: 'dsa', name: 'Algorithms, Data Structures & C Programming', weightage: '25%', expectedQs: 12, importance: 'Critical', keyConcepts: ['Asymptotic Analysis & Recurrences', 'Dynamic Programming & Greedy Algorithms', 'Trees, Graphs & Heaps'] },
+      { id: 'os_dbms', name: 'Operating Systems & DBMS', weightage: '25%', expectedQs: 12, importance: 'Critical', keyConcepts: ['Virtual Memory & Paging', 'Deadlocks & Semaphores', 'SQL & Normalization (BCNF/3NF)', 'Transactions & Concurrency Control'] },
+      { id: 'toc_cn', name: 'TOC, Compiler Design & Computer Networks', weightage: '30%', expectedQs: 14, importance: 'Critical', keyConcepts: ['Regular Expressions & DFA/NFA', 'Turing Machines & Decidability', 'TCP/IP, Flow Control (Sliding Window)', 'Routing & Subnetting'] }
+    ],
+    youtubePlaylist: {
+      title: 'GATE CS/IT Data Structures, Algorithms & Systems',
+      channel: 'Gate Smashers Official',
+      url: 'https://www.youtube.com/@GateSmashers/playlists',
+      videoCount: '90 Lectures'
+    }
+  }
+];
+
 export const GATE_EXAM_PATTERN = {
   examName: "Graduate Aptitude Test in Engineering (GATE)",
   conductingBody: "IISc & IITs",

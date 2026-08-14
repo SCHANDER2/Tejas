@@ -112,6 +112,60 @@ export default function CdsHub() {
               </button>
             </div>
           </div>
+
+          {/* Subject Syllabi & YouTube Playlists */}
+          <div className="space-y-4 pt-4">
+            <h2 className="text-xl font-bold text-white font-display flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-amber-400" /> CDS Official Subject Syllabi & Recommended Video Lectures
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {CDS_SUBJECTS.map((subject) => (
+                <div key={subject.id} className="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col justify-between space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono font-bold text-amber-400 bg-amber-500/10 px-2.5 py-0.5 rounded border border-amber-500/20">{subject.paperName}</span>
+                      <span className="text-xs text-slate-400 font-mono">{subject.totalQs} Qs • {subject.totalMarks}M</span>
+                    </div>
+                    <h3 className="font-bold text-base text-white">{subject.name}</h3>
+                    <p className="text-xs text-slate-300">{subject.description}</p>
+                    
+                    {/* Topics */}
+                    <div className="space-y-1.5 pt-2">
+                      <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Key High-Yield Topics:</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {subject.topics.map(topic => (
+                          <span key={topic.id} className="text-[11px] bg-white/5 border border-white/10 px-2 py-0.5 rounded-md text-slate-300">
+                            {topic.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* YouTube Playlist Card */}
+                  {subject.youtubePlaylist && (
+                    <div className="bg-gradient-to-r from-red-950/40 via-red-900/20 to-transparent border border-red-500/30 rounded-2xl p-3.5 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div>
+                          <div className="text-[10px] font-bold uppercase tracking-wider text-red-400">📺 Curated Video Playlist</div>
+                          <div className="font-bold text-xs text-white line-clamp-1">{subject.youtubePlaylist.title}</div>
+                          <div className="text-[11px] text-slate-400">{subject.youtubePlaylist.channel} • {subject.youtubePlaylist.videoCount}</div>
+                        </div>
+                      </div>
+                      <a
+                        href={subject.youtubePlaylist.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-1.5 w-full py-2 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold transition shadow-sm"
+                      >
+                        Watch Free Playlist ↗
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 

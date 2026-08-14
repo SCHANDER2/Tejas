@@ -33,6 +33,80 @@ export interface CatModelPaper {
   description: string;
 }
 
+export interface CatSubject {
+  id: 'varc' | 'dilr' | 'qa';
+  name: string;
+  totalQs: number;
+  totalMarks: number;
+  iconName: string;
+  description: string;
+  topics: { id: string; name: string; weightage: string; expectedQs: number; importance: 'High' | 'Medium' | 'Critical'; keyConcepts: string[] }[];
+  youtubePlaylist: {
+    title: string;
+    channel: string;
+    url: string;
+    videoCount: string;
+  };
+}
+
+export const CAT_SUBJECTS: CatSubject[] = [
+  {
+    id: 'varc',
+    name: 'Verbal Ability & Reading Comprehension (VARC - 24 Qs)',
+    totalQs: 24,
+    totalMarks: 72,
+    iconName: 'BookOpen',
+    description: 'Reading Comprehension Passages (16 Qs across 4 RC passages) + Verbal Ability (Para Jumbles, Para Summary, Odd Sentence Out).',
+    topics: [
+      { id: 'rc_passages', name: 'Reading Comprehension (Philosophy, Economics, Tech)', weightage: '66%', expectedQs: 16, importance: 'Critical', keyConcepts: ['Main Idea & Authors Tone', 'Inferential & Critical Reasoning', 'Detail & Exception Questions'] },
+      { id: 'para_jumbles', name: 'Para Jumbles & Summary (TITA & MCQ)', weightage: '34%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Mandatory Pairs & Chronology', 'Distortion vs Generalization in Summary', 'Odd Sentence Out Logic'] }
+    ],
+    youtubePlaylist: {
+      title: 'CAT VARC Reading Comprehension & Verbal Masterclass',
+      channel: '2IIM CAT Official',
+      url: 'https://www.youtube.com/@2iimcat/playlists',
+      videoCount: '42 Lectures'
+    }
+  },
+  {
+    id: 'dilr',
+    name: 'Data Interpretation & Logical Reasoning (DILR - 20 Qs)',
+    totalQs: 20,
+    totalMarks: 60,
+    iconName: 'Brain',
+    description: '4 Multi-question Sets (5 Qs each) covering Games & Tournaments, Matrix Arrangements, Routes & Networks, and Caselets.',
+    topics: [
+      { id: 'arrangements_games', name: 'Games, Tournaments & Matrix Grid Sets', weightage: '50%', expectedQs: 10, importance: 'Critical', keyConcepts: ['Round-robin & Knockout Tables', 'Grid Filling with Constraints', 'True-False & Binary Logic'] },
+      { id: 'di_networks', name: 'Venn Diagrams & Routes/Networks', weightage: '50%', expectedQs: 10, importance: 'Critical', keyConcepts: ['3 & 4-Set Venn Maxima/Minima', 'Critical Path & Network Flow', 'Data Sufficiency & Caselets'] }
+    ],
+    youtubePlaylist: {
+      title: 'CAT DILR Data Interpretation & Logical Reasoning Complete Series',
+      channel: 'Elites Grid Official',
+      url: 'https://www.youtube.com/@ElitesGrid/playlists',
+      videoCount: '48 Lectures'
+    }
+  },
+  {
+    id: 'qa',
+    name: 'Quantitative Aptitude (QA - 22 Qs)',
+    totalQs: 22,
+    totalMarks: 66,
+    iconName: 'Calculator',
+    description: 'Arithmetic (Percentages, TSD, Time & Work), Algebra (Quadratics, Functions, Logs), Geometry & Modern Maths.',
+    topics: [
+      { id: 'arithmetic_qa', name: 'Arithmetic Mastery (TSD, Work, Profit)', weightage: '40%', expectedQs: 9, importance: 'Critical', keyConcepts: ['Relative Speed, Escalators & Races', 'Mixtures & Replacement Formulae', 'Compound Interest & Installments'] },
+      { id: 'algebra_qa', name: 'Algebra, Functions, Graphs & Logs', weightage: '35%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Maxima/Minima of Quadratics', 'Modulus Equations & Inequalities', 'Logarithms & Sequence-Series (AP/GP/HP)'] },
+      { id: 'geometry_qa', name: 'Geometry, Mensuration & Number System', weightage: '25%', expectedQs: 5, importance: 'High', keyConcepts: ['Circles & Tangent Theorems', 'Coordinate Geometry & Coordinate Area', 'Base System & Remainder Theorems'] }
+    ],
+    youtubePlaylist: {
+      title: 'CAT Quantitative Aptitude Full Arithmetic & Algebra Course',
+      channel: 'Rodha Official',
+      url: 'https://www.youtube.com/@Rodha/playlists',
+      videoCount: '60 Lectures'
+    }
+  }
+];
+
 export const CAT_EXAM_PATTERN = {
   examName: "Common Admission Test (CAT)",
   conductingBody: "Indian Institutes of Management (IIMs)",

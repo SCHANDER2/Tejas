@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { UPSC_CSE_PATTERN, UPSC_PYQ_PAPERS, UPSC_MODEL_PAPERS } from '../../data/upscData';
+import { UPSC_CSE_PATTERN, UPSC_SUBJECTS, UPSC_PYQ_PAPERS, UPSC_MODEL_PAPERS } from '../../data/upscData';
 import { generateQuestionsForUpscPaper } from '../../data/upscPaperGenerator';
 import UpscExamCbtWindow from './UpscExamCbtWindow';
 import { BookOpen, FileText, FileCheck, Shield, Award } from 'lucide-react';
@@ -74,31 +74,83 @@ export default function UpscHub() {
 
       {/* Tab Contents */}
       {subTab === 'guide' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-            <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-              <Award className="w-5 h-5 text-amber-500" /> Paper 1: General Studies 1
-            </h3>
-            <p className="text-xs text-gray-600">100 Questions • 200 Marks • 2 Hours • +2.0 / -0.66 Marks</p>
-            <button
-              onClick={() => startCbtPaper("UPSC GS Paper 1 Mock 2026", "200-Mark Standard GS1", "GS1")}
-              className="w-full py-3 bg-[#003366] hover:bg-blue-900 text-white rounded-xl font-bold text-xs transition shadow"
-            >
-              Launch GS 1 CBT Mock Window
-            </button>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+              <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
+                <Award className="w-5 h-5 text-amber-500" /> Paper 1: General Studies 1
+              </h3>
+              <p className="text-xs text-gray-600">100 Questions • 200 Marks • 2 Hours • +2.0 / -0.66 Marks</p>
+              <button
+                onClick={() => startCbtPaper("UPSC GS Paper 1 Mock 2026", "200-Mark Standard GS1", "GS1")}
+                className="w-full py-3 bg-[#003366] hover:bg-blue-900 text-white rounded-xl font-bold text-xs transition shadow"
+              >
+                Launch GS 1 CBT Mock Window
+              </button>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+              <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
+                <Award className="w-5 h-5 text-amber-500" /> Paper 2: CSAT (Qualifying 33%)
+              </h3>
+              <p className="text-xs text-gray-600">80 Questions • 200 Marks • 2 Hours • +2.5 / -0.83 Marks</p>
+              <button
+                onClick={() => startCbtPaper("UPSC CSAT Paper 2 Mock 2026", "200-Mark CSAT Standard", "CSAT")}
+                className="w-full py-3 bg-slate-900 hover:bg-black text-white rounded-xl font-bold text-xs transition shadow"
+              >
+                Launch CSAT Paper 2 CBT Window
+              </button>
+            </div>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+          {/* UPSC Subject Syllabi & YouTube Playlists */}
+          <div className="space-y-4 pt-2">
             <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-              <Award className="w-5 h-5 text-amber-500" /> Paper 2: CSAT (Qualifying 33%)
+              <BookOpen className="w-5 h-5 text-amber-600" /> Subject Syllabus & Recommended Video Playlists
             </h3>
-            <p className="text-xs text-gray-600">80 Questions • 200 Marks • 2 Hours • +2.5 / -0.83 Marks</p>
-            <button
-              onClick={() => startCbtPaper("UPSC CSAT Paper 2 Mock 2026", "200-Mark CSAT Standard", "CSAT")}
-              className="w-full py-3 bg-slate-900 hover:bg-black text-white rounded-xl font-bold text-xs transition shadow"
-            >
-              Launch CSAT Paper 2 CBT Window
-            </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {UPSC_SUBJECTS.map((subject) => (
+                <div key={subject.id} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded border border-amber-200">{subject.paperName}</span>
+                      <span className="text-xs text-gray-500 font-mono">{subject.totalQs} Qs • {subject.totalMarks}M</span>
+                    </div>
+                    <h4 className="font-bold text-base text-gray-900">{subject.name}</h4>
+                    <p className="text-xs text-gray-600 leading-relaxed">{subject.description}</p>
+                    
+                    <div className="space-y-1.5 pt-2">
+                      <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">UPSC Key Modules:</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {subject.topics.map(topic => (
+                          <span key={topic.id} className="text-[11px] bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-md text-gray-700 font-medium">
+                            {topic.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {subject.youtubePlaylist && (
+                    <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl p-3.5 space-y-2">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-red-600">📺 Curated Video Playlist</div>
+                        <div className="font-bold text-xs text-gray-900 line-clamp-1">{subject.youtubePlaylist.title}</div>
+                        <div className="text-[11px] text-gray-600">{subject.youtubePlaylist.channel} • {subject.youtubePlaylist.videoCount}</div>
+                      </div>
+                      <a
+                        href={subject.youtubePlaylist.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-1.5 w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition shadow-sm"
+                      >
+                        Watch Free Playlist ↗
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

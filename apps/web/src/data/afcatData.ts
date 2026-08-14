@@ -84,143 +84,103 @@ export const AFCAT_EXAM_PATTERN = {
 export const AFCAT_SUBJECTS: AfcatSubject[] = [
   {
     id: 'english',
-    name: 'Verbal Ability in English',
+    name: 'Verbal Ability in English (30 Qs)',
     totalQs: 30,
     totalMarks: 90,
     iconName: 'BookOpen',
-    description: 'Tests vocabulary, reading comprehension, grammar rules, and sentence structures.',
+    description: 'Tests vocabulary, reading comprehension, grammar rules, idioms, and sentence completion.',
     topics: [
       {
         id: 'eng_reading_comp',
         name: 'Reading Comprehension',
-        weightage: '15-20%',
-        expectedQs: 5,
+        weightage: '20%',
+        expectedQs: 6,
         importance: 'Critical',
         keyConcepts: ['Main idea extraction', 'Tone identification', 'Direct factual questions', 'Inference based questions']
       },
       {
         id: 'eng_error_spotting',
         name: 'Error Detection & Grammar',
-        weightage: '15-20%',
-        expectedQs: 5,
+        weightage: '20%',
+        expectedQs: 6,
         importance: 'Critical',
         keyConcepts: ['Subject-Verb Agreement', 'Prepositions & Tenses', 'Modifiers & Pronouns', 'Parallel Structure']
       },
       {
         id: 'eng_syn_ant',
-        name: 'Synonyms & Antonyms',
-        weightage: '15-20%',
-        expectedQs: 5,
-        importance: 'High',
-        keyConcepts: ['Defence-frequent vocabulary', 'Contextual meanings', 'Root word techniques', 'Confusing words']
-      },
-      {
-        id: 'eng_idioms_phrases',
-        name: 'Idioms & Phrases',
-        weightage: '15%',
-        expectedQs: 5,
-        importance: 'High',
-        keyConcepts: ['Military & action idioms', 'Proverbs', 'Contextual usage', 'Phrasal verbs']
+        name: 'Synonyms, Antonyms & Idioms',
+        weightage: '30%',
+        expectedQs: 10,
+        importance: 'Critical',
+        keyConcepts: ['High-frequency military vocabulary', 'Contextual meanings', 'Idioms & Phrases', 'Confusing words']
       },
       {
         id: 'eng_sentence_completion',
-        name: 'Sentence Completion & Fillers',
-        weightage: '15%',
-        expectedQs: 5,
-        importance: 'Medium',
-        keyConcepts: ['Double fillers', 'Grammatical fit', 'Vocabulary context']
-      },
-      {
-        id: 'eng_one_word',
-        name: 'One Word Substitution & Cloze Test',
-        weightage: '15%',
-        expectedQs: 5,
-        importance: 'Medium',
-        keyConcepts: ['Person/Profession terms', 'Scientific & Literary terms', 'Paragraph context filling']
+        name: 'Sentence Completion & Cloze Test',
+        weightage: '30%',
+        expectedQs: 8,
+        importance: 'High',
+        keyConcepts: ['Double fillers', 'Grammatical fit', 'One word substitution', 'Paragraph context filling']
       }
     ],
     youtubePlaylist: {
-      title: 'AFCAT English Complete Master Course',
-      channel: 'Defence Wallah',
-      url: 'https://www.youtube.com/playlist?list=PL280mStbnd4W3y9Xk-KkZq2K918W6J81v',
-      videoCount: '28 Videos'
+      title: 'AFCAT English Complete Course & Vocabulary Masterclass',
+      channel: 'CDS Journey Official',
+      url: 'https://www.youtube.com/@cds.journey/playlists',
+      videoCount: '24 Lectures'
     }
   },
   {
     id: 'maths',
-    name: 'Numerical Ability',
+    name: 'Numerical Ability (20 Qs)',
     totalQs: 20,
     totalMarks: 60,
     iconName: 'Zap',
-    description: 'Tests elementary mathematics, arithmetic, and problem-solving speed.',
+    description: 'Tests elementary mathematics, arithmetic concepts, shortcuts, and problem-solving speed.',
     topics: [
       {
         id: 'math_time_work',
         name: 'Time & Work / Pipes & Cisterns',
-        weightage: '15%',
-        expectedQs: 3,
+        weightage: '25%',
+        expectedQs: 5,
         importance: 'Critical',
         keyConcepts: ['Efficiency method', 'Alternate days work', 'Pipes filling and emptying', 'Man-Days formula']
       },
       {
         id: 'math_speed_time',
-        name: 'Speed, Distance & Time / Trains',
-        weightage: '15%',
-        expectedQs: 3,
+        name: 'Speed, Distance & Time / Trains / Boats',
+        weightage: '25%',
+        expectedQs: 5,
         importance: 'Critical',
         keyConcepts: ['Relative speed', 'Train crossing pole/platform', 'Boats & Streams', 'Average speed']
       },
       {
         id: 'math_profit_loss',
-        name: 'Profit, Loss & Discount',
-        weightage: '15%',
-        expectedQs: 3,
+        name: 'Percentages, Profit, Loss & Discount',
+        weightage: '30%',
+        expectedQs: 6,
         importance: 'Critical',
         keyConcepts: ['Cost price vs Marked price', 'Successive discounts', 'Dishonest dealer problems']
       },
       {
-        id: 'math_simple_compound_interest',
-        name: 'Simple & Compound Interest',
-        weightage: '15%',
-        expectedQs: 3,
-        importance: 'High',
-        keyConcepts: ['SI vs CI difference formula', 'Half-yearly & quarterly compounding', 'Installment problems']
-      },
-      {
-        id: 'math_ratio_prop',
-        name: 'Ratio, Proportion & Mixture',
-        weightage: '10%',
-        expectedQs: 2,
-        importance: 'High',
-        keyConcepts: ['Alligation method', 'Sub-duplicate ratios', 'Partnership calculations']
-      },
-      {
-        id: 'math_decimal_fractions',
-        name: 'Decimal Fractions & Simplification',
-        weightage: '10%',
-        expectedQs: 2,
-        importance: 'Medium',
-        keyConcepts: ['BODMAS rule', 'Recurring decimals', 'Surds and Indices basics']
-      },
-      {
-        id: 'math_average_percentage',
-        name: 'Average & Percentage',
+        id: 'math_interest',
+        name: 'Simple & Compound Interest / Ratios',
         weightage: '20%',
         expectedQs: 4,
         importance: 'High',
-        keyConcepts: ['Weighted average', 'Inclusion/Exclusion in average', 'Percentage change and equivalence']
+        keyConcepts: ['SI vs CI difference formula', 'Half-yearly & quarterly compounding', 'Alligation and mixtures']
       }
     ],
     youtubePlaylist: {
-      title: 'AFCAT Maths Complete Foundation & Practice',
-      channel: 'CDS Journey / Defence Wallah',
-      url: 'https://www.youtube.com/playlist?list=PL280mStbnd4W-AFCAT-Maths-Foundation',
-      videoCount: '35 Videos'
+      title: 'AFCAT Numerical Ability Maths Complete Series',
+      channel: 'Defence Wallah Official',
+      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+      videoCount: '32 Lectures'
     }
   },
   {
     id: 'reasoning',
-    name: 'Reasoning & Military Aptitude',
+    name: 'Reasoning & Military Aptitude (25 Qs)',
     totalQs: 25,
     totalMarks: 75,
     iconName: 'Brain',
@@ -228,27 +188,19 @@ export const AFCAT_SUBJECTS: AfcatSubject[] = [
     topics: [
       {
         id: 'reas_venn_diagrams',
-        name: 'Venn Diagrams & Logical Groups',
-        weightage: '16%',
-        expectedQs: 4,
+        name: 'Venn Diagrams & Syllogisms',
+        weightage: '24%',
+        expectedQs: 6,
         importance: 'Critical',
         keyConcepts: ['Three-circle overlapping diagrams', 'Relationship identification', 'Deductive reasoning']
       },
       {
         id: 'reas_non_verbal_pattern',
-        name: 'Pattern Completion & Series',
-        weightage: '20%',
-        expectedQs: 5,
+        name: 'Pattern Completion & Series / Embedded Figures',
+        weightage: '36%',
+        expectedQs: 9,
         importance: 'Critical',
-        keyConcepts: ['Figure rotation (90°/180°)', 'Element addition/deletion', 'Mirror and water images']
-      },
-      {
-        id: 'reas_embedded_figures',
-        name: 'Embedded Figures & Spatial Ability',
-        weightage: '16%',
-        expectedQs: 4,
-        importance: 'High',
-        keyConcepts: ['Hidden pattern detection', 'Dot situation test', 'Cube and dice orientation']
+        keyConcepts: ['Figure rotation (90°/180°)', 'Element addition/deletion', 'Mirror and water images', 'Hidden figure detection']
       },
       {
         id: 'reas_odd_one_out',
@@ -260,31 +212,23 @@ export const AFCAT_SUBJECTS: AfcatSubject[] = [
       },
       {
         id: 'reas_analogy',
-        name: 'Verbal & Figure Analogy',
-        weightage: '16%',
-        expectedQs: 4,
-        importance: 'Medium',
-        keyConcepts: ['Figure relationship mapping', 'Word pair relationship', 'Functional analogies']
-      },
-      {
-        id: 'reas_blood_rel_coding',
-        name: 'Coding-Decoding & Direction Sense',
-        weightage: '12%',
-        expectedQs: 3,
-        importance: 'Medium',
-        keyConcepts: ['Substitutional coding', 'Family tree diagrams', 'Pythagorean displacement']
+        name: 'Verbal & Figure Analogy / Coding',
+        weightage: '20%',
+        expectedQs: 5,
+        importance: 'High',
+        keyConcepts: ['Figure relationship mapping', 'Word pair relationship', 'Substitutional coding', 'Direction sense']
       }
     ],
     youtubePlaylist: {
-      title: 'AFCAT Reasoning & Military Aptitude Full Course',
-      channel: 'Defence Wallah',
-      url: 'https://www.youtube.com/playlist?list=PL280mStbnd4X-Reasoning-AFCAT-Course',
-      videoCount: '24 Videos'
+      title: 'AFCAT Reasoning & Military Aptitude Master Series',
+      channel: 'Defence Wallah Official',
+      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+      videoCount: '28 Lectures'
     }
   },
   {
     id: 'ga',
-    name: 'General Awareness & Defence GK',
+    name: 'General Awareness & Defence GK (25 Qs)',
     totalQs: 25,
     totalMarks: 75,
     iconName: 'Shield',
@@ -293,57 +237,41 @@ export const AFCAT_SUBJECTS: AfcatSubject[] = [
       {
         id: 'ga_defence_knowledge',
         name: 'Defence News, Commands & Joint Exercises',
-        weightage: '24%',
-        expectedQs: 6,
+        weightage: '32%',
+        expectedQs: 8,
         importance: 'Critical',
         keyConcepts: ['IAF Commands & Ranks', 'Aircrafts (Rafale, Su-30MKI, Tejas)', 'Missiles (BrahMos, Akash, Astra)', 'Bilateral Military Exercises (Malabar, Yudh Abhyas, Garuda)']
       },
       {
-        id: 'ga_history',
-        name: 'Indian History & National Movement',
-        weightage: '16%',
-        expectedQs: 4,
+        id: 'ga_history_geo',
+        name: 'Indian History & Geography',
+        weightage: '28%',
+        expectedQs: 7,
         importance: 'High',
-        keyConcepts: ['Modern Indian History (1857-1947)', 'Ancient dynasties & capitals', 'Vedic civilization basics']
+        keyConcepts: ['Modern Indian History (1857-1947)', 'Indian Rivers & Tributaries', 'National Parks & Biosphere Reserves']
       },
       {
-        id: 'ga_geography',
-        name: 'Geography & Environment',
-        weightage: '16%',
-        expectedQs: 4,
+        id: 'ga_polity_science',
+        name: 'Polity & Basic Everyday Science',
+        weightage: '20%',
+        expectedQs: 5,
         importance: 'High',
-        keyConcepts: ['Indian Rivers & Tributaries', 'National Parks & Biosphere Reserves', 'Atmospheric layers & Climate']
-      },
-      {
-        id: 'ga_polity',
-        name: 'Indian Polity & Constitution',
-        weightage: '12%',
-        expectedQs: 3,
-        importance: 'Medium',
-        keyConcepts: ['Fundamental Rights & Duties', 'President & Supreme Court', 'Constitutional Amendments']
-      },
-      {
-        id: 'ga_science',
-        name: 'Basic Everyday Science',
-        weightage: '16%',
-        expectedQs: 4,
-        importance: 'High',
-        keyConcepts: ['Physics principles (Bernoulli, Doppler)', 'Chemical compounds & uses', 'Human anatomy & vitamins']
+        keyConcepts: ['Fundamental Rights & Duties', 'President & Supreme Court', 'Optics, Chemical compounds & Vitamins']
       },
       {
         id: 'ga_sports_static',
         name: 'Sports, Awards & Static GK',
-        weightage: '16%',
-        expectedQs: 4,
-        importance: 'Medium',
+        weightage: '20%',
+        expectedQs: 5,
+        importance: 'High',
         keyConcepts: ['Grand Slams & Olympics', 'Param Vir Chakra & Defence Awards', 'Books, Authors & Firsts in India']
       }
     ],
     youtubePlaylist: {
-      title: 'AFCAT General Awareness & Defence Special',
-      channel: 'Defence Wallah / Testbook Defence',
-      url: 'https://www.youtube.com/playlist?list=PL280mStbnd4Y-GA-Defence-AFCAT-Course',
-      videoCount: '40 Videos'
+      title: 'AFCAT General Awareness & Defence Static GK Masterclass',
+      channel: 'CDS Journey Official',
+      url: 'https://www.youtube.com/@cds.journey/playlists',
+      videoCount: '35 Lectures'
     }
   }
 ];

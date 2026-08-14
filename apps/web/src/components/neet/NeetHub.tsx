@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { NEET_UG_PATTERN, NEET_PYQ_PAPERS, NEET_MODEL_PAPERS } from '../../data/neetData';
+import { NEET_UG_PATTERN, NEET_SUBJECTS, NEET_PYQ_PAPERS, NEET_MODEL_PAPERS } from '../../data/neetData';
 import { generateQuestionsForNeetPaper } from '../../data/neetPaperGenerator';
 import NeetExamCbtWindow from './NeetExamCbtWindow';
 import { BookOpen, FileText, FileCheck, Shield, Award } from 'lucide-react';
@@ -73,17 +73,68 @@ export default function NeetHub() {
 
       {/* Tab Contents */}
       {subTab === 'guide' && (
-        <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-          <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-            <Award className="w-5 h-5 text-emerald-600" /> Official NTA NEET UG 720-Mark Pattern
-          </h3>
-          <p className="text-xs text-gray-600">180 Questions (Phy 45, Chem 45, Bot 45, Zoo 45) • 720 Marks • 200 Minutes (3h 20m)</p>
-          <button
-            onClick={() => startCbtPaper("NEET UG Full Mock Paper 2026", "720-Mark NTA Standard")}
-            className="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-white rounded-xl font-bold text-xs transition shadow"
-          >
-            Launch Full 180-Question NEET CBT Window
-          </button>
+        <div className="space-y-6">
+          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
+            <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
+              <Award className="w-5 h-5 text-emerald-600" /> Official NTA NEET UG 720-Mark Pattern
+            </h3>
+            <p className="text-xs text-gray-600">180 Questions (Phy 45, Chem 45, Bot 45, Zoo 45) • 720 Marks • 200 Minutes (3h 20m)</p>
+            <button
+              onClick={() => startCbtPaper("NEET UG Full Mock Paper 2026", "720-Mark NTA Standard")}
+              className="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-white rounded-xl font-bold text-xs transition shadow"
+            >
+              Launch Full 180-Question NEET CBT Window
+            </button>
+          </div>
+
+          {/* NEET Subject Syllabi & YouTube Playlists */}
+          <div className="space-y-4 pt-2">
+            <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
+              <BookOpen className="w-5 h-5 text-emerald-600" /> Subject Syllabus & Recommended Video Playlists
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {NEET_SUBJECTS.map((subject) => (
+                <div key={subject.id} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200">{subject.name}</span>
+                      <span className="text-xs text-gray-500 font-mono">{subject.totalQs} Qs • {subject.totalMarks}M</span>
+                    </div>
+                    <p className="text-xs text-gray-600 leading-relaxed">{subject.description}</p>
+                    
+                    <div className="space-y-1.5 pt-2">
+                      <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">NCERT Focus Topics:</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {subject.topics.map(topic => (
+                          <span key={topic.id} className="text-[11px] bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-md text-gray-700 font-medium">
+                            {topic.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {subject.youtubePlaylist && (
+                    <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl p-3.5 space-y-2">
+                      <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-red-600">📺 Curated Video Playlist</div>
+                        <div className="font-bold text-xs text-gray-900 line-clamp-1">{subject.youtubePlaylist.title}</div>
+                        <div className="text-[11px] text-gray-600">{subject.youtubePlaylist.channel} • {subject.youtubePlaylist.videoCount}</div>
+                      </div>
+                      <a
+                        href={subject.youtubePlaylist.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-1.5 w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition shadow-sm"
+                      >
+                        Watch Free Playlist ↗
+                      </a>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
 

@@ -18,6 +18,12 @@ export interface NdaSubject {
   iconName: string;
   description: string;
   topics: NdaTopic[];
+  youtubePlaylist: {
+    title: string;
+    channel: string;
+    url: string;
+    videoCount: string;
+  };
 }
 
 export interface NdaPyqPaper {
@@ -83,7 +89,13 @@ export const NDA_SUBJECTS: NdaSubject[] = [
       { id: 'trig', name: 'Trigonometry', weightage: '15%', expectedQs: 18, importance: 'Critical', keyConcepts: ['Angles & Ratios', 'Inverse Trig Functions', 'Heights and Distances'] },
       { id: 'algebra', name: 'Algebra & Matrices', weightage: '20%', expectedQs: 24, importance: 'High', keyConcepts: ['Complex Numbers', 'Quadratic Equations', 'Permutations & Combinations', 'Determinants & Inverse Matrix'] },
       { id: 'prob', name: 'Probability & Statistics', weightage: '15%', expectedQs: 18, importance: 'High', keyConcepts: ['Conditional Probability', 'Binomial Distribution', 'Mean, Variance & SD'] }
-    ]
+    ],
+    youtubePlaylist: {
+      title: 'NDA Mathematics Complete Syllabus & Shortcuts',
+      channel: 'Defence Wallah Official',
+      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+      videoCount: '60 Lectures'
+    }
   },
   {
     id: 'gat_english',
@@ -96,21 +108,33 @@ export const NDA_SUBJECTS: NdaSubject[] = [
     topics: [
       { id: 'errors', name: 'Spotting Errors & Grammar', weightage: '30%', expectedQs: 15, importance: 'Critical', keyConcepts: ['Prepositions & Conjunctions', 'Subject-Verb Agreement', 'Active/Passive Voice'] },
       { id: 'syn_ant', name: 'Synonyms & Antonyms', weightage: '40%', expectedQs: 20, importance: 'Critical', keyConcepts: ['Contextual vocabulary', 'High-yield UPSC words'] }
-    ]
+    ],
+    youtubePlaylist: {
+      title: 'NDA English (GAT Part A) Complete Revision',
+      channel: 'Defence Wallah Official',
+      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+      videoCount: '40 Lectures'
+    }
   },
   {
     id: 'gat_science_gk',
-    name: 'GAT Part B: Physics, Chemistry, Bio & GK',
+    name: 'GAT Part B: General Knowledge & Science',
     paperName: 'Paper 2 Part B (400 Marks)',
     totalQs: 100,
     totalMarks: 400,
     iconName: 'Shield',
-    description: 'Physics (25 Qs / 100M), Chemistry (15 Qs / 60M), General Science (10 Qs / 40M), History/Freedom Movement (20 Qs / 80M), Geography (20 Qs / 80M), Current Affairs & Defence (10 Qs / 40M).',
+    description: 'Physics (100M), Chemistry (60M), General Science / Bio (40M), History, Geography, and Current Affairs (200M).',
     topics: [
-      { id: 'physics', name: 'Physics & Optics', weightage: '25%', expectedQs: 25, importance: 'Critical', keyConcepts: ['Newton Laws of Motion', 'Optics & Lenses', 'Electricity & Magnetism', 'Work & Energy'] },
-      { id: 'chemistry', name: 'Chemistry & Materials', weightage: '15%', expectedQs: 15, importance: 'High', keyConcepts: ['Acids, Bases & Salts', 'Atomic Structure', 'Physical & Chemical Changes', 'Metals & Alloys'] },
-      { id: 'history_geo', name: 'History & Geography', weightage: '40%', expectedQs: 40, importance: 'Critical', keyConcepts: ['Freedom Struggle 1857-1947', 'Indian Geography & Physical Features', 'World History'] }
-    ]
+      { id: 'physics', name: 'Physics (Mechanics, Optics, Electricity)', weightage: '25%', expectedQs: 25, importance: 'Critical', keyConcepts: ['Laws of Motion & Gravitation', 'Ray Optics & Lenses', 'Ohm’s Law & Circuits'] },
+      { id: 'chem_bio', name: 'Chemistry & Biology', weightage: '25%', expectedQs: 25, importance: 'High', keyConcepts: ['Acids, Bases, Salts', 'Structure of Atom', 'Human Physiology & Nutrition'] },
+      { id: 'history_geo', name: 'History, Geography & Current Affairs', weightage: '50%', expectedQs: 50, importance: 'Critical', keyConcepts: ['Indian National Movement', 'Physical Geography & Monsoons', 'Defence Deals & Exercises'] }
+    ],
+    youtubePlaylist: {
+      title: 'NDA General Ability Test (GAT) Science & GK Full Series',
+      channel: 'Defence Wallah Official',
+      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+      videoCount: '52 Lectures'
+    }
   }
 ];
 

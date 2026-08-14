@@ -18,6 +18,12 @@ export interface CdsSubject {
   iconName: string;
   description: string;
   topics: CdsTopic[];
+  youtubePlaylist: {
+    title: string;
+    channel: string;
+    url: string;
+    videoCount: string;
+  };
 }
 
 export interface CdsPyqPaper {
@@ -94,48 +100,63 @@ export const CDS_EXAM_PATTERN = {
 export const CDS_SUBJECTS: CdsSubject[] = [
   {
     id: 'english',
-    name: 'English Language & Comprehension',
-    paperName: 'Paper I (100 Marks)',
+    name: 'English (Paper 1 - 120 Qs)',
+    paperName: 'Paper 1 (IMA/INA/AFA/OTA)',
     totalQs: 120,
     totalMarks: 100,
     iconName: 'BookOpen',
-    description: 'UPSC CDS English tests vocabulary, reading comprehension, ordering of sentences, and grammar rules.',
+    description: 'Reading Comprehension, Spotting Errors, Sentence Improvement, Ordering of Sentences, Idioms & Phrases, Cloze Composition.',
     topics: [
-      { id: 'spotting_errors', name: 'Spotting Errors', weightage: '15%', expectedQs: 15, importance: 'Critical', keyConcepts: ['Subject-Verb Agreement', 'Prepositions', 'Tenses', 'Conditionals'] },
-      { id: 'sentence_ordering', name: 'Ordering of Sentences (PQRSS)', weightage: '15%', expectedQs: 15, importance: 'Critical', keyConcepts: ['Logical flow', 'Pronoun references', 'Chronological linkers'] },
-      { id: 'idioms_phrases', name: 'Idioms & Phrases', weightage: '10%', expectedQs: 10, importance: 'High', keyConcepts: ['Defence context idioms', 'Classical proverbs', 'Phrasal verbs'] },
-      { id: 'reading_comp', name: 'Reading Comprehension', weightage: '20%', expectedQs: 20, importance: 'Critical', keyConcepts: ['Passage central theme', 'Inference', 'Tone analysis'] }
-    ]
+      { id: 'cds_eng_grammar', name: 'Spotting Errors & Parts of Speech', weightage: '30%', expectedQs: 35, importance: 'Critical', keyConcepts: ['Subject-Verb Agreement', 'Prepositions & Phrasal Verbs', 'Direct/Indirect Speech & Active/Passive Voice'] },
+      { id: 'cds_eng_vocab', name: 'Synonyms, Antonyms & Idioms', weightage: '30%', expectedQs: 35, importance: 'Critical', keyConcepts: ['UPSC standard contextual vocabulary', 'Idiomatic expressions in military context', 'Spelling accuracy'] },
+      { id: 'cds_eng_para', name: 'Ordering of Sentences & RC Passages', weightage: '40%', expectedQs: 50, importance: 'Critical', keyConcepts: ['S1-S6 sequence alignment', 'Tone & Theme identification in 4+ passages', 'Cloze paragraph coherence'] }
+    ],
+    youtubePlaylist: {
+      title: 'CDS English Complete Masterclass & PYQ Analysis',
+      channel: 'CDS Journey Official',
+      url: 'https://www.youtube.com/@cds.journey/playlists',
+      videoCount: '45 Lectures'
+    }
   },
   {
     id: 'gk',
-    name: 'General Knowledge & Science',
-    paperName: 'Paper II (100 Marks)',
+    name: 'General Knowledge & Science (Paper 2 - 120 Qs)',
+    paperName: 'Paper 2 (IMA/INA/AFA/OTA)',
     totalQs: 120,
     totalMarks: 100,
-    iconName: 'Shield',
-    description: 'Comprehensive coverage of History, Polity, Geography, General Science (Physics/Chem/Bio), and Defence Current Affairs.',
+    iconName: 'Globe',
+    description: 'Physics, Chemistry, Biology (NCERT 9th-10th), Indian Polity, Modern History, Physical/Indian Geography, Defence & Current Affairs.',
     topics: [
-      { id: 'polity', name: 'Indian Polity & Constitution', weightage: '18%', expectedQs: 20, importance: 'Critical', keyConcepts: ['Fundamental Rights', 'Preamble', 'President & PM powers', 'Constitutional Amendments'] },
-      { id: 'history', name: 'Indian History & National Movement', weightage: '20%', expectedQs: 22, importance: 'Critical', keyConcepts: ['Freedom Struggle 1857-1947', 'Ancient Empires', 'Medieval Administration'] },
-      { id: 'geography', name: 'Physical & Indian Geography', weightage: '18%', expectedQs: 20, importance: 'High', keyConcepts: ['Monsoons & Climate', 'River Systems', 'Himalayan Passages', 'Soil & Vegetation'] },
-      { id: 'science', name: 'General Science (Phy/Chem/Bio)', weightage: '25%', expectedQs: 30, importance: 'Critical', keyConcepts: ['Optics & Mechanics', 'Chemical Reactions & Metals', 'Human Physiology & Cell Biology'] }
-    ]
+      { id: 'cds_gk_science', name: 'General Science (Phy, Chem, Bio)', weightage: '30%', expectedQs: 36, importance: 'Critical', keyConcepts: ['Ray Optics, Electricity & Mechanics', 'Periodic Table, Acids-Bases & Metals', 'Human Physiology, Cell Biology & Genetics'] },
+      { id: 'cds_gk_polity_geo', name: 'Indian Polity & World/Indian Geography', weightage: '40%', expectedQs: 48, importance: 'Critical', keyConcepts: ['Preamble, Fundamental Rights & DPSP', 'Geomorphology, Monsoon & Drainage Systems', 'Parliamentary Procedures & Constitutional Bodies'] },
+      { id: 'cds_gk_history_def', name: 'Modern History, Defence & Current Affairs', weightage: '30%', expectedQs: 36, importance: 'High', keyConcepts: ['Freedom Struggle 1857-1947 & Socio-Religious Movements', 'Tri-Service Commands & Weapon Systems', 'National & International Summits'] }
+    ],
+    youtubePlaylist: {
+      title: 'CDS General Knowledge & Science Full Course',
+      channel: 'Defence Wallah Official',
+      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+      videoCount: '60 Lectures'
+    }
   },
   {
     id: 'maths',
-    name: 'Elementary Mathematics (IMA/INA/AFA)',
-    paperName: 'Paper III (100 Marks)',
+    name: 'Elementary Mathematics (Paper 3 - 100 Qs)',
+    paperName: 'Paper 3 (IMA/INA/AFA Track Only)',
     totalQs: 100,
     totalMarks: 100,
     iconName: 'Calculator',
-    description: 'Arithmetic, Algebra, Trigonometry, Geometry, Mensuration, and Basic Statistics.',
+    description: 'Arithmetic, Number System, Algebra, Trigonometry, Geometry, Mensuration (2D & 3D), and Statistics.',
     topics: [
-      { id: 'trigonometry', name: 'Trigonometry & Heights', weightage: '18%', expectedQs: 18, importance: 'Critical', keyConcepts: ['Identities sin²θ+cos²θ=1', 'Heights and Distances', 'Radian measures'] },
-      { id: 'geometry', name: 'Geometry (Lines, Triangles, Circles)', weightage: '22%', expectedQs: 22, importance: 'Critical', keyConcepts: ['Congruence & Similarity', 'Circles & Tangents', 'Centroid & Incenter'] },
-      { id: 'mensuration', name: 'Mensuration 2D & 3D', weightage: '20%', expectedQs: 20, importance: 'High', keyConcepts: ['Surface Area & Volume of Cones/Spheres', 'Prisms & Pyramids'] },
-      { id: 'arithmetic', name: 'Number System & Arithmetic', weightage: '25%', expectedQs: 25, importance: 'High', keyConcepts: ['HCF & LCM', 'Percentages & Profit Loss', 'Time & Speed'] }
-    ]
+      { id: 'cds_math_geom_mens', name: 'Geometry & Mensuration (2D/3D)', weightage: '35%', expectedQs: 35, importance: 'Critical', keyConcepts: ['Circles, Triangles, Similarities & Centers', 'Prisms, Pyramids, Spheres & Cones volume/surface', 'Coordinate Geometry fundamentals'] },
+      { id: 'cds_math_trig_alg', name: 'Trigonometry & Advanced Algebra', weightage: '35%', expectedQs: 35, importance: 'Critical', keyConcepts: ['Identities & Heights/Distances (Angle of elevation)', 'Quadratic equations, Remainder Theorem & Polynomials', 'Logarithms & Linear inequalities'] },
+      { id: 'cds_math_num_stats', name: 'Number System, Arithmetic & Statistics', weightage: '30%', expectedQs: 30, importance: 'High', keyConcepts: ['Divisibility rules, Unit digit & Prime factorisation', 'Time-Speed-Distance & Work-Time', 'Mean, Median, Mode & Histograms'] }
+    ],
+    youtubePlaylist: {
+      title: 'CDS Elementary Mathematics Advanced Concepts',
+      channel: 'Defence Wallah Official',
+      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+      videoCount: '50 Lectures'
+    }
   }
 ];
 
