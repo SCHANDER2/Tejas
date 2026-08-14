@@ -20,62 +20,62 @@ export default function AfcatHub() {
   const [subTab, setSubTab] = useState<'guide' | 'pyq' | 'model' | 'quiz' | 'analytics'>('guide');
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fadeInUp">
       {/* Sub Navigation Bar */}
-      <div className="bg-white p-2 rounded-2xl border border-[#e5e2d9] shadow-sm overflow-x-auto flex items-center gap-2">
+      <div className="glass-panel p-2 rounded-2xl border border-white/10 shadow-lg overflow-x-auto flex items-center gap-2 no-scrollbar">
         <button
           onClick={() => setSubTab('guide')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'guide'
-              ? 'bg-[#262a2b] text-white shadow-sm'
-              : 'text-[#786e67] hover:text-[#262a2b] hover:bg-[#fcfcfb]'
+              ? 'bg-amber-500 text-slate-950 shadow-glow-amber scale-[1.02]'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
           }`}
         >
-          <BookOpen className="w-4 h-4 text-[#faa114]" /> Mentor Guide & Syllabus
+          <BookOpen className="w-4 h-4" /> Mentor Guide & Syllabus
         </button>
 
         <button
           onClick={() => setSubTab('pyq')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'pyq'
-              ? 'bg-[#262a2b] text-white shadow-sm'
-              : 'text-[#786e67] hover:text-[#262a2b] hover:bg-[#fcfcfb]'
+              ? 'bg-amber-500 text-slate-950 shadow-glow-amber scale-[1.02]'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
           }`}
         >
-          <FileText className="w-4 h-4 text-blue-500" /> PYQ Vault (PDFs)
+          <FileText className="w-4 h-4" /> PYQ Vault (PDFs)
         </button>
 
         <button
           onClick={() => setSubTab('model')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'model'
-              ? 'bg-[#262a2b] text-white shadow-sm'
-              : 'text-[#786e67] hover:text-[#262a2b] hover:bg-[#fcfcfb]'
+              ? 'bg-amber-500 text-slate-950 shadow-glow-amber scale-[1.02]'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
           }`}
         >
-          <FileCheck className="w-4 h-4 text-purple-500" /> 15 Model Papers
+          <FileCheck className="w-4 h-4" /> 15 Model Papers
         </button>
 
         <button
           onClick={() => setSubTab('quiz')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'quiz'
-              ? 'bg-[#262a2b] text-white shadow-sm'
-              : 'text-[#786e67] hover:text-[#262a2b] hover:bg-[#fcfcfb]'
+              ? 'bg-amber-500 text-slate-950 shadow-glow-amber scale-[1.02]'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
           }`}
         >
-          <Brain className="w-4 h-4 text-[#faa114]" /> Quiz Engine (Full/Subject/Topic)
+          <Brain className="w-4 h-4" /> Quiz Engine (Full/Subject/Topic)
         </button>
 
         <button
           onClick={() => setSubTab('analytics')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'analytics'
-              ? 'bg-[#262a2b] text-white shadow-sm'
-              : 'text-[#786e67] hover:text-[#262a2b] hover:bg-[#fcfcfb]'
+              ? 'bg-amber-500 text-slate-950 shadow-glow-amber scale-[1.02]'
+              : 'text-slate-400 hover:text-white hover:bg-white/5'
           }`}
         >
-          <BarChart3 className="w-4 h-4 text-emerald-500" /> Candidate Analytics
+          <BarChart3 className="w-4 h-4" /> Candidate Analytics
         </button>
       </div>
 
