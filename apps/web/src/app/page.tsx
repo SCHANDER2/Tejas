@@ -1112,7 +1112,7 @@ export default function WorkspacePage() {
               };
               const activeExamInfo = targetExamMap[currentExamKey] || targetExamMap.afcat;
 
-              const navSections = [
+              const navSections: Array<{ title: string; items: Array<{ id: string; label: string; icon: any; tag?: string }> }> = [
                 {
                   title: 'MY TARGET COURSE',
                   items: [
