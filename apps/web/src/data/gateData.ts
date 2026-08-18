@@ -510,12 +510,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'me_ga_quant', name: 'Quantitative & Spatial Aptitude', weightage: '60%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Percentages, TSD, Work & Time', '2D/3D Geometry & Spatial Folding'], pyqCount: 140 },
         { id: 'me_ga_verb', name: 'Verbal Ability & Logic', weightage: '40%', expectedQs: 4, importance: 'High', keyConcepts: ['Grammar & Critical Reasoning'], pyqCount: 110 }
       ],
-      youtubePlaylist: {
-        title: 'GATE General Aptitude for Mechanical',
-        channel: 'Gate Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+      youtubePlaylists: [{
+        title: 'GATE General Aptitude Complete Playlist',
+        channel: 'GATE Wallah',
+        url: 'https://www.youtube.com/playlist?list=PLvTTv60o7qj-PgF3DhvvTK6_-g_FU8wCT',
         videoCount: '35 Lectures'
-      }
+      }]
     },
     {
       id: 'me_thermo_fluid',
@@ -530,12 +530,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'me_thermo_cycles', name: 'Applied Thermodynamics & Power Cycles', weightage: '50%', expectedQs: 8, importance: 'Critical', keyConcepts: ['First & Second Law / Availability & Irreversibility', 'Rankine, Otto, Diesel, Dual & Brayton Cycles', 'Psychrometric Chart & VCR Refrigeration Cycles'], pyqCount: 210 },
         { id: 'me_fm_ht', name: 'Fluid Mechanics & Heat Transfer', weightage: '50%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Bernoulli Equation & Pipe Flow Friction (Moody Chart)', 'Boundary Layer Thickness & Drag/Lift', 'LMTD & NTU Heat Exchanger Methods', 'Transient Heat Conduction (Biot Number) & Radiation View Factors'], pyqCount: 220 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Mechanical Thermodynamics & Fluid Mechanics Master Series',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ME CE XE',
+        url: 'https://www.youtube.com/@gatewallah_me_ce_xe_ch/playlists',
         videoCount: '75 Lectures'
-      }
+      }]
     },
     {
       id: 'me_som_tom',
@@ -550,12 +550,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'me_som_stress', name: 'Strength of Materials & Beam Deflection', weightage: '50%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Principal Stresses & 2D/3D Mohrs Circle', 'Shear Force & Bending Moment Diagrams (SFD/BMD)', 'Pure Torsion & Power Transmission Shafts', 'Eulers Critical Load for Columns & Strain Energy'], pyqCount: 230 },
         { id: 'me_tom_vibrations', name: 'Theory of Machines & Mechanical Vibrations', weightage: '50%', expectedQs: 7, importance: 'Critical', keyConcepts: ['Grashofs Law & 4-Bar Mechanism Inversions', 'Velocity & Acceleration Analysis (Instantaneous Center)', 'Single Degree of Freedom Free/Damped/Forced Vibrations', 'Gear Trains & Epicyclic Gear Ratios'], pyqCount: 205 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Mechanical SOM & Theory of Machines Lectures',
-        channel: 'Made Easy / Gate Wallah',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ME CE XE',
+        url: 'https://www.youtube.com/@gatewallah_me_ce_xe_ch/playlists',
         videoCount: '65 Lectures'
-      }
+      }]
     },
     {
       id: 'me_mfg_industrial',
@@ -570,12 +570,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'me_mfg_machining', name: 'Machining, Casting & Metal Forming', weightage: '55%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Orthogonal Machining & Merchants Force Circle', 'Taylors Tool Life Equation', 'Chvorinovs Rule in Casting & Gating Design', 'True Stress/Strain in Rolling, Extrusion & Wire Drawing'], pyqCount: 220 },
         { id: 'me_ie_or', name: 'Operations Research, PERT/CPM & Inventory', weightage: '45%', expectedQs: 7, importance: 'Critical', keyConcepts: ['Linear Programming (Simplex Method & Duality)', 'PERT/CPM Critical Path & Float Calculations', 'EOQ Model, Reorder Point & Safety Stock', 'Forecasting (Moving Average & Exponential Smoothing)'], pyqCount: 195 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Manufacturing & Industrial Engineering Complete Course',
-        channel: 'NPTEL Official / Gate Wallah',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ME CE XE',
+        url: 'https://www.youtube.com/@gatewallah_me_ce_xe_ch/playlists',
         videoCount: '60 Lectures'
-      }
+      }]
     },
     {
       id: 'me_em',
@@ -590,12 +590,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'me_em_calc_de', name: 'Calculus, Vector Calculus & Differential Equations', weightage: '55%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Partial Derivatives, Maxima/Minima & Greens Theorem', 'First Order ODEs & Second Order Constant Coeff ODEs', 'Laplace Transforms for Differential Equations'], pyqCount: 150 },
         { id: 'me_em_la_prob', name: 'Linear Algebra & Probability Distributions', weightage: '45%', expectedQs: 4, importance: 'Critical', keyConcepts: ['Eigenvalues & System of Equations', 'Normal & Exponential Probability Distributions', 'Newton-Raphson & Trapezoidal/Simpson Numerical Rules'], pyqCount: 140 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Engineering Mathematics for Mechanical',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ME CE XE',
+        url: 'https://www.youtube.com/@gatewallah_me_ce_xe_ch/playlists',
         videoCount: '45 Lectures'
-      }
+      }]
     }
   ],
 
@@ -613,12 +613,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ce_ga_quant', name: 'Quantitative Aptitude & Spatial Ability', weightage: '60%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Percentages, TSD, Data Interpretation', 'Spatial Rotations & Symmetry'], pyqCount: 130 },
         { id: 'ce_ga_verb', name: 'Verbal Reasoning & Grammar', weightage: '40%', expectedQs: 4, importance: 'High', keyConcepts: ['Sentence Completion & Critical Deduction'], pyqCount: 110 }
       ],
-      youtubePlaylist: {
-        title: 'GATE General Aptitude for Civil Engineering',
-        channel: 'Gate Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+      youtubePlaylists: [{
+        title: 'GATE General Aptitude Complete Playlist',
+        channel: 'GATE Wallah',
+        url: 'https://www.youtube.com/playlist?list=PLvTTv60o7qj-PgF3DhvvTK6_-g_FU8wCT',
         videoCount: '35 Lectures'
-      }
+      }]
     },
     {
       id: 'ce_structures_geotech',
@@ -633,12 +633,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ce_soil_geotech', name: 'Soil Mechanics & Foundation Engineering', weightage: '50%', expectedQs: 9, importance: 'Critical', keyConcepts: ['Phase Relationships (Void Ratio, Porosity, Degree of Saturation)', 'Darcys Law, Seepage Analysis & Flow Nets', 'Terzaghis 1D Consolidation & Primary Settlement', 'Mohr-Coulomb Shear Strength & Terzaghi Bearing Capacity'], pyqCount: 230 },
         { id: 'ce_struct_rcc', name: 'Structural Analysis & RCC Design', weightage: '50%', expectedQs: 9, importance: 'Critical', keyConcepts: ['Trusses, Moment Distribution & Slope Deflection', 'Limit State Method (LSM) Singly/Doubly Reinforced Beams', 'Shear, Torsion & Bond Design in RCC (IS 456)', 'Plastic Analysis of Beams & Frames (Collapse Load)'], pyqCount: 220 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Civil Geotechnical & Structural Engineering Series',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ME CE XE',
+        url: 'https://www.youtube.com/@gatewallah_me_ce_xe_ch/playlists',
         videoCount: '80 Lectures'
-      }
+      }]
     },
     {
       id: 'ce_env_water_trans',
@@ -654,12 +654,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ce_hydro_wre', name: 'Hydrology & Open Channel Hydraulics', weightage: '30%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Unit Hydrograph Theory & S-Curve Method', 'Specific Energy, Critical Depth & Hydraulic Jump in Channels', 'Crop Water Requirements (Delta, Duty, Base Period)'], pyqCount: 170 },
         { id: 'ce_transport_geo', name: 'Transportation & Highway Geometric Design', weightage: '25%', expectedQs: 5, importance: 'High', keyConcepts: ['Stopping Sight Distance (SSD) & Overtaking Sight Distance (OSD)', 'Super-elevation Design & Horizontal Transition Curves', 'Traffic Volume (Webster Signal Design) & Pavement Thickness'], pyqCount: 160 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Civil Environmental & Transportation Engineering',
-        channel: 'NPTEL / Gate Wallah',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ME CE XE',
+        url: 'https://www.youtube.com/@gatewallah_me_ce_xe_ch/playlists',
         videoCount: '70 Lectures'
-      }
+      }]
     },
     {
       id: 'ce_em_survey',
@@ -674,12 +674,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ce_maths_core', name: 'Engineering Mathematics', weightage: '65%', expectedQs: 7, importance: 'Critical', keyConcepts: ['Eigenvalues & Determinants', 'Differential Equations & Laplace Transforms', 'Probability Distributions & Numerical Integration (Simpsons Rule)'], pyqCount: 155 },
         { id: 'ce_survey_levels', name: 'Surveying, Levelling & Contouring', weightage: '35%', expectedQs: 3, importance: 'High', keyConcepts: ['Rise & Fall / Height of Instrument Levelling', 'Magnetic Declination & Whole Circle Bearings', 'Horizontal & Vertical Curves Design'], pyqCount: 120 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Civil Surveying & Mathematics Masterclass',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ME CE XE',
+        url: 'https://www.youtube.com/@gatewallah_me_ce_xe_ch/playlists',
         videoCount: '45 Lectures'
-      }
+      }]
     }
   ],
 
@@ -697,12 +697,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ee_ga_quant', name: 'Quantitative Aptitude & Logic', weightage: '60%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Arithmetic & Algebraic shortcuts', 'Data Interpretation & Sequences'], pyqCount: 120 },
         { id: 'ee_ga_verb', name: 'Verbal Ability', weightage: '40%', expectedQs: 4, importance: 'High', keyConcepts: ['Vocabulary, Reading & Deduction'], pyqCount: 100 }
       ],
-      youtubePlaylist: {
-        title: 'GATE General Aptitude for Electrical',
-        channel: 'Gate Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+      youtubePlaylists: [{
+        title: 'GATE General Aptitude Complete Playlist',
+        channel: 'GATE Wallah',
+        url: 'https://www.youtube.com/playlist?list=PLvTTv60o7qj-PgF3DhvvTK6_-g_FU8wCT',
         videoCount: '35 Lectures'
-      }
+      }]
     },
     {
       id: 'ee_power_machines',
@@ -717,12 +717,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ee_machines_trans', name: 'Electrical Machines (Transformers & Induction)', weightage: '50%', expectedQs: 9, importance: 'Critical', keyConcepts: ['Equivalent Circuit, Efficiency & Voltage Regulation of Transformers', 'Torque-Speed Characteristics of 3-Phase Induction Motors', 'DC Motor Starting, Speed Control & Braking', 'Synchronous Generator Power-Angle Curve & V-Curves'], pyqCount: 220 },
         { id: 'ee_power_faults', name: 'Power Systems, Faults & Stability', weightage: '50%', expectedQs: 9, importance: 'Critical', keyConcepts: ['Symmetrical & Unsymmetrical Fault Analysis (LG, LL, LLG)', 'Equal Area Criterion for Transient Stability', 'Y-bus Formation & Gauss-Seidel / Newton-Raphson Load Flow', 'Transmission Line ABCD Parameters & Ferranti Effect'], pyqCount: 210 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Electrical Power Systems & Machines Complete Course',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ECE EE IN',
+        url: 'https://www.youtube.com/@GATE_Wallah_ECE-EE-IN/playlists',
         videoCount: '75 Lectures'
-      }
+      }]
     },
     {
       id: 'ee_pe_control',
@@ -737,12 +737,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ee_pe_converters', name: 'Power Electronics & Inverters', weightage: '50%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Single/3-Phase Controlled Rectifiers & Average Output Voltage', 'Buck, Boost & Buck-Boost Converter Ripple Calculations', '1-Phase & 3-Phase Voltage Source Inverters (180°/120° Conduction)'], pyqCount: 200 },
         { id: 'ee_cs_bode_root', name: 'Control Systems & Frequency Response', weightage: '50%', expectedQs: 7, importance: 'Critical', keyConcepts: ['Routh-Hurwitz Stability Criterion & State Space Controllability/Observability', 'Root Locus Construction & Breakaway Points', 'Bode Plots, Phase Margin & Gain Margin', 'Lead, Lag & Lead-Lag Compensators'], pyqCount: 190 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Power Electronics & Control Systems Lectures',
-        channel: 'NPTEL / Gate Wallah',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ECE EE IN',
+        url: 'https://www.youtube.com/@GATE_Wallah_ECE-EE-IN/playlists',
         videoCount: '65 Lectures'
-      }
+      }]
     },
     {
       id: 'ee_circuits_signals_em',
@@ -757,12 +757,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ee_circuits_theorems', name: 'Network Analysis & Transients', weightage: '40%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Thevenin, Norton, Superposition & Maximum Power Transfer', 'First & Second Order Transient Response in s-domain', 'Resonance in Series & Parallel RLC Circuits', 'Two-Port Parameters (Z, Y, ABCD, h)'], pyqCount: 180 },
         { id: 'ee_signals_maths', name: 'Signals, Systems & Engineering Mathematics', weightage: '60%', expectedQs: 8, importance: 'Critical', keyConcepts: ['LTI System Convolution, Fourier Series & Fourier Transform', 'Laplace & Z-Transform ROC and Inverse Transforms', 'Eigenvalues, Vector Calculus & Differential Equations'], pyqCount: 170 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Electrical Circuit Theory & Signals Masterclass',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ECE EE IN',
+        url: 'https://www.youtube.com/@GATE_Wallah_ECE-EE-IN/playlists',
         videoCount: '50 Lectures'
-      }
+      }]
     }
   ],
 
@@ -780,12 +780,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ec_ga_quant', name: 'Quantitative & Spatial Aptitude', weightage: '60%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Arithmetic shortcuts & Data Interpretation', 'Spatial Folding & Visual Logic'], pyqCount: 120 },
         { id: 'ec_ga_verb', name: 'Verbal Ability & Logic', weightage: '40%', expectedQs: 4, importance: 'High', keyConcepts: ['Sentence Completion & Critical Deduction'], pyqCount: 100 }
       ],
-      youtubePlaylist: {
-        title: 'GATE General Aptitude for Electronics',
-        channel: 'Gate Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+      youtubePlaylists: [{
+        title: 'GATE General Aptitude Complete Playlist',
+        channel: 'GATE Wallah',
+        url: 'https://www.youtube.com/playlist?list=PLvTTv60o7qj-PgF3DhvvTK6_-g_FU8wCT',
         videoCount: '35 Lectures'
-      }
+      }]
     },
     {
       id: 'ec_edc_analog',
@@ -800,12 +800,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ec_edc_mosfet', name: 'Electronic Devices & Semiconductor Physics', weightage: '50%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Fermi-Dirac Statistics & Energy Band Diagrams', 'Carrier Drift, Diffusion & Continuity Equation', 'p-n Junction Depletion Width & Built-in Potential', 'MOS Capacitor C-V Curve & MOSFET Drain Current Equations'], pyqCount: 220 },
         { id: 'ec_analog_opamp', name: 'Analog Circuits (Op-Amps & BJT/MOS Amplifiers)', weightage: '50%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Small Signal Analysis of BJT (CE, CB, CC) & MOSFET (CS, CD, CG)', 'Ideal & Practical Op-Amp (Inverting, Non-inverting, Integrator, Schmitt Trigger)', 'Negative Feedback Topologies & Barkhausen Criterion for Oscillators', 'Precision Rectifiers & 555 Timer Astable/Monostable Modes'], pyqCount: 215 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Electronics EDC & Analog Circuits Complete Series',
-        channel: 'NPTEL Official / Gate Wallah',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ECE EE IN',
+        url: 'https://www.youtube.com/@GATE_Wallah_ECE-EE-IN/playlists',
         videoCount: '70 Lectures'
-      }
+      }]
     },
     {
       id: 'ec_comm_signals',
@@ -820,12 +820,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ec_comm_digital', name: 'Analog & Digital Communications', weightage: '55%', expectedQs: 9, importance: 'Critical', keyConcepts: ['AM/FM Modulation Index, Power & Bandwidth (Carsons Rule)', 'PCM, DPCM, Quantization Noise & Companding (A-law / mu-law)', 'BPSK, QPSK, QAM Constellations & Bit Error Rate (BER)', 'Shannons Capacity Theorem & Huffman / LZW Coding'], pyqCount: 225 },
         { id: 'ec_signals_lti', name: 'Signals & Systems (Continuous & Discrete)', weightage: '45%', expectedQs: 7, importance: 'Critical', keyConcepts: ['LTI System Stability, Causality & Impulse Response', 'Continuous/Discrete Fourier Transform & FFT Properties', 'Z-Transform Region of Convergence (ROC) & Digital Filter Realization', 'Nyquist Sampling Rate & Aliasing Filter Design'], pyqCount: 195 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Communications & Signals Masterclass',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ECE EE IN',
+        url: 'https://www.youtube.com/@GATE_Wallah_ECE-EE-IN/playlists',
         videoCount: '75 Lectures'
-      }
+      }]
     },
     {
       id: 'ec_emft_digital_maths',
@@ -841,12 +841,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'ec_digital_circuits', name: 'Digital Electronics & Logic Design', weightage: '30%', expectedQs: 4, importance: 'Critical', keyConcepts: ['K-Maps & Logic Minimization', 'Finite State Machines (Mealy & Moore Models)', 'Setup & Hold Time in Sequential Circuits', 'ADC / DAC Resolution & Conversion Speed'], pyqCount: 160 },
         { id: 'ec_maths_core', name: 'Engineering Mathematics', weightage: '30%', expectedQs: 4, importance: 'High', keyConcepts: ['Eigenvalues & Linear Systems', 'Complex Variables (Cauchy-Riemann & Residue Theorem)', 'Differential Equations & Probability Distributions'], pyqCount: 150 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE Electromagnetics & Digital Circuits Lectures',
-        channel: 'Gate Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah ECE EE IN',
+        url: 'https://www.youtube.com/@GATE_Wallah_ECE-EE-IN/playlists',
         videoCount: '60 Lectures'
-      }
+      }]
     }
   ]
 };
