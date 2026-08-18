@@ -1083,7 +1083,7 @@ export default function WorkspacePage() {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[#FAFAF8] text-[#1A1D1E] font-sans">
       <aside className="hidden md:flex w-64 bg-[#FFFFFF] border-r border-[#E5E2D9] flex-col justify-between shrink-0 sticky top-0 h-screen">
-        <div>
+        <div className="overflow-y-auto no-scrollbar flex-1 flex flex-col">
           <div className="p-6 border-b border-[#E5E2D9] flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <span className="text-xl font-extrabold tracking-tight text-[#1A1D1E] font-display">Tejas</span>
@@ -1094,47 +1094,98 @@ export default function WorkspacePage() {
             </button>
           </div>
 
-          <nav className="p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-160px)] no-scrollbar">
-            {[
-              { id: 'afcat', label: 'AFCAT 2026 Hub', icon: Shield },
-              { id: 'cds', label: 'CDS (IMA/OTA) Hub', icon: Shield },
-              { id: 'nda', label: 'NDA & NA Hub', icon: Shield },
-              { id: 'jee_mains', label: 'JEE Main Hub', icon: Zap },
-              { id: 'neet', label: 'NEET UG Hub', icon: Award },
-              { id: 'upsc', label: 'UPSC CSE Hub', icon: BookOpen },
-              { id: 'ssc_cgl', label: 'SSC CGL Hub', icon: FileText },
-              { id: 'gate', label: 'GATE Engine', icon: Sparkles },
-              { id: 'cat', label: 'CAT Engine', icon: TrendingUp },
-              { id: 'dashboard', label: 'Dashboard', icon: BookOpen },
-              { id: 'planner', label: 'Study Planner', icon: Calendar },
-              { id: 'explorer', label: 'Exam Explorer', icon: Search },
-              { id: 'learning', label: 'Learning Hub', icon: BookMarked },
-              { id: 'pdf', label: 'PDF Workspace', icon: FileText },
-              { id: 'revision', label: 'Revision (FSRS)', icon: RotateCcw },
-              { id: 'analytics', label: 'Analytics', icon: TrendingUp },
-              { id: 'profile', label: 'Profile', icon: User },
-            ].map((item) => {
-              const isActive = activeTab === item.id;
+          <nav className="p-3 space-y-6 overflow-y-auto no-scrollbar flex-1">
+            {(() => {
+              const currentExamKey = profileTargetExamId || 'afcat';
+              const targetExamMap: Record<string, { label: string; tabId: string; icon: any }> = {
+                afcat: { label: 'AFCAT 2026 Hub', tabId: 'afcat', icon: Shield },
+                cds: { label: 'CDS (IMA/OTA) Hub', tabId: 'cds', icon: Shield },
+                nda: { label: 'NDA & NA Hub', tabId: 'nda', icon: Shield },
+                jee: { label: 'JEE Main Hub', tabId: 'jee_mains', icon: Zap },
+                jee_mains: { label: 'JEE Main Hub', tabId: 'jee_mains', icon: Zap },
+                neet: { label: 'NEET UG Hub', tabId: 'neet', icon: Award },
+                upsc: { label: 'UPSC CSE Hub', tabId: 'upsc', icon: BookOpen },
+                ssc: { label: 'SSC CGL Hub', tabId: 'ssc_cgl', icon: FileText },
+                ssc_cgl: { label: 'SSC CGL Hub', tabId: 'ssc_cgl', icon: FileText },
+                gate: { label: 'GATE 2026 Engine', tabId: 'gate', icon: Sparkles },
+                cat: { label: 'CAT 2026 Engine', tabId: 'cat', icon: TrendingUp },
+              };
+              const activeExamInfo = targetExamMap[currentExamKey] || targetExamMap.afcat;
+
+              const navSections = [
+                {
+                  title: 'MY TARGET COURSE',
+                  items: [
+                    { id: activeExamInfo.tabId, label: activeExamInfo.label, icon: activeExamInfo.icon, tag: 'ACTIVE' },
+                  ],
+                },
+                {
+                  title: 'STUDY WORKSPACE',
+                  items: [
+                    { id: 'dashboard', label: 'Dashboard', icon: BookOpen },
+                    { id: 'planner', label: 'Study Planner', icon: Calendar },
+                    { id: 'learning', label: 'Learning Hub', icon: BookMarked },
+                    { id: 'pdf', label: 'PDF Workspace', icon: FileText },
+                    { id: 'revision', label: 'Revision (FSRS)', icon: RotateCcw },
+                    { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+                  ],
+                },
+                {
+                  title: 'SWITCH & PROFILE',
+                  items: [
+                    { id: 'explorer', label: 'Exam Explorer (Switch)', icon: Search },
+                    { id: 'profile', label: 'Profile Settings', icon: User },
+                  ],
+                },
+              ];
+
               return (
-                <button
-                  key={item.id}
-                  onClick={() => triggerLoadingState(item.id)}
-                  className={`w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-xl transition-all duration-150 ${
-                    isActive 
-                      ? 'bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] font-bold' 
-                      : 'text-[#66625D] hover:bg-[#F5F4F0] hover:text-[#1A1D1E]'
-                  }`}
-                >
-                  {item.label}
-                </button>
+                <div className="space-y-5">
+                  {navSections.map((sec, idx) => (
+                    <div key={idx} className="space-y-1.5">
+                      <div className="px-3 text-[10px] font-mono font-extrabold uppercase tracking-wider text-[#94A3B8]">
+                        {sec.title}
+                      </div>
+                      {sec.items.map((item) => {
+                        const Icon = item.icon;
+                        const isActive = activeTab === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            onClick={() => triggerLoadingState(item.id)}
+                            className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-semibold rounded-xl transition-all duration-150 ${
+                              isActive
+                                ? 'bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] font-bold shadow-sm'
+                                : 'text-[#66625D] hover:bg-[#F5F4F0] hover:text-[#1A1D1E]'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5 truncate">
+                              <Icon className="w-4 h-4 shrink-0" />
+                              <span className="truncate">{item.label}</span>
+                            </div>
+                            {item.tag && (
+                              <span className="text-[9px] font-mono font-extrabold px-1.5 py-0.5 rounded bg-[#FAA114] text-[#1A1D1E] shrink-0">
+                                {item.tag}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
               );
-            })}
+            })()}
           </nav>
         </div>
 
         <div className="p-4 border-t border-[#E5E2D9]">
           <button
-            onClick={() => triggerLoadingState('afcat')}
+            onClick={() => {
+              const currentExamKey = profileTargetExamId || 'afcat';
+              const targetMap: Record<string, string> = { jee: 'jee_mains', ssc: 'ssc_cgl' };
+              triggerLoadingState(targetMap[currentExamKey] || currentExamKey);
+            }}
             className="w-full py-3 px-4 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-150 active:scale-95 text-xs"
           >
             <Plus className="w-4 h-4" />
@@ -1153,16 +1204,16 @@ export default function WorkspacePage() {
                 className="px-3.5 py-1 bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] text-xs font-bold rounded-full hover:bg-[#F5E8D0] transition-all flex items-center gap-1.5 shadow-sm"
               >
                 <span>
-                  {activeTab === 'afcat' && 'AFCAT 2026 (Air Force)'}
-                  {activeTab === 'cds' && 'CDS 2026 (IMA / OTA)'}
-                  {activeTab === 'nda' && 'NDA & NA 2026 (Defence)'}
-                  {activeTab === 'jee_mains' && 'JEE Main 2026 (Engineering)'}
-                  {activeTab === 'neet' && 'NEET UG 2026 (Medical)'}
-                  {activeTab === 'upsc' && 'UPSC CSE 2026 (Civil Services)'}
-                  {activeTab === 'ssc_cgl' && 'SSC CGL 2026 (Staff Selection)'}
-                  {activeTab === 'gate' && 'GATE 2026 (Engineering Core)'}
-                  {activeTab === 'cat' && 'CAT 2026 (IIM Management)'}
-                  {!['afcat','cds','nda','jee_mains','neet','upsc','ssc_cgl','gate','cat'].includes(activeTab) && 'Switch Exam'}
+                  {profileTargetExamId === 'afcat' && 'AFCAT 2026 (Air Force)'}
+                  {profileTargetExamId === 'cds' && 'CDS 2026 (IMA / OTA)'}
+                  {profileTargetExamId === 'nda' && 'NDA & NA 2026 (Defence)'}
+                  {(profileTargetExamId === 'jee' || profileTargetExamId === 'jee_mains') && 'JEE Main 2026 (Engineering)'}
+                  {profileTargetExamId === 'neet' && 'NEET UG 2026 (Medical)'}
+                  {profileTargetExamId === 'upsc' && 'UPSC CSE 2026 (Civil Services)'}
+                  {(profileTargetExamId === 'ssc' || profileTargetExamId === 'ssc_cgl') && 'SSC CGL 2026 (Staff Selection)'}
+                  {profileTargetExamId === 'gate' && 'GATE 2026 (Engineering Core)'}
+                  {profileTargetExamId === 'cat' && 'CAT 2026 (IIM Management)'}
+                  {!['afcat','cds','nda','jee','jee_mains','neet','upsc','ssc','ssc_cgl','gate','cat'].includes(profileTargetExamId) && 'Switch Exam'}
                 </span>
                 <span className="text-[10px] text-[#C88410]">▼</span>
               </button>
@@ -1185,9 +1236,16 @@ export default function WorkspacePage() {
                   ].map(ex => (
                     <button
                       key={ex.id}
-                      onClick={() => { setTargetSwitcherOpen(false); triggerLoadingState(ex.id); }}
+                      onClick={() => {
+                        setTargetSwitcherOpen(false);
+                        setProfileTargetExamId(ex.id);
+                        try {
+                          localStorage.setItem('tejas_target_exam', ex.id);
+                        } catch (e) {}
+                        triggerLoadingState(ex.id);
+                      }}
                       className={`w-full text-left px-3 py-2 text-xs font-semibold rounded-xl transition ${
-                        activeTab === ex.id ? 'bg-[#FAF3E6] text-[#C88410] font-bold' : 'text-[#1A1D1E] hover:bg-[#F5F4F0]'
+                        profileTargetExamId === ex.id ? 'bg-[#FAF3E6] text-[#C88410] font-bold' : 'text-[#1A1D1E] hover:bg-[#F5F4F0]'
                       }`}
                     >
                       {ex.label}
