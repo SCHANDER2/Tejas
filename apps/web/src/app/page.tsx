@@ -521,8 +521,7 @@ export default function WorkspacePage() {
             </div>
 
             <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-[#66625D]">
-              <a href="#demo" className="hover:text-[#1A1D1E] transition-colors">Live Console</a>
-              <a href="#exams" className="hover:text-[#1A1D1E] transition-colors">Exam Hubs</a>
+              <a href="#exams" className="hover:text-[#1A1D1E] transition-colors">Exam Suites</a>
               <a href="#features" className="hover:text-[#1A1D1E] transition-colors">AI Capabilities</a>
               <a href="#testimonials" className="hover:text-[#1A1D1E] transition-colors">Success Stories</a>
               <a href="#pricing" className="hover:text-[#1A1D1E] transition-colors">Pricing</a>
@@ -586,7 +585,7 @@ export default function WorkspacePage() {
                 <ArrowRight className="w-5 h-5" />
               </button>
               <button 
-                onClick={() => { document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' }); }}
+                onClick={() => { document.getElementById('exams')?.scrollIntoView({ behavior: 'smooth' }); }}
                 className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-[#F5F4F0] text-[#1A1D1E] font-bold rounded-xl flex items-center justify-center gap-2.5 transition-all text-base border border-[#E5E2D9] shadow-sm"
               >
                 Simulate Live CBT Exam 🚀
@@ -615,70 +614,7 @@ export default function WorkspacePage() {
           </div>
         </section>
 
-        {/* ═══════════ HERO DEMO CONSOLE CARD (#262A2B CHARCOAL CARD) ═══════════ */}
-        <section id="demo" className="px-6 md:px-12 py-12 md:py-20 relative">
-          <div className="max-w-5xl mx-auto">
-            <div className="dark-container p-8 md:p-12 space-y-8 shadow-2xl relative overflow-hidden">
-              
-              <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAA114]/20 border border-[#FAA114]/40 text-[#FAA114] text-xs font-mono font-bold uppercase tracking-wider">
-                  <div className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4]"></span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#EA4335]"></span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#FBBC04]"></span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#34A853]"></span>
-                  </div>
-                  <span>AFCAT 2026 MENTOR EDITION</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display">
-                  Preparing for Air Force Common Admission Test (AFCAT)?
-                </h2>
-                <p className="text-sm text-slate-300 leading-relaxed max-w-3xl font-normal">
-                  Complete mentor-led AFCAT hub featuring comprehensive syllabus roadmaps, 15 full-length model papers, authentic PYQ PDFs (2018-2025), subject video playlists, and official AFCAT CBT quiz simulations.
-                </p>
-              </div>
 
-              <div className="flex flex-wrap gap-2.5">
-                {[
-                  { name: 'Topic Tests', bg: 'bg-[#EAB308]', text: 'text-slate-950' },
-                  { name: 'Full Mocks', bg: 'bg-[#22C55E]', text: 'text-slate-950' },
-                  { name: 'PYQ Papers', bg: 'bg-[#F97316]', text: 'text-slate-950' },
-                  { name: 'Daily Goals', bg: 'bg-[#3B82F6]', text: 'text-white' },
-                  { name: 'AI Revision Plan', bg: 'bg-[#14B8A6]', text: 'text-slate-950' },
-                  { name: 'AI Explainer', bg: 'bg-[#A855F7]', text: 'text-white' },
-                  { name: 'Sectional Limits', bg: 'bg-[#EF4444]', text: 'text-white' },
-                  { name: 'Readiness Report', bg: 'bg-[#8B5CF6]', text: 'text-white' },
-                ].map((tag, i) => (
-                  <button 
-                    key={i} 
-                    onClick={() => openExamWorkspace('afcat')}
-                    className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all hover:scale-105 shadow-sm ${tag.bg} ${tag.text}`}
-                  >
-                    ✓ {tag.name}
-                  </button>
-                ))}
-              </div>
-
-              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div className="space-y-1 text-center sm:text-left">
-                  <div className="text-4xl font-black text-[#FAA114] font-display">98.4% READY</div>
-                  <div className="text-xs text-slate-300 font-semibold uppercase tracking-wide">Readiness Assessment Score</div>
-                </div>
-                <div className="flex items-center gap-4 text-xs font-mono text-slate-300">
-                  <span className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/10">8 / 8 Completed</span>
-                  <span className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/10">15 Mocks</span>
-                  <button 
-                    onClick={() => openExamWorkspace('afcat')}
-                    className="px-5 py-2.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition-all"
-                  >
-                    Launch AFCAT Engine →
-                  </button>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </section>
 
         {/* ═══════════ ALL MAJOR INDIAN EXAMINATIONS ═══════════ */}
         <RevealSection>
