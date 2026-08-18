@@ -187,6 +187,8 @@ const examHubDetails: Record<string, {
 
 const features = [
   {
+    id: 'quiz',
+    tabId: 'pdf',
     icon: Sparkles,
     title: 'AI Instant Quiz Engine',
     description: 'Paste any topic, upload a textbook PDF, or drop a YouTube link — generates authentic exam-pattern questions with instant step explanations.',
@@ -194,6 +196,8 @@ const features = [
     color: '#FAA114'
   },
   {
+    id: 'planner',
+    tabId: 'planner',
     icon: Calendar,
     title: 'Adaptive Capacity Planner',
     description: 'Personalized daily study schedules that auto-rebalance when you miss sessions or when your target exam date draws closer.',
@@ -201,6 +205,8 @@ const features = [
     color: '#3B82F6'
   },
   {
+    id: 'revision',
+    tabId: 'revision',
     icon: RotateCcw,
     title: 'FSRS Spaced Repetition',
     description: 'Scientific active recall scheduling based on the Free Spaced Repetition Scheduler algorithm — eliminates forgetfulness forever.',
@@ -208,6 +214,8 @@ const features = [
     color: '#22C55E'
   },
   {
+    id: 'pdf',
+    tabId: 'pdf',
     icon: FileText,
     title: 'Split-Pane Research Hub',
     description: 'Read document PDFs on the left, highlight complex formulas, and chat with your dedicated AI tutor on the right in real time.',
@@ -215,6 +223,8 @@ const features = [
     color: '#A855F7'
   },
   {
+    id: 'analytics',
+    tabId: 'analytics',
     icon: TrendingUp,
     title: 'Concept Mastery Heatmap',
     description: 'Real-time detection of weak topics, predicted percentile calibration, and tailored recommendations that fix knowledge gaps.',
@@ -222,6 +232,8 @@ const features = [
     color: '#F97316'
   },
   {
+    id: 'explorer',
+    tabId: 'explorer',
     icon: Shield,
     title: 'Official CBT Exam Window',
     description: 'Authentic CDAC and NTA exam simulation interface featuring sectional timers, question palettes, and instant post-exam rank reports.',
@@ -800,7 +812,11 @@ export default function WorkspacePage() {
               {features.map((feature, i) => {
                 const Icon = feature.icon;
                 return (
-                  <div key={i} className="light-card light-card-hover p-8 rounded-3xl space-y-5 flex flex-col justify-between group">
+                  <div 
+                    key={i} 
+                    onClick={() => triggerLoadingState(feature.tabId || 'dashboard')}
+                    className="light-card light-card-hover p-8 rounded-3xl space-y-5 flex flex-col justify-between group cursor-pointer"
+                  >
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div 
@@ -824,7 +840,7 @@ export default function WorkspacePage() {
                     </div>
 
                     <div className="pt-4 border-t border-[#E5E2D9] flex items-center gap-2 text-xs font-bold text-[#FAA114]">
-                      <span>Explore Module</span>
+                      <span>Launch {feature.title}</span>
                       <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
@@ -986,10 +1002,10 @@ export default function WorkspacePage() {
                   </div>
 
                   <button 
-                    onClick={() => { setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }}
+                    onClick={() => openAuth('signup')}
                     className="w-full py-4 border border-[#E5E2D9] hover:bg-[#F5F4F0] text-[#1A1D1E] font-bold text-sm rounded-xl transition-all active:scale-[0.98]"
                   >
-                    Current Active Plan
+                    Start Free Plan
                   </button>
                 </div>
 
@@ -1026,10 +1042,10 @@ export default function WorkspacePage() {
                   </div>
 
                   <button 
-                    onClick={() => { alert('Elite Pro checkout simulation successful!'); setIsLoggedIn(true); triggerLoadingState('afcat'); }}
+                    onClick={() => openAuth('signup')}
                     className="w-full py-4 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-sm rounded-xl transition-all active:scale-[0.98] shadow-sm"
                   >
-                    Upgrade Workspace
+                    Get Elite Access →
                   </button>
                 </div>
               </div>

@@ -11,9 +11,7 @@ import {
   FileText, 
   FileCheck, 
   Brain, 
-  BarChart3, 
-  Shield, 
-  Sparkles 
+  BarChart3
 } from 'lucide-react';
 
 export default function AfcatHub() {
@@ -21,70 +19,70 @@ export default function AfcatHub() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fadeInUp">
-      {/* Sub Navigation Bar */}
-      <div className="bg-white p-2 rounded-2xl border border-[#E5E2D9] shadow-sm overflow-x-auto flex items-center gap-2 no-scrollbar">
+      {/* Sub Navigation Bar - Google Colorography */}
+      <div className="bg-white p-2 rounded-2xl border border-[#E8EAED] shadow-sm overflow-x-auto flex items-center gap-2 no-scrollbar">
         <button
           onClick={() => setSubTab('guide')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'guide'
-              ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm'
-              : 'text-[#66625D] hover:text-[#1A1D1E] hover:bg-[#F5F4F0]'
+              ? 'bg-[#4285F4] text-white shadow-md shadow-blue-500/25'
+              : 'text-[#5F6368] hover:text-[#202124] hover:bg-[#F1F3F4]'
           }`}
         >
-          <BookOpen className="w-4 h-4 text-[#1A1D1E]" /> Mentor Guide & Syllabus
+          <BookOpen className="w-4 h-4" /> Mentor Guide & Syllabus
         </button>
 
         <button
           onClick={() => setSubTab('pyq')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'pyq'
-              ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm'
-              : 'text-[#66625D] hover:text-[#1A1D1E] hover:bg-[#F5F4F0]'
+              ? 'bg-[#EA4335] text-white shadow-md shadow-red-500/25'
+              : 'text-[#5F6368] hover:text-[#202124] hover:bg-[#F1F3F4]'
           }`}
         >
-          <FileText className="w-4 h-4 text-blue-600" /> PYQ Vault (PDFs)
+          <FileText className="w-4 h-4" /> PYQ Vault (PDFs)
         </button>
 
         <button
           onClick={() => setSubTab('model')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'model'
-              ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm'
-              : 'text-[#66625D] hover:text-[#1A1D1E] hover:bg-[#F5F4F0]'
+              ? 'bg-[#34A853] text-white shadow-md shadow-green-500/25'
+              : 'text-[#5F6368] hover:text-[#202124] hover:bg-[#F1F3F4]'
           }`}
         >
-          <FileCheck className="w-4 h-4 text-purple-600" /> 15 Model Papers
+          <FileCheck className="w-4 h-4" /> 15 Model Papers
         </button>
 
         <button
           onClick={() => setSubTab('quiz')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'quiz'
-              ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm'
-              : 'text-[#66625D] hover:text-[#1A1D1E] hover:bg-[#F5F4F0]'
+              ? 'bg-[#4285F4] text-white shadow-md shadow-blue-500/25'
+              : 'text-[#5F6368] hover:text-[#202124] hover:bg-[#F1F3F4]'
           }`}
         >
-          <Brain className="w-4 h-4 text-emerald-600" /> Quiz Engine (Full/Subject/Topic)
+          <Brain className="w-4 h-4" /> AI Practice Engine
         </button>
 
         <button
           onClick={() => setSubTab('analytics')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
             subTab === 'analytics'
-              ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm'
-              : 'text-[#66625D] hover:text-[#1A1D1E] hover:bg-[#F5F4F0]'
+              ? 'bg-[#FBBC04] text-[#202124] shadow-md shadow-amber-500/25 font-black'
+              : 'text-[#5F6368] hover:text-[#202124] hover:bg-[#F1F3F4]'
           }`}
         >
-          <BarChart3 className="w-4 h-4 text-indigo-600" /> Candidate Analytics
+          <BarChart3 className="w-4 h-4" /> Candidate Analytics
         </button>
       </div>
 
-      {/* Sub Tab View Render */}
-      <div>
+      {/* Main Tab Render Container */}
+      <div className="bg-white rounded-3xl border border-[#E8EAED] p-6 sm:p-8 shadow-sm">
         {subTab === 'guide' && <AfcatGuide />}
         {subTab === 'pyq' && <AfcatPyqVault />}
-        {subTab === 'model' && <AfcatModelPapers onStartQuiz={() => setSubTab('quiz')} />}
-        {subTab === 'quiz' && <AfcatQuizEngine onCompleteQuiz={() => setSubTab('analytics')} />}
+        {subTab === 'model' && <AfcatModelPapers />}
+        {subTab === 'quiz' && <AfcatQuizEngine />}
         {subTab === 'analytics' && <AfcatAnalytics />}
       </div>
     </div>
