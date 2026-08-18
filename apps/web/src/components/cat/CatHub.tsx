@@ -1,22 +1,29 @@
 'use client';
 
 import React, { useState } from 'react';
-import { CAT_EXAM_PATTERN, CAT_SUBJECTS, CAT_PYQ_PAPERS, CAT_MODEL_PAPERS } from '../../data/catData';
+import { CAT_EXAM_PATTERN, CAT_SUBJECTS, CAT_PYQ_PAPERS, CAT_MODEL_PAPERS, CatModelPaper, CatQuestion } from '../../data/catData';
 import { generateQuestionsForCatPaper } from '../../data/catPaperGenerator';
 import CatExamCbtWindow from './CatExamCbtWindow';
-import { BookOpen, FileText, FileCheck, Shield, Award } from 'lucide-react';
+import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle, ExternalLink } from 'lucide-react';
 
 export default function CatHub() {
-  const [subTab, setSubTab] = useState<'guide' | 'pyq' | 'model'>('guide');
+  const [subTab, setSubTab] = useState<'guide' | 'pyq' | 'model' | 'quiz' | 'analytics'>('guide');
   const [activeCbtPaper, setActiveCbtPaper] = useState<{ title: string; yearOrType: string; questions: any[] } | null>(null);
+  const [activeSolutionModal, setActiveSolutionModal] = useState<{ paper: CatModelPaper; questions: CatQuestion[] } | null>(null);
+  const [pyqMode, setPyqMode] = useState<'full' | 'subject' | 'topic'>('full');
 
   const startCbtPaper = (title: string, yearOrType: string) => {
     const questions = generateQuestionsForCatPaper(`cat_${Date.now()}`, Math.floor(Math.random() * 50));
     setActiveCbtPaper({ title, yearOrType, questions });
   };
 
+  const openSolutionModal = (paper: CatModelPaper) => {
+    const questions = generateQuestionsForCatPaper(paper.id, paper.paperNumber);
+    setActiveSolutionModal({ paper, questions });
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-fadeInUp">
       {activeCbtPaper && (
         <CatExamCbtWindow
           paperTitle={activeCbtPaper.title}
@@ -27,152 +34,290 @@ export default function CatHub() {
       )}
 
       {/* Hero Header */}
-      <div className="bg-gradient-to-r from-purple-950 via-slate-900 to-purple-950 text-white rounded-3xl p-8 border border-purple-600/40 shadow-2xl relative overflow-hidden">
-        <div className="relative z-10 max-w-3xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/40 text-purple-300 rounded-full text-xs font-bold uppercase tracking-widest">
-            <Shield className="w-3.5 h-3.5 text-purple-400" /> IIM CAT Management Engine 2026
-          </div>
-          <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-            Common Admission Test (CAT)
-          </h1>
-          <p className="text-sm text-purple-100/80 leading-relaxed">
-            Master VARC (24 Qs), DILR (20 Qs), and QA (22 Qs) with **40-minute strict sectional timer locking**, TITA questions, and IIM percentile predictor.
-          </p>
+      <div className="dark-container p-8 rounded-3xl space-y-4 relative overflow-hidden shadow-xl">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/40 text-purple-300 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
+          <Shield className="w-3.5 h-3.5 text-purple-400" /> IIM CAT Management Engine 2026
         </div>
+        <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight font-display">
+          Common Admission Test (CAT)
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-3xl">
+          Master VARC (24 Qs), DILR (20 Qs), and QA (22 Qs) with **40-minute strict sectional timer locking**, TITA questions, subject & topic PYQ vaults, 15 full mocks with complete step solutions, and IIM BLACKI call calibration.
+        </p>
       </div>
 
-      {/* Sub Navigation Bar */}
-      <div className="bg-white p-2 rounded-2xl border border-[#e5e2d9] shadow-sm flex items-center gap-2 overflow-x-auto">
+      {/* 5-Pillar Navigation Bar */}
+      <div className="bg-white p-2 rounded-2xl border border-[#E5E2D9] shadow-sm flex items-center gap-2 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setSubTab('guide')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-            subTab === 'guide' ? 'bg-[#262a2b] text-white shadow-sm' : 'text-[#786e67] hover:bg-[#fcfcfb]'
+            subTab === 'guide' ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm' : 'text-[#66625D] hover:bg-[#F5F4F0]'
           }`}
         >
-          <BookOpen className="w-4 h-4 text-[#faa114]" /> CAT Pattern & Guide
+          <BookOpen className="w-4 h-4" /> Mentor Guide & Syllabus
         </button>
 
         <button
           onClick={() => setSubTab('pyq')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-            subTab === 'pyq' ? 'bg-[#262a2b] text-white shadow-sm' : 'text-[#786e67] hover:bg-[#fcfcfb]'
+            subTab === 'pyq' ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm' : 'text-[#66625D] hover:bg-[#F5F4F0]'
           }`}
         >
-          <FileText className="w-4 h-4 text-purple-500" /> PYQ Vault
+          <FileText className="w-4 h-4 text-purple-600" /> PYQ Vault (Full / Subject / Topic)
         </button>
 
         <button
           onClick={() => setSubTab('model')}
           className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-            subTab === 'model' ? 'bg-[#262a2b] text-white shadow-sm' : 'text-[#786e67] hover:bg-[#fcfcfb]'
+            subTab === 'model' ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm' : 'text-[#66625D] hover:bg-[#F5F4F0]'
           }`}
         >
-          <FileCheck className="w-4 h-4 text-purple-500" /> 15 Model Papers (CBT)
+          <FileCheck className="w-4 h-4 text-purple-600" /> 15 Model Papers (CBT & Solutions)
+        </button>
+
+        <button
+          onClick={() => setSubTab('quiz')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
+            subTab === 'quiz' ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm' : 'text-[#66625D] hover:bg-[#F5F4F0]'
+          }`}
+        >
+          <Brain className="w-4 h-4 text-amber-600" /> Dynamic Quiz Engine
+        </button>
+
+        <button
+          onClick={() => setSubTab('analytics')}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
+            subTab === 'analytics' ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm' : 'text-[#66625D] hover:bg-[#F5F4F0]'
+          }`}
+        >
+          <BarChart3 className="w-4 h-4 text-emerald-600" /> IIM Percentile Radar
         </button>
       </div>
 
-      {/* Tab Contents */}
+      {/* Tab Contents: Guide */}
       {subTab === 'guide' && (
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm space-y-4">
-            <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-              <Award className="w-5 h-5 text-purple-600" /> Official IIM CAT 66-Question 198-Mark Pattern
+          <div className="light-card p-6 rounded-3xl space-y-4">
+            <h3 className="font-bold text-lg text-[#1A1D1E] font-display flex items-center gap-2">
+              <Award className="w-5 h-5 text-purple-600" /> Official IIM Pattern (66 Questions / 198 Marks / 120 Mins)
             </h3>
-            <p className="text-xs text-gray-600">3 Sectional Time-Locked Sections (40 mins each: VARC 24 Qs, DILR 20 Qs, QA 22 Qs) • 120 Mins • MCQ (+3/-1) & TITA (+3/0)</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+              <div className="p-4 bg-purple-50 rounded-2xl border border-purple-200">
+                <h4 className="font-bold text-purple-950 text-sm">VARC (72M)</h4>
+                <p className="text-purple-800 mt-1">24 Questions • 40 Mins Lock</p>
+                <p className="text-purple-700 font-bold mt-1">+3 / -1 (MCQ), +3 / 0 (TITA)</p>
+              </div>
+              <div className="p-4 bg-indigo-50 rounded-2xl border border-indigo-200">
+                <h4 className="font-bold text-indigo-950 text-sm">DILR (60M)</h4>
+                <p className="text-indigo-800 mt-1">20 Questions • 40 Mins Lock</p>
+                <p className="text-indigo-700 font-bold mt-1">+3 / -1 (MCQ), +3 / 0 (TITA)</p>
+              </div>
+              <div className="p-4 bg-pink-50 rounded-2xl border border-pink-200">
+                <h4 className="font-bold text-pink-950 text-sm">QA (66M)</h4>
+                <p className="text-pink-800 mt-1">22 Questions • 40 Mins Lock</p>
+                <p className="text-pink-700 font-bold mt-1">+3 / -1 (MCQ), +3 / 0 (TITA)</p>
+              </div>
+            </div>
             <button
               onClick={() => startCbtPaper("IIM CAT Full Mock 2026", "198-Mark Standard Mock")}
-              className="w-full py-3 bg-purple-900 hover:bg-purple-950 text-white rounded-xl font-bold text-xs transition shadow"
+              className="w-full py-3.5 bg-purple-900 hover:bg-purple-950 text-white rounded-xl font-black text-xs shadow-sm transition"
             >
-              Launch Full CAT CBT Window (with Sectional Timer Locks)
+              Launch Full CAT CBT Window (with 40-Min Sectional Locks) →
             </button>
           </div>
 
-          {/* CAT Subject Syllabi & YouTube Playlists */}
-          <div className="space-y-4 pt-2">
-            <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-pink-600" /> Subject Syllabus & Recommended Video Playlists
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {CAT_SUBJECTS.map((subject) => (
-                <div key={subject.id} className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-pink-700 bg-pink-50 px-2.5 py-0.5 rounded border border-pink-200">{subject.name}</span>
-                      <span className="text-xs text-gray-500 font-mono">{subject.totalQs} Qs • {subject.totalMarks}M</span>
-                    </div>
-                    <p className="text-xs text-gray-600 leading-relaxed">{subject.description}</p>
-                    
-                    <div className="space-y-1.5 pt-2">
-                      <div className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">IIM Section Modules:</div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {subject.topics.map(topic => (
-                          <span key={topic.id} className="text-[11px] bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-md text-gray-700 font-medium">
-                            {topic.name}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {CAT_SUBJECTS.map((sub) => (
+              <div key={sub.id} className="light-card p-5 rounded-2xl space-y-3 flex flex-col justify-between">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#1A1D1E]">{sub.name}</span>
+                    <span className="text-[10px] font-mono text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">{sub.totalMarks} Marks</span>
                   </div>
-
-                  {subject.youtubePlaylist && (
-                    <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl p-3.5 space-y-2">
-                      <div>
-                        <div className="text-[10px] font-bold uppercase tracking-wider text-red-600">📺 Curated Video Playlist</div>
-                        <div className="font-bold text-xs text-gray-900 line-clamp-1">{subject.youtubePlaylist.title}</div>
-                        <div className="text-[11px] text-gray-600">{subject.youtubePlaylist.channel} • {subject.youtubePlaylist.videoCount}</div>
-                      </div>
-                      <a
-                        href={subject.youtubePlaylist.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1.5 w-full py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition shadow-sm"
-                      >
-                        Watch Free Playlist ↗
-                      </a>
-                    </div>
-                  )}
+                  <p className="text-xs text-[#66625D]">{sub.description}</p>
                 </div>
-              ))}
-            </div>
+                {sub.youtubePlaylist && (
+                  <a
+                    href={sub.youtubePlaylist.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-center py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-sm"
+                  >
+                    Watch {sub.youtubePlaylist.channel} Playlist →
+                  </a>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       )}
 
+      {/* Tab Contents: PYQ */}
       {subTab === 'pyq' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {CAT_PYQ_PAPERS.map(pyq => (
-            <div key={pyq.id} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex items-center justify-between">
-              <div>
-                <h4 className="font-bold text-sm text-gray-900">{pyq.slot}</h4>
-                <p className="text-xs text-gray-500">{pyq.totalQs} Questions • {pyq.totalMarks} Marks</p>
-              </div>
-              <button
-                onClick={() => startCbtPaper(pyq.slot, `Year ${pyq.year}`)}
-                className="px-4 py-2 bg-purple-900 hover:bg-purple-950 text-white rounded-xl font-bold text-xs transition"
-              >
-                Attempt CBT
-              </button>
+        <div className="space-y-6">
+          <div className="flex items-center gap-2 bg-[#F5F4F0] p-1.5 rounded-2xl w-fit">
+            <button
+              onClick={() => setPyqMode('full')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition ${pyqMode === 'full' ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm' : 'text-[#66625D]'}`}
+            >
+              Full Slot Papers
+            </button>
+            <button
+              onClick={() => setPyqMode('subject')}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition ${pyqMode === 'subject' ? 'bg-[#FAA114] text-[#1A1D1E] shadow-sm' : 'text-[#66625D]'}`}
+            >
+              Subject-wise PYQs
+            </button>
+          </div>
+
+          {pyqMode === 'full' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {CAT_PYQ_PAPERS.map(pyq => (
+                <div key={pyq.id} className="light-card p-5 rounded-2xl flex items-center justify-between">
+                  <div>
+                    <span className="text-[11px] font-mono font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded border border-purple-200">CAT {pyq.year}</span>
+                    <h4 className="font-bold text-sm text-[#1A1D1E] mt-1">{pyq.shift}</h4>
+                    <p className="text-xs text-[#66625D] font-mono">{pyq.totalQs} Questions • {pyq.totalMarks} Marks</p>
+                  </div>
+                  <button
+                    onClick={() => startCbtPaper(pyq.shift, `Year ${pyq.year}`)}
+                    className="px-4 py-2 bg-purple-900 hover:bg-purple-950 text-white rounded-xl font-bold text-xs shadow-sm transition"
+                  >
+                    Attempt CBT
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+
+          {pyqMode === 'subject' && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {CAT_SUBJECTS.map(sub => (
+                <div key={sub.id} className="light-card p-5 rounded-2xl space-y-3">
+                  <h4 className="font-bold text-sm text-[#1A1D1E]">{sub.name}</h4>
+                  <p className="text-xs text-[#66625D]">{sub.topics.length} Core Modules • 180+ PYQs</p>
+                  <button
+                    onClick={() => startCbtPaper(`CAT ${sub.name} PYQs`, "Subject Practice")}
+                    className="w-full py-2 bg-[#1A1D1E] text-white hover:bg-black rounded-xl font-bold text-xs transition"
+                  >
+                    Start Sectional PYQs (22 Qs) →
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
+      {/* Tab Contents: 15 Model Papers with Solutions */}
       {subTab === 'model' && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {CAT_MODEL_PAPERS.map(paper => (
-            <div key={paper.id} className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm flex flex-col justify-between space-y-4">
-              <div>
-                <h4 className="font-bold text-sm text-gray-900">{paper.title}</h4>
-                <p className="text-xs text-gray-500 mt-1">{paper.description}</p>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {CAT_MODEL_PAPERS.map(paper => (
+              <div key={paper.id} className="light-card p-5 rounded-2xl flex flex-col justify-between space-y-4">
+                <div>
+                  <span className="text-[11px] font-mono font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded border border-purple-200">CAT Mock #{paper.paperNumber}</span>
+                  <h4 className="font-bold text-sm text-[#1A1D1E] mt-1">{paper.title}</h4>
+                  <p className="text-xs text-[#66625D] mt-1">{paper.description}</p>
+                </div>
+                <div className="space-y-2 pt-2 border-t border-[#E5E2D9]">
+                  <button
+                    onClick={() => startCbtPaper(paper.title, `Model #${paper.paperNumber}`)}
+                    className="w-full py-2.5 bg-purple-900 hover:bg-purple-950 text-white rounded-xl font-bold text-xs shadow-sm transition flex items-center justify-center gap-1.5"
+                  >
+                    <Play className="w-3.5 h-3.5 fill-current" /> Attempt CBT Window
+                  </button>
+                  <button
+                    onClick={() => openSolutionModal(paper)}
+                    className="w-full py-2 bg-white hover:bg-[#F5F4F0] text-[#1A1D1E] border border-[#E5E2D9] rounded-xl font-bold text-xs transition flex items-center justify-center gap-1.5"
+                  >
+                    <Eye className="w-3.5 h-3.5 text-purple-600" /> View Answer Key & Solutions
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={() => startCbtPaper(paper.title, `Model #${paper.paperNumber}`)}
-                className="w-full py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-xl font-bold text-xs transition"
-              >
-                Attempt CBT Window
-              </button>
+            ))}
+          </div>
+
+          {/* Solution Modal */}
+          {activeSolutionModal && (
+            <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white rounded-3xl max-w-3xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
+                <div className="bg-purple-950 text-white p-5 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-bold text-base">{activeSolutionModal.paper.title} — Solutions</h3>
+                    <p className="text-xs text-purple-200">Detailed Answer Key and Quantitative / DILR Logic Explanations</p>
+                  </div>
+                  <button onClick={() => setActiveSolutionModal(null)} className="p-2 hover:bg-white/10 rounded-full">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                  {activeSolutionModal.questions.slice(0, 30).map((q, idx) => (
+                    <div key={q.id} className="p-4 bg-[#F5F4F0] rounded-2xl space-y-2 border border-[#E5E2D9]">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-bold text-[#1A1D1E]">Q{idx + 1}. {q.topicName} [{q.type} • {q.marks}M]</span>
+                        <span className="text-emerald-600 font-bold">
+                          Ans: {q.type === 'TITA' ? q.correctTitaValue : `Option ${String.fromCharCode(65 + (q.correctOptionIndex || 0))}`}
+                        </span>
+                      </div>
+                      <p className="text-xs text-[#1A1D1E]">{q.questionText}</p>
+                      <p className="text-xs text-[#66625D] bg-white p-2.5 rounded-xl border border-[#E5E2D9]"><strong className="text-[#1A1D1E]">DILR / Quant Solution:</strong> {q.explanation}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
+          )}
+        </div>
+      )}
+
+      {/* Tab Contents: Quiz */}
+      {subTab === 'quiz' && (
+        <div className="light-card p-6 rounded-3xl space-y-6">
+          <h3 className="font-bold text-lg text-[#1A1D1E] font-display flex items-center gap-2">
+            <Brain className="w-5 h-5 text-[#FAA114]" /> CAT Speed & DILR Puzzle Drills
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {CAT_SUBJECTS.map(sub => (
+              <div key={sub.id} className="p-4 bg-white rounded-2xl border border-[#E5E2D9] space-y-2">
+                <h4 className="font-bold text-sm text-[#1A1D1E]">{sub.name} Drill</h4>
+                <p className="text-xs text-[#66625D]">20 Questions • 35 Minutes • Instant Logic Solutions</p>
+                <button
+                  onClick={() => startCbtPaper(`CAT ${sub.name} Speed Drill`, "20-Q Drill")}
+                  className="w-full py-2 bg-purple-900 hover:bg-purple-950 text-white font-bold text-xs rounded-xl transition"
+                >
+                  Start Practice Drill →
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab Contents: Analytics */}
+      {subTab === 'analytics' && (
+        <div className="light-card p-6 rounded-3xl space-y-6">
+          <h3 className="font-bold text-lg text-[#1A1D1E] font-display flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-[#22C55E]" /> IIM Percentile Calibration & BLACKI Call Radar
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div className="p-4 bg-white rounded-2xl border border-[#E5E2D9]">
+              <span className="text-xs text-[#66625D]">Average Score</span>
+              <p className="text-2xl font-black text-[#1A1D1E] mt-1 font-mono">102 / 198</p>
+            </div>
+            <div className="p-4 bg-white rounded-2xl border border-[#E5E2D9]">
+              <span className="text-xs text-[#66625D]">Est. Percentile</span>
+              <p className="text-2xl font-black text-purple-700 mt-1 font-mono">99.42 %ile</p>
+            </div>
+            <div className="p-4 bg-white rounded-2xl border border-[#E5E2D9]">
+              <span className="text-xs text-[#66625D]">IIM A/B/C Call</span>
+              <p className="text-sm font-bold text-emerald-600 mt-2">HIGH PROBABILITY</p>
+            </div>
+            <div className="p-4 bg-white rounded-2xl border border-[#E5E2D9]">
+              <span className="text-xs text-[#66625D]">Sectional Clear</span>
+              <p className="text-sm font-bold text-emerald-600 mt-2">3 / 3 (All &gt;85%ile)</p>
+            </div>
+          </div>
         </div>
       )}
     </div>
