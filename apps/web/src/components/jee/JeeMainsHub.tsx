@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { JEE_MAINS_PATTERN, JEE_SUBJECTS, JEE_MAINS_PYQ_PAPERS, JEE_MAINS_MODEL_PAPERS, JeeMainsModelPaper, JeeQuestion } from '../../data/jeeMainsData';
+import { JEE_MAINS_PATTERN, JEE_SUBJECTS, JEE_MAINS_PYQ_PAPERS, JEE_MAINS_MODEL_PAPERS, JeeModelPaper, JeeQuestion } from '../../data/jeeMainsData';
 import { generateQuestionsForJeeMainsPaper } from '../../data/jeeMainsPaperGenerator';
 import JeeMainsExamCbtWindow from './JeeMainsExamCbtWindow';
-import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle, ExternalLink } from 'lucide-react';
+import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle } from 'lucide-react';
 
 export default function JeeMainsHub() {
   const [subTab, setSubTab] = useState<'guide' | 'pyq' | 'model' | 'quiz' | 'analytics'>('guide');
   const [activeCbtPaper, setActiveCbtPaper] = useState<{ title: string; yearOrType: string; questions: any[] } | null>(null);
-  const [activeSolutionModal, setActiveSolutionModal] = useState<{ paper: JeeMainsModelPaper; questions: JeeQuestion[] } | null>(null);
+  const [activeSolutionModal, setActiveSolutionModal] = useState<{ paper: JeeModelPaper; questions: JeeQuestion[] } | null>(null);
   const [pyqMode, setPyqMode] = useState<'full' | 'subject' | 'topic'>('full');
 
   const startCbtPaper = (title: string, yearOrType: string) => {
@@ -17,7 +17,7 @@ export default function JeeMainsHub() {
     setActiveCbtPaper({ title, yearOrType, questions });
   };
 
-  const openSolutionModal = (paper: JeeMainsModelPaper) => {
+  const openSolutionModal = (paper: JeeModelPaper) => {
     const questions = generateQuestionsForJeeMainsPaper(paper.id, paper.paperNumber);
     setActiveSolutionModal({ paper, questions });
   };
@@ -255,9 +255,9 @@ export default function JeeMainsHub() {
                   {activeSolutionModal.questions.map((q, idx) => (
                     <div key={q.id} className="p-4 bg-[#F5F4F0] rounded-2xl space-y-2 border border-[#E5E2D9]">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-[#1A1D1E]">Q{idx + 1}. {q.topicName} [{q.type} • {q.marks}M]</span>
+                        <span className="font-bold text-[#1A1D1E]">Q{idx + 1}. {q.topicName} [{q.questionType}]</span>
                         <span className="text-emerald-600 font-bold">
-                          Ans: {q.type === 'NAT' ? q.correctNatValue : `Option ${String.fromCharCode(65 + (q.correctOptionIndex || 0))}`}
+                          Ans: {q.questionType === 'NUMERICAL' ? q.correctNumericalValue : `Option ${String.fromCharCode(65 + (q.correctOptionIndex || 0))}`}
                         </span>
                       </div>
                       <p className="text-xs text-[#1A1D1E]">{q.questionText}</p>
@@ -281,7 +281,7 @@ export default function JeeMainsHub() {
             {JEE_SUBJECTS.map(sub => (
               <div key={sub.id} className="p-4 bg-white rounded-2xl border border-[#E5E2D9] space-y-2">
                 <h4 className="font-bold text-sm text-[#1A1D1E]">{sub.name} Drill</h4>
-                <p className="text-xs text-[#66625D]">25 Questions (20 MCQ + 5 NAT) • 45 Mins</p>
+                <p className="text-xs text-[#66625D]">25 Questions (20 MCQ + 5 Numerical) • 45 Mins</p>
                 <button
                   onClick={() => startCbtPaper(`JEE ${sub.name} Speed Drill`, "25-Q Drill")}
                   className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition"

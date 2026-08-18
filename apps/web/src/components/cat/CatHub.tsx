@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { CAT_EXAM_PATTERN, CAT_SUBJECTS, CAT_PYQ_PAPERS, CAT_MODEL_PAPERS, CatModelPaper, CatQuestion } from '../../data/catData';
 import { generateQuestionsForCatPaper } from '../../data/catPaperGenerator';
 import CatExamCbtWindow from './CatExamCbtWindow';
-import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle, ExternalLink } from 'lucide-react';
+import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle } from 'lucide-react';
 
 export default function CatHub() {
   const [subTab, setSubTab] = useState<'guide' | 'pyq' | 'model' | 'quiz' | 'analytics'>('guide');
@@ -176,11 +176,11 @@ export default function CatHub() {
                 <div key={pyq.id} className="light-card p-5 rounded-2xl flex items-center justify-between">
                   <div>
                     <span className="text-[11px] font-mono font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded border border-purple-200">CAT {pyq.year}</span>
-                    <h4 className="font-bold text-sm text-[#1A1D1E] mt-1">{pyq.shift}</h4>
+                    <h4 className="font-bold text-sm text-[#1A1D1E] mt-1">{pyq.slot}</h4>
                     <p className="text-xs text-[#66625D] font-mono">{pyq.totalQs} Questions • {pyq.totalMarks} Marks</p>
                   </div>
                   <button
-                    onClick={() => startCbtPaper(pyq.shift, `Year ${pyq.year}`)}
+                    onClick={() => startCbtPaper(pyq.slot, `Year ${pyq.year}`)}
                     className="px-4 py-2 bg-purple-900 hover:bg-purple-950 text-white rounded-xl font-bold text-xs shadow-sm transition"
                   >
                     Attempt CBT
@@ -255,7 +255,7 @@ export default function CatHub() {
                   {activeSolutionModal.questions.slice(0, 30).map((q, idx) => (
                     <div key={q.id} className="p-4 bg-[#F5F4F0] rounded-2xl space-y-2 border border-[#E5E2D9]">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-[#1A1D1E]">Q{idx + 1}. {q.topicName} [{q.type} • {q.marks}M]</span>
+                        <span className="font-bold text-[#1A1D1E]">Q{idx + 1}. {q.sectionName} [{q.type}]</span>
                         <span className="text-emerald-600 font-bold">
                           Ans: {q.type === 'TITA' ? q.correctTitaValue : `Option ${String.fromCharCode(65 + (q.correctOptionIndex || 0))}`}
                         </span>

@@ -248,7 +248,7 @@ export default function NdaHub() {
                   {activeSolutionModal.questions.slice(0, 30).map((q, idx) => (
                     <div key={q.id} className="p-4 bg-[#F5F4F0] rounded-2xl space-y-2 border border-[#E5E2D9]">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-[#1A1D1E]">Q{idx + 1}. {q.topicName} ({q.marks} Marks)</span>
+                        <span className="font-bold text-[#1A1D1E]">Q{idx + 1}. {q.topicName}</span>
                         <span className="text-emerald-600 font-bold">Ans: Option {String.fromCharCode(65 + q.correctOptionIndex)} ({q.options[q.correctOptionIndex]})</span>
                       </div>
                       <p className="text-xs text-[#1A1D1E]">{q.questionText}</p>

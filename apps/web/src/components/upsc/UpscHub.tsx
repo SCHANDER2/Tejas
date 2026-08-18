@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { UPSC_CSE_PATTERN, UPSC_SUBJECTS, UPSC_PYQ_PAPERS, UPSC_MODEL_PAPERS, UpscModelPaper, UpscQuestion } from '../../data/upscData';
 import { generateQuestionsForUpscPaper } from '../../data/upscPaperGenerator';
 import UpscExamCbtWindow from './UpscExamCbtWindow';
-import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle, ExternalLink } from 'lucide-react';
+import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle } from 'lucide-react';
 
 export default function UpscHub() {
   const [subTab, setSubTab] = useState<'guide' | 'pyq' | 'model' | 'quiz' | 'analytics'>('guide');
@@ -176,11 +176,11 @@ export default function UpscHub() {
                 <div key={pyq.id} className="light-card p-5 rounded-2xl flex items-center justify-between">
                   <div>
                     <span className="text-[11px] font-mono font-bold text-[#C88410] bg-[#FAF3E6] px-2.5 py-0.5 rounded border border-[#E8D5B7]">UPSC {pyq.year}</span>
-                    <h4 className="font-bold text-sm text-[#1A1D1E] mt-1">{pyq.title}</h4>
+                    <h4 className="font-bold text-sm text-[#1A1D1E] mt-1">{pyq.shift}</h4>
                     <p className="text-xs text-[#66625D] font-mono">{pyq.totalQs} Questions • {pyq.totalMarks} Marks</p>
                   </div>
                   <button
-                    onClick={() => startCbtPaper(pyq.title, `Year ${pyq.year}`, pyq.paperType)}
+                    onClick={() => startCbtPaper(pyq.shift, `Year ${pyq.year}`, "GS1")}
                     className="px-4 py-2 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] rounded-xl font-bold text-xs shadow-sm transition"
                   >
                     Attempt CBT

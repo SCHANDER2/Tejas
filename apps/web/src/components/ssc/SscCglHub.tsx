@@ -1,15 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { SSC_CGL_PATTERN, SSC_CGL_SUBJECTS, SSC_PYQ_PAPERS, SSC_MODEL_PAPERS, SscCglModelPaper, SscQuestion } from '../../data/sscCglData';
+import { SSC_CGL_PATTERN, SSC_CGL_SUBJECTS, SSC_PYQ_PAPERS, SSC_MODEL_PAPERS, SscModelPaper, SscQuestion } from '../../data/sscCglData';
 import { generateQuestionsForSscCglPaper } from '../../data/sscCglPaperGenerator';
 import SscCglExamCbtWindow from './SscCglExamCbtWindow';
-import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle, ExternalLink } from 'lucide-react';
+import { BookOpen, FileText, FileCheck, Brain, BarChart3, Shield, Award, Play, Eye, X, HelpCircle } from 'lucide-react';
 
 export default function SscCglHub() {
   const [subTab, setSubTab] = useState<'guide' | 'pyq' | 'model' | 'quiz' | 'analytics'>('guide');
   const [activeCbtPaper, setActiveCbtPaper] = useState<{ title: string; yearOrType: string; questions: any[] } | null>(null);
-  const [activeSolutionModal, setActiveSolutionModal] = useState<{ paper: SscCglModelPaper; questions: SscQuestion[] } | null>(null);
+  const [activeSolutionModal, setActiveSolutionModal] = useState<{ paper: SscModelPaper; questions: SscQuestion[] } | null>(null);
   const [pyqMode, setPyqMode] = useState<'full' | 'subject' | 'topic'>('full');
 
   const startCbtPaper = (title: string, yearOrType: string) => {
@@ -17,7 +17,7 @@ export default function SscCglHub() {
     setActiveCbtPaper({ title, yearOrType, questions });
   };
 
-  const openSolutionModal = (paper: SscCglModelPaper) => {
+  const openSolutionModal = (paper: SscModelPaper) => {
     const questions = generateQuestionsForSscCglPaper(paper.id, paper.paperNumber);
     setActiveSolutionModal({ paper, questions });
   };
