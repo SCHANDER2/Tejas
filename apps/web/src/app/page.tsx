@@ -322,6 +322,9 @@ export default function WorkspacePage() {
       const savedExam = localStorage.getItem('tejas_target_exam');
       if (savedAuth === 'true') {
         setIsLoggedIn(true);
+      } else {
+        // Pop up Registration / Login window at start for new/unauthenticated visitors
+        setShowAuthModal(true);
       }
       if (savedProfile) {
         const parsed = JSON.parse(savedProfile);
@@ -460,18 +463,20 @@ export default function WorkspacePage() {
   };
 
   const openExamWorkspace = (examId: string = 'afcat') => {
-    setIsLoggedIn(true);
-    setProfileOnboardingCompleted(true);
-    setProfileTargetExamId(examId);
-    try {
-      localStorage.setItem('tejas_target_exam', examId);
-    } catch (e) {}
-    const targetMap: Record<string, string> = {
-      jee: 'jee_mains',
-      ssc: 'ssc_cgl',
-    };
-    const finalTab = targetMap[examId] || examId;
-    triggerLoadingState(finalTab);
+    if (isLoggedIn) {
+      setProfileTargetExamId(examId);
+      try {
+        localStorage.setItem('tejas_target_exam', examId);
+      } catch (e) {}
+      const targetMap: Record<string, string> = {
+        jee: 'jee_mains',
+        ssc: 'ssc_cgl',
+      };
+      const finalTab = targetMap[examId] || examId;
+      triggerLoadingState(finalTab);
+    } else {
+      openAuth('signup', examId);
+    }
   };
 
   useEffect(() => {
