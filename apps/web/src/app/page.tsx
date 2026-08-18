@@ -55,6 +55,21 @@ import {
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────────
+   GOOGLE COLOROGRAPHY BRAND EMBLEM
+   ────────────────────────────────────────────────── */
+function Google4ColorDots({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
+  const dotSize = size === 'sm' ? 'w-2 h-2' : size === 'lg' ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5';
+  return (
+    <div className="flex items-center gap-1">
+      <span className={`${dotSize} rounded-full bg-[#4285F4] animate-pulse`}></span>
+      <span className={`${dotSize} rounded-full bg-[#EA4335]`}></span>
+      <span className={`${dotSize} rounded-full bg-[#FBBC04]`}></span>
+      <span className={`${dotSize} rounded-full bg-[#34A853]`}></span>
+    </div>
+  );
+}
+
+/* ──────────────────────────────────────────────────
    SCROLL REVEAL HOOK
    ────────────────────────────────────────────────── */
 function useRevealOnScroll() {
@@ -130,18 +145,18 @@ function AnimatedCounter({ end, suffix = '', label }: { end: number; suffix?: st
 }
 
 /* ──────────────────────────────────────────────────
-   EXAM CARD DATA
+   EXAM CARD DATA (GOOGLE COLOR SYSTEM)
    ────────────────────────────────────────────────── */
 const examCategories = [
-  { id: 'afcat', name: 'AFCAT 2026 (Air Force)', category: 'defence', icon: Shield, candidates: '5L+', color: '#f59e0b', badge: 'AIR FORCE', tag: 'CBT Suite Ready' },
-  { id: 'cds', name: 'CDS (IMA / OTA)', category: 'defence', icon: Shield, candidates: '6L+', color: '#10b981', badge: 'DEFENCE', tag: 'Official CDAC' },
-  { id: 'nda', name: 'NDA & NA (UPSC)', category: 'defence', icon: Shield, candidates: '8L+', color: '#f59e0b', badge: 'UPSC DEFENCE', tag: 'Maths & GAT' },
-  { id: 'jee_mains', name: 'JEE Main & Advanced', category: 'engineering', icon: Zap, candidates: '25L+', color: '#38bdf8', badge: 'IIT / NTA', tag: 'Physics & Chem' },
-  { id: 'neet', name: 'NEET UG Medical', category: 'medical', icon: GraduationCap, candidates: '21L+', color: '#10b981', badge: 'MEDICAL / NTA', tag: 'NCERT Ingestion' },
-  { id: 'upsc', name: 'UPSC CSE (IAS / IPS)', category: 'civil', icon: BookOpen, candidates: '12L+', color: '#a855f7', badge: 'CIVIL SERVICES', tag: 'Prelims + Mains' },
-  { id: 'ssc_cgl', name: 'SSC CGL Tier 1 & 2', category: 'aptitude', icon: Target, candidates: '30L+', color: '#f97316', badge: 'GOVERNMENT', tag: 'Speed Math' },
-  { id: 'gate', name: 'GATE (IISc / IITs)', category: 'engineering', icon: Brain, candidates: '9L+', color: '#6366f1', badge: 'ENGINEERING', tag: 'NAT & MSQ' },
-  { id: 'cat', name: 'CAT (IIMs B-Schools)', category: 'aptitude', icon: BarChart3, candidates: '3.5L+', color: '#ec4899', badge: 'MANAGEMENT', tag: 'DILR & VARC' },
+  { id: 'afcat', name: 'AFCAT 2026 (Air Force)', category: 'defence', icon: Shield, candidates: '5L+', color: '#EA4335', badge: 'AIR FORCE', tag: 'CBT Suite Ready' },
+  { id: 'cds', name: 'CDS (IMA / OTA)', category: 'defence', icon: Shield, candidates: '6L+', color: '#EA4335', badge: 'DEFENCE', tag: 'Official CDAC' },
+  { id: 'nda', name: 'NDA & NA (UPSC)', category: 'defence', icon: Shield, candidates: '8L+', color: '#FBBC04', badge: 'UPSC DEFENCE', tag: 'Maths & GAT' },
+  { id: 'jee_mains', name: 'JEE Main & Advanced', category: 'engineering', icon: Zap, candidates: '25L+', color: '#4285F4', badge: 'IIT / NTA', tag: 'Physics & Chem' },
+  { id: 'neet', name: 'NEET UG Medical', category: 'medical', icon: GraduationCap, candidates: '21L+', color: '#34A853', badge: 'MEDICAL / NTA', tag: 'NCERT Ingestion' },
+  { id: 'upsc', name: 'UPSC CSE (IAS / IPS)', category: 'civil', icon: BookOpen, candidates: '12L+', color: '#EA4335', badge: 'CIVIL SERVICES', tag: 'Prelims + Mains' },
+  { id: 'ssc_cgl', name: 'SSC CGL Tier 1 & 2', category: 'aptitude', icon: Target, candidates: '30L+', color: '#FBBC04', badge: 'GOVERNMENT', tag: 'Speed Math' },
+  { id: 'gate', name: 'GATE (IISc / IITs)', category: 'engineering', icon: Brain, candidates: '9L+', color: '#4285F4', badge: 'ENGINEERING', tag: 'NAT & MSQ' },
+  { id: 'cat', name: 'CAT (IIMs B-Schools)', category: 'aptitude', icon: BarChart3, candidates: '3.5L+', color: '#FBBC04', badge: 'MANAGEMENT', tag: 'DILR & VARC' },
 ];
 
 const examHubDetails: Record<string, {
@@ -160,7 +175,7 @@ const examHubDetails: Record<string, {
     mocks: '15 Mocks',
     features: ['Topic Tests', 'Full Mocks', 'PYQ Papers', 'Daily Goals', 'AI Revision Plan', 'AI Explainer', 'Sectional Limits', 'Readiness Report'],
     emoji: '✈️',
-    color: '#f59e0b'
+    color: '#EA4335'
   },
   cds: {
     badge: '🛡️ CDS PREPARATION HUB',
@@ -169,7 +184,7 @@ const examHubDetails: Record<string, {
     mocks: '12 Mocks',
     features: ['GK Question Bank', 'English Vocab Boosters', 'OTA Mock Tests', 'FSRS Spaced Repetition', 'CDS Performance Ranker'],
     emoji: '🛡️',
-    color: '#10b981'
+    color: '#EA4335'
   },
   nda: {
     badge: '⚔️ NDA & NA PREPARATION PLATFORM',
@@ -178,7 +193,7 @@ const examHubDetails: Record<string, {
     mocks: '10 Mocks',
     features: ['Maths Concepts Explorer', 'GAT Practice Drills', 'Formula Cheatsheets', 'Daily Flashcards', 'Performance Tracker'],
     emoji: '⚔️',
-    color: '#f59e0b'
+    color: '#FBBC04'
   },
   jee_mains: {
     badge: '⚛️ JEE MAIN & ADVANCED CORE ENGINE',
@@ -187,7 +202,7 @@ const examHubDetails: Record<string, {
     mocks: '20 Mocks',
     features: ['Numerical Solvers', 'Mock Test Engine', 'Physics Visualizers', 'IIT Syllabus Mapping', 'Chapter-wise Quizzes'],
     emoji: '⚛️',
-    color: '#38bdf8'
+    color: '#4285F4'
   },
   neet: {
     badge: '🩺 NEET UG MEDICAL CORE ENGINE',
@@ -196,7 +211,7 @@ const examHubDetails: Record<string, {
     mocks: '18 Mocks',
     features: ['NCERT Map Engine', 'Biology Flashcards', 'Chemistry Drills', 'Weak-Topic Focus', 'CBT Test Simulator'],
     emoji: '🩺',
-    color: '#10b981'
+    color: '#34A853'
   },
   upsc: {
     badge: '🏛️ UPSC CIVIL SERVICES EXAM HUB',
@@ -205,7 +220,7 @@ const examHubDetails: Record<string, {
     mocks: '10 Mocks',
     features: ['Polity Timelines', 'Mains Answer Generator', 'CSAT Practice Portal', 'Current Affairs Hub', 'Syllabus Accordion'],
     emoji: '🏛️',
-    color: '#a855f7'
+    color: '#EA4335'
   },
   ssc_cgl: {
     badge: '📋 SSC CGL TIER 1 & 2 ENGINE',
@@ -214,7 +229,7 @@ const examHubDetails: Record<string, {
     mocks: '25 Mocks',
     features: ['Speed Math Drills', 'Reasoning Sprints', 'General Awareness Logs', 'Tier 2 Simulators', 'Syllabus Tracker'],
     emoji: '📋',
-    color: '#f97316'
+    color: '#FBBC04'
   },
   gate: {
     badge: '⚡ GATE ENGINEERING ENGINE',
@@ -223,7 +238,7 @@ const examHubDetails: Record<string, {
     mocks: '15 Mocks',
     features: ['Numerical Answers (NAT)', 'Aptitude Shortcuts', 'Core Topic Workspaces', 'Formula Sheets', 'Dynamic Assessments'],
     emoji: '⚡',
-    color: '#6366f1'
+    color: '#4285F4'
   },
   cat: {
     badge: '📊 CAT MBA ENTRANCE PLATFORM',
@@ -232,52 +247,52 @@ const examHubDetails: Record<string, {
     mocks: '12 Mocks',
     features: ['DILR Caselets', 'QA Speed Booster', 'VARC Comprehensions', 'Percentile Predictor', 'Adaptive Practice Sets'],
     emoji: '📊',
-    color: '#ec4899'
+    color: '#FBBC04'
   }
 };
 
 const features = [
   {
     icon: Sparkles,
-    title: 'AI Instant Quiz Engine',
-    description: 'Paste any topic, upload a textbook PDF, or drop a YouTube link — generates authentic exam-pattern questions with instant step explanations.',
-    tag: 'GENAI ENGINE',
-    color: '#f59e0b'
+    title: 'Google-Grade AI Instant Quiz Engine',
+    description: 'Paste any topic, upload a textbook PDF, or drop a YouTube link — generates authentic exam-pattern questions with step explanations.',
+    tag: 'GOOGLE INTEL ENGINE',
+    color: '#4285F4'
   },
   {
     icon: Calendar,
     title: 'Adaptive Capacity Planner',
     description: 'Personalized daily study schedules that auto-rebalance when you miss sessions or when your target exam date draws closer.',
-    tag: 'DYNAMIC SCHEDULER',
-    color: '#38bdf8'
+    tag: 'SMART SCHEDULER',
+    color: '#34A853'
   },
   {
     icon: RotateCcw,
     title: 'FSRS Spaced Repetition',
     description: 'Scientific active recall scheduling based on the Free Spaced Repetition Scheduler algorithm — eliminates forgetfulness forever.',
     tag: 'RETENTION ALGORITHM',
-    color: '#10b981'
+    color: '#FBBC04'
   },
   {
     icon: FileText,
-    title: 'Split-Pane Research Hub',
+    title: 'Split-Pane Research Workspace',
     description: 'Read document PDFs on the left, highlight complex formulas, and chat with your dedicated AI tutor on the right in real time.',
     tag: 'INTELLIGENT WORKSPACE',
-    color: '#a855f7'
+    color: '#EA4335'
   },
   {
     icon: TrendingUp,
     title: 'Concept Mastery Heatmap',
     description: 'Real-time detection of weak topics, predicted percentile calibration, and tailored recommendations that fix knowledge gaps.',
     tag: 'CALIBRATION RADAR',
-    color: '#f97316'
+    color: '#4285F4'
   },
   {
     icon: Shield,
     title: 'Official CBT Exam Window',
     description: 'Authentic CDAC and NTA exam simulation interface featuring sectional timers, question palettes, and instant post-exam rank reports.',
     tag: 'REAL SIMULATION',
-    color: '#6366f1'
+    color: '#34A853'
   },
 ];
 
@@ -810,59 +825,59 @@ export default function WorkspacePage() {
   });
 
   /* ────────────────────────────────────────
-     LANDING PAGE RENDER
+     LANDING PAGE RENDER (GOOGLE COLOROGRAPHY)
      ──────────────────────────────────────── */
   if (activeTab === 'landing') {
     return (
-      <div className="min-h-screen bg-[#080a0f] text-[#f1f5f9] font-sans selection:bg-amber-500/30 selection:text-amber-200">
+      <div className="min-h-screen bg-[#17181c] text-[#e8eaed] font-sans selection:bg-[#4285F4]/30 selection:text-white">
 
-        {/* ═══════════ STICKY LUXURY NAVIGATION ═══════════ */}
+        {/* ═══════════ STICKY GOOGLE-STYLED NAVIGATION ═══════════ */}
         <header 
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 google-ribbon-border ${
             scrolled 
-              ? 'glass-header py-3.5 shadow-2xl shadow-black/60' 
+              ? 'glass-header py-3.5 shadow-google-elevation-2' 
               : 'bg-transparent py-5'
           }`}
         >
           <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-            {/* Logo */}
+            {/* Logo with Google 4-Color Emblem */}
             <div 
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="flex items-center gap-2 cursor-pointer group"
+              className="flex items-center gap-3 cursor-pointer group"
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-5 h-5 text-slate-950 fill-current" />
+              <div className="w-10 h-10 rounded-2xl bg-[#202125] border border-white/10 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                <Google4ColorDots size="md" />
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2">
                 <span className="text-2xl font-black tracking-tight text-white font-display">
                   Tejas
                 </span>
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30">
-                  v2.4
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#4285F4]/15 text-[#8AB4F8] border border-[#4285F4]/30">
+                  Google OS Edition
                 </span>
               </div>
             </div>
 
             {/* Desktop Nav Links */}
-            <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-400">
-              <a href="#demo" className="hover:text-amber-400 transition-colors">Live Console</a>
-              <a href="#exams" className="hover:text-amber-400 transition-colors">Exam Hubs</a>
-              <a href="#features" className="hover:text-amber-400 transition-colors">AI Capabilities</a>
-              <a href="#testimonials" className="hover:text-amber-400 transition-colors">Success Stories</a>
-              <a href="#pricing" className="hover:text-amber-400 transition-colors">Pricing</a>
+            <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
+              <a href="#demo" className="hover:text-[#4285F4] transition-colors">Live Console</a>
+              <a href="#exams" className="hover:text-[#EA4335] transition-colors">Exam Hubs</a>
+              <a href="#features" className="hover:text-[#FBBC04] transition-colors">AI Engine</a>
+              <a href="#testimonials" className="hover:text-[#34A853] transition-colors">Success Stories</a>
+              <a href="#pricing" className="hover:text-[#8AB4F8] transition-colors">Pricing</a>
             </nav>
 
             {/* Desktop Action Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <button 
                 onClick={() => { setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }}
-                className="px-5 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-all"
+                className="px-5 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-all"
               >
                 Sign In
               </button>
               <button 
                 onClick={() => { setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }}
-                className="group relative px-6 py-2.5 text-sm font-bold bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 rounded-xl hover:from-amber-400 hover:to-yellow-300 transition-all active:scale-95 shadow-glow-amber flex items-center gap-2"
+                className="group relative px-6 py-2.5 text-sm font-bold bg-[#4285F4] text-white rounded-xl hover:bg-[#1A73E8] transition-all active:scale-95 shadow-glow-google-blue flex items-center gap-2"
               >
                 <span>Get Started Free</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -872,7 +887,7 @@ export default function WorkspacePage() {
             {/* Mobile menu toggle */}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-300 hover:text-white rounded-lg bg-white/5"
+              className="md:hidden p-2 text-slate-300 hover:text-white rounded-lg bg-white/10"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -881,58 +896,61 @@ export default function WorkspacePage() {
           {/* Mobile menu overlay */}
           {mobileMenuOpen && (
             <div className="md:hidden glass-panel border-t border-white/10 mx-4 mt-3 rounded-2xl p-6 space-y-4 shadow-2xl animate-fadeInUp">
-              <a href="#demo" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">Live Console</a>
-              <a href="#exams" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">Exam Hubs</a>
-              <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">AI Capabilities</a>
-              <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">Success Stories</a>
-              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-amber-400">Pricing</a>
+              <a href="#demo" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#4285F4]">Live Console</a>
+              <a href="#exams" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#EA4335]">Exam Hubs</a>
+              <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#FBBC04]">AI Engine</a>
+              <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#34A853]">Success Stories</a>
+              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#8AB4F8]">Pricing</a>
               <div className="pt-4 border-t border-white/10 space-y-3">
-                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-semibold text-slate-300 bg-white/5 rounded-xl">Sign In</button>
-                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-bold bg-amber-500 text-slate-950 rounded-xl">Get Started Free</button>
+                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-semibold text-slate-300 bg-white/10 rounded-xl">Sign In</button>
+                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-bold bg-[#4285F4] text-white rounded-xl">Get Started Free</button>
               </div>
             </div>
           )}
         </header>
 
-        {/* ═══════════ HERO SECTION (COSMIC OBSIDIAN & AMBIENT GLOW) ═══════════ */}
+        {/* ═══════════ HERO SECTION (GOOGLE COLOROGRAPHY & MATERIAL MESH) ═══════════ */}
         <section className="ambient-mesh relative pt-32 md:pt-44 pb-20 md:pb-28 px-6 md:px-12 overflow-hidden">
-          {/* Subtle Background Grid & Glow Orbs */}
+          {/* Background Grid & 4-Color Glow Orbs */}
           <div className="absolute inset-0 grid-pattern opacity-40 pointer-events-none"></div>
-          <div className="absolute top-24 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-amber-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-          <div className="absolute top-80 right-[15%] w-72 h-72 bg-sky-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+          <div className="absolute top-24 left-1/4 -translate-x-1/2 w-[450px] h-[300px] bg-[#4285F4]/15 rounded-full blur-[120px] pointer-events-none"></div>
+          <div className="absolute top-40 right-1/4 w-[400px] h-[300px] bg-[#EA4335]/12 rounded-full blur-[110px] pointer-events-none"></div>
+          <div className="absolute top-96 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-[#FBBC04]/10 rounded-full blur-[130px] pointer-events-none"></div>
 
           <div className="max-w-5xl mx-auto text-center relative z-10">
             {/* Top Announcement Badge */}
-            <div className="animate-fadeInUp inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 mb-8 shadow-sm backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-              <span className="text-xs font-bold tracking-wide uppercase font-mono">✦ NEXT-GEN AI STUDY OPERATING SYSTEM</span>
-              <ChevronRight className="w-3.5 h-3.5 opacity-60" />
+            <div className="animate-fadeInUp inline-flex items-center gap-3 px-4 py-2 rounded-full bg-[#202125] border border-white/15 text-white mb-8 shadow-google-elevation-1 backdrop-blur-md">
+              <Google4ColorDots size="sm" />
+              <span className="text-xs font-bold tracking-wider uppercase font-mono text-[#8AB4F8]">✦ GOOGLE COLOROGRAPHY EDITION</span>
+              <ChevronRight className="w-3.5 h-3.5 opacity-60 text-[#4285F4]" />
             </div>
 
             {/* Main Headline */}
             <h1 className="animate-fadeInUp delay-100 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.04] mb-6 font-display text-white">
               Master Any Exam.<br />
-              <span className="text-gradient-amber drop-shadow-[0_0_35px_rgba(245,158,11,0.25)]">
+              <span className="text-gradient-google drop-shadow-[0_0_35px_rgba(66,133,244,0.3)]">
                 Faster. Smarter. Guaranteed.
               </span>
             </h1>
 
             {/* Subheading */}
             <p className="animate-fadeInUp delay-200 text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
-              Unifying 120+ Indian competitive examinations, university curriculums, and document intelligence into one cohesive, AI-personalized operating system for 500M learners.
+              Unifying 120+ Indian competitive examinations, university curriculums, and document intelligence into one cohesive, AI-personalized operating system.
             </p>
 
             {/* Interactive Prompt / Quick Trigger Bar */}
             <div className="animate-fadeInUp delay-300 max-w-2xl mx-auto mb-10">
-              <div className="glass-panel p-2 rounded-2xl flex flex-col sm:flex-row items-center gap-2 border-white/15 focus-within:border-amber-500/50 shadow-2xl transition-all">
-                <div className="flex items-center gap-2.5 px-3 flex-1 w-full">
-                  <Sparkles className="w-5 h-5 text-amber-400 shrink-0" />
+              <div className="glass-panel p-2 rounded-2xl flex flex-col sm:flex-row items-center gap-2 border-white/20 focus-within:border-[#4285F4] shadow-google-elevation-2 transition-all">
+                <div className="flex items-center gap-3 px-3 flex-1 w-full">
+                  <div className="w-6 h-6 rounded-lg bg-[#4285F4]/20 flex items-center justify-center">
+                    <Sparkles className="w-4 h-4 text-[#8AB4F8]" />
+                  </div>
                   <input 
                     type="text"
                     value={heroPromptInput}
                     onChange={(e) => setHeroPromptInput(e.target.value)}
-                    placeholder="Try: Generate a 10-question test on AFCAT Reasoning or UPSC Polity..."
-                    className="w-full bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none py-2"
+                    placeholder="Try: Test me on AFCAT Reasoning or UPSC Polity..."
+                    className="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none py-2"
                   />
                 </div>
                 <button 
@@ -941,9 +959,9 @@ export default function WorkspacePage() {
                     el?.scrollIntoView({ behavior: 'smooth' });
                     setHeroConsoleTab('quiz');
                   }}
-                  className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-extrabold text-xs tracking-wider rounded-xl transition-all active:scale-95 shadow-glow-amber whitespace-nowrap"
+                  className="w-full sm:w-auto px-6 py-3 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-extrabold text-xs tracking-wider rounded-xl transition-all active:scale-95 shadow-glow-google-blue whitespace-nowrap"
                 >
-                  ⚡ Try AI Quiz
+                  ⚡ Launch AI Quiz
                 </button>
               </div>
             </div>
@@ -956,7 +974,7 @@ export default function WorkspacePage() {
                   resetAuthState();
                   triggerLoadingState('auth');
                 }}
-                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black rounded-2xl flex items-center justify-center gap-3 shadow-glow-amber transition-all active:scale-[0.98] text-base"
+                className="w-full sm:w-auto px-8 py-4 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-black rounded-2xl flex items-center justify-center gap-3 shadow-glow-google-blue transition-all active:scale-[0.98] text-base"
               >
                 Launch Free Workspace
                 <ArrowRight className="w-5 h-5" />
@@ -966,74 +984,75 @@ export default function WorkspacePage() {
                   const el = document.getElementById('demo');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="w-full sm:w-auto px-8 py-4 glass-panel hover:bg-white/10 text-white font-bold rounded-2xl flex items-center justify-center gap-2.5 transition-all text-base border-white/15"
+                className="w-full sm:w-auto px-8 py-4 glass-panel hover:bg-white/10 text-white font-bold rounded-2xl flex items-center justify-center gap-2.5 transition-all text-base border-white/20"
               >
-                <Play className="w-4 h-4 text-amber-400 fill-amber-400" />
-                Live Interactive Demo
+                <Play className="w-4 h-4 text-[#8AB4F8] fill-[#8AB4F8]" />
+                Live Interactive Console
               </button>
             </div>
 
             {/* Trust Metrics Bar */}
-            <div className="animate-fadeInUp delay-500 mt-16 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 text-slate-400">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-extrabold text-white font-display">50,000+</div>
-                <div className="text-xs text-slate-400 mt-1">Active Aspirants</div>
+            <div className="animate-fadeInUp delay-500 mt-16 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 text-slate-300">
+              <div className="text-center p-3 rounded-2xl bg-white/5 border border-white/5">
+                <div className="text-2xl md:text-3xl font-extrabold text-[#8AB4F8] font-display">50,000+</div>
+                <div className="text-xs text-slate-400 mt-1 font-semibold">Active Aspirants</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-extrabold text-amber-400 font-display">120+</div>
-                <div className="text-xs text-slate-400 mt-1">Exams Supported</div>
+              <div className="text-center p-3 rounded-2xl bg-white/5 border border-white/5">
+                <div className="text-2xl md:text-3xl font-extrabold text-[#F28B82] font-display">120+</div>
+                <div className="text-xs text-slate-400 mt-1 font-semibold">Exams Supported</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-extrabold text-white font-display">2.4M+</div>
-                <div className="text-xs text-slate-400 mt-1">Quizzes Completed</div>
+              <div className="text-center p-3 rounded-2xl bg-white/5 border border-white/5">
+                <div className="text-2xl md:text-3xl font-extrabold text-[#FDD663] font-display">2.4M+</div>
+                <div className="text-xs text-slate-400 mt-1 font-semibold">Quizzes Completed</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-extrabold text-emerald-400 font-display">98.4%</div>
-                <div className="text-xs text-slate-400 mt-1">Score Calibration</div>
+              <div className="text-center p-3 rounded-2xl bg-white/5 border border-white/5">
+                <div className="text-2xl md:text-3xl font-extrabold text-[#81C995] font-display">98.4%</div>
+                <div className="text-xs text-slate-400 mt-1 font-semibold">Score Calibration</div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ═══════════ LIVE INTERACTIVE CONSOLE DEMO (COOL & SMOOTH!) ═══════════ */}
+        {/* ═══════════ LIVE INTERACTIVE CONSOLE DEMO (GOOGLE MATERIAL 3) ═══════════ */}
         <section id="demo" className="px-6 md:px-12 py-16 md:py-24 relative">
           <div className="max-w-6xl mx-auto space-y-8">
             
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 text-xs font-bold uppercase tracking-wider font-mono">
-                ✦ LIVE INTERACTIVE EXPERIENCE
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4285F4]/15 border border-[#4285F4]/30 text-[#8AB4F8] text-xs font-bold uppercase tracking-wider font-mono">
+                <Google4ColorDots size="sm" />
+                <span>LIVE INTERACTIVE CONSOLE</span>
               </div>
               <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
                 Try The Tejas Engine Right Now
               </h2>
-              <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+              <p className="text-slate-300 text-sm md:text-base max-w-xl mx-auto">
                 No sign-up required to test our core capabilities. Switch between tools below to experience real-time AI learning.
               </p>
             </div>
 
             {/* Console Frame */}
-            <div className="glass-panel rounded-3xl border border-white/15 p-3 md:p-6 shadow-2xl shadow-black/80">
+            <div className="glass-panel rounded-3xl border border-white/15 p-3 md:p-6 shadow-google-elevation-3 google-ribbon-border">
               
-              {/* Console Tabs */}
+              {/* Console Tabs in Google 4 Colors */}
               <div className="flex items-center gap-2 overflow-x-auto pb-3 border-b border-white/10 no-scrollbar">
                 {[
-                  { id: 'cbt', label: '🎯 CBT Exam Console', desc: 'Simulate Live Test' },
-                  { id: 'quiz', label: '⚡ Instant AI Quiz', desc: 'Active Questioning' },
-                  { id: 'planner', label: '📅 Adaptive Planner', desc: 'Capacity Rebalance' },
-                  { id: 'fsrs', label: '🧠 Spaced Recall (FSRS)', desc: 'Ebbinghaus Decay' },
-                  { id: 'mastery', label: '📊 Concept Mastery Radar', desc: 'Readiness Heatmap' },
+                  { id: 'cbt', label: '🎯 CBT Exam Console', desc: 'Simulate Live Test', activeColor: 'bg-[#4285F4] text-white shadow-glow-google-blue' },
+                  { id: 'quiz', label: '⚡ Instant AI Quiz', desc: 'Active Questioning', activeColor: 'bg-[#FBBC04] text-slate-950 shadow-glow-google-yellow' },
+                  { id: 'planner', label: '📅 Adaptive Planner', desc: 'Capacity Rebalance', activeColor: 'bg-[#34A853] text-white shadow-glow-google-green' },
+                  { id: 'fsrs', label: '🧠 Spaced Recall (FSRS)', desc: 'Ebbinghaus Decay', activeColor: 'bg-[#EA4335] text-white shadow-glow-google-red' },
+                  { id: 'mastery', label: '📊 Concept Mastery Radar', desc: 'Readiness Heatmap', activeColor: 'bg-[#4285F4] text-white shadow-glow-google-blue' },
                 ].map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setHeroConsoleTab(tab.id as any)}
                     className={`px-4 py-3 rounded-2xl text-xs font-bold transition-all duration-200 whitespace-nowrap shrink-0 flex flex-col items-start gap-0.5 ${
                       heroConsoleTab === tab.id
-                        ? 'bg-amber-500 text-slate-950 shadow-glow-amber scale-[1.02]'
+                        ? `${tab.activeColor} scale-[1.02]`
                         : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white'
                     }`}
                   >
                     <span>{tab.label}</span>
-                    <span className={`text-[10px] font-normal ${heroConsoleTab === tab.id ? 'text-slate-900 font-semibold' : 'text-slate-500'}`}>
+                    <span className={`text-[10px] font-normal ${heroConsoleTab === tab.id ? 'text-white/90 font-semibold' : 'text-slate-400'}`}>
                       {tab.desc}
                     </span>
                   </button>
@@ -1041,26 +1060,24 @@ export default function WorkspacePage() {
               </div>
 
               {/* Console Screen Content */}
-              <div className="mt-6 bg-[#0c1018] border border-white/10 rounded-2xl p-6 md:p-8 min-h-[420px] flex flex-col justify-between">
+              <div className="mt-6 bg-[#1a1b1f] border border-white/10 rounded-2xl p-6 md:p-8 min-h-[420px] flex flex-col justify-between">
 
                 {/* TAB 1: CBT EXAM CONSOLE */}
                 {heroConsoleTab === 'cbt' && (
                   <div className="space-y-6 animate-fadeInUp">
-                    {/* Header bar */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/10">
                       <div>
-                        <div className="text-xs font-mono text-amber-400 font-bold uppercase tracking-wider">AFCAT 2026 OFFICIAL CBT SIMULATOR</div>
+                        <div className="text-xs font-mono text-[#8AB4F8] font-bold uppercase tracking-wider">AFCAT 2026 OFFICIAL CBT SIMULATOR</div>
                         <h3 className="text-xl font-bold text-white font-display mt-0.5">Section: Reasoning & Military Aptitude Test</h3>
                       </div>
                       <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 font-mono text-xs font-bold">
+                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#EA4335]/15 border border-[#EA4335]/30 text-[#F28B82] font-mono text-xs font-bold">
                           <Clock className="w-3.5 h-3.5 animate-pulse" /> 01:58:42 REMAINING
                         </div>
                         <span className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-300">+3.0 / -1.0</span>
                       </div>
                     </div>
 
-                    {/* Question body */}
                     <div className="space-y-4">
                       <div className="text-xs text-slate-400 font-mono">Question 1 of 100 • Multiple Choice Question</div>
                       <p className="text-base text-slate-100 font-medium leading-relaxed">
@@ -1079,12 +1096,12 @@ export default function WorkspacePage() {
                             onClick={() => setHeroQuizOption(opt.key)}
                             className={`p-4 rounded-xl border text-left text-sm font-semibold transition-all flex items-center gap-3 ${
                               heroQuizOption === opt.key
-                                ? 'bg-amber-500/20 border-amber-400 text-amber-200'
+                                ? 'bg-[#4285F4]/20 border-[#4285F4] text-[#8AB4F8]'
                                 : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30'
                             }`}
                           >
                             <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold ${
-                              heroQuizOption === opt.key ? 'bg-amber-400 text-slate-950' : 'bg-white/10 text-slate-300'
+                              heroQuizOption === opt.key ? 'bg-[#4285F4] text-white' : 'bg-white/10 text-slate-300'
                             }`}>
                               {opt.key}
                             </span>
@@ -1094,20 +1111,17 @@ export default function WorkspacePage() {
                       </div>
                     </div>
 
-                    {/* Footer Controls */}
                     <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
                       <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> 1 Answered
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#34A853]"></span> 1 Answered
                         <span className="w-2.5 h-2.5 rounded-full bg-slate-600 ml-2"></span> 99 Unanswered
                       </div>
-                      <div className="flex items-center gap-3">
-                        <button 
-                          onClick={() => openExamWorkspace('afcat')}
-                          className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold text-xs rounded-xl shadow-glow-amber transition-all"
-                        >
-                          Launch Full 100-Q CBT Engine →
-                        </button>
-                      </div>
+                      <button 
+                        onClick={() => openExamWorkspace('afcat')}
+                        className="px-5 py-2.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-extrabold text-xs rounded-xl shadow-glow-google-blue transition-all"
+                      >
+                        Launch Full 100-Q CBT Engine →
+                      </button>
                     </div>
                   </div>
                 )}
@@ -1117,10 +1131,10 @@ export default function WorkspacePage() {
                   <div className="space-y-6 animate-fadeInUp">
                     <div className="flex justify-between items-center pb-4 border-b border-white/10">
                       <div>
-                        <span className="text-xs font-mono text-sky-400 font-bold uppercase">UPSC CSE • INDIAN POLITY & CONSTITUTION</span>
+                        <span className="text-xs font-mono text-[#FDD663] font-bold uppercase">UPSC CSE • INDIAN POLITY & CONSTITUTION</span>
                         <h3 className="text-lg font-bold text-white font-display">Article 32 & Constitutional Remedies</h3>
                       </div>
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-300 border border-sky-500/30 font-bold">
+                      <span className="text-xs px-2.5 py-1 rounded-full bg-[#FBBC04]/20 text-[#FDD663] border border-[#FBBC04]/40 font-bold">
                         AI Generated
                       </span>
                     </div>
@@ -1145,12 +1159,12 @@ export default function WorkspacePage() {
                             className={`p-4 rounded-xl border text-left text-sm font-semibold transition-all flex items-center justify-between ${
                               heroQuizSubmitted
                                 ? opt.correct
-                                  ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200'
+                                  ? 'bg-[#34A853]/20 border-[#34A853] text-[#81C995]'
                                   : heroQuizOption === opt.key
-                                  ? 'bg-red-500/20 border-red-400 text-red-200'
+                                  ? 'bg-[#EA4335]/20 border-[#EA4335] text-[#F28B82]'
                                   : 'bg-white/5 border-white/10 text-slate-500'
                                 : heroQuizOption === opt.key
-                                ? 'bg-amber-500/20 border-amber-400 text-amber-200'
+                                ? 'bg-[#FBBC04]/20 border-[#FBBC04] text-[#FDD663]'
                                 : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30'
                             }`}
                           >
@@ -1158,15 +1172,15 @@ export default function WorkspacePage() {
                               <span className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-xs font-bold">{opt.key}</span>
                               <span>{opt.text}</span>
                             </div>
-                            {heroQuizSubmitted && opt.correct && <Check className="w-5 h-5 text-emerald-400" />}
+                            {heroQuizSubmitted && opt.correct && <Check className="w-5 h-5 text-[#34A853]" />}
                           </button>
                         ))}
                       </div>
 
                       {heroQuizSubmitted && (
                         <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 animate-fadeInUp">
-                          <div className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
-                            <Sparkles className="w-4 h-4" /> AI Explanation
+                          <div className="text-xs font-bold text-[#FDD663] flex items-center gap-1.5">
+                            <Sparkles className="w-4 h-4 text-[#FBBC04]" /> AI Explanation
                           </div>
                           <p className="text-xs text-slate-300 leading-relaxed">
                             <strong>Habeas Corpus</strong> (literally &quot;to have the body of&quot;) can be issued against both public authorities and private individuals who have unlawfully detained a person. Mandamus and Certiorari only apply to public officials and judicial bodies.
@@ -1187,7 +1201,7 @@ export default function WorkspacePage() {
                       </button>
                       <button 
                         onClick={() => openExamWorkspace('upsc')}
-                        className="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber hover:bg-amber-400 transition-all"
+                        className="px-4 py-2 bg-[#4285F4] text-white font-bold text-xs rounded-xl shadow-glow-google-blue hover:bg-[#1A73E8] transition-all"
                       >
                         Generate More Quizzes →
                       </button>
@@ -1200,10 +1214,10 @@ export default function WorkspacePage() {
                   <div className="space-y-6 animate-fadeInUp">
                     <div className="flex justify-between items-center pb-4 border-b border-white/10">
                       <div>
-                        <span className="text-xs font-mono text-amber-400 font-bold uppercase">DYNAMIC ROADMAP SCHEDULER</span>
+                        <span className="text-xs font-mono text-[#81C995] font-bold uppercase">DYNAMIC ROADMAP SCHEDULER</span>
                         <h3 className="text-lg font-bold text-white font-display">Set Daily Time Budget: {heroPlannerHours} Hours</h3>
                       </div>
-                      <div className="text-xs text-emerald-400 font-mono font-bold bg-emerald-500/10 px-3 py-1 rounded-lg border border-emerald-500/30">
+                      <div className="text-xs text-[#81C995] font-mono font-bold bg-[#34A853]/15 px-3 py-1 rounded-lg border border-[#34A853]/30">
                         100% Syllabus Coverage in 90 Days
                       </div>
                     </div>
@@ -1215,7 +1229,7 @@ export default function WorkspacePage() {
                         max="8" 
                         value={heroPlannerHours}
                         onChange={(e) => setHeroPlannerHours(parseInt(e.target.value, 10))}
-                        className="w-full accent-amber-500 h-2 bg-white/10 rounded-lg cursor-pointer"
+                        className="w-full accent-[#34A853] h-2 bg-white/10 rounded-lg cursor-pointer"
                       />
                       <div className="flex justify-between text-xs text-slate-400 font-mono">
                         <span>2 Hours/Day (Working Professional)</span>
@@ -1223,12 +1237,11 @@ export default function WorkspacePage() {
                         <span>8 Hours/Day (Dropper/Full-Time)</span>
                       </div>
 
-                      {/* Weekly calendar preview */}
                       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 pt-2">
                         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => (
                           <div key={day} className="p-3 bg-white/5 border border-white/10 rounded-xl space-y-2">
                             <div className="text-xs font-mono font-bold text-slate-300">{day}</div>
-                            <div className="p-2 rounded-lg bg-amber-500/15 border border-amber-500/30 text-[10px] font-bold text-amber-300">
+                            <div className="p-2 rounded-lg bg-[#34A853]/20 border border-[#34A853]/40 text-[10px] font-bold text-[#81C995]">
                               {i % 2 === 0 ? 'Polity & GK' : 'Maths & Speed'}
                             </div>
                             <div className="text-[10px] text-slate-400 font-mono">{heroPlannerHours}h Target</div>
@@ -1240,7 +1253,7 @@ export default function WorkspacePage() {
                     <div className="flex justify-end pt-2">
                       <button 
                         onClick={() => openExamWorkspace('afcat')}
-                        className="px-5 py-2.5 bg-amber-500 text-slate-950 font-extrabold text-xs rounded-xl shadow-glow-amber hover:bg-amber-400 transition-all"
+                        className="px-5 py-2.5 bg-[#34A853] text-white font-extrabold text-xs rounded-xl shadow-glow-google-green hover:bg-[#188038] transition-all"
                       >
                         Adopt Personalized Schedule →
                       </button>
@@ -1253,19 +1266,19 @@ export default function WorkspacePage() {
                   <div className="space-y-6 animate-fadeInUp">
                     <div className="flex justify-between items-center pb-4 border-b border-white/10">
                       <div>
-                        <span className="text-xs font-mono text-emerald-400 font-bold uppercase">SCIENTIFIC MEMORY ENGINE (FSRS)</span>
+                        <span className="text-xs font-mono text-[#F28B82] font-bold uppercase">SCIENTIFIC MEMORY ENGINE (FSRS)</span>
                         <h3 className="text-lg font-bold text-white font-display">Active Recall Flashcard Deck</h3>
                       </div>
-                      <span className="text-xs font-mono px-3 py-1 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 rounded-lg">
+                      <span className="text-xs font-mono px-3 py-1 bg-[#EA4335]/15 text-[#F28B82] border border-[#EA4335]/30 rounded-lg">
                         14 Cards Due Today
                       </span>
                     </div>
 
                     <div 
                       onClick={() => setHeroFlashcardFlipped(!heroFlashcardFlipped)}
-                      className="p-8 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/15 cursor-pointer hover:border-amber-400/50 transition-all min-h-[180px] flex flex-col justify-center text-center space-y-3 relative group"
+                      className="p-8 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/15 cursor-pointer hover:border-[#EA4335]/50 transition-all min-h-[180px] flex flex-col justify-center text-center space-y-3 relative group"
                     >
-                      <div className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">
+                      <div className="text-xs font-mono font-bold text-[#F28B82] uppercase tracking-wider">
                         {heroFlashcardFlipped ? '✦ REVEALED ANSWER' : '✦ CLICK TO FLIP / TEST RECALL'}
                       </div>
                       <p className="text-base sm:text-lg font-semibold text-white">
@@ -1278,10 +1291,10 @@ export default function WorkspacePage() {
 
                     <div className="grid grid-cols-4 gap-2 pt-2">
                       {[
-                        { label: 'Again (<1m)', color: 'bg-rose-500/20 text-rose-300 border-rose-500/30' },
-                        { label: 'Hard (12h)', color: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
-                        { label: 'Good (3d)', color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
-                        { label: 'Easy (7d)', color: 'bg-sky-500/20 text-sky-300 border-sky-500/30' },
+                        { label: 'Again (<1m)', color: 'bg-[#EA4335]/20 text-[#F28B82] border-[#EA4335]/30' },
+                        { label: 'Hard (12h)', color: 'bg-[#FBBC04]/20 text-[#FDD663] border-[#FBBC04]/30' },
+                        { label: 'Good (3d)', color: 'bg-[#34A853]/20 text-[#81C995] border-[#34A853]/30' },
+                        { label: 'Easy (7d)', color: 'bg-[#4285F4]/20 text-[#8AB4F8] border-[#4285F4]/30' },
                       ].map((btn, i) => (
                         <button
                           key={i}
@@ -1300,20 +1313,20 @@ export default function WorkspacePage() {
                   <div className="space-y-6 animate-fadeInUp">
                     <div className="flex justify-between items-center pb-4 border-b border-white/10">
                       <div>
-                        <span className="text-xs font-mono text-purple-400 font-bold uppercase">SYLLABUS MASTERY RADAR</span>
+                        <span className="text-xs font-mono text-[#8AB4F8] font-bold uppercase">SYLLABUS MASTERY RADAR</span>
                         <h3 className="text-lg font-bold text-white font-display">Predicted Score: 184 / 300 (Cutoff: 155+)</h3>
                       </div>
-                      <span className="text-xs font-bold px-3 py-1 bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-lg">
+                      <span className="text-xs font-bold px-3 py-1 bg-[#4285F4]/20 text-[#8AB4F8] border border-[#4285F4]/30 rounded-lg">
                         98.6% Predicted Cutoff Clearance
                       </span>
                     </div>
 
                     <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
                       {[
-                        { topic: 'Reasoning Logic', score: 94, status: 'Mastered', color: 'text-emerald-400', bar: 'bg-emerald-500' },
-                        { topic: 'Numerical Ability', score: 78, status: 'Strong', color: 'text-amber-400', bar: 'bg-amber-500' },
-                        { topic: 'English Comprehension', score: 88, status: 'Mastered', color: 'text-emerald-400', bar: 'bg-emerald-500' },
-                        { topic: 'Current Affairs & Defense', score: 62, status: 'Needs Practice', color: 'text-rose-400', bar: 'bg-rose-500' },
+                        { topic: 'Reasoning Logic', score: 94, status: 'Mastered', color: 'text-[#81C995]', bar: 'bg-[#34A853]' },
+                        { topic: 'Numerical Ability', score: 78, status: 'Strong', color: 'text-[#FDD663]', bar: 'bg-[#FBBC04]' },
+                        { topic: 'English Comprehension', score: 88, status: 'Mastered', color: 'text-[#81C995]', bar: 'bg-[#34A853]' },
+                        { topic: 'Current Affairs & Defense', score: 62, status: 'Needs Practice', color: 'text-[#F28B82]', bar: 'bg-[#EA4335]' },
                       ].map((item, i) => (
                         <div key={i} className="p-4 bg-white/5 border border-white/10 rounded-2xl space-y-2">
                           <div className="text-xs font-semibold text-slate-300">{item.topic}</div>
@@ -1328,16 +1341,16 @@ export default function WorkspacePage() {
                       ))}
                     </div>
 
-                    <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div className="p-4 rounded-2xl bg-[#4285F4]/10 border border-[#4285F4]/30 flex flex-col sm:flex-row justify-between items-center gap-4">
                       <div className="space-y-1">
-                        <div className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
-                          <Flame className="w-4 h-4" /> AI Recommendation for Today
+                        <div className="text-xs font-bold text-[#8AB4F8] flex items-center gap-2">
+                          <Google4ColorDots size="sm" /> AI Recommendation for Today
                         </div>
                         <p className="text-xs text-slate-300">Attempt 15 questions on Indian Air Force Commands & Joint Military Exercises to boost Defense GK by +12 Marks.</p>
                       </div>
                       <button 
                         onClick={() => openExamWorkspace('afcat')}
-                        className="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber whitespace-nowrap"
+                        className="px-4 py-2 bg-[#4285F4] text-white font-bold text-xs rounded-xl shadow-glow-google-blue whitespace-nowrap"
                       >
                         Start Targeted Drill →
                       </button>
@@ -1351,25 +1364,25 @@ export default function WorkspacePage() {
           </div>
         </section>
 
-        {/* ═══════════ ALL MAJOR INDIAN EXAMINATIONS (CATEGORY FILTER & SUITES) ═══════════ */}
+        {/* ═══════════ ALL MAJOR INDIAN EXAMINATIONS (GOOGLE COLOR MATRIX) ═══════════ */}
         <RevealSection>
-          <section id="exams" className="px-6 md:px-12 py-20 relative bg-[#090d14] border-y border-white/10">
+          <section id="exams" className="px-6 md:px-12 py-20 relative bg-[#1c1d22] border-y border-white/10">
             <div className="max-w-7xl mx-auto space-y-12">
               
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-3">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider font-mono">
-                    ✦ FULL EXAMINATION COVERAGE
+                  <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#EA4335]/15 border border-[#EA4335]/30 text-[#F28B82] text-xs font-bold uppercase tracking-wider font-mono">
+                    <Shield className="w-3.5 h-3.5 text-[#EA4335]" />
+                    <span>FULL EXAMINATION SUITES</span>
                   </div>
                   <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
                     All Major Indian Examinations
                   </h2>
-                  <p className="text-slate-400 text-sm md:text-base max-w-xl">
+                  <p className="text-slate-300 text-sm md:text-base max-w-xl">
                     Dedicated CBT environments, curated model test papers, authentic past-year questions, and adaptive study roadmaps for every national target.
                   </p>
                 </div>
 
-                {/* Live Search Bar */}
                 <div className="w-full md:w-80">
                   <div className="relative">
                     <input 
@@ -1377,7 +1390,7 @@ export default function WorkspacePage() {
                       placeholder="Search exam, category, or tag..."
                       value={heroExamSearch}
                       onChange={(e) => setHeroExamSearch(e.target.value)}
-                      className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/15 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
+                      className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/15 rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#4285F4] transition-colors"
                     />
                     <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                   </div>
@@ -1387,20 +1400,20 @@ export default function WorkspacePage() {
               {/* Category Filter Pills */}
               <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
                 {[
-                  { id: 'all', label: 'All Exams (9)' },
-                  { id: 'defence', label: '⚔️ Defence (AFCAT, CDS, NDA)' },
-                  { id: 'engineering', label: '⚛️ Engineering (JEE, GATE)' },
-                  { id: 'medical', label: '🩺 Medical (NEET UG)' },
-                  { id: 'civil', label: '🏛️ Civil Services (UPSC CSE)' },
-                  { id: 'aptitude', label: '📊 Aptitude & MBA (SSC, CAT)' },
+                  { id: 'all', label: 'All Exams (9)', activeStyle: 'bg-white text-slate-950 font-black' },
+                  { id: 'defence', label: '⚔️ Defence (AFCAT, CDS, NDA)', activeStyle: 'bg-[#EA4335] text-white shadow-glow-google-red font-black' },
+                  { id: 'engineering', label: '⚛️ Engineering (JEE, GATE)', activeStyle: 'bg-[#4285F4] text-white shadow-glow-google-blue font-black' },
+                  { id: 'medical', label: '🩺 Medical (NEET UG)', activeStyle: 'bg-[#34A853] text-white shadow-glow-google-green font-black' },
+                  { id: 'civil', label: '🏛️ Civil Services (UPSC CSE)', activeStyle: 'bg-[#EA4335] text-white shadow-glow-google-red font-black' },
+                  { id: 'aptitude', label: '📊 Aptitude & MBA (SSC, CAT)', activeStyle: 'bg-[#FBBC04] text-slate-950 shadow-glow-google-yellow font-black' },
                 ].map((pill) => (
                   <button
                     key={pill.id}
                     onClick={() => setHeroExamFilter(pill.id as any)}
                     className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 ${
                       heroExamFilter === pill.id
-                        ? 'bg-white text-slate-950 shadow-md font-extrabold'
-                        : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10'
+                        ? pill.activeStyle
+                        : 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/10'
                     }`}
                   >
                     {pill.label}
@@ -1417,13 +1430,13 @@ export default function WorkspacePage() {
                     <div
                       key={exam.id}
                       onClick={() => openExamWorkspace(exam.id)}
-                      className="glass-panel glass-panel-hover p-6 rounded-2xl cursor-pointer group flex flex-col justify-between space-y-6 relative overflow-hidden"
+                      className="glass-panel glass-panel-hover p-6 rounded-3xl cursor-pointer group flex flex-col justify-between space-y-6 relative overflow-hidden"
                     >
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div 
-                            className="w-12 h-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
-                            style={{ backgroundColor: `${exam.color}20` }}
+                            className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110"
+                            style={{ backgroundColor: `${exam.color}20`, border: `1px solid ${exam.color}40` }}
                           >
                             <Icon className="w-6 h-6" style={{ color: exam.color }} />
                           </div>
@@ -1433,7 +1446,7 @@ export default function WorkspacePage() {
                         </div>
 
                         <div>
-                          <h3 className="text-xl font-bold text-white font-display group-hover:text-amber-400 transition-colors">
+                          <h3 className="text-xl font-bold text-white font-display group-hover:text-[#8AB4F8] transition-colors">
                             {exam.name}
                           </h3>
                           <p className="text-xs text-slate-400 mt-1 font-mono">
@@ -1447,14 +1460,14 @@ export default function WorkspacePage() {
 
                         <div className="flex flex-wrap gap-1.5">
                           {info?.features.slice(0, 3).map((f, i) => (
-                            <span key={i} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-white/5 text-slate-400 border border-white/5">
+                            <span key={i} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-white/5 text-slate-300 border border-white/5">
                               ✓ {f}
                             </span>
                           ))}
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-amber-400 group-hover:text-amber-300">
+                      <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-[#8AB4F8] group-hover:text-white">
                         <span>Launch CBT Engine</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
@@ -1472,13 +1485,14 @@ export default function WorkspacePage() {
           <section id="features" className="px-6 md:px-12 py-20 md:py-28 max-w-7xl mx-auto space-y-16">
             
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider font-mono">
-                ✦ ARCHITECTURE & MODULES
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FBBC04]/15 border border-[#FBBC04]/30 text-[#FDD663] text-xs font-bold uppercase tracking-wider font-mono">
+                <Google4ColorDots size="sm" />
+                <span>GOOGLE ARCHITECTURE & MODULES</span>
               </div>
               <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
                 Engineered for Academic Mastery
               </h2>
-              <p className="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+              <p className="text-slate-300 text-sm md:text-base max-w-xl mx-auto">
                 Six interconnected AI modules working together to transform raw syllabus into deep conceptual retention.
               </p>
             </div>
@@ -1495,7 +1509,7 @@ export default function WorkspacePage() {
                       <div className="flex items-center justify-between">
                         <div 
                           className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
-                          style={{ backgroundColor: `${feature.color}15`, border: `1px solid ${feature.color}30` }}
+                          style={{ backgroundColor: `${feature.color}20`, border: `1px solid ${feature.color}40` }}
                         >
                           <Icon className="w-6 h-6" style={{ color: feature.color }} />
                         </div>
@@ -1504,7 +1518,7 @@ export default function WorkspacePage() {
                         </span>
                       </div>
 
-                      <h3 className="text-xl font-bold text-white font-display group-hover:text-amber-400 transition-colors">
+                      <h3 className="text-xl font-bold text-white font-display group-hover:text-[#8AB4F8] transition-colors">
                         {feature.title}
                       </h3>
 
@@ -1513,7 +1527,7 @@ export default function WorkspacePage() {
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-white/10 flex items-center gap-2 text-xs font-bold text-amber-400">
+                    <div className="pt-4 border-t border-white/10 flex items-center gap-2 text-xs font-bold text-[#8AB4F8]">
                       <span>Explore Module</span>
                       <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -1527,14 +1541,14 @@ export default function WorkspacePage() {
 
         {/* ═══════════ THREE STEPS TO MASTERY ═══════════ */}
         <RevealSection>
-          <section className="px-6 md:px-12 py-20 bg-[#090d14] border-y border-white/10">
+          <section className="px-6 md:px-12 py-20 bg-[#1c1d22] border-y border-white/10">
             <div className="max-w-6xl mx-auto space-y-16">
               
               <div className="text-center space-y-3">
                 <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
                   Three Steps from Zero to Ranker
                 </h2>
-                <p className="text-slate-400 text-sm md:text-base max-w-lg mx-auto">
+                <p className="text-slate-300 text-sm md:text-base max-w-lg mx-auto">
                   A frictionless transition from chaotic preparation to structured, algorithmic confidence.
                 </p>
               </div>
@@ -1546,27 +1560,33 @@ export default function WorkspacePage() {
                     title: 'Pick Target & Timeline',
                     description: 'Select your target examination. Tejas automatically maps the exact official syllabus and generates your daily study capacity timetable.',
                     icon: Target,
+                    color: '#4285F4'
                   },
                   {
                     step: '02',
                     title: 'Active Recall Practice',
                     description: 'Ingest notes or textbooks. The AI quiz engine breaks down concepts into targeted drills, live simulations, and spaced review cards.',
                     icon: Brain,
+                    color: '#FBBC04'
                   },
                   {
                     step: '03',
                     title: 'Rank Prediction & Exam Day',
                     description: 'Take full-length CBT papers in authentic CDAC windows. Receive precision cutoff percentiles and weak-area surgery before the real exam.',
                     icon: Award,
+                    color: '#34A853'
                   },
                 ].map((item, i) => {
                   const Icon = item.icon;
                   return (
                     <div key={i} className="glass-panel p-8 rounded-3xl space-y-4 text-center relative group">
-                      <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center shadow-glow-amber group-hover:scale-110 transition-transform">
-                        <Icon className="w-7 h-7 text-amber-400" />
+                      <div 
+                        className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
+                        style={{ backgroundColor: `${item.color}20`, border: `1px solid ${item.color}40` }}
+                      >
+                        <Icon className="w-7 h-7" style={{ color: item.color }} />
                       </div>
-                      <div className="text-xs font-mono font-bold text-amber-400 tracking-widest uppercase">STEP {item.step}</div>
+                      <div className="text-xs font-mono font-bold tracking-widest uppercase text-slate-300">STEP {item.step}</div>
                       <h3 className="text-xl font-bold text-white font-display">{item.title}</h3>
                       <p className="text-sm text-slate-300 leading-relaxed">{item.description}</p>
                     </div>
@@ -1583,13 +1603,14 @@ export default function WorkspacePage() {
           <section id="testimonials" className="px-6 md:px-12 py-20 md:py-28 max-w-7xl mx-auto space-y-16">
             
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider font-mono">
-                ✦ VERIFIED RANKERS
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#34A853]/15 border border-[#34A853]/30 text-[#81C995] text-xs font-bold uppercase tracking-wider font-mono">
+                <CheckCircle className="w-3.5 h-3.5 text-[#34A853]" />
+                <span>VERIFIED RANKERS</span>
               </div>
               <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
                 Trusted by Top Aspirants Across India
               </h2>
-              <p className="text-slate-400 text-sm md:text-base max-w-lg mx-auto">
+              <p className="text-slate-300 text-sm md:text-base max-w-lg mx-auto">
                 Real aspirants who transformed their preparation discipline and cleared their dream cutoffs.
               </p>
             </div>
@@ -1597,16 +1618,16 @@ export default function WorkspacePage() {
             <div className="grid md:grid-cols-3 gap-6">
               {testimonials.map((t, i) => (
                 <div key={i} className="glass-panel p-8 rounded-3xl space-y-6 flex flex-col justify-between relative group">
-                  <Quote className="w-8 h-8 text-amber-400/20 absolute top-6 right-6" />
+                  <Quote className="w-8 h-8 text-[#4285F4]/30 absolute top-6 right-6" />
                   
                   <div className="space-y-4">
                     <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-sm font-extrabold text-amber-300 font-display">
+                      <div className="w-12 h-12 rounded-2xl bg-[#4285F4]/20 border border-[#4285F4]/40 flex items-center justify-center text-sm font-extrabold text-[#8AB4F8] font-display">
                         {t.avatar}
                       </div>
                       <div>
                         <div className="text-base font-bold text-white">{t.name}</div>
-                        <div className="text-xs text-amber-400 font-mono font-semibold">{t.role}</div>
+                        <div className="text-xs text-[#8AB4F8] font-mono font-semibold">{t.role}</div>
                       </div>
                     </div>
 
@@ -1618,10 +1639,10 @@ export default function WorkspacePage() {
                   <div className="pt-4 border-t border-white/10 flex items-center justify-between">
                     <div className="flex gap-1">
                       {[...Array(5)].map((_, j) => (
-                        <Star key={j} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                        <Star key={j} className="w-4 h-4 fill-[#FBBC04] text-[#FBBC04]" />
                       ))}
                     </div>
-                    <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                    <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#34A853]/20 text-[#81C995] border border-[#34A853]/40">
                       {t.badge}
                     </span>
                   </div>
@@ -1634,17 +1655,18 @@ export default function WorkspacePage() {
 
         {/* ═══════════ TRANSPARENT PRICING TIERS ═══════════ */}
         <RevealSection>
-          <section id="pricing" className="px-6 md:px-12 py-20 bg-[#090d14] border-t border-white/10">
+          <section id="pricing" className="px-6 md:px-12 py-20 bg-[#1c1d22] border-t border-white/10">
             <div className="max-w-5xl mx-auto space-y-16">
               
               <div className="text-center space-y-3">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider font-mono">
-                  ✦ TRANSPARENT MEMBERSHIP
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4285F4]/15 border border-[#4285F4]/30 text-[#8AB4F8] text-xs font-bold uppercase tracking-wider font-mono">
+                  <Google4ColorDots size="sm" />
+                  <span>TRANSPARENT MEMBERSHIP</span>
                 </div>
                 <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
                   Start Free. Upgrade for Unlimited Power.
                 </h2>
-                <p className="text-slate-400 text-sm md:text-base max-w-lg mx-auto">
+                <p className="text-slate-300 text-sm md:text-base max-w-lg mx-auto">
                   Every serious aspirant deserves world-class AI preparation tools at an affordable price.
                 </p>
               </div>
@@ -1690,16 +1712,16 @@ export default function WorkspacePage() {
                   </button>
                 </div>
 
-                {/* Premium Tier */}
-                <div className="glass-panel p-8 md:p-10 rounded-3xl flex flex-col justify-between space-y-8 border-amber-500/40 relative shadow-glow-amber">
-                  <div className="absolute -top-3.5 right-8 bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 text-[10px] font-extrabold font-mono px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg">
+                {/* Premium Tier (Google Blue Highlight) */}
+                <div className="glass-panel p-8 md:p-10 rounded-3xl flex flex-col justify-between space-y-8 border-[#4285F4]/50 relative shadow-glow-google-blue google-ribbon-border">
+                  <div className="absolute -top-3.5 right-8 bg-[#4285F4] text-white text-[10px] font-extrabold font-mono px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg">
                     ✦ HIGHLY RECOMMENDED
                   </div>
 
                   <div className="space-y-6">
                     <div>
-                      <span className="text-xs font-mono font-bold text-amber-400 uppercase">ELITE ASPIRANT PRO</span>
-                      <div className="text-5xl font-black text-amber-300 font-display mt-2">
+                      <span className="text-xs font-mono font-bold text-[#8AB4F8] uppercase">ELITE ASPIRANT PRO</span>
+                      <div className="text-5xl font-black text-white font-display mt-2">
                         ₹499 <span className="text-sm font-medium text-slate-400">/ month</span>
                       </div>
                       <p className="text-xs text-slate-400 mt-2">For dedicated aspirants targeting top AIR ranks.</p>
@@ -1716,7 +1738,7 @@ export default function WorkspacePage() {
                         'All future exam hubs included'
                       ].map((item, i) => (
                         <li key={i} className="flex items-center gap-3 text-sm text-slate-100 font-medium">
-                          <CheckCircle className="w-4 h-4 text-amber-400 shrink-0" />
+                          <CheckCircle className="w-4 h-4 text-[#4285F4] shrink-0" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -1729,7 +1751,7 @@ export default function WorkspacePage() {
                       setIsLoggedIn(true);
                       triggerLoadingState('afcat');
                     }}
-                    className="w-full py-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-sm rounded-xl transition-all active:scale-[0.98] shadow-glow-amber"
+                    className="w-full py-4 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-black text-sm rounded-xl transition-all active:scale-[0.98] shadow-glow-google-blue"
                   >
                     Unlock Elite Membership
                   </button>
@@ -1744,12 +1766,15 @@ export default function WorkspacePage() {
         {/* ═══════════ FINAL CALL TO ACTION ═══════════ */}
         <RevealSection>
           <section className="px-6 md:px-12 py-20 md:py-28 relative">
-            <div className="max-w-5xl mx-auto glass-panel p-10 md:p-16 rounded-[36px] border border-amber-500/30 text-center relative overflow-hidden shadow-2xl shadow-amber-500/10">
+            <div className="max-w-5xl mx-auto glass-panel p-10 md:p-16 rounded-[36px] border border-[#4285F4]/40 text-center relative overflow-hidden shadow-2xl google-ribbon-border">
               
-              <div className="absolute -top-24 -right-24 w-80 h-80 bg-amber-500/15 rounded-full blur-[90px] pointer-events-none"></div>
-              <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-sky-500/15 rounded-full blur-[90px] pointer-events-none"></div>
+              <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#4285F4]/20 rounded-full blur-[100px] pointer-events-none"></div>
+              <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-[#34A853]/15 rounded-full blur-[100px] pointer-events-none"></div>
 
               <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+                <div className="flex justify-center">
+                  <Google4ColorDots size="lg" />
+                </div>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-tight leading-tight">
                   Ready to Crack Your Target Exam in 2026?
                 </h2>
@@ -1763,7 +1788,7 @@ export default function WorkspacePage() {
                       resetAuthState();
                       triggerLoadingState('auth');
                     }}
-                    className="w-full sm:w-auto px-10 py-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-base rounded-2xl shadow-glow-amber transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-10 py-4 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-black text-base rounded-2xl shadow-glow-google-blue transition-all active:scale-95 flex items-center justify-center gap-2"
                   >
                     Create Free Account
                     <ArrowRight className="w-5 h-5" />
@@ -1776,20 +1801,20 @@ export default function WorkspacePage() {
         </RevealSection>
 
         {/* ═══════════ FOOTER ═══════════ */}
-        <footer className="border-t border-white/10 py-16 px-6 md:px-12 bg-[#06080c] text-slate-400">
+        <footer className="border-t border-white/10 py-16 px-6 md:px-12 bg-[#121316] text-slate-400">
           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8">
             <div className="col-span-2 space-y-4">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-amber-500 flex items-center justify-center text-slate-950 font-black text-sm">
-                  T
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-[#202125] border border-white/10 flex items-center justify-center">
+                  <Google4ColorDots size="sm" />
                 </div>
                 <span className="text-xl font-bold text-white font-display">Tejas</span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
                 The unified AI study operating system for competitive exams, university subjects, and document intelligence across India.
               </p>
-              <div className="text-xs font-mono text-slate-500 pt-2">
-                Built with precision for 500 Million Indian Aspirants.
+              <div className="text-xs font-mono text-slate-400 pt-2">
+                Designed in Google Colorography for 500 Million Indian Learners.
               </div>
             </div>
 
@@ -1797,7 +1822,7 @@ export default function WorkspacePage() {
               <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Exams</h4>
               <ul className="space-y-2 text-xs">
                 {['AFCAT 2026', 'CDS IMA/OTA', 'NDA & NA', 'JEE Main', 'NEET UG', 'UPSC CSE', 'GATE Engineering', 'CAT MBA'].map((e) => (
-                  <li key={e} className="hover:text-amber-400 cursor-pointer transition-colors">{e}</li>
+                  <li key={e} className="hover:text-[#4285F4] cursor-pointer transition-colors">{e}</li>
                 ))}
               </ul>
             </div>
@@ -1806,7 +1831,7 @@ export default function WorkspacePage() {
               <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Platform</h4>
               <ul className="space-y-2 text-xs">
                 {['CBT Exam Engine', 'Instant AI Quiz', 'Study Planner', 'FSRS Revision', 'PYQ Paper Vault', 'Research Hub'].map((p) => (
-                  <li key={p} className="hover:text-amber-400 cursor-pointer transition-colors">{p}</li>
+                  <li key={p} className="hover:text-[#4285F4] cursor-pointer transition-colors">{p}</li>
                 ))}
               </ul>
             </div>
@@ -1815,17 +1840,19 @@ export default function WorkspacePage() {
               <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Company & Legal</h4>
               <ul className="space-y-2 text-xs">
                 {['Privacy Policy', 'Terms of Service', 'Security & Safety', 'Contact Support', 'WhatsApp Helpline'].map((l) => (
-                  <li key={l} className="hover:text-amber-400 cursor-pointer transition-colors">{l}</li>
+                  <li key={l} className="hover:text-[#4285F4] cursor-pointer transition-colors">{l}</li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+          <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
             <p>© 2026 Tejas Learning Technologies. All rights reserved.</p>
-            <p className="flex items-center gap-1">
-              Made with <span className="text-amber-400">⚡</span> for Bharat
-            </p>
+            <div className="flex items-center gap-2">
+              <span>Made with</span>
+              <Google4ColorDots size="sm" />
+              <span>for Bharat</span>
+            </div>
           </div>
         </footer>
 
@@ -1834,7 +1861,7 @@ export default function WorkspacePage() {
   }
 
   /* ────────────────────────────────────────
-     ONBOARDING WIZARD SCREEN (DARK LUXURY)
+     ONBOARDING WIZARD SCREEN (GOOGLE STYLED)
      ──────────────────────────────────────── */
   if (isLoggedIn && !profileOnboardingCompleted) {
     const handleOnboardingSubmit = () => {
@@ -1874,10 +1901,6 @@ export default function WorkspacePage() {
             setProfileSyncTrigger(prev => prev + 1);
             setOnboardingGenerating(false);
             setActiveTab('afcat');
-            
-            if (typeof window !== 'undefined') {
-              window.open('https://wa.me/919079144245?text=Hello%20Tejas%20Support!%20I%20just%20completed%20my%20onboarding%20and%20need%20assistance.', '_blank');
-            }
           }
         })
         .catch(err => {
@@ -1888,22 +1911,23 @@ export default function WorkspacePage() {
     };
 
     return (
-      <div className="min-h-screen bg-[#080a0f] text-[#f1f5f9] flex items-center justify-center p-4 md:p-12 font-sans">
-        <div className="max-w-xl w-full glass-panel border border-white/15 p-8 md:p-12 rounded-[32px] shadow-2xl space-y-8 relative overflow-hidden">
+      <div className="min-h-screen bg-[#17181c] text-[#e8eaed] flex items-center justify-center p-4 md:p-12 font-sans">
+        <div className="max-w-xl w-full glass-panel border border-white/15 p-8 md:p-12 rounded-[32px] shadow-2xl space-y-8 relative overflow-hidden google-ribbon-border">
           
           <div className="flex justify-between items-center border-b border-white/10 pb-5">
-            <span className="text-xl font-bold tracking-tight flex items-center text-white font-display">
-              Tejas<span className="w-2.5 h-2.5 rounded-full bg-amber-400 ml-1"></span>
-            </span>
+            <div className="flex items-center gap-2">
+              <Google4ColorDots size="sm" />
+              <span className="text-xl font-bold tracking-tight text-white font-display">Tejas</span>
+            </div>
             <div className="flex gap-1.5">
               {[1, 2, 3, 4, 5].map((s) => (
                 <div 
                   key={s} 
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     s === onboardingStep 
-                      ? 'w-6 bg-amber-400' 
+                      ? 'w-6 bg-[#4285F4]' 
                       : s < onboardingStep 
-                        ? 'w-2.5 bg-amber-600' 
+                        ? 'w-2.5 bg-[#4285F4]/40' 
                         : 'w-2.5 bg-white/10'
                   }`}
                 ></div>
@@ -1932,9 +1956,9 @@ export default function WorkspacePage() {
                       setOnboardingCategory(cat.id);
                       setOnboardingStep(2);
                     }}
-                    className="p-5 border border-white/10 bg-white/5 hover:border-amber-400 hover:bg-amber-500/10 rounded-2xl text-left space-y-2 transition-all group"
+                    className="p-5 border border-white/10 bg-white/5 hover:border-[#4285F4] hover:bg-[#4285F4]/10 rounded-2xl text-left space-y-2 transition-all group"
                   >
-                    <span className="font-bold text-sm block text-white group-hover:text-amber-300 transition-colors">{cat.label}</span>
+                    <span className="font-bold text-sm block text-white group-hover:text-[#8AB4F8] transition-colors">{cat.label}</span>
                     <span className="text-[11px] text-slate-400 block">{cat.desc}</span>
                   </button>
                 ))}
@@ -1955,7 +1979,7 @@ export default function WorkspacePage() {
                   <select 
                     value={onboardingExamId}
                     onChange={(e) => setOnboardingExamId(e.target.value)}
-                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
                   >
                     <option value="">Select Target Exam</option>
                     {examsList.length > 0 ? (
@@ -1982,7 +2006,7 @@ export default function WorkspacePage() {
                   <select 
                     value={onboardingYear}
                     onChange={(e) => setOnboardingYear(e.target.value)}
-                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
                   >
                     <option value="2026">2026</option>
                     <option value="2027">2027</option>
@@ -1997,7 +2021,7 @@ export default function WorkspacePage() {
                 <button 
                   onClick={() => setOnboardingStep(3)} 
                   disabled={!onboardingExamId}
-                  className="flex-1 py-3 bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-amber"
+                  className="flex-1 py-3 bg-[#4285F4] text-white hover:bg-[#1A73E8] font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-google-blue"
                 >
                   Continue
                 </button>
@@ -2018,7 +2042,7 @@ export default function WorkspacePage() {
                   <select 
                     value={onboardingLanguage}
                     onChange={(e) => setOnboardingLanguage(e.target.value)}
-                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
                   >
                     <option value="en">English (Default)</option>
                     <option value="hi">Hindi (हिन्दी)</option>
@@ -2031,7 +2055,7 @@ export default function WorkspacePage() {
                   <select 
                     value={onboardingPrepStatus}
                     onChange={(e) => setOnboardingPrepStatus(e.target.value)}
-                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
                   >
                     <option value="">Select Status</option>
                     <option value="dropper">Dropper / Full-Time Aspirant</option>
@@ -2047,7 +2071,7 @@ export default function WorkspacePage() {
                 <button 
                   onClick={() => setOnboardingStep(4)} 
                   disabled={!onboardingPrepStatus}
-                  className="flex-1 py-3 bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-amber"
+                  className="flex-1 py-3 bg-[#4285F4] text-white hover:bg-[#1A73E8] font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-google-blue"
                 >
                   Continue
                 </button>
@@ -2068,7 +2092,7 @@ export default function WorkspacePage() {
                   <select 
                     value={onboardingState}
                     onChange={(e) => setOnboardingState(e.target.value)}
-                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
                   >
                     <option value="">Select State</option>
                     <option value="Uttar Pradesh">Uttar Pradesh</option>
@@ -2090,7 +2114,7 @@ export default function WorkspacePage() {
                     placeholder="+91 XXXXX XXXXX"
                     value={onboardingPhoneNumber}
                     onChange={(e) => setOnboardingPhoneNumber(e.target.value)}
-                    className="w-full p-3.5 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -2103,7 +2127,7 @@ export default function WorkspacePage() {
                     handleOnboardingSubmit();
                   }} 
                   disabled={!onboardingState}
-                  className="flex-1 py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-amber"
+                  className="flex-1 py-3 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-google-blue"
                 >
                   Generate My Workspace
                 </button>
@@ -2115,7 +2139,7 @@ export default function WorkspacePage() {
             <div className="text-center py-12 space-y-6 flex flex-col items-center justify-center">
               {onboardingGenerating ? (
                 <>
-                  <div className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-16 h-16 border-4 border-[#4285F4] border-t-transparent rounded-full animate-spin"></div>
                   <div className="space-y-2">
                     <h3 className="text-lg font-bold text-white font-display">Personalizing Your Workspace</h3>
                     <p className="text-xs text-slate-400 animate-pulse">AI is compiling roadmaps, custom timetables, and spacing reviews...</p>
@@ -2123,8 +2147,8 @@ export default function WorkspacePage() {
                 </>
               ) : (
                 <>
-                  <div className="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center border border-amber-500/40">
-                    <CheckCircle className="w-10 h-10 text-amber-400" />
+                  <div className="w-16 h-16 bg-[#4285F4]/20 rounded-full flex items-center justify-center border border-[#4285F4]/40">
+                    <CheckCircle className="w-10 h-10 text-[#4285F4]" />
                   </div>
                   <div className="space-y-2">
                     <h3 className="text-lg font-bold text-white font-display">Setup Complete!</h3>
@@ -2132,7 +2156,7 @@ export default function WorkspacePage() {
                   </div>
                   <button 
                     onClick={() => setProfileOnboardingCompleted(true)}
-                    className="mt-6 px-8 py-3 bg-amber-500 text-slate-950 hover:bg-amber-400 font-bold rounded-xl transition-all shadow-glow-amber"
+                    className="mt-6 px-8 py-3 bg-[#4285F4] text-white hover:bg-[#1A73E8] font-bold rounded-xl transition-all shadow-glow-google-blue"
                   >
                     Enter Workspace
                   </button>
@@ -2150,18 +2174,19 @@ export default function WorkspacePage() {
      APP WORKSPACE (DASHBOARD & ALL HUBS)
      ──────────────────────────────────────── */
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#080a0f] text-[#f1f5f9] font-sans">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#17181c] text-[#e8eaed] font-sans">
       
       {/* LEFT SIDEBAR NAVIGATION (Desktop) */}
       {activeTab !== 'auth' && activeTab !== 'pricing' && (
-        <aside className="hidden md:flex w-64 bg-[#0d1117] border-r border-white/10 flex-col justify-between shrink-0 sticky top-0 h-screen">
+        <aside className="hidden md:flex w-64 bg-[#1f2024] border-r border-white/10 flex-col justify-between shrink-0 sticky top-0 h-screen">
           <div>
             {/* Logo */}
             <div className="p-6 border-b border-white/10 flex items-center justify-between">
-              <span className="text-xl font-black tracking-tight flex items-center text-white font-display">
-                Tejas<span className="w-2 h-2 rounded-full bg-amber-400 ml-1.5 shadow-glow-amber"></span>
-              </span>
-              <button onClick={() => triggerLoadingState('landing')} className="text-[11px] text-slate-400 hover:text-amber-400 font-mono">
+              <div className="flex items-center gap-2">
+                <Google4ColorDots size="sm" />
+                <span className="text-xl font-black tracking-tight text-white font-display">Tejas</span>
+              </div>
+              <button onClick={() => triggerLoadingState('landing')} className="text-[11px] text-[#8AB4F8] hover:underline font-mono">
                 ← Home
               </button>
             </div>
@@ -2199,8 +2224,8 @@ export default function WorkspacePage() {
                       onClick={() => triggerLoadingState(item.id)}
                       className={`w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-xl transition-all duration-150 ${
                         isActive 
-                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' 
-                          : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                          ? 'bg-[#4285F4]/20 text-[#8AB4F8] border border-[#4285F4]/40 font-bold' 
+                          : 'text-slate-300 hover:bg-white/5 hover:text-white'
                       }`}
                     >
                       {item.label}
@@ -2219,7 +2244,7 @@ export default function WorkspacePage() {
                 setQuizScore(null);
                 triggerLoadingState('quiz-gen');
               }}
-              className="w-full py-3 px-4 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold rounded-xl flex items-center justify-center gap-2 shadow-glow-amber transition-all duration-150 active:scale-95 text-xs"
+              className="w-full py-3 px-4 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-glow-google-blue transition-all duration-150 active:scale-95 text-xs"
             >
               <Plus className="w-4 h-4" />
               Instant AI Quiz
@@ -2233,12 +2258,12 @@ export default function WorkspacePage() {
         
         {/* TOP HEADER BAR */}
         {activeTab !== 'auth' && activeTab !== 'pricing' && (
-          <header className="h-16 border-b border-white/10 px-6 flex items-center justify-between bg-[#0d1117]/80 backdrop-blur-md sticky top-0 z-40">
+          <header className="h-16 border-b border-white/10 px-6 flex items-center justify-between bg-[#1f2024]/90 backdrop-blur-md sticky top-0 z-40">
             <div className="flex items-center gap-3">
               <span className="text-xs font-medium text-slate-400">Current Target:</span>
               <button 
                 onClick={() => triggerLoadingState('afcat')}
-                className="px-3.5 py-1 bg-amber-500/15 text-amber-300 border border-amber-500/30 text-xs font-bold rounded-full hover:bg-amber-500/25 transition-all flex items-center gap-1.5 shadow-sm"
+                className="px-3.5 py-1 bg-[#4285F4]/15 text-[#8AB4F8] border border-[#4285F4]/30 text-xs font-bold rounded-full hover:bg-[#4285F4]/25 transition-all flex items-center gap-1.5 shadow-sm"
               >
                 ✈️ AFCAT 2026 (Air Force)
               </button>
@@ -2246,7 +2271,7 @@ export default function WorkspacePage() {
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => triggerLoadingState('pricing')}
-                className="text-xs font-bold text-amber-400 hover:underline"
+                className="text-xs font-bold text-[#8AB4F8] hover:underline"
               >
                 ✦ Upgrade Pro
               </button>
@@ -2282,13 +2307,12 @@ export default function WorkspacePage() {
             {/* AUTH SCREEN */}
             {activeTab === 'auth' && (
               <div className="min-h-[85vh] flex items-center justify-center py-12">
-                <div className="w-full max-w-md glass-panel border border-white/15 p-8 rounded-3xl space-y-6 shadow-2xl shadow-black">
+                <div className="w-full max-w-md glass-panel border border-white/15 p-8 rounded-3xl space-y-6 shadow-2xl google-ribbon-border">
                   
-                  {/* Title / Header */}
                   <div className="text-center space-y-2">
-                    <div className="flex items-center justify-center gap-1.5 mb-4">
+                    <div className="flex items-center justify-center gap-2 mb-4">
+                      <Google4ColorDots size="md" />
                       <span className="text-3xl font-black text-white font-display">Tejas</span>
-                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-glow-amber"></span>
                     </div>
                     {authMode === 'signup' ? (
                       signupStep === 1 ? (
@@ -2310,17 +2334,16 @@ export default function WorkspacePage() {
                     )}
                   </div>
 
-                  {/* Errors / Success Alerts */}
                   {errorMsg && (
-                    <div className="p-3.5 bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-medium rounded-xl flex items-start gap-2.5">
-                      <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                    <div className="p-3.5 bg-[#EA4335]/15 border border-[#EA4335]/30 text-[#F28B82] text-xs font-medium rounded-xl flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-[#EA4335] flex-shrink-0 mt-0.5" />
                       <span>{errorMsg}</span>
                     </div>
                   )}
 
                   {otpSuccessMsg && (
-                    <div className="p-3.5 bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-medium rounded-xl flex items-start gap-2.5">
-                      <CheckCircle className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <div className="p-3.5 bg-[#34A853]/15 border border-[#34A853]/30 text-[#81C995] text-xs font-medium rounded-xl flex items-start gap-2.5">
+                      <CheckCircle className="w-4 h-4 text-[#34A853] flex-shrink-0 mt-0.5" />
                       <span>{otpSuccessMsg}</span>
                     </div>
                   )}
@@ -2339,9 +2362,9 @@ export default function WorkspacePage() {
                               placeholder="Priya Sharma" 
                               value={authFullName}
                               onChange={(e) => setAuthFullName(e.target.value)}
-                              className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors disabled:opacity-50" 
+                              className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors disabled:opacity-50" 
                             />
-                            <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                            <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                           </div>
                         </div>
 
@@ -2355,9 +2378,9 @@ export default function WorkspacePage() {
                               placeholder="priya@example.com" 
                               value={authEmail}
                               onChange={(e) => setAuthEmail(e.target.value)}
-                              className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors disabled:opacity-50" 
+                              className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors disabled:opacity-50" 
                             />
-                            <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                            <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                           </div>
                         </div>
 
@@ -2372,12 +2395,12 @@ export default function WorkspacePage() {
                                 placeholder="123456" 
                                 value={otpCode}
                                 onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                                className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white text-center tracking-[0.5em] font-mono transition-colors" 
+                                className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white text-center tracking-[0.5em] font-mono transition-colors" 
                               />
-                              <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5" />
+                              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                             </div>
                             {otpError && (
-                              <p className="text-xs font-semibold text-red-400 mt-1 flex items-center gap-1">
+                              <p className="text-xs font-semibold text-[#F28B82] mt-1 flex items-center gap-1">
                                 <AlertCircle className="w-3.5 h-3.5" /> {otpError}
                               </p>
                             )}
@@ -2386,7 +2409,7 @@ export default function WorkspacePage() {
                               <button 
                                 type="button" 
                                 onClick={handleResendOtp}
-                                className="text-amber-400 hover:underline font-semibold flex items-center gap-1"
+                                className="text-[#8AB4F8] hover:underline font-semibold flex items-center gap-1"
                               >
                                 <RefreshCw className="w-3 h-3" /> Resend OTP
                               </button>
@@ -2397,7 +2420,7 @@ export default function WorkspacePage() {
                         <button 
                           type="submit" 
                           disabled={loading}
-                          className="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-bold rounded-xl hover:from-amber-400 hover:to-yellow-300 transition-all active:scale-[0.98] disabled:opacity-50 shadow-glow-amber text-sm mt-4"
+                          className="w-full py-3.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 shadow-glow-google-blue text-sm mt-4"
                         >
                           {loading ? 'Processing...' : otpSent ? 'Verify OTP & Continue' : 'Send Verification OTP'}
                         </button>
@@ -2412,7 +2435,7 @@ export default function WorkspacePage() {
                             placeholder="••••••••" 
                             value={authPassword}
                             onChange={(e) => setAuthPassword(e.target.value)}
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors" 
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors" 
                           />
                         </div>
 
@@ -2424,14 +2447,14 @@ export default function WorkspacePage() {
                             placeholder="••••••••" 
                             value={authConfirmPassword}
                             onChange={(e) => setAuthConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors" 
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors" 
                           />
                         </div>
 
                         <button 
                           type="submit" 
                           disabled={loading}
-                          className="w-full py-3.5 bg-amber-500 text-slate-950 font-bold rounded-xl hover:bg-amber-400 transition-all shadow-glow-amber text-sm"
+                          className="w-full py-3.5 bg-[#4285F4] text-white font-bold rounded-xl hover:bg-[#1A73E8] transition-all shadow-glow-google-blue text-sm"
                         >
                           {loading ? 'Saving...' : 'Complete Registration'}
                         </button>
@@ -2447,7 +2470,7 @@ export default function WorkspacePage() {
                           placeholder="priya@example.com" 
                           value={authEmail}
                           onChange={(e) => setAuthEmail(e.target.value)}
-                          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors" 
+                          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors" 
                         />
                       </div>
 
@@ -2459,14 +2482,14 @@ export default function WorkspacePage() {
                           placeholder="••••••••" 
                           value={authPassword}
                           onChange={(e) => setAuthPassword(e.target.value)}
-                          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-amber-400 text-sm text-white transition-colors" 
+                          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors" 
                         />
                       </div>
 
                       <button 
                         type="submit" 
                         disabled={loading}
-                        className="w-full py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl transition-all shadow-glow-amber text-sm"
+                        className="w-full py-3.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold rounded-xl transition-all shadow-glow-google-blue text-sm"
                       >
                         {loading ? 'Signing in...' : 'Sign In'}
                       </button>
@@ -2479,7 +2502,7 @@ export default function WorkspacePage() {
                         setAuthMode(authMode === 'signup' ? 'login' : 'signup');
                         resetAuthState();
                       }}
-                      className="text-xs text-amber-400 hover:underline font-semibold"
+                      className="text-xs text-[#8AB4F8] hover:underline font-semibold"
                     >
                       {authMode === 'signup' ? 'Already have an account? Sign In' : "Don't have an account? Sign Up Free"}
                     </button>
@@ -2502,16 +2525,16 @@ export default function WorkspacePage() {
             {/* DASHBOARD SCREEN */}
             {activeTab === 'dashboard' && (
               <div className="space-y-8 animate-fadeInUp">
-                <div className="glass-panel p-6 rounded-3xl border-amber-500/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="glass-panel p-6 rounded-3xl border-[#4285F4]/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 google-ribbon-border">
                   <div className="space-y-1">
                     <h2 className="text-2xl font-bold text-white font-display flex items-center gap-2">
-                      <Flame className="w-6 h-6 text-amber-400" /> Welcome, {profileFullName}!
+                      <Google4ColorDots size="sm" /> Welcome, {profileFullName}!
                     </h2>
                     <p className="text-sm text-slate-300">
                       Consistency Streak: <strong>{dashboardOverview.consistencyRating}%</strong> • Daily Target: <strong>{dashboardOverview.studyTimeMinutes}m / {profileGoal}m</strong>
                     </p>
                   </div>
-                  <button onClick={() => triggerLoadingState('afcat')} className="px-5 py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber transition-all">
+                  <button onClick={() => triggerLoadingState('afcat')} className="px-5 py-2.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold text-xs rounded-xl shadow-glow-google-blue transition-all">
                     Launch CBT Mock Simulator →
                   </button>
                 </div>
@@ -2527,12 +2550,12 @@ export default function WorkspacePage() {
                       ].map((task, idx) => (
                         <div key={idx} className="p-4 glass-panel rounded-2xl flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <input type="checkbox" checked={task.done} readOnly className="accent-amber-500 w-4 h-4" />
+                            <input type="checkbox" checked={task.done} readOnly className="accent-[#4285F4] w-4 h-4" />
                             <span className={`text-sm ${task.done ? 'line-through text-slate-500' : 'text-slate-200 font-medium'}`}>
                               {task.title}
                             </span>
                           </div>
-                          <span className="text-xs font-mono text-amber-400 font-bold">{task.duration}</span>
+                          <span className="text-xs font-mono text-[#8AB4F8] font-bold">{task.duration}</span>
                         </div>
                       ))}
                     </div>
@@ -2540,8 +2563,8 @@ export default function WorkspacePage() {
 
                   <div className="space-y-4">
                     <h3 className="text-lg font-bold text-white font-display">Document AI Ingest</h3>
-                    <div onClick={() => triggerLoadingState('pdf')} className="border-2 border-dashed border-white/20 p-8 rounded-3xl text-center space-y-3 hover:border-amber-400 transition-colors cursor-pointer glass-panel">
-                      <UploadCloud className="w-10 h-10 text-amber-400 mx-auto" />
+                    <div onClick={() => triggerLoadingState('pdf')} className="border-2 border-dashed border-white/20 p-8 rounded-3xl text-center space-y-3 hover:border-[#4285F4] transition-colors cursor-pointer glass-panel">
+                      <UploadCloud className="w-10 h-10 text-[#4285F4] mx-auto" />
                       <div className="space-y-1">
                         <p className="text-sm font-bold text-white">Ingest Study PDF / Notes</p>
                         <p className="text-xs text-slate-400">Click to upload document</p>
@@ -2557,7 +2580,7 @@ export default function WorkspacePage() {
               <div className="space-y-8 animate-fadeInUp">
                 <div className="flex justify-between items-center">
                   <h1 className="text-2xl font-bold text-white font-display">Adaptive Study Planner</h1>
-                  <button onClick={() => alert('Syllabus timeline auto-rebalanced across active calendar!')} className="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber">
+                  <button onClick={() => alert('Syllabus timeline auto-rebalanced across active calendar!')} className="px-4 py-2 bg-[#34A853] text-white font-bold text-xs rounded-xl shadow-glow-google-green">
                     Rebalance Schedule
                   </button>
                 </div>
@@ -2565,8 +2588,8 @@ export default function WorkspacePage() {
                   <div className="glass-panel p-6 rounded-3xl space-y-4">
                     <h3 className="text-base font-bold text-white">Daily Capacity Budget</h3>
                     <div className="space-y-3">
-                      <input type="range" min="1" max="12" defaultValue="4" className="w-full accent-amber-500" />
-                      <div className="text-xs font-mono text-amber-400 font-bold text-right">4.0 Hours / Day</div>
+                      <input type="range" min="1" max="12" defaultValue="4" className="w-full accent-[#34A853]" />
+                      <div className="text-xs font-mono text-[#81C995] font-bold text-right">4.0 Hours / Day</div>
                     </div>
                   </div>
                   <div className="md:col-span-2 glass-panel p-6 rounded-3xl space-y-4">
@@ -2575,7 +2598,7 @@ export default function WorkspacePage() {
                       {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
                         <div key={day} className="p-3 bg-white/5 rounded-2xl text-center space-y-1 border border-white/5">
                           <span className="text-xs font-bold text-slate-300 block">{day}</span>
-                          <div className="p-1.5 rounded-lg bg-amber-500/20 text-amber-300 text-[10px] font-bold">
+                          <div className="p-1.5 rounded-lg bg-[#34A853]/20 text-[#81C995] text-[10px] font-bold">
                             Module Drills
                           </div>
                         </div>
@@ -2594,13 +2617,13 @@ export default function WorkspacePage() {
                   {examCategories.map((exam) => (
                     <div key={exam.id} className="glass-panel p-6 rounded-3xl space-y-4 flex flex-col justify-between">
                       <div className="space-y-2">
-                        <span className="text-[10px] font-mono font-bold text-amber-400 uppercase">{exam.badge}</span>
+                        <span className="text-[10px] font-mono font-bold text-[#8AB4F8] uppercase">{exam.badge}</span>
                         <h3 className="text-lg font-bold text-white font-display">{exam.name}</h3>
                         <p className="text-xs text-slate-400">{exam.candidates} Candidates yearly</p>
                       </div>
                       <button 
                         onClick={() => openExamWorkspace(exam.id)}
-                        className="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber transition-all"
+                        className="w-full py-2.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold text-xs rounded-xl shadow-glow-google-blue transition-all"
                       >
                         Launch Examination Workspace →
                       </button>
@@ -2615,7 +2638,7 @@ export default function WorkspacePage() {
               <div className="space-y-8 animate-fadeInUp">
                 <div className="flex justify-between items-center">
                   <h1 className="text-2xl font-bold text-white font-display">Syllabus Explorer</h1>
-                  <button onClick={() => triggerLoadingState('quiz-gen')} className="px-4 py-2 bg-amber-500 text-slate-950 text-xs font-bold rounded-xl shadow-glow-amber">
+                  <button onClick={() => triggerLoadingState('quiz-gen')} className="px-4 py-2 bg-[#4285F4] text-white text-xs font-bold rounded-xl shadow-glow-google-blue">
                     + Generate Test
                   </button>
                 </div>
@@ -2623,7 +2646,7 @@ export default function WorkspacePage() {
                   <div className="glass-panel p-6 rounded-3xl space-y-4">
                     <h3 className="text-xs font-bold font-mono uppercase text-slate-400">Syllabus Hierarchy</h3>
                     <div className="space-y-2 text-sm">
-                      <div className="font-bold text-amber-400 flex items-center gap-2">
+                      <div className="font-bold text-[#8AB4F8] flex items-center gap-2">
                         <ChevronDown className="w-4 h-4" /> 1. Indian Constitution & Polity
                       </div>
                       <div className="pl-6 space-y-1.5 text-xs text-slate-300">
@@ -2640,7 +2663,7 @@ export default function WorkspacePage() {
                     </p>
                     <div className="pt-4 border-t border-white/10 flex justify-between items-center text-xs">
                       <span className="text-slate-400 font-mono">Reference: Official UPSC Syllabus GS Paper 2</span>
-                      <button onClick={() => triggerLoadingState('afcat')} className="text-amber-400 font-bold hover:underline">
+                      <button onClick={() => triggerLoadingState('afcat')} className="text-[#8AB4F8] font-bold hover:underline">
                         Launch Related CBT Drills →
                       </button>
                     </div>
@@ -2662,7 +2685,7 @@ export default function WorkspacePage() {
                   </div>
                   <div className="flex-1 p-8 flex items-center justify-center text-center">
                     <div className="max-w-md space-y-3">
-                      <FileText className="w-16 h-16 text-amber-400 mx-auto" />
+                      <FileText className="w-16 h-16 text-[#4285F4] mx-auto" />
                       <h3 className="text-lg font-bold text-white font-display">PDF Document Ingestion Engine</h3>
                       <p className="text-xs text-slate-400">
                         Select any passage in your textbook to trigger contextual explanations, formula derivations, or instant active recall flashcard generation.
@@ -2672,7 +2695,7 @@ export default function WorkspacePage() {
                 </div>
                 <div className="glass-panel rounded-3xl flex flex-col justify-between overflow-hidden">
                   <div className="p-4 border-b border-white/10 flex items-center gap-2 bg-white/5">
-                    <Sparkles className="w-4 h-4 text-amber-400" />
+                    <Sparkles className="w-4 h-4 text-[#FBBC04]" />
                     <span className="text-xs font-bold text-white font-display">AI Document Explainer</span>
                   </div>
                   <div className="flex-1 p-4 space-y-3 overflow-y-auto">
@@ -2681,8 +2704,8 @@ export default function WorkspacePage() {
                     </div>
                   </div>
                   <div className="p-3 border-t border-white/10 flex gap-2">
-                    <input type="text" placeholder="Ask about this document..." className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400" />
-                    <button className="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-glow-amber">Send</button>
+                    <input type="text" placeholder="Ask about this document..." className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-[#4285F4]" />
+                    <button className="px-4 py-2 bg-[#4285F4] text-white font-bold text-xs rounded-xl shadow-glow-google-blue">Send</button>
                   </div>
                 </div>
               </div>
@@ -2696,10 +2719,10 @@ export default function WorkspacePage() {
                   <h3 className="text-lg font-bold text-white font-display">Concept Mastery Radar (Past 30 Days)</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {[
-                      { topic: 'Reasoning Logic', mastery: '94%', color: 'text-emerald-400', bg: 'bg-emerald-500/20' },
-                      { topic: 'General Knowledge', mastery: '76%', color: 'text-amber-400', bg: 'bg-amber-500/20' },
-                      { topic: 'Numerical Ability', mastery: '82%', color: 'text-emerald-400', bg: 'bg-emerald-500/20' },
-                      { topic: 'English Verbal', mastery: '90%', color: 'text-emerald-400', bg: 'bg-emerald-500/20' }
+                      { topic: 'Reasoning Logic', mastery: '94%', color: 'text-[#81C995]', bg: 'bg-[#34A853]/20' },
+                      { topic: 'General Knowledge', mastery: '76%', color: 'text-[#FDD663]', bg: 'bg-[#FBBC04]/20' },
+                      { topic: 'Numerical Ability', mastery: '82%', color: 'text-[#81C995]', bg: 'bg-[#34A853]/20' },
+                      { topic: 'English Verbal', mastery: '90%', color: 'text-[#81C995]', bg: 'bg-[#34A853]/20' }
                     ].map((item, idx) => (
                       <div key={idx} className={`p-4 rounded-2xl border border-white/10 ${item.bg} space-y-1`}>
                         <div className="text-xs text-slate-300">{item.topic}</div>
@@ -2719,14 +2742,14 @@ export default function WorkspacePage() {
                     <h1 className="text-2xl font-bold text-white font-display">Active Recall Deck</h1>
                     <p className="text-xs text-slate-400 font-mono">FSRS Spaced Repetition Queue</p>
                   </div>
-                  <span className="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold rounded-full">
+                  <span className="px-3 py-1 bg-[#FBBC04]/20 text-[#FDD663] border border-[#FBBC04]/30 text-xs font-bold rounded-full">
                     {dueCards.length} due for review
                   </span>
                 </div>
 
                 {dueCards.length === 0 ? (
                   <div className="glass-panel p-12 rounded-3xl text-center space-y-4">
-                    <RotateCcw className="w-12 h-12 text-amber-400 mx-auto animate-spin-slow" />
+                    <RotateCcw className="w-12 h-12 text-[#FBBC04] mx-auto animate-spin-slow" />
                     <h3 className="text-lg font-bold text-white font-display">All Caught Up!</h3>
                     <p className="text-xs text-slate-400 max-w-sm mx-auto">
                       No flashcards due right now. Attempt exam quizzes to automatically generate active recall cards for challenging topics.
@@ -2736,7 +2759,7 @@ export default function WorkspacePage() {
                   (() => {
                     const card = dueCards[activeCardIndex] || dueCards[0];
                     return (
-                      <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl flex flex-col min-h-[300px] justify-between">
+                      <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl flex flex-col min-h-[300px] justify-between google-ribbon-border">
                         <div className="p-4 bg-white/5 border-b border-white/10 flex justify-between items-center text-xs text-slate-400 font-mono">
                           <span>Difficulty: {Number(card.difficulty || 4.5).toFixed(1)}/10</span>
                           <span>Repetitions: {card.repetitionCount || 0}</span>
@@ -2744,13 +2767,13 @@ export default function WorkspacePage() {
 
                         <div className="p-8 flex-1 flex flex-col justify-center space-y-6 text-center">
                           <div className="space-y-2">
-                            <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-wider">QUESTION / FRONT</span>
+                            <span className="text-[10px] font-mono font-bold text-[#F28B82] uppercase tracking-wider">QUESTION / FRONT</span>
                             <p className="text-lg font-semibold text-white">{card.frontText}</p>
                           </div>
 
                           {showAnswer && (
                             <div className="pt-6 border-t border-white/10 space-y-2 animate-fadeInUp">
-                              <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider">ANSWER / BACK</span>
+                              <span className="text-[10px] font-mono font-bold text-[#81C995] uppercase tracking-wider">ANSWER / BACK</span>
                               <p className="text-sm text-slate-200 leading-relaxed">{card.backText}</p>
                             </div>
                           )}
@@ -2760,17 +2783,17 @@ export default function WorkspacePage() {
                           {!showAnswer ? (
                             <button
                               onClick={() => setShowAnswer(true)}
-                              className="w-full py-3 bg-amber-500 text-slate-950 font-bold rounded-xl hover:bg-amber-400 transition-all shadow-glow-amber text-xs"
+                              className="w-full py-3 bg-[#4285F4] text-white font-bold rounded-xl hover:bg-[#1A73E8] transition-all shadow-glow-google-blue text-xs"
                             >
                               Reveal Answer
                             </button>
                           ) : (
                             <div className="grid grid-cols-4 gap-2">
                               {[
-                                { label: 'Again', rating: 1, color: 'bg-red-500 hover:bg-red-600' },
-                                { label: 'Hard', rating: 2, color: 'bg-amber-500 hover:bg-amber-600' },
-                                { label: 'Good', rating: 3, color: 'bg-emerald-500 hover:bg-emerald-600' },
-                                { label: 'Easy', rating: 4, color: 'bg-blue-500 hover:bg-blue-600' }
+                                { label: 'Again', rating: 1, color: 'bg-[#EA4335] hover:bg-[#D93025]' },
+                                { label: 'Hard', rating: 2, color: 'bg-[#FBBC04] text-slate-950 hover:bg-[#F4B400]' },
+                                { label: 'Good', rating: 3, color: 'bg-[#34A853] hover:bg-[#188038]' },
+                                { label: 'Easy', rating: 4, color: 'bg-[#4285F4] hover:bg-[#1A73E8]' }
                               ].map((btn) => (
                                 <button
                                   key={btn.rating}
@@ -2792,7 +2815,7 @@ export default function WorkspacePage() {
 
             {/* PROFILE SETTINGS */}
             {activeTab === 'profile' && (
-              <div className="max-w-xl mx-auto glass-panel p-8 rounded-3xl space-y-6 animate-fadeInUp">
+              <div className="max-w-xl mx-auto glass-panel p-8 rounded-3xl space-y-6 animate-fadeInUp google-ribbon-border">
                 <h1 className="text-2xl font-bold text-white font-display">Aspirant Profile & Preferences</h1>
                 <div className="space-y-4">
                   <div className="space-y-1">
@@ -2801,7 +2824,7 @@ export default function WorkspacePage() {
                       type="text" 
                       value={profileFullName} 
                       onChange={(e) => setProfileFullName(e.target.value)} 
-                      className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none" 
+                      className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none" 
                     />
                   </div>
                   
@@ -2812,7 +2835,7 @@ export default function WorkspacePage() {
                       placeholder="+91 XXXXX XXXXX"
                       value={profilePhoneNumber} 
                       onChange={(e) => setProfilePhoneNumber(e.target.value)} 
-                      className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none" 
+                      className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none" 
                     />
                   </div>
 
@@ -2823,7 +2846,7 @@ export default function WorkspacePage() {
                         type="number" 
                         value={profileGoal} 
                         onChange={(e) => setProfileGoal(parseInt(e.target.value, 10) || 0)} 
-                        className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none" 
+                        className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none" 
                       />
                     </div>
 
@@ -2832,7 +2855,7 @@ export default function WorkspacePage() {
                       <select 
                         value={profileTargetYear} 
                         onChange={(e) => setProfileTargetYear(e.target.value)} 
-                        className="w-full p-3 bg-[#0f141f] border border-white/10 rounded-xl text-sm text-white focus:border-amber-400 focus:outline-none"
+                        className="w-full p-3 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none"
                       >
                         <option value="2026">2026</option>
                         <option value="2027">2027</option>
@@ -2843,7 +2866,7 @@ export default function WorkspacePage() {
 
                   <button 
                     onClick={handleSaveProfile} 
-                    className="w-full py-3.5 bg-amber-500 text-slate-950 font-bold rounded-xl hover:bg-amber-400 transition-all shadow-glow-amber text-sm mt-4"
+                    className="w-full py-3.5 bg-[#4285F4] text-white font-bold rounded-xl hover:bg-[#1A73E8] transition-all shadow-glow-google-blue text-sm mt-4"
                   >
                     Save Changes
                   </button>
@@ -2857,12 +2880,12 @@ export default function WorkspacePage() {
                 <h1 className="text-3xl font-bold text-white font-display">System Administration Console</h1>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
-                    { label: 'Total Users', value: adminStats.totalUsers.toLocaleString() },
-                    { label: 'Active Premium', value: adminStats.activePremium.toLocaleString() },
-                    { label: 'Monthly Revenue', value: `₹${(adminStats.totalRevenue * 80).toFixed(0)}` },
-                    { label: 'GenAI Tokens', value: adminStats.totalTokensUsed.toLocaleString() },
+                    { label: 'Total Users', value: adminStats.totalUsers.toLocaleString(), color: 'border-l-4 border-[#4285F4]' },
+                    { label: 'Active Premium', value: adminStats.activePremium.toLocaleString(), color: 'border-l-4 border-[#34A853]' },
+                    { label: 'Monthly Revenue', value: `₹${(adminStats.totalRevenue * 80).toFixed(0)}`, color: 'border-l-4 border-[#FBBC04]' },
+                    { label: 'GenAI Tokens', value: adminStats.totalTokensUsed.toLocaleString(), color: 'border-l-4 border-[#EA4335]' },
                   ].map((kpi, i) => (
-                    <div key={i} className="glass-panel p-5 rounded-2xl space-y-1 border-white/10">
+                    <div key={i} className={`glass-panel p-5 rounded-2xl space-y-1 border-white/10 ${kpi.color}`}>
                       <span className="text-xs text-slate-400 uppercase font-mono">{kpi.label}</span>
                       <div className="text-2xl font-bold text-white font-display">{kpi.value}</div>
                     </div>
@@ -2877,7 +2900,7 @@ export default function WorkspacePage() {
 
       {/* MOBILE BOTTOM NAV */}
       {activeTab !== 'auth' && activeTab !== 'pricing' && activeTab !== 'landing' && (
-        <nav className="md:hidden h-16 border-t border-white/10 bg-[#0d1117]/95 backdrop-blur-md flex items-center justify-around fixed bottom-0 left-0 right-0 z-50">
+        <nav className="md:hidden h-16 border-t border-white/10 bg-[#1f2024]/95 backdrop-blur-md flex items-center justify-around fixed bottom-0 left-0 right-0 z-50">
           {[
             { id: 'afcat', icon: Shield },
             { id: 'dashboard', icon: BookOpen },
@@ -2892,7 +2915,7 @@ export default function WorkspacePage() {
                 key={item.id}
                 onClick={() => triggerLoadingState(item.id)}
                 className={`p-2.5 rounded-xl transition-all ${
-                  isActive ? 'text-amber-400' : 'text-slate-500 hover:text-white'
+                  isActive ? 'text-[#8AB4F8]' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 <Icon className="w-5 h-5" />
