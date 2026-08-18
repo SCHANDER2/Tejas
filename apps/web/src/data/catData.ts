@@ -41,12 +41,12 @@ export interface CatSubject {
   iconName: string;
   description: string;
   topics: { id: string; name: string; weightage: string; expectedQs: number; importance: 'High' | 'Medium' | 'Critical'; keyConcepts: string[] }[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export const CAT_SUBJECTS: CatSubject[] = [
@@ -61,12 +61,14 @@ export const CAT_SUBJECTS: CatSubject[] = [
       { id: 'rc_passages', name: 'Reading Comprehension (Philosophy, Economics, Tech)', weightage: '66%', expectedQs: 16, importance: 'Critical', keyConcepts: ['Main Idea & Authors Tone', 'Inferential & Critical Reasoning', 'Detail & Exception Questions'] },
       { id: 'para_jumbles', name: 'Para Jumbles & Summary (TITA & MCQ)', weightage: '34%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Mandatory Pairs & Chronology', 'Distortion vs Generalization in Summary', 'Odd Sentence Out Logic'] }
     ],
-    youtubePlaylist: {
-      title: 'CAT VARC Reading Comprehension & Verbal Masterclass',
-      channel: '2IIM CAT Official',
-      url: 'https://www.youtube.com/@2iimcat/playlists',
-      videoCount: '42 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'CAT VARC Strategy & Practice',
+        channel: '2IIM CAT Preparation',
+        url: 'https://www.youtube.com/@2iimcat/playlists',
+        videoCount: '42 Lectures'
+      }
+    ]
   },
   {
     id: 'dilr',
@@ -79,12 +81,14 @@ export const CAT_SUBJECTS: CatSubject[] = [
       { id: 'arrangements_games', name: 'Games, Tournaments & Matrix Grid Sets', weightage: '50%', expectedQs: 10, importance: 'Critical', keyConcepts: ['Round-robin & Knockout Tables', 'Grid Filling with Constraints', 'True-False & Binary Logic'] },
       { id: 'di_networks', name: 'Venn Diagrams & Routes/Networks', weightage: '50%', expectedQs: 10, importance: 'Critical', keyConcepts: ['3 & 4-Set Venn Maxima/Minima', 'Critical Path & Network Flow', 'Data Sufficiency & Caselets'] }
     ],
-    youtubePlaylist: {
-      title: 'CAT DILR Data Interpretation & Logical Reasoning Complete Series',
-      channel: 'Elites Grid Official',
-      url: 'https://www.youtube.com/@ElitesGrid/playlists',
-      videoCount: '48 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'CAT DILR Complete LRDI Series',
+        channel: 'Elites Grid CAT Prep',
+        url: 'https://www.youtube.com/@elitesgridCAT/playlists',
+        videoCount: '48 Lectures'
+      }
+    ]
   },
   {
     id: 'qa',
@@ -98,12 +102,20 @@ export const CAT_SUBJECTS: CatSubject[] = [
       { id: 'algebra_qa', name: 'Algebra, Functions, Graphs & Logs', weightage: '35%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Maxima/Minima of Quadratics', 'Modulus Equations & Inequalities', 'Logarithms & Sequence-Series (AP/GP/HP)'] },
       { id: 'geometry_qa', name: 'Geometry, Mensuration & Number System', weightage: '25%', expectedQs: 5, importance: 'High', keyConcepts: ['Circles & Tangent Theorems', 'Coordinate Geometry & Coordinate Area', 'Base System & Remainder Theorems'] }
     ],
-    youtubePlaylist: {
-      title: 'CAT Quantitative Aptitude Full Arithmetic & Algebra Course',
-      channel: 'Rodha Official',
-      url: 'https://www.youtube.com/@Rodha/playlists',
-      videoCount: '60 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'Quantitative Aptitude for CAT — Complete Syllabus',
+        channel: 'Rodha',
+        url: 'https://www.youtube.com/playlist?list=PLG4bwc5fquzgfMh4YFDnv7fttM0RIKiUQ',
+        videoCount: '60 Lectures'
+      },
+      {
+        title: 'CAT Quant Practice by 2IIM',
+        channel: '2IIM CAT Preparation',
+        url: 'https://www.youtube.com/@2iimcat/playlists',
+        videoCount: '60 Lectures'
+      }
+    ]
   }
 ];
 

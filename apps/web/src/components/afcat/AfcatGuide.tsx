@@ -173,29 +173,56 @@ export default function AfcatGuide() {
         {/* Subject Detail view */}
         <div className="space-y-6">
           {/* YouTube Playlist Banner */}
-          <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-5 border border-red-200/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center shrink-0 shadow-md">
-                <Play className="w-6 h-6 fill-current ml-0.5" />
-              </div>
-              <div>
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold text-red-700 uppercase tracking-wider">
-                  Recommended Learning Playlist
+          <div className="flex flex-col gap-3">
+            <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-2xl p-5 border border-red-200/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                  <Play className="w-6 h-6 fill-current ml-0.5" />
                 </div>
-                <h4 className="font-bold text-base text-[#262a2b]">{selectedSubject.youtubePlaylist.title}</h4>
-                <p className="text-xs text-[#786e67]">
-                  By {selectedSubject.youtubePlaylist.channel} • {selectedSubject.youtubePlaylist.videoCount}
-                </p>
+                <div>
+                  <div className="inline-flex items-center gap-1.5 text-xs font-bold text-red-700 uppercase tracking-wider">
+                    Recommended Learning Playlist
+                  </div>
+                  <h4 className="font-bold text-base text-[#262a2b]">{selectedSubject.youtubePlaylists[0].title}</h4>
+                  <p className="text-xs text-[#786e67]">
+                    By {selectedSubject.youtubePlaylists[0].channel} • {selectedSubject.youtubePlaylists[0].videoCount}
+                  </p>
+                </div>
               </div>
+              <a
+                href={selectedSubject.youtubePlaylists[0].url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2 shrink-0"
+              >
+                Watch Free Playlist <ExternalLink className="w-3.5 h-3.5" />
+              </a>
             </div>
-            <a
-              href={selectedSubject.youtubePlaylist.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-all shadow-sm flex items-center gap-2 shrink-0"
-            >
-              Watch Free Playlist <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+            
+            {selectedSubject.youtubePlaylists.length > 1 && (
+              <div className="flex flex-col gap-2">
+                {selectedSubject.youtubePlaylists.slice(1).map((playlist, idx) => (
+                  <a
+                    key={idx}
+                    href={playlist.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-[#fcfcfb] rounded-xl p-3 border border-[#e5e2d9] hover:border-red-300 flex items-center justify-between transition-all"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                        <Play className="w-4 h-4 fill-current ml-0.5" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-sm text-[#262a2b]">{playlist.title}</h5>
+                        <p className="text-xs text-[#786e67]">By {playlist.channel} • {playlist.videoCount}</p>
+                      </div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-[#786e67]" />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Topics Grid */}

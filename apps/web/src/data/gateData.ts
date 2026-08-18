@@ -56,12 +56,12 @@ export interface GateSubject {
   iconName: string;
   description: string;
   topics: GateSubjectTopic[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export interface GatePyqPaper {
@@ -217,12 +217,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'cs_ga_num', name: 'Numerical Computation & Data Interpretation', weightage: '50%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Percentages, Ratios, Powers & Series', 'Permutations & Combinations', 'Data Graphs & Charts', 'Geometry & Mensuration'], pyqCount: 140 },
         { id: 'cs_ga_verb', name: 'Verbal Ability & Spatial Aptitude', weightage: '50%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Grammar & Word Analogy', 'Critical Reasoning & Deduction', 'Mirror Images, Paper Folding & 2D/3D Rotation'], pyqCount: 120 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE General Aptitude Complete Playlist',
-        channel: 'Gate Smashers Official',
-        url: 'https://www.youtube.com/@GateSmashers/playlists',
+        channel: 'GATE Wallah',
+        url: 'https://www.youtube.com/playlist?list=PLvTTv60o7qj-PgF3DhvvTK6_-g_FU8wCT',
         videoCount: '35 Lectures'
-      }
+      }]
     },
     {
       id: 'cs_em_dm',
@@ -237,12 +237,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'cs_dm_graph', name: 'Discrete Maths & Graph Theory', weightage: '55%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Propositional & First Order Logic', 'Equivalence & Partial Order Relations', 'Planar Graphs, Vertex/Edge Coloring', 'Euler & Hamiltonian Cycles'], pyqCount: 160 },
         { id: 'cs_em_la_prob', name: 'Linear Algebra & Probability', weightage: '45%', expectedQs: 4, importance: 'Critical', keyConcepts: ['Eigenvalues, Eigenvectors & Cayley-Hamilton', 'Rank & System of Linear Equations', 'Bayes Theorem & Poisson/Normal Distributions'], pyqCount: 150 }
       ],
-      youtubePlaylist: {
-        title: 'GATE Discrete Mathematics & Linear Algebra Masterclass',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+      youtubePlaylists: [{
+        title: 'Discrete Mathematics',
+        channel: 'Gate Smashers',
+        url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiH2wwES9vPWsEL6ipTaUSl3',
         videoCount: '45 Lectures'
-      }
+      }]
     },
     {
       id: 'cs_dsa',
@@ -257,12 +257,20 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'cs_algo_design', name: 'Algorithm Design (DP, Greedy, Divide & Conquer)', weightage: '55%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Asymptotic Notation (Big-O, Omega, Theta)', 'Recurrence Relations & Master Theorem', 'Dynamic Programming (LCS, 0/1 Knapsack, Matrix Chain)', 'Dijkstra, Bellman-Ford, Kruskal & Prim'], pyqCount: 190 },
         { id: 'cs_ds_trees', name: 'Data Structures (Trees, Heaps, Hash Tables)', weightage: '45%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Binary Search Trees & AVL Rotations', 'Min/Max Heap Operations', 'Hashing & Collision Resolution Techniques', 'Stack applications (Infix to Postfix)'], pyqCount: 175 }
       ],
-      youtubePlaylist: {
-        title: 'GATE CS Data Structures & Algorithms Complete Course',
-        channel: 'Gate Smashers Official',
-        url: 'https://www.youtube.com/@GateSmashers/playlists',
-        videoCount: '60 Lectures'
-      }
+      youtubePlaylists: [
+        {
+          title: 'Data Structures',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT',
+          videoCount: '60 Lectures'
+        },
+        {
+          title: 'Design & Analysis of Algorithms',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiHcmS4i14bI0VrMbZTUvlTa',
+          videoCount: 'Playlist'
+        }
+      ]
     },
     {
       id: 'cs_os_dbms',
@@ -277,12 +285,20 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'cs_os_memory', name: 'Operating Systems & Virtual Memory', weightage: '50%', expectedQs: 6, importance: 'Critical', keyConcepts: ['CPU Scheduling (SJF, Round Robin)', 'Semaphores & Classical Sync Problems', 'Deadlock Detection & Bankers Algorithm', 'Paging, TLB & Page Replacement (LRU, FIFO)'], pyqCount: 185 },
         { id: 'cs_dbms_norm_tx', name: 'DBMS: Normalization & Concurrency Control', weightage: '50%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Candidate Key & Closure Calculation', '1NF, 2NF, 3NF, BCNF Decomposition', 'Conflict/View Serializability & Recoverability', 'Two-Phase Locking (2PL) & B/B+ Trees'], pyqCount: 170 }
       ],
-      youtubePlaylist: {
-        title: 'GATE Operating Systems & DBMS Complete Series',
-        channel: 'Knowledge Gate Official',
-        url: 'https://www.youtube.com/@KnowledgeGate_ai/playlists',
-        videoCount: '55 Lectures'
-      }
+      youtubePlaylists: [
+        {
+          title: 'Operating Systems',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiGz9donHRrE9I3Mwn6XdP8p',
+          videoCount: '55 Lectures'
+        },
+        {
+          title: 'DBMS',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiFAN6I8CuViBuCdJgiOkT2Y',
+          videoCount: 'Playlist'
+        }
+      ]
     },
     {
       id: 'cs_toc_cd_cn',
@@ -298,12 +314,26 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'cs_cn_tcpip', name: 'Computer Networks (IPv4/IPv6, TCP & Subnets)', weightage: '40%', expectedQs: 5, importance: 'Critical', keyConcepts: ['CIDR Subnetting & Supernetting', 'Flow Control (Sliding Window, Go-Back-N, SR)', 'TCP Congestion Control & Window Size', 'Routing Algorithms (Dijkstra, Bellman-Ford)'], pyqCount: 180 },
         { id: 'cs_cd_parsing', name: 'Compiler Design (Parsing & Code Generation)', weightage: '20%', expectedQs: 2, importance: 'High', keyConcepts: ['LL(1), LR(0), SLR(1), LALR(1), CLR(1) Parsing', 'Syntax Directed Translation (SDT)', 'Intermediate Code (3-Address Code) & DAGs'], pyqCount: 110 }
       ],
-      youtubePlaylist: {
-        title: 'GATE TOC, Compiler & Computer Networks Master Course',
-        channel: 'Gate Smashers Official',
-        url: 'https://www.youtube.com/@GateSmashers/playlists',
-        videoCount: '70 Lectures'
-      }
+      youtubePlaylists: [
+        {
+          title: 'Theory of Computation',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiFM9Lj5G9G_76adtyb4ef7i',
+          videoCount: '70 Lectures'
+        },
+        {
+          title: 'Compiler Design',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiEKtKSIHYusizkESC42diyc',
+          videoCount: 'Playlist'
+        },
+        {
+          title: 'Computer Networks',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiGFBD2-2joCpWOLUrDLvVV_',
+          videoCount: 'Playlist'
+        }
+      ]
     },
     {
       id: 'cs_co_digital',
@@ -318,12 +348,20 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'cs_coa_pipeline', name: 'COA: Pipelining & Cache Memory Mapping', weightage: '60%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Instruction Pipelining & Hazards (Data, Control, Structural)', 'Direct, Fully Associative & Set-Associative Cache', 'Addressing Modes & Instruction Cycles', 'Hierarchical Memory Access Time'], pyqCount: 165 },
         { id: 'cs_dl_kmaps', name: 'Digital Logic (K-Maps, Multiplexers & Counters)', weightage: '40%', expectedQs: 3, importance: 'High', keyConcepts: ['K-Map Minimization (SOP/POS)', 'Multiplexers & Decoder Implementations', 'Flip-Flops, Synchronous & Asynchronous Counters'], pyqCount: 130 }
       ],
-      youtubePlaylist: {
-        title: 'GATE Computer Organization & Digital Logic Lectures',
-        channel: 'Knowledge Gate Official',
-        url: 'https://www.youtube.com/@KnowledgeGate_ai/playlists',
-        videoCount: '45 Lectures'
-      }
+      youtubePlaylists: [
+        {
+          title: 'Computer Architecture',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiHMonh3G6QNKq53C6oNXGrX',
+          videoCount: '45 Lectures'
+        },
+        {
+          title: 'Discrete Mathematics',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiH2wwES9vPWsEL6ipTaUSl3',
+          videoCount: 'Playlist'
+        }
+      ]
     }
   ],
 
@@ -341,12 +379,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'da_ga_quant', name: 'Quantitative Aptitude & Data Interpretation', weightage: '50%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Arithmetic & Geometry', 'Data Graphs & Charts', 'Permutations & Probability'], pyqCount: 60 },
         { id: 'da_ga_verbal', name: 'Verbal Ability & Logical Deduction', weightage: '50%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Vocabulary & Context', 'Critical Reasoning & Deduction'], pyqCount: 50 }
       ],
-      youtubePlaylist: {
-        title: 'GATE General Aptitude for DA & CS',
-        channel: 'Gate Smashers Official',
-        url: 'https://www.youtube.com/@GateSmashers/playlists',
+      youtubePlaylists: [{
+        title: 'GATE General Aptitude Complete Playlist',
+        channel: 'GATE Wallah',
+        url: 'https://www.youtube.com/playlist?list=PLvTTv60o7qj-PgF3DhvvTK6_-g_FU8wCT',
         videoCount: '35 Lectures'
-      }
+      }]
     },
     {
       id: 'da_prob_stats',
@@ -361,12 +399,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'da_stat_distributions', name: 'Random Variables & Probability Distributions', weightage: '55%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Joint & Conditional Probability / Bayes Theorem', 'Binomial, Poisson, Uniform & Normal Distributions', 'Expectation, Variance, Covariance & Correlation', 'Central Limit Theorem (CLT)'], pyqCount: 80 },
         { id: 'da_stat_inference', name: 'Statistical Inference & Hypothesis Testing', weightage: '45%', expectedQs: 4, importance: 'Critical', keyConcepts: ['Confidence Intervals & Maximum Likelihood Estimation (MLE)', 't-test, z-test, Chi-square & ANOVA', 'p-values, Type I and Type II Errors'], pyqCount: 70 }
       ],
-      youtubePlaylist: {
-        title: 'GATE DA Probability & Statistics Masterclass',
-        channel: 'NPTEL Official / Applied Roots',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+      youtubePlaylists: [{
+        title: 'GATE DA Probability & Statistics',
+        channel: 'GATE Wallah CSE & DA',
+        url: 'https://www.youtube.com/@gatewallah_cse_da/playlists',
         videoCount: '40 Lectures'
-      }
+      }]
     },
     {
       id: 'da_linear_algebra_calculus',
@@ -381,12 +419,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'da_la_svd', name: 'Linear Algebra & Matrix Decompositions', weightage: '60%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Vector Spaces, Basis & Dimension', 'Rank-Nullity Theorem & Projections', 'Eigenvalues, Diagonalization & SVD (Singular Value Decomposition)', 'PCA (Principal Component Analysis) Math'], pyqCount: 75 },
         { id: 'da_calc_opt', name: 'Multivariate Calculus & Optimization', weightage: '40%', expectedQs: 3, importance: 'Critical', keyConcepts: ['Gradients, Jacobians & Hessian Matrices', 'Taylor Series & Constrained Optimization (Lagrange Multipliers)', 'Gradient Descent, Convex Functions & Local/Global Minima'], pyqCount: 65 }
       ],
-      youtubePlaylist: {
+      youtubePlaylists: [{
         title: 'GATE DA Linear Algebra & Optimization for AI',
-        channel: 'GATE Wallah Official',
-        url: 'https://www.youtube.com/@GATEWallah_PW/playlists',
+        channel: 'GATE Wallah CSE & DA',
+        url: 'https://www.youtube.com/@gatewallah_cse_da/playlists',
         videoCount: '38 Lectures'
-      }
+      }]
     },
     {
       id: 'da_ml',
@@ -401,12 +439,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'da_ml_supervised', name: 'Supervised Learning & Ensemble Methods', weightage: '50%', expectedQs: 7, importance: 'Critical', keyConcepts: ['Linear & Logistic Regression / Regularization (L1/L2 Lasso/Ridge)', 'Support Vector Machines (SVM & Kernels)', 'Decision Trees, Random Forests & Gradient Boosting (XGBoost)', 'Bias-Variance Tradeoff, ROC-AUC, Precision/Recall/F1'], pyqCount: 90 },
         { id: 'da_ml_deep_unsupervised', name: 'Clustering, PCA & Neural Networks', weightage: '50%', expectedQs: 6, importance: 'Critical', keyConcepts: ['K-Means, GMM & Hierarchical Clustering', 'Multi-Layer Perceptrons & Backpropagation Algorithm', 'Activation Functions (ReLU, Softmax, Sigmoid) & Loss Functions', 'Overfitting Prevention: Dropout & Batch Normalization'], pyqCount: 85 }
       ],
-      youtubePlaylist: {
-        title: 'GATE DA Machine Learning & Deep Learning Full Series',
-        channel: 'NPTEL Official / Gate Smashers',
-        url: 'https://www.youtube.com/@GateSmashers/playlists',
+      youtubePlaylists: [{
+        title: 'Machine Learning',
+        channel: 'Gate Smashers',
+        url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiEXg5BV10k9THtjnS48yI-T',
         videoCount: '50 Lectures'
-      }
+      }]
     },
     {
       id: 'da_ai_search',
@@ -421,12 +459,12 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'da_ai_search_algos', name: 'Heuristic Search & Game Playing', weightage: '60%', expectedQs: 5, importance: 'Critical', keyConcepts: ['BFS, DFS, Uniform Cost Search & Iterative Deepening', 'A* Search, Admissibility & Consistency of Heuristics', 'Minimax Algorithm & Alpha-Beta Pruning in Game Trees'], pyqCount: 65 },
         { id: 'da_ai_logic', name: 'Knowledge Representation & Logic', weightage: '40%', expectedQs: 3, importance: 'High', keyConcepts: ['Propositional Logic & First Order Predicate Logic', 'Resolution Refutation & Inference Rules', 'Clause Normal Form (CNF) & Unification'], pyqCount: 55 }
       ],
-      youtubePlaylist: {
-        title: 'GATE DA Artificial Intelligence Search Algorithms',
-        channel: 'Knowledge Gate Official',
-        url: 'https://www.youtube.com/@KnowledgeGate_ai/playlists',
+      youtubePlaylists: [{
+        title: 'Artificial Intelligence',
+        channel: 'Gate Smashers',
+        url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiHGhOHV-nwb0HR5US5GFKFI',
         videoCount: '32 Lectures'
-      }
+      }]
     },
     {
       id: 'da_dsa_dbms',
@@ -441,12 +479,20 @@ export const GATE_BRANCH_SUBJECTS: Record<GateBranchId, GateSubject[]> = {
         { id: 'da_prog_dsa', name: 'Python DSA & Algorithm Complexity', weightage: '50%', expectedQs: 5, importance: 'Critical', keyConcepts: ['Lists, Stacks, Queues, Trees & Hash Maps in Python', 'Binary Search, Merge Sort, Quick Sort & Time Complexity', 'Graph Traversals (BFS/DFS) applications'], pyqCount: 75 },
         { id: 'da_dbms_sql', name: 'Relational Database & SQL Queries', weightage: '50%', expectedQs: 4, importance: 'Critical', keyConcepts: ['ER Diagrams & Relational Schema Mapping', 'Complex SQL: Group By, Having, Nested Subqueries & Joins', 'Functional Dependencies, 3NF & BCNF Normalization'], pyqCount: 70 }
       ],
-      youtubePlaylist: {
-        title: 'GATE DA Data Structures & SQL Mastery',
-        channel: 'Gate Smashers Official',
-        url: 'https://www.youtube.com/@GateSmashers/playlists',
-        videoCount: '42 Lectures'
-      }
+      youtubePlaylists: [
+        {
+          title: 'Data Structures',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT',
+          videoCount: '42 Lectures'
+        },
+        {
+          title: 'SQL',
+          channel: 'Gate Smashers',
+          url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiHqU4HKL7-SITyuSIcD93id',
+          videoCount: 'Playlist'
+        }
+      ]
     }
   ],
 
