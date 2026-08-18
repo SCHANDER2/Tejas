@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { CatQuestion, CatPyqPaper, CatModelPaper } from '../../data/catData';
-import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Lock } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Lock, Download } from 'lucide-react';
+import { exportUniversalExamPaperToPdf } from '../../utils/pdfExporter';
 
 interface CatExamCbtWindowProps {
   paperTitle: string;
@@ -291,10 +292,18 @@ export default function CatExamCbtWindow({
                 <span className="text-xs font-bold text-purple-400 uppercase">IIM CAT Scorecard & Percentile Predictor</span>
                 <h2 className="text-2xl font-black text-white mt-1">{paperTitle} Result</h2>
               </div>
-              <div className={`px-5 py-2 rounded-xl text-sm font-bold border ${
-                analysis.isQualified ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-amber-500/20 text-amber-400 border-amber-500/40'
-              }`}>
-                {analysis.percentile}% PERCENTILE (Predicted)
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => exportUniversalExamPaperToPdf('cat', paperTitle, paperYearOrType, questions)}
+                  className="px-4 py-2 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5"
+                >
+                  <Download className="w-4 h-4" /> Export Official 3-Part PDF
+                </button>
+                <div className={`px-5 py-2 rounded-xl text-sm font-bold border ${
+                  analysis.isQualified ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-amber-500/20 text-amber-400 border-amber-500/40'
+                }`}>
+                  {analysis.percentile}% PERCENTILE (Predicted)
+                </div>
               </div>
             </div>
 

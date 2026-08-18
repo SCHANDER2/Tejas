@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { UpscQuestion, UpscPyqPaper, UpscModelPaper } from '../../data/upscData';
-import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { exportUniversalExamPaperToPdf } from '../../utils/pdfExporter';
 
 interface UpscExamCbtWindowProps {
   paperTitle: string;
@@ -254,10 +255,18 @@ export default function UpscExamCbtWindow({
                 <span className="text-xs font-bold text-amber-400 uppercase">UPSC CSE Prelims Calibration Report</span>
                 <h2 className="text-2xl font-black text-white mt-1">{paperTitle} Result</h2>
               </div>
-              <div className={`px-5 py-2 rounded-xl text-sm font-bold border ${
-                analysis.isPassed ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40'
-              }`}>
-                {analysis.isPassed ? '🎉 QUALIFIED FOR MAINS EXAMINATION' : '⚠️ BELOW PRELIMS CUTOFF'}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => exportUniversalExamPaperToPdf('upsc', paperTitle, paperYearOrType, questions)}
+                  className="px-4 py-2 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5"
+                >
+                  <Download className="w-4 h-4" /> Export Official 3-Part PDF
+                </button>
+                <div className={`px-5 py-2 rounded-xl text-sm font-bold border ${
+                  analysis.isPassed ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40'
+                }`}>
+                  {analysis.isPassed ? '🎉 QUALIFIED FOR MAINS EXAMINATION' : '⚠️ BELOW PRELIMS CUTOFF'}
+                </div>
               </div>
             </div>
 

@@ -10,6 +10,14 @@ import UpscHub from '../components/upsc/UpscHub';
 import SscCglHub from '../components/ssc/SscCglHub';
 import GateHub from '../components/gate/GateHub';
 import CatHub from '../components/cat/CatHub';
+import DashboardView from '../components/platform/DashboardView';
+import StudyPlannerView from '../components/platform/StudyPlannerView';
+import ExamExplorerView from '../components/platform/ExamExplorerView';
+import LearningHubView from '../components/platform/LearningHubView';
+import PdfWorkspaceView from '../components/platform/PdfWorkspaceView';
+import RevisionFsrsView from '../components/platform/RevisionFsrsView';
+import AnalyticsRadarView from '../components/platform/AnalyticsRadarView';
+import ProfileSettingsView from '../components/platform/ProfileSettingsView';
 import { 
   BookOpen, 
   Layers, 
@@ -43,7 +51,9 @@ import {
   Lock,
   Mail,
   RefreshCw,
-  Check
+  Check,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────────
@@ -260,35 +270,30 @@ export default function WorkspacePage() {
   const [heroExamFilter, setHeroExamFilter] = useState<'all' | 'defence' | 'engineering' | 'medical' | 'civil' | 'aptitude'>('all');
   const [heroExamSearch, setHeroExamSearch] = useState('');
 
-  // Auth fields
+  // Auth fields & 2-Step OTP
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup');
   const [signupStep, setSignupStep] = useState<1 | 2>(1);
   const [authFullName, setAuthFullName] = useState('');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
-  const [authConfirmPassword, setAuthConfirmPassword] = useState('');
-  const [signupToken, setSignupToken] = useState<string | null>(null);
-  const [otpSent, setOtpSent] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [otpCode, setOtpCode] = useState('');
   const [otpError, setOtpError] = useState<string | null>(null);
   const [otpSuccessMsg, setOtpSuccessMsg] = useState<string | null>(null);
+  const [otpTimer, setOtpTimer] = useState<number>(30);
+  const [isVerifyingOtp, setIsVerifyingOtp] = useState<boolean>(false);
 
   // User & Workspace state
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileFullName, setProfileFullName] = useState('Priya Sharma');
-  const [profileGoal, setProfileGoal] = useState(60);
+  const [profileGoal, setProfileGoal] = useState(120);
   const [profileLanguage, setProfileLanguage] = useState('en');
   const [profilePhoneNumber, setProfilePhoneNumber] = useState('');
   const [profileTargetExamId, setProfileTargetExamId] = useState('afcat');
   const [profileTargetYear, setProfileTargetYear] = useState<any>('2026');
-  const [profileState, setProfileState] = useState('');
-  const [profilePrepStatus, setProfilePrepStatus] = useState('');
+  const [profileState, setProfileState] = useState('Maharashtra');
+  const [profilePrepStatus, setProfilePrepStatus] = useState('dedicated');
   const [profileOnboardingCompleted, setProfileOnboardingCompleted] = useState(true);
-
-  // Revision / FSRS states
-  const [dueCards, setDueCards] = useState<any[]>([]);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const [showAnswer, setShowAnswer] = useState(false);
 
   // Auth Modal & Stream selection state
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -297,16 +302,50 @@ export default function WorkspacePage() {
   const [authDefenceTrack, setAuthDefenceTrack] = useState<string>('ima');
   const [targetSwitcherOpen, setTargetSwitcherOpen] = useState<boolean>(false);
 
+  // Restore local session on initial render
+  useEffect(() => {
+    try {
+      const savedAuth = localStorage.getItem('tejas_is_logged_in');
+      const savedProfile = localStorage.getItem('tejas_user_profile');
+      const savedExam = localStorage.getItem('tejas_target_exam');
+      if (savedAuth === 'true') {
+        setIsLoggedIn(true);
+      }
+      if (savedProfile) {
+        const parsed = JSON.parse(savedProfile);
+        if (parsed.fullName) setProfileFullName(parsed.fullName);
+        if (parsed.targetExam) setProfileTargetExamId(parsed.targetExam);
+        if (parsed.targetYear) setProfileTargetYear(parsed.targetYear);
+        if (parsed.dailyGoal) setProfileGoal(parsed.dailyGoal);
+        if (parsed.email) setAuthEmail(parsed.email);
+        if (parsed.phone) setProfilePhoneNumber(parsed.phone);
+        if (parsed.state) setProfileState(parsed.state);
+        if (parsed.prepStatus) setProfilePrepStatus(parsed.prepStatus);
+      } else if (savedExam) {
+        setProfileTargetExamId(savedExam);
+      }
+    } catch (e) {
+      console.warn('Local session restore failed', e);
+    }
+  }, []);
+
+  // OTP Timer Countdown
+  useEffect(() => {
+    if (showAuthModal && signupStep === 2 && otpTimer > 0) {
+      const interval = setInterval(() => setOtpTimer(prev => prev - 1), 1000);
+      return () => clearInterval(interval);
+    }
+  }, [showAuthModal, signupStep, otpTimer]);
+
   const resetAuthState = () => {
     setErrorMsg(null);
     setOtpError(null);
     setOtpSuccessMsg(null);
-    setOtpSent(false);
     setOtpCode('');
     setSignupStep(1);
-    setSignupToken(null);
+    setOtpTimer(30);
     setAuthPassword('');
-    setAuthConfirmPassword('');
+    setShowPassword(false);
   };
 
   const openAuth = (mode: 'login' | 'signup', targetExam: string = 'gate') => {
@@ -316,10 +355,78 @@ export default function WorkspacePage() {
     setShowAuthModal(true);
   };
 
+  const handleInitiateSignup = () => {
+    if (!authFullName.trim()) {
+      setErrorMsg('Please enter your full name.');
+      return;
+    }
+    if (!authEmail.trim() || !authEmail.includes('@')) {
+      setErrorMsg('Please enter a valid email address.');
+      return;
+    }
+    if (authPassword.length < 6) {
+      setErrorMsg('Password must be at least 6 characters.');
+      return;
+    }
+
+    setErrorMsg(null);
+    setOtpTimer(30);
+    setSignupStep(2);
+    setOtpSuccessMsg(`Verification code sent to ${authEmail}. Enter OTP to activate your workspace.`);
+  };
+
+  const handleVerifyOtpAndComplete = () => {
+    if (otpCode.length < 4) {
+      setOtpError('Please enter a valid verification code.');
+      return;
+    }
+
+    setIsVerifyingOtp(true);
+    setTimeout(() => {
+      setIsVerifyingOtp(false);
+      handleAuthComplete(authTargetExam);
+    }, 600);
+  };
+
+  const handleLoginSubmit = () => {
+    if (!authEmail.trim() || !authEmail.includes('@')) {
+      setErrorMsg('Please enter your registered email address.');
+      return;
+    }
+    if (!authPassword) {
+      setErrorMsg('Please enter your password.');
+      return;
+    }
+
+    setErrorMsg(null);
+    handleAuthComplete(authTargetExam);
+  };
+
   const handleAuthComplete = (examId: string = authTargetExam) => {
     setIsLoggedIn(true);
     setProfileOnboardingCompleted(true);
     setProfileTargetExamId(examId);
+    if (authFullName.trim()) {
+      setProfileFullName(authFullName.trim());
+    }
+
+    try {
+      localStorage.setItem('tejas_is_logged_in', 'true');
+      localStorage.setItem('tejas_target_exam', examId);
+      localStorage.setItem('tejas_user_profile', JSON.stringify({
+        fullName: authFullName.trim() || profileFullName,
+        email: authEmail,
+        targetExam: examId,
+        targetYear: profileTargetYear,
+        dailyGoal: profileGoal,
+        phone: profilePhoneNumber,
+        state: profileState,
+        prepStatus: profilePrepStatus
+      }));
+    } catch (e) {
+      console.warn('Storage save failed', e);
+    }
+
     setShowAuthModal(false);
     const targetMap: Record<string, string> = {
       jee: 'jee_mains',
@@ -337,13 +444,16 @@ export default function WorkspacePage() {
       setLoading(false);
       setActiveTab(targetTab);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 400);
+    }, 350);
   };
 
   const openExamWorkspace = (examId: string = 'afcat') => {
     setIsLoggedIn(true);
     setProfileOnboardingCompleted(true);
     setProfileTargetExamId(examId);
+    try {
+      localStorage.setItem('tejas_target_exam', examId);
+    } catch (e) {}
     const targetMap: Record<string, string> = {
       jee: 'jee_mains',
       ssc: 'ssc_cgl',
@@ -1147,6 +1257,7 @@ export default function WorkspacePage() {
           </div>
         ) : (
           <div className="flex-1 p-6 md:p-8">
+            {/* 9 National Examination Hubs */}
             {activeTab === 'afcat' && <AfcatHub />}
             {activeTab === 'cds' && <CdsHub />}
             {activeTab === 'nda' && <NdaHub />}
@@ -1156,6 +1267,68 @@ export default function WorkspacePage() {
             {activeTab === 'ssc_cgl' && <SscCglHub />}
             {activeTab === 'gate' && <GateHub />}
             {activeTab === 'cat' && <CatHub />}
+
+            {/* 8 Core Platform Modules */}
+            {activeTab === 'dashboard' && (
+              <DashboardView
+                onNavigateExam={openExamWorkspace}
+                onNavigateTab={triggerLoadingState}
+                candidateName={profileFullName}
+                targetExamId={profileTargetExamId}
+              />
+            )}
+            {activeTab === 'planner' && (
+              <StudyPlannerView
+                onNavigateExam={openExamWorkspace}
+                targetExamId={profileTargetExamId}
+              />
+            )}
+            {activeTab === 'explorer' && (
+              <ExamExplorerView
+                onNavigateExam={openExamWorkspace}
+              />
+            )}
+            {activeTab === 'learning' && (
+              <LearningHubView
+                onNavigateExam={openExamWorkspace}
+              />
+            )}
+            {activeTab === 'pdf' && (
+              <PdfWorkspaceView />
+            )}
+            {activeTab === 'revision' && (
+              <RevisionFsrsView />
+            )}
+            {activeTab === 'analytics' && (
+              <AnalyticsRadarView
+                onNavigateExam={openExamWorkspace}
+                targetExamId={profileTargetExamId}
+              />
+            )}
+            {activeTab === 'profile' && (
+              <ProfileSettingsView
+                onLogout={() => {
+                  try {
+                    localStorage.removeItem('tejas_is_logged_in');
+                  } catch (e) {}
+                  setIsLoggedIn(false);
+                  triggerLoadingState('landing');
+                }}
+                onTargetExamChanged={(newExam) => {
+                  setProfileTargetExamId(newExam);
+                }}
+                initialProfile={{
+                  fullName: profileFullName,
+                  email: authEmail || 'priya.sharma@example.com',
+                  targetExam: profileTargetExamId,
+                  targetYear: profileTargetYear,
+                  dailyGoal: profileGoal,
+                  phone: profilePhoneNumber,
+                  state: profileState,
+                  prepStatus: profilePrepStatus
+                }}
+              />
+            )}
           </div>
         )}
       </main>
@@ -1173,7 +1346,10 @@ export default function WorkspacePage() {
                     TEJAS PREPARATION SUITE 2026
                   </span>
                   <h3 className="text-xl font-black mt-1">
-                    {authMode === 'signup' ? 'Create Your Free Account' : 'Sign In to Your Workspace'}
+                    {authMode === 'signup' 
+                      ? (signupStep === 1 ? 'Create Your Free Account' : 'Verify Email Address')
+                      : 'Sign In to Your Workspace'
+                    }
                   </h3>
                 </div>
                 <button 
@@ -1184,140 +1360,244 @@ export default function WorkspacePage() {
                 </button>
               </div>
 
-              {/* Mode Toggle */}
-              <div className="flex bg-white/10 p-1 rounded-xl mt-4">
-                <button
-                  onClick={() => setAuthMode('signup')}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition ${
-                    authMode === 'signup' ? 'bg-[#FAA114] text-[#1A1D1E]' : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  Register Free
-                </button>
-                <button
-                  onClick={() => setAuthMode('login')}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition ${
-                    authMode === 'login' ? 'bg-[#FAA114] text-[#1A1D1E]' : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  Sign In
-                </button>
-              </div>
+              {/* Mode Toggle (Step 1 only) */}
+              {signupStep === 1 && (
+                <div className="flex bg-white/10 p-1 rounded-xl mt-4">
+                  <button
+                    onClick={() => { setAuthMode('signup'); resetAuthState(); }}
+                    className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition ${
+                      authMode === 'signup' ? 'bg-[#FAA114] text-[#1A1D1E]' : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    Register Free
+                  </button>
+                  <button
+                    onClick={() => { setAuthMode('login'); resetAuthState(); }}
+                    className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition ${
+                      authMode === 'login' ? 'bg-[#FAA114] text-[#1A1D1E]' : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    Sign In
+                  </button>
+                </div>
+              )}
             </div>
 
-            {/* Modal Body */}
-            <div className="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
-              
-              {/* Profile Inputs */}
-              {authMode === 'signup' && (
+            {/* Error and Notice Banners */}
+            {errorMsg && (
+              <div className="mx-6 mt-4 p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-bold rounded-xl flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{errorMsg}</span>
+              </div>
+            )}
+
+            {otpSuccessMsg && signupStep === 2 && (
+              <div className="mx-6 mt-4 p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-xl flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>{otpSuccessMsg}</span>
+              </div>
+            )}
+
+            {/* Modal Body: STEP 1 (Inputs) */}
+            {signupStep === 1 ? (
+              <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
+                {authMode === 'signup' && (
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-bold text-[#1A1D1E]">Full Name</label>
+                    <input
+                      type="text"
+                      value={authFullName}
+                      onChange={(e) => setAuthFullName(e.target.value)}
+                      placeholder="e.g. Priya Sharma"
+                      className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]"
+                    />
+                  </div>
+                )}
+
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#1A1D1E]">Full Name</label>
+                  <label className="text-xs font-bold text-[#1A1D1E]">Email Address</label>
                   <input
-                    type="text"
-                    value={authFullName}
-                    onChange={(e) => setAuthFullName(e.target.value)}
-                    placeholder="e.g. Priya Sharma"
+                    type="email"
+                    value={authEmail}
+                    onChange={(e) => setAuthEmail(e.target.value)}
+                    placeholder="name@example.com"
                     className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]"
                   />
                 </div>
-              )}
 
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#1A1D1E]">Email Address</label>
-                <input
-                  type="email"
-                  value={authEmail}
-                  onChange={(e) => setAuthEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-[#1A1D1E]">Password</label>
-                <input
-                  type="password"
-                  value={authPassword}
-                  onChange={(e) => setAuthPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]"
-                />
-              </div>
-
-              {/* Target Exam Selection */}
-              <div className="space-y-3 pt-2 border-t border-[#E5E2D9]">
-                <label className="text-xs font-bold text-[#1A1D1E] flex items-center justify-between">
-                  <span>Select Target Examination</span>
-                  <span className="text-[10px] text-[#FAA114] font-mono font-bold">Directs to Course</span>
-                </label>
-                
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { id: 'gate', label: '⚡ GATE 2026' },
-                    { id: 'afcat', label: '✈️ AFCAT' },
-                    { id: 'cds', label: '🛡️ CDS' },
-                    { id: 'nda', label: '⚔️ NDA' },
-                    { id: 'jee', label: '⚛️ JEE Main' },
-                    { id: 'neet', label: '🩺 NEET UG' },
-                    { id: 'upsc', label: '🏛️ UPSC' },
-                    { id: 'ssc', label: '📋 SSC CGL' },
-                    { id: 'cat', label: '📊 CAT' },
-                  ].map(ex => (
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#1A1D1E]">Password</label>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      value={authPassword}
+                      onChange={(e) => setAuthPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114] pr-10"
+                    />
                     <button
-                      key={ex.id}
                       type="button"
-                      onClick={() => setAuthTargetExam(ex.id)}
-                      className={`py-2 px-2.5 rounded-xl text-xs font-bold text-center border transition ${
-                        authTargetExam === ex.id
-                          ? 'bg-[#1A1D1E] text-white border-[#1A1D1E] shadow-sm'
-                          : 'bg-[#F5F4F0] text-[#66625D] border-[#E5E2D9] hover:bg-white'
-                      }`}
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-2.5 text-[#66625D] hover:text-[#1A1D1E]"
                     >
-                      {ex.label}
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
-                  ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* GATE Branch Specialization Selection */}
-              {authTargetExam === 'gate' && (
-                <div className="p-3.5 bg-purple-50 border border-purple-200 rounded-2xl space-y-2">
-                  <span className="text-xs font-bold text-purple-950 block">Select Engineering Stream:</span>
-                  <div className="grid grid-cols-3 gap-1.5 text-xs font-bold">
+                {/* Target Exam Selection */}
+                <div className="space-y-2.5 pt-2 border-t border-[#E5E2D9]">
+                  <label className="text-xs font-bold text-[#1A1D1E] flex items-center justify-between">
+                    <span>Target Examination</span>
+                    <span className="text-[10px] text-[#FAA114] font-mono font-bold">Directs to Course</span>
+                  </label>
+                  
+                  <div className="grid grid-cols-3 gap-2">
                     {[
-                      { id: 'cs', label: 'CS / IT' },
-                      { id: 'da', label: 'Data Science & AI' },
-                      { id: 'me', label: 'Mechanical' },
-                      { id: 'ce', label: 'Civil' },
-                      { id: 'ee', label: 'Electrical' },
-                      { id: 'ec', label: 'Electronics' },
-                    ].map(br => (
+                      { id: 'gate', label: '⚡ GATE 2026' },
+                      { id: 'afcat', label: '✈️ AFCAT' },
+                      { id: 'cds', label: '🛡️ CDS' },
+                      { id: 'nda', label: '⚔️ NDA' },
+                      { id: 'jee', label: '⚛️ JEE Main' },
+                      { id: 'neet', label: '🩺 NEET UG' },
+                      { id: 'upsc', label: '🏛️ UPSC' },
+                      { id: 'ssc', label: '📋 SSC CGL' },
+                      { id: 'cat', label: '📊 CAT' },
+                    ].map(ex => (
                       <button
-                        key={br.id}
+                        key={ex.id}
                         type="button"
-                        onClick={() => setAuthGateBranch(br.id)}
-                        className={`py-1.5 px-2 rounded-lg text-[11px] font-bold border transition ${
-                          authGateBranch === br.id
-                            ? 'bg-purple-900 text-white border-purple-900'
-                            : 'bg-white text-purple-800 border-purple-200 hover:bg-purple-100'
+                        onClick={() => setAuthTargetExam(ex.id)}
+                        className={`py-2 px-2 rounded-xl text-xs font-bold text-center border transition ${
+                          authTargetExam === ex.id
+                            ? 'bg-[#1A1D1E] text-white border-[#1A1D1E] shadow-sm'
+                            : 'bg-[#F5F4F0] text-[#66625D] border-[#E5E2D9] hover:bg-white'
                         }`}
                       >
-                        {br.label}
+                        {ex.label}
                       </button>
                     ))}
                   </div>
                 </div>
-              )}
 
-              {/* Action Submit */}
-              <button
-                type="button"
-                onClick={() => handleAuthComplete(authTargetExam)}
-                className="w-full py-3.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"
-              >
-                <span>Enter {authTargetExam.toUpperCase()} Course Section →</span>
-              </button>
-            </div>
+                {/* GATE Branch Specialization Selection */}
+                {authTargetExam === 'gate' && (
+                  <div className="p-3.5 bg-purple-50 border border-purple-200 rounded-2xl space-y-2">
+                    <span className="text-xs font-bold text-purple-950 block">Select Engineering Stream:</span>
+                    <div className="grid grid-cols-3 gap-1.5 text-xs font-bold">
+                      {[
+                        { id: 'cs', label: 'CS / IT' },
+                        { id: 'da', label: 'Data Science & AI' },
+                        { id: 'me', label: 'Mechanical' },
+                        { id: 'ce', label: 'Civil' },
+                        { id: 'ee', label: 'Electrical' },
+                        { id: 'ec', label: 'Electronics' },
+                      ].map(br => (
+                        <button
+                          key={br.id}
+                          type="button"
+                          onClick={() => setAuthGateBranch(br.id)}
+                          className={`py-1.5 px-2 rounded-lg text-[11px] font-bold border transition ${
+                            authGateBranch === br.id
+                              ? 'bg-purple-900 text-white border-purple-900'
+                              : 'bg-white text-purple-800 border-purple-200 hover:bg-purple-100'
+                          }`}
+                        >
+                          {br.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Action Submit */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (authMode === 'signup') {
+                      handleInitiateSignup();
+                    } else {
+                      handleLoginSubmit();
+                    }
+                  }}
+                  className="w-full py-3.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                >
+                  <span>
+                    {authMode === 'signup' 
+                      ? 'Continue to Verification →' 
+                      : `Sign In to ${authTargetExam.toUpperCase()} Workspace →`
+                    }
+                  </span>
+                </button>
+              </div>
+            ) : (
+              /* Modal Body: STEP 2 (OTP Verification) */
+              <div className="p-6 space-y-5 animate-fadeIn">
+                <div className="text-center space-y-1">
+                  <span className="text-xs text-[#66625D]">Enter the 6-digit verification code sent to</span>
+                  <div className="text-xs font-bold text-[#1A1D1E]">{authEmail}</div>
+                </div>
+
+                <div className="space-y-2">
+                  <input
+                    type="text"
+                    maxLength={6}
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/[^0-9]/g, ''))}
+                    placeholder="Enter 6-Digit OTP"
+                    className="w-full px-4 py-3 text-center tracking-[0.5em] font-mono text-lg font-black bg-[#F5F4F0] border-2 border-[#E5E2D9] rounded-2xl text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]"
+                    autoFocus
+                  />
+                  {otpError && (
+                    <p className="text-center text-xs text-red-600 font-bold">{otpError}</p>
+                  )}
+                </div>
+
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => setOtpCode('123456')}
+                    className="text-[11px] text-[#C88410] font-mono font-bold hover:underline bg-[#FAF3E6] px-3 py-1 rounded-full border border-[#E8D5B7]"
+                  >
+                    ⚡ Quick Demo: Auto-Fill OTP (123456)
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between text-xs text-[#66625D]">
+                  {otpTimer > 0 ? (
+                    <span>Resend OTP in <strong className="font-mono text-[#1A1D1E]">{otpTimer}s</strong></span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => { setOtpTimer(30); setOtpSuccessMsg('New OTP code sent!'); }}
+                      className="text-[#FAA114] font-bold hover:underline"
+                    >
+                      Resend Verification Code
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setSignupStep(1)}
+                    className="hover:underline text-[#66625D]"
+                  >
+                    Change Email
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  disabled={isVerifyingOtp}
+                  onClick={handleVerifyOtpAndComplete}
+                  className="w-full py-3.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {isVerifyingOtp ? (
+                    <span>Verifying Code & Initializing Course...</span>
+                  ) : (
+                    <span>Verify & Enter {authTargetExam.toUpperCase()} Workspace →</span>
+                  )}
+                </button>
+              </div>
+            )}
 
           </div>
         </div>

@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { JeeQuestion, JeePyqPaper, JeeModelPaper } from '../../data/jeeMainsData';
-import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Calculator, FileText, Check } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Calculator, FileText, Check, Download } from 'lucide-react';
+import { exportUniversalExamPaperToPdf } from '../../utils/pdfExporter';
 
 interface JeeMainsExamCbtWindowProps {
   paperTitle: string;
@@ -297,10 +298,18 @@ export default function JeeMainsExamCbtWindow({
                 <span className="text-xs font-bold text-amber-400 uppercase">NTA JEE Main Performance Analysis</span>
                 <h2 className="text-2xl font-black text-white mt-1">{paperTitle} Result</h2>
               </div>
-              <div className={`px-5 py-2 rounded-xl text-sm font-bold border ${
-                analysis.isQualified ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40'
-              }`}>
-                {analysis.isQualified ? '🎉 QUALIFIED FOR JEE ADVANCED' : '⚠️ BELOW JEE ADVANCED CUTOFF'}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => exportUniversalExamPaperToPdf('jee_mains', paperTitle, paperYearOrType, questions)}
+                  className="px-4 py-2 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5"
+                >
+                  <Download className="w-4 h-4" /> Export Official 3-Part PDF
+                </button>
+                <div className={`px-5 py-2 rounded-xl text-sm font-bold border ${
+                  analysis.isQualified ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40'
+                }`}>
+                  {analysis.isQualified ? '🎉 QUALIFIED FOR JEE ADVANCED' : '⚠️ BELOW JEE ADVANCED CUTOFF'}
+                </div>
               </div>
             </div>
 

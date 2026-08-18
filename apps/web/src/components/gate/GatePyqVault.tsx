@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import { GateBranchId, GATE_BRANCHES, GATE_BRANCH_SUBJECTS, GATE_BRANCH_PYQS, GatePyqPaper } from '../../data/gateData';
 import { FileText, Download, Play, CheckCircle, Brain, BookOpen, Clock, Award, ChevronRight } from 'lucide-react';
 
+import { exportUniversalExamPaperToPdf } from '../../utils/pdfExporter';
+import { generateQuestionsForGatePaper } from '../../data/gatePaperGenerator';
+
 interface GatePyqVaultProps {
   branchId: GateBranchId;
   onStartCbtPaper: (title: string, yearOrType: string, customSubjectId?: string) => void;
@@ -16,6 +19,11 @@ export default function GatePyqVault({ branchId, onStartCbtPaper }: GatePyqVault
   const branch = GATE_BRANCHES.find(b => b.id === branchId) || GATE_BRANCHES[0];
   const pyqPapers = GATE_BRANCH_PYQS[branchId] || GATE_BRANCH_PYQS.cs;
   const subjects = GATE_BRANCH_SUBJECTS[branchId] || GATE_BRANCH_SUBJECTS.cs;
+
+  const handleExportPdf = (paper: GatePyqPaper) => {
+    const qs = generateQuestionsForGatePaper(paper.id, paper.year, branchId);
+    exportUniversalExamPaperToPdf('gate', paper.title, `GATE ${paper.year}`, qs);
+  };
 
   return (
     <div className="space-y-6 animate-fadeIn">
@@ -103,7 +111,7 @@ export default function GatePyqVault({ branchId, onStartCbtPaper }: GatePyqVault
                   <Play className="w-3.5 h-3.5 fill-current" /> Attempt in CBT Window
                 </button>
                 <button
-                  onClick={() => alert(`Official PDF for ${paper.title} is preparing for download.`)}
+                  onClick={() => handleExportPdf(paper)}
                   className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl transition border border-slate-700 flex items-center gap-1.5"
                 >
                   <Download className="w-3.5 h-3.5" /> PDF

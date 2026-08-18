@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { GateQuestion, GatePyqPaper, GateModelPaper } from '../../data/gateData';
-import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Calculator as CalcIcon, X, HelpCircle, FileText, Check, AlertCircle } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Calculator as CalcIcon, X, HelpCircle, FileText, Check, AlertCircle, Download } from 'lucide-react';
+import { exportUniversalExamPaperToPdf } from '../../utils/pdfExporter';
 
 interface GateExamCbtWindowProps {
   paperTitle: string;
@@ -396,10 +397,18 @@ export default function GateExamCbtWindow({
                 <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">{paperTitle} Result</h2>
                 <p className="text-xs text-slate-400 mt-1">{paperYearOrType} • Simulated IISc/IIT Cutoff Calibration</p>
               </div>
-              <div className={`px-5 py-2.5 rounded-2xl text-sm font-bold border ${
-                analysis.isQualified ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40'
-              }`}>
-                {analysis.isQualified ? '🎉 GATE QUALIFIED (PSU SHORTLIST ELIGIBLE)' : '⚠️ BELOW QUALIFYING CUTOFF'}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => exportUniversalExamPaperToPdf('gate', paperTitle, paperYearOrType, questions)}
+                  className="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-2xl text-xs font-black transition flex items-center gap-1.5 shadow-md"
+                >
+                  <Download className="w-4 h-4" /> Export Official 3-Part PDF
+                </button>
+                <div className={`px-5 py-2.5 rounded-2xl text-sm font-bold border ${
+                  analysis.isQualified ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40'
+                }`}>
+                  {analysis.isQualified ? '🎉 GATE QUALIFIED (PSU SHORTLIST ELIGIBLE)' : '⚠️ BELOW QUALIFYING CUTOFF'}
+                </div>
               </div>
             </div>
 
