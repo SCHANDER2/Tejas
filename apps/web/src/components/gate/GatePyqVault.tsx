@@ -21,7 +21,8 @@ export default function GatePyqVault({ branchId, onStartCbtPaper }: GatePyqVault
   const subjects = GATE_BRANCH_SUBJECTS[branchId] || GATE_BRANCH_SUBJECTS.cs;
 
   const handleExportPdf = (paper: GatePyqPaper) => {
-    const qs = generateQuestionsForGatePaper(paper.id, paper.year, branchId);
+    const seed = parseInt(paper.year, 10) || 2025;
+    const qs = generateQuestionsForGatePaper(paper.id, seed, branchId);
     exportUniversalExamPaperToPdf('gate', paper.title, `GATE ${paper.year}`, qs);
   };
 
