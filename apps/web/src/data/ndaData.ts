@@ -18,12 +18,12 @@ export interface NdaSubject {
   iconName: string;
   description: string;
   topics: NdaTopic[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export interface NdaPyqPaper {
@@ -90,12 +90,14 @@ export const NDA_SUBJECTS: NdaSubject[] = [
       { id: 'algebra', name: 'Algebra & Matrices', weightage: '20%', expectedQs: 24, importance: 'High', keyConcepts: ['Complex Numbers', 'Quadratic Equations', 'Permutations & Combinations', 'Determinants & Inverse Matrix'] },
       { id: 'prob', name: 'Probability & Statistics', weightage: '15%', expectedQs: 18, importance: 'High', keyConcepts: ['Conditional Probability', 'Binomial Distribution', 'Mean, Variance & SD'] }
     ],
-    youtubePlaylist: {
-      title: 'NDA Mathematics Complete Syllabus & Shortcuts',
-      channel: 'Defence Wallah Official',
-      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
-      videoCount: '60 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'NDA Mathematics (Shakti Series)',
+        channel: 'Defence Wallah',
+        url: 'https://www.youtube.com/@DefenceWallahPW/playlists',
+        videoCount: '60 Lectures'
+      }
+    ]
   },
   {
     id: 'gat_english',
@@ -109,12 +111,14 @@ export const NDA_SUBJECTS: NdaSubject[] = [
       { id: 'errors', name: 'Spotting Errors & Grammar', weightage: '30%', expectedQs: 15, importance: 'Critical', keyConcepts: ['Prepositions & Conjunctions', 'Subject-Verb Agreement', 'Active/Passive Voice'] },
       { id: 'syn_ant', name: 'Synonyms & Antonyms', weightage: '40%', expectedQs: 20, importance: 'Critical', keyConcepts: ['Contextual vocabulary', 'High-yield UPSC words'] }
     ],
-    youtubePlaylist: {
-      title: 'NDA English (GAT Part A) Complete Revision',
-      channel: 'Defence Wallah Official',
-      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
-      videoCount: '40 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'NDA English Complete Preparation',
+        channel: 'Defence Wallah',
+        url: 'https://www.youtube.com/@DefenceWallahPW/playlists',
+        videoCount: '40 Lectures'
+      }
+    ]
   },
   {
     id: 'gat_science_gk',
@@ -129,12 +133,14 @@ export const NDA_SUBJECTS: NdaSubject[] = [
       { id: 'chem_bio', name: 'Chemistry & Biology', weightage: '25%', expectedQs: 25, importance: 'High', keyConcepts: ['Acids, Bases, Salts', 'Structure of Atom', 'Human Physiology & Nutrition'] },
       { id: 'history_geo', name: 'History, Geography & Current Affairs', weightage: '50%', expectedQs: 50, importance: 'Critical', keyConcepts: ['Indian National Movement', 'Physical Geography & Monsoons', 'Defence Deals & Exercises'] }
     ],
-    youtubePlaylist: {
-      title: 'NDA General Ability Test (GAT) Science & GK Full Series',
-      channel: 'Defence Wallah Official',
-      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
-      videoCount: '52 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'NDA GAT Science & GK Full Series',
+        channel: 'Defence Wallah',
+        url: 'https://www.youtube.com/@DefenceWallahPW/playlists',
+        videoCount: '52 Lectures'
+      }
+    ]
   }
 ];
 

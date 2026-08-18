@@ -119,10 +119,10 @@ export default function LearningHubView({ onNavigateExam }: LearningHubViewProps
   ];
 
   const videoPlaylists = [
-    { title: 'AFCAT 2026 Complete Mathematics Series', channel: 'Defence Wallah', videos: '42 Videos', url: 'https://youtube.com', color: '#FAA114' },
-    { title: 'UPSC CDS General Knowledge Comprehensive', channel: 'Unacademy Defence', videos: '58 Videos', url: 'https://youtube.com', color: '#22C55E' },
-    { title: 'GATE CS Data Structures & Algorithms', channel: 'Gate Smashers', videos: '64 Videos', url: 'https://youtube.com', color: '#6366F1' },
-    { title: 'JEE Main Physics Mechanics & Electrodynamics', channel: 'Physics Galaxy', videos: '85 Videos', url: 'https://youtube.com', color: '#3B82F6' },
+    { title: 'AFCAT Reasoning Complete Playlist', channel: 'Defence Wallah CDS', videos: '42 Videos', url: 'https://www.youtube.com/playlist?list=PL3M0QAJjbrLgqijwbuBQPu5_uv8rS69kS', color: '#FAA114' },
+    { title: 'CDS English Practice', channel: 'cds.journey', videos: '58 Videos', url: 'https://www.youtube.com/playlist?list=PL9GR1vmclsf_7wYIZTkywvAS-qBEFKV2b', color: '#22C55E' },
+    { title: 'GATE CS Data Structures', channel: 'Gate Smashers', videos: '64 Videos', url: 'https://www.youtube.com/playlist?list=PLxCzCOWd7aiEwaANNt3OqJPVIxwp2ebiT', color: '#6366F1' },
+    { title: 'Quantitative Aptitude for CAT', channel: 'Rodha', videos: '85 Videos', url: 'https://www.youtube.com/playlist?list=PLG4bwc5fquzgfMh4YFDnv7fttM0RIKiUQ', color: '#3B82F6' },
   ];
 
   const filteredNotes = conceptNotes.filter(n => {

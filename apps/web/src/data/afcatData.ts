@@ -17,12 +17,12 @@ export interface AfcatSubject {
   iconName: string;
   description: string;
   topics: AfcatTopic[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export interface AfcatPyqPaper {
@@ -123,12 +123,20 @@ export const AFCAT_SUBJECTS: AfcatSubject[] = [
         keyConcepts: ['Double fillers', 'Grammatical fit', 'One word substitution', 'Paragraph context filling']
       }
     ],
-    youtubePlaylist: {
-      title: 'AFCAT English Complete Course & Vocabulary Masterclass',
-      channel: 'CDS Journey Official',
-      url: 'https://www.youtube.com/@cds.journey/playlists',
-      videoCount: '24 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'AFCAT English Practice',
+        channel: 'cdsjourney',
+        url: 'https://www.youtube.com/playlist?list=PL9GR1vmclsf_7wYIZTkywvAS-qBEFKV2b',
+        videoCount: '24 Lectures'
+      },
+      {
+        title: 'AFCAT English & Vocabulary',
+        channel: 'cdsjourney',
+        url: 'https://www.youtube.com/@cdsjourney/playlists',
+        videoCount: 'Various'
+      }
+    ]
   },
   {
     id: 'maths',
@@ -171,12 +179,14 @@ export const AFCAT_SUBJECTS: AfcatSubject[] = [
         keyConcepts: ['SI vs CI difference formula', 'Half-yearly & quarterly compounding', 'Alligation and mixtures']
       }
     ],
-    youtubePlaylist: {
-      title: 'AFCAT Numerical Ability Maths Complete Series',
-      channel: 'Defence Wallah Official',
-      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
-      videoCount: '32 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'AFCAT Numerical Ability Complete',
+        channel: 'Defence Wallah CDS',
+        url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+        videoCount: '32 Lectures'
+      }
+    ]
   },
   {
     id: 'reasoning',
@@ -219,12 +229,14 @@ export const AFCAT_SUBJECTS: AfcatSubject[] = [
         keyConcepts: ['Figure relationship mapping', 'Word pair relationship', 'Substitutional coding', 'Direction sense']
       }
     ],
-    youtubePlaylist: {
-      title: 'AFCAT Reasoning & Military Aptitude Master Series',
-      channel: 'Defence Wallah Official',
-      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
-      videoCount: '28 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'AFCAT Reasoning Complete Playlist',
+        channel: 'Defence Wallah CDS',
+        url: 'https://www.youtube.com/playlist?list=PL3M0QAJjbrLgqijwbuBQPu5_uv8rS69kS',
+        videoCount: '28 Lectures'
+      }
+    ]
   },
   {
     id: 'ga',
@@ -267,12 +279,20 @@ export const AFCAT_SUBJECTS: AfcatSubject[] = [
         keyConcepts: ['Grand Slams & Olympics', 'Param Vir Chakra & Defence Awards', 'Books, Authors & Firsts in India']
       }
     ],
-    youtubePlaylist: {
-      title: 'AFCAT General Awareness & Defence Static GK Masterclass',
-      channel: 'CDS Journey Official',
-      url: 'https://www.youtube.com/@cds.journey/playlists',
-      videoCount: '35 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'AFCAT Static GK & Defence GK',
+        channel: 'cdsjourney',
+        url: 'https://www.youtube.com/@cdsjourney/playlists',
+        videoCount: '35 Lectures'
+      },
+      {
+        title: 'AFCAT GK Complete',
+        channel: 'Defence Wallah CDS',
+        url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+        videoCount: 'Various'
+      }
+    ]
   }
 ];
 

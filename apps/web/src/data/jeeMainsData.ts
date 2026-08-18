@@ -46,12 +46,12 @@ export interface JeeSubject {
   iconName: string;
   description: string;
   topics: { id: string; name: string; weightage: string; expectedQs: number; importance: 'High' | 'Medium' | 'Critical'; keyConcepts: string[] }[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export const JEE_SUBJECTS: JeeSubject[] = [
@@ -67,12 +67,20 @@ export const JEE_SUBJECTS: JeeSubject[] = [
       { id: 'electrodynamics', name: 'Electrostatics & Current Electricity', weightage: '24%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Gauss Law & Potential', 'RC Circuits & Kirchhoff Laws', 'Magnetic Field & Ampere Law'] },
       { id: 'modern_optics', name: 'Modern Physics & Wave Optics', weightage: '24%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Photoelectric Effect & de Broglie', 'Bohr Model & Nuclear Decay', 'Interference & YDSE'] }
     ],
-    youtubePlaylist: {
-      title: 'JEE Main & Advanced Physics Complete Course',
-      channel: 'Physics Wallah (JEE Wallah)',
-      url: 'https://www.youtube.com/@JEEWallah/playlists',
-      videoCount: '75 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'JEE Physics Complete Course (Manzil Series)',
+        channel: 'JEE Wallah (PW)',
+        url: 'https://www.youtube.com/@PW-JEEWallah/playlists',
+        videoCount: '75 Lectures'
+      },
+      {
+        title: 'JEE Physics by Alakh Pandey',
+        channel: 'Physics Wallah',
+        url: 'https://www.youtube.com/@PhysicsWallah/playlists',
+        videoCount: '75 Lectures'
+      }
+    ]
   },
   {
     id: 'chemistry',
@@ -86,12 +94,20 @@ export const JEE_SUBJECTS: JeeSubject[] = [
       { id: 'physical', name: 'Chemical Kinetics & Thermodynamics', weightage: '32%', expectedQs: 8, importance: 'Critical', keyConcepts: ['Arrhenius Equation & Orders', 'Gibbs Free Energy & Equilibrium', 'Electrochemistry & Nernst Equation'] },
       { id: 'inorganic', name: 'Coordination Compounds & Periodic Table', weightage: '32%', expectedQs: 8, importance: 'High', keyConcepts: ['CFT & Isomerism', 'Chemical Bonding & VSEPR', 'd and f block elements'] }
     ],
-    youtubePlaylist: {
-      title: 'JEE Main Physical, Organic & Inorganic Chemistry',
-      channel: 'Unacademy JEE Official',
-      url: 'https://www.youtube.com/@UnacademyJEE/playlists',
-      videoCount: '80 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'JEE Chemistry PYQs & Revision',
+        channel: 'JEE Nexus (Unacademy)',
+        url: 'https://www.youtube.com/@JEEnexus/playlists',
+        videoCount: '80 Lectures'
+      },
+      {
+        title: 'JEE Chemistry Complete Course',
+        channel: 'JEE Wallah (PW)',
+        url: 'https://www.youtube.com/@PW-JEEWallah/playlists',
+        videoCount: '80 Lectures'
+      }
+    ]
   },
   {
     id: 'maths',
@@ -105,12 +121,20 @@ export const JEE_SUBJECTS: JeeSubject[] = [
       { id: 'vectors_3d', name: 'Vectors & 3D Geometry', weightage: '24%', expectedQs: 6, importance: 'Critical', keyConcepts: ['Dot & Cross Products', 'Shortest Distance Between Skew Lines', 'Equation of Planes'] },
       { id: 'algebra_matrices', name: 'Matrices, Determinants & Complex Numbers', weightage: '24%', expectedQs: 6, importance: 'High', keyConcepts: ['System of Linear Equations', 'Eigenvalues/Trace Properties', 'Roots of Unity'] }
     ],
-    youtubePlaylist: {
-      title: 'JEE Main Mathematics Master Lectures & PYQs',
-      channel: 'MathonGo Official',
-      url: 'https://www.youtube.com/@MathonGo/playlists',
-      videoCount: '70 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'JEE Mathematics Chapter-wise Lectures',
+        channel: 'MathonGo',
+        url: 'https://www.youtube.com/@mathongo/playlists',
+        videoCount: '70 Lectures'
+      },
+      {
+        title: 'JEE Mathematics Manzil Series',
+        channel: 'JEE Wallah (PW)',
+        url: 'https://www.youtube.com/@PW-JEEWallah/playlists',
+        videoCount: '70 Lectures'
+      }
+    ]
   }
 ];
 

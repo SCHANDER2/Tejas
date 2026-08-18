@@ -18,12 +18,12 @@ export interface CdsSubject {
   iconName: string;
   description: string;
   topics: CdsTopic[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export interface CdsPyqPaper {
@@ -111,12 +111,20 @@ export const CDS_SUBJECTS: CdsSubject[] = [
       { id: 'cds_eng_vocab', name: 'Synonyms, Antonyms & Idioms', weightage: '30%', expectedQs: 35, importance: 'Critical', keyConcepts: ['UPSC standard contextual vocabulary', 'Idiomatic expressions in military context', 'Spelling accuracy'] },
       { id: 'cds_eng_para', name: 'Ordering of Sentences & RC Passages', weightage: '40%', expectedQs: 50, importance: 'Critical', keyConcepts: ['S1-S6 sequence alignment', 'Tone & Theme identification in 4+ passages', 'Cloze paragraph coherence'] }
     ],
-    youtubePlaylist: {
-      title: 'CDS English Complete Masterclass & PYQ Analysis',
-      channel: 'CDS Journey Official',
-      url: 'https://www.youtube.com/@cds.journey/playlists',
-      videoCount: '45 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'CDS English Complete Preparation',
+        channel: 'cdsjourney',
+        url: 'https://www.youtube.com/@cdsjourney/playlists',
+        videoCount: '45 Lectures'
+      },
+      {
+        title: 'CDS English Marathon Series',
+        channel: 'Defence Wallah CDS',
+        url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+        videoCount: 'Various'
+      }
+    ]
   },
   {
     id: 'gk',
@@ -131,12 +139,14 @@ export const CDS_SUBJECTS: CdsSubject[] = [
       { id: 'cds_gk_polity_geo', name: 'Indian Polity & World/Indian Geography', weightage: '40%', expectedQs: 48, importance: 'Critical', keyConcepts: ['Preamble, Fundamental Rights & DPSP', 'Geomorphology, Monsoon & Drainage Systems', 'Parliamentary Procedures & Constitutional Bodies'] },
       { id: 'cds_gk_history_def', name: 'Modern History, Defence & Current Affairs', weightage: '30%', expectedQs: 36, importance: 'High', keyConcepts: ['Freedom Struggle 1857-1947 & Socio-Religious Movements', 'Tri-Service Commands & Weapon Systems', 'National & International Summits'] }
     ],
-    youtubePlaylist: {
-      title: 'CDS General Knowledge & Science Full Course',
-      channel: 'Defence Wallah Official',
-      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
-      videoCount: '60 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'CDS General Knowledge & Science Full Course',
+        channel: 'Defence Wallah CDS',
+        url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+        videoCount: '60 Lectures'
+      }
+    ]
   },
   {
     id: 'maths',
@@ -151,12 +161,14 @@ export const CDS_SUBJECTS: CdsSubject[] = [
       { id: 'cds_math_trig_alg', name: 'Trigonometry & Advanced Algebra', weightage: '35%', expectedQs: 35, importance: 'Critical', keyConcepts: ['Identities & Heights/Distances (Angle of elevation)', 'Quadratic equations, Remainder Theorem & Polynomials', 'Logarithms & Linear inequalities'] },
       { id: 'cds_math_num_stats', name: 'Number System, Arithmetic & Statistics', weightage: '30%', expectedQs: 30, importance: 'High', keyConcepts: ['Divisibility rules, Unit digit & Prime factorisation', 'Time-Speed-Distance & Work-Time', 'Mean, Median, Mode & Histograms'] }
     ],
-    youtubePlaylist: {
-      title: 'CDS Elementary Mathematics Advanced Concepts',
-      channel: 'Defence Wallah Official',
-      url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
-      videoCount: '50 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'CDS Elementary Mathematics Complete',
+        channel: 'Defence Wallah CDS',
+        url: 'https://www.youtube.com/@DefenceWallahCDS/playlists',
+        videoCount: '50 Lectures'
+      }
+    ]
   }
 ];
 

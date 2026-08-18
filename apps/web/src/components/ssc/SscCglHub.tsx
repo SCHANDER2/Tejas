@@ -141,15 +141,20 @@ export default function SscCglHub() {
                   </div>
                   <p className="text-xs text-[#66625D]">{sub.description}</p>
                 </div>
-                {sub.youtubePlaylist && (
-                  <a
-                    href={sub.youtubePlaylist.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-center py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-sm"
-                  >
-                    Watch {sub.youtubePlaylist.channel} Playlist →
-                  </a>
+                {sub.youtubePlaylists && sub.youtubePlaylists.length > 0 && (
+                  <div className="flex flex-col gap-2">
+                    {sub.youtubePlaylists.map((playlist, idx) => (
+                      <a
+                        key={idx}
+                        href={playlist.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block text-center py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold transition shadow-sm"
+                      >
+                        Watch {playlist.channel} Playlist →
+                      </a>
+                    ))}
+                  </div>
                 )}
               </div>
             ))}

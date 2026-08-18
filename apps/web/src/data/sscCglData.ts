@@ -39,12 +39,12 @@ export interface SscCglSubject {
   iconName: string;
   description: string;
   topics: { id: string; name: string; weightage: string; expectedQs: number; importance: 'High' | 'Medium' | 'Critical'; keyConcepts: string[] }[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export const SSC_CGL_SUBJECTS: SscCglSubject[] = [
@@ -60,12 +60,14 @@ export const SSC_CGL_SUBJECTS: SscCglSubject[] = [
       { id: 'adv_maths', name: 'Algebra, Trigonometry & Geometry', weightage: '40%', expectedQs: 10, importance: 'Critical', keyConcepts: ['Algebraic Identities & Factorization', 'Trigonometric Heights & Distances', 'Circles, Triangles & Coordinate Geometry'] },
       { id: 'di', name: 'Data Interpretation (Bar/Pie/Line)', weightage: '10%', expectedQs: 3, importance: 'High', keyConcepts: ['Calculation Shortcuts', 'Averages & Ratios from Tables'] }
     ],
-    youtubePlaylist: {
-      title: 'SSC CGL Quantitative Aptitude Full Foundation Course',
-      channel: 'Gagan Pratap Maths Official',
-      url: 'https://www.youtube.com/@GaganPratapMaths/playlists',
-      videoCount: '65 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'SSC CGL Maths by Gagan Pratap Sir',
+        channel: 'Gagan Pratap Maths',
+        url: 'https://www.youtube.com/@GaganPratapMaths/playlists',
+        videoCount: '65 Lectures'
+      }
+    ]
   },
   {
     id: 'reasoning',
@@ -79,12 +81,14 @@ export const SSC_CGL_SUBJECTS: SscCglSubject[] = [
       { id: 'analytical', name: 'Syllogism, Blood Relations & Directions', weightage: '35%', expectedQs: 9, importance: 'Critical', keyConcepts: ['Venn Diagrams & Deduction', 'Family Tree Notation', 'Compass Degrees & Distance'] },
       { id: 'non_verbal', name: 'Paper Folding, Mirror Images & Embedded Figures', weightage: '25%', expectedQs: 6, importance: 'High', keyConcepts: ['Lateral Inversion', 'Pattern Completion'] }
     ],
-    youtubePlaylist: {
-      title: 'SSC CGL General Intelligence & Reasoning Masterclass',
-      channel: 'Piyush Varshney Reasoning Official',
-      url: 'https://www.youtube.com/@PiyushVarshneyReasoning/playlists',
-      videoCount: '45 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'SSC CGL Reasoning Complete Series',
+        channel: 'Reasoning by Piyush Varshney',
+        url: 'https://www.youtube.com/@reasoningbypiyushvarshney/playlists',
+        videoCount: '45 Lectures'
+      }
+    ]
   },
   {
     id: 'english',
@@ -98,12 +102,20 @@ export const SSC_CGL_SUBJECTS: SscCglSubject[] = [
       { id: 'vocab', name: 'Idioms, Synonyms & One-Word Substitution', weightage: '40%', expectedQs: 10, importance: 'Critical', keyConcepts: ['Blackbook Top 500 Vocab', 'High-frequency SSC Idioms'] },
       { id: 'cloze', name: 'Cloze Test & Reading Passage', weightage: '20%', expectedQs: 5, importance: 'High', keyConcepts: ['Contextual Vocabulary', 'Collocations & Phrasal Verbs'] }
     ],
-    youtubePlaylist: {
-      title: 'SSC CGL English Grammar & Vocab Plinth to Paramount',
-      channel: 'Nimisha Bansal Official',
-      url: 'https://www.youtube.com/@NimishaBansal/playlists',
-      videoCount: '50 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: '120 Rules of Grammar',
+        channel: 'Nimisha Bansal',
+        url: 'https://www.youtube.com/playlist?list=PLQnVQWG46dr36l42sTzD1s6kC264W-H-1',
+        videoCount: '50 Lectures'
+      },
+      {
+        title: 'SSC English Complete Course',
+        channel: 'Nimisha Bansal',
+        url: 'https://www.youtube.com/@NIMISHABANSAL/playlists',
+        videoCount: '50 Lectures'
+      }
+    ]
   },
   {
     id: 'ga',
@@ -117,12 +129,14 @@ export const SSC_CGL_SUBJECTS: SscCglSubject[] = [
       { id: 'polity_history', name: 'Indian Constitution & Modern History', weightage: '35%', expectedQs: 9, importance: 'Critical', keyConcepts: ['Articles, Schedules & Writs', 'Governor General & 1857 Revolts', 'Dynasties & Inscriptions'] },
       { id: 'science_cur', name: 'General Science & Monthly Current Affairs', weightage: '35%', expectedQs: 8, importance: 'High', keyConcepts: ['Vitamins & Human Diseases', 'Chemical Names & Formulae', 'Government Schemes & Summits'] }
     ],
-    youtubePlaylist: {
-      title: 'SSC CGL Static GK & Current Affairs Marathon Series',
-      channel: 'Parcham Classes Official',
-      url: 'https://www.youtube.com/@ParchamClasses/playlists',
-      videoCount: '48 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'SSC CGL Static GK & Current Affairs',
+        channel: 'Parcham Classes',
+        url: 'https://www.youtube.com/@ParchamClasses/playlists',
+        videoCount: '48 Lectures'
+      }
+    ]
   }
 ];
 

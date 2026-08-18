@@ -624,10 +624,16 @@ export default function WorkspacePage() {
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-3">
                   <div className="pill-badge">
-                    <span>✦ FULL EXAMINATION SUITES</span>
+                    <div className="flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4]"></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#EA4335]"></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FBBC04]"></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#34A853]"></span>
+                    </div>
+                    <span>TARGET EXAMINATIONS</span>
                   </div>
                   <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#1A1D1E] font-display">
-                    All Major Indian Examinations
+                    Target Examinations
                   </h2>
                   <p className="text-[#66625D] text-sm md:text-base max-w-xl">
                     Dedicated CBT environments, curated model test papers, authentic past-year questions, and adaptive study roadmaps for every national target.

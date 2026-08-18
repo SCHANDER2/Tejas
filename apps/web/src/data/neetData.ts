@@ -43,12 +43,12 @@ export interface NeetSubject {
   iconName: string;
   description: string;
   topics: { id: string; name: string; weightage: string; expectedQs: number; importance: 'High' | 'Medium' | 'Critical'; keyConcepts: string[] }[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export const NEET_SUBJECTS: NeetSubject[] = [
@@ -64,12 +64,14 @@ export const NEET_SUBJECTS: NeetSubject[] = [
       { id: 'electrodynamics', name: 'Current Electricity & Magnetism', weightage: '24%', expectedQs: 11, importance: 'Critical', keyConcepts: ['Kirchhoff Laws & Potentiometer', 'Magnetic Effect of Current', 'Electromagnetic Induction & AC'] },
       { id: 'optics_modern', name: 'Ray Optics & Modern Physics', weightage: '24%', expectedQs: 11, importance: 'Critical', keyConcepts: ['Lenses & Prisms Formulae', 'Photoelectric Effect', 'Radioactivity & Dual Nature'] }
     ],
-    youtubePlaylist: {
-      title: 'NEET UG Physics Complete NCERT Line-by-Line',
-      channel: 'Competition Wallah (PW)',
-      url: 'https://www.youtube.com/@Competition_Wallah/playlists',
-      videoCount: '65 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'NEET Physics Complete NCERT & PYQ',
+        channel: 'NEET Wallah (PW)',
+        url: 'https://www.youtube.com/@PW-NEETWallah/playlists',
+        videoCount: '65 Lectures'
+      }
+    ]
   },
   {
     id: 'chemistry',
@@ -83,12 +85,14 @@ export const NEET_SUBJECTS: NeetSubject[] = [
       { id: 'inorganic', name: 'Periodic Table & Coordination Chemistry', weightage: '33%', expectedQs: 15, importance: 'Critical', keyConcepts: ['Chemical Bonding & Hybridization', 'Coordination Isomerism & VBT', 'p-Block Elements'] },
       { id: 'physical', name: 'Electrochemistry & Solutions', weightage: '32%', expectedQs: 14, importance: 'High', keyConcepts: ['Nernst Equation', 'Colligative Properties & Raoult Law', 'Chemical Kinetics'] }
     ],
-    youtubePlaylist: {
-      title: 'NEET Chemistry NCERT Line-by-Line Master Course',
-      channel: 'Competition Wallah (PW)',
-      url: 'https://www.youtube.com/@Competition_Wallah/playlists',
-      videoCount: '70 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'NEET Chemistry NCERT Master Course',
+        channel: 'NEET Wallah (PW)',
+        url: 'https://www.youtube.com/@PW-NEETWallah/playlists',
+        videoCount: '70 Lectures'
+      }
+    ]
   },
   {
     id: 'botany',
@@ -102,12 +106,14 @@ export const NEET_SUBJECTS: NeetSubject[] = [
       { id: 'genetics_botany', name: 'Mendelian Genetics & Molecular Basis', weightage: '35%', expectedQs: 16, importance: 'Critical', keyConcepts: ['Dihybrid Cross & Linkage', 'DNA Replication & Transcription', 'Lac Operon Model'] },
       { id: 'ecology', name: 'Ecosystem & Biodiversity', weightage: '20%', expectedQs: 9, importance: 'High', keyConcepts: ['Energy Flow & Pyramids', 'Biodiversity Conservation & Hotspots'] }
     ],
-    youtubePlaylist: {
-      title: 'NEET Botany NCERT Comprehensive Lectures',
-      channel: 'Competition Wallah (PW)',
-      url: 'https://www.youtube.com/@Competition_Wallah/playlists',
-      videoCount: '55 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'NEET Botany NCERT Comprehensive',
+        channel: 'NEET Wallah (PW)',
+        url: 'https://www.youtube.com/@PW-NEETWallah/playlists',
+        videoCount: '55 Lectures'
+      }
+    ]
   },
   {
     id: 'zoology',
@@ -121,12 +127,20 @@ export const NEET_SUBJECTS: NeetSubject[] = [
       { id: 'reproduction_health', name: 'Human Reproduction & Reproductive Health', weightage: '25%', expectedQs: 11, importance: 'Critical', keyConcepts: ['Spermatogenesis & Oogenesis', 'Menstrual Cycle & Hormones', 'Contraception & ART Techniques'] },
       { id: 'biotech_evolution', name: 'Biotechnology & Evolution', weightage: '25%', expectedQs: 11, importance: 'Critical', keyConcepts: ['Recombinant DNA (PCR, Restriction Enzymes)', 'Hardy-Weinberg Principle', 'Darwinism & Homology'] }
     ],
-    youtubePlaylist: {
-      title: 'NEET Zoology Human Physiology & Genetics Mastery',
-      channel: 'Unacademy NEET Official',
-      url: 'https://www.youtube.com/@UnacademyNEET/playlists',
-      videoCount: '60 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'NEET Zoology & Human Physiology',
+        channel: 'Unacademy NEET',
+        url: 'https://www.youtube.com/@UnacademyNEET/playlists',
+        videoCount: '60 Lectures'
+      },
+      {
+        title: 'NEET Zoology Complete Series',
+        channel: 'NEET Wallah (PW)',
+        url: 'https://www.youtube.com/@PW-NEETWallah/playlists',
+        videoCount: '60 Lectures'
+      }
+    ]
   }
 ];
 

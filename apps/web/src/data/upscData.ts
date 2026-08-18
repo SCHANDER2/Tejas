@@ -42,12 +42,12 @@ export interface UpscSubject {
   iconName: string;
   description: string;
   topics: { id: string; name: string; weightage: string; expectedQs: number; importance: 'High' | 'Medium' | 'Critical'; keyConcepts: string[] }[];
-  youtubePlaylist: {
+  youtubePlaylists: {
     title: string;
     channel: string;
     url: string;
     videoCount: string;
-  };
+  }[];
 }
 
 export const UPSC_SUBJECTS: UpscSubject[] = [
@@ -65,12 +65,14 @@ export const UPSC_SUBJECTS: UpscSubject[] = [
       { id: 'economy', name: 'Indian Economy & Budget/Economic Survey', weightage: '18%', expectedQs: 18, importance: 'Critical', keyConcepts: ['Monetary Policy & Inflation', 'External Sector & Forex Reserves', 'Fiscal Deficit & Direct/Indirect Taxes'] },
       { id: 'history_geo', name: 'Modern History & Physical Geography', weightage: '25%', expectedQs: 25, importance: 'Critical', keyConcepts: ['1857-1947 Freedom Struggle', 'Geomorphology & Monsoon Patterns', 'Art & Architecture / UNESCO Sites'] }
     ],
-    youtubePlaylist: {
-      title: 'UPSC CSE GS Prelims Comprehensive Foundation Course',
-      channel: 'Drishti IAS Official',
-      url: 'https://www.youtube.com/@DrishtiIASvideos/playlists',
-      videoCount: '85 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'UPSC CSE Foundation & Current Affairs',
+        channel: 'Drishti IAS',
+        url: 'https://www.youtube.com/@DrishtiIASvideos/playlists',
+        videoCount: '85 Lectures'
+      }
+    ]
   },
   {
     id: 'csat',
@@ -85,12 +87,20 @@ export const UPSC_SUBJECTS: UpscSubject[] = [
       { id: 'maths_csat', name: 'Number System & Quantitative Aptitude', weightage: '35%', expectedQs: 28, importance: 'Critical', keyConcepts: ['Permutations & Combinations', 'Divisibility Rules & Remainder Theorem', 'Time & Work, Speed & Distance'] },
       { id: 'reasoning_csat', name: 'Analytical & Logical Reasoning', weightage: '30%', expectedQs: 24, importance: 'Critical', keyConcepts: ['Blood Relations & Directions', 'Seating Arrangements & Puzzles', 'Syllogisms & Data Sufficiency'] }
     ],
-    youtubePlaylist: {
-      title: 'UPSC CSAT Reasoning & Quantitative Aptitude Mastery',
-      channel: 'StudyIQ IAS Official',
-      url: 'https://www.youtube.com/@StudyIQEducationLtd/playlists',
-      videoCount: '40 Lectures'
-    }
+    youtubePlaylists: [
+      {
+        title: 'UPSC CSAT Complete Preparation',
+        channel: 'StudyIQ IAS',
+        url: 'https://www.youtube.com/@StudyIQEducationLtd/playlists',
+        videoCount: '40 Lectures'
+      },
+      {
+        title: 'UPSC CSAT by Drishti IAS',
+        channel: 'Drishti IAS',
+        url: 'https://www.youtube.com/@DrishtiIASvideos/playlists',
+        videoCount: '40 Lectures'
+      }
+    ]
   }
 ];
 
