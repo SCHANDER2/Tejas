@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { GateQuestion, GatePyqPaper, GateModelPaper } from '../../data/gateData';
-import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Calculator as CalcIcon, X } from 'lucide-react';
+import { Clock, CheckCircle, XCircle, Award, Shield, ChevronLeft, ChevronRight, Calculator as CalcIcon, X, HelpCircle, FileText, Check, AlertCircle } from 'lucide-react';
 
 interface GateExamCbtWindowProps {
   paperTitle: string;
@@ -21,11 +21,12 @@ export default function GateExamCbtWindow({
 }: GateExamCbtWindowProps) {
   const [activeTab, setActiveTab] = useState<'exam' | 'report'>('exam');
   const [currentQIndex, setCurrentQIndex] = useState<number>(0);
+  const [selectedSection, setSelectedSection] = useState<'all' | 'ga' | 'tech'>('all');
   const [mcqAnswers, setMcqAnswers] = useState<Record<number, number[]>>({});
   const [natAnswers, setNatAnswers] = useState<Record<number, string>>({});
   const [markedForReview, setMarkedForReview] = useState<Record<number, boolean>>({});
   const [visited, setVisited] = useState<Record<number, boolean>>({ 0: true });
-  const [timeLeft, setTimeLeft] = useState<number>(180 * 60); // 3 Hours
+  const [timeLeft, setTimeLeft] = useState<number>(180 * 60); // 3 Hours (180 mins)
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [showCalcModal, setShowCalcModal] = useState<boolean>(false);
 
@@ -131,17 +132,17 @@ export default function GateExamCbtWindow({
         else {
           const val = parseFloat(str);
           const exp = q.correctNatValue || 0;
-          const tol = q.natTolerance || 0;
+          const tol = q.natTolerance || 0.1;
           if (Math.abs(val - exp) <= tol) { correctCount++; score += m; }
           else { incorrectCount++; } // No negative for NAT
         }
       }
     });
 
-    const isQualified = score >= 32;
+    const isQualified = score >= 32.5;
     const accuracy = (correctCount + incorrectCount) > 0 ? (correctCount / (correctCount + incorrectCount)) * 100 : 0;
     const gateScore = Math.min(1000, Math.max(100, Math.floor(score * 10)));
-    const airRank = Math.max(1, Math.floor(140000 * (1 - score / 100)));
+    const airRank = Math.max(1, Math.floor(140000 * Math.max(0.001, 1 - score / 100)));
 
     return { score: score.toFixed(2), maxMarks: 100, correctCount, incorrectCount, unattemptedCount, isQualified, accuracy: accuracy.toFixed(1), gateScore, airRank };
   };
@@ -169,11 +170,13 @@ export default function GateExamCbtWindow({
             <CalcIcon className="w-4 h-4" /> Virtual Calculator
           </button>
 
-          <div className="bg-slate-900/90 border border-amber-500/60 px-4 py-1 rounded flex items-center gap-2">
-            <Clock className="w-4 h-4 text-amber-400 animate-pulse" />
-            <span className="text-xs text-slate-300">Time Left:</span>
-            <span className="font-mono font-bold text-base text-amber-400">{formatTime(timeLeft)}</span>
-          </div>
+          {activeTab === 'exam' && (
+            <div className="bg-slate-900/90 border border-amber-500/60 px-4 py-1 rounded flex items-center gap-2">
+              <Clock className="w-4 h-4 text-amber-400 animate-pulse" />
+              <span className="text-xs text-slate-300">Time Left:</span>
+              <span className="font-mono font-bold text-base text-amber-400">{formatTime(timeLeft)}</span>
+            </div>
+          )}
 
           <button onClick={onClose} className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded font-bold text-xs">
             Exit Test
@@ -209,7 +212,34 @@ export default function GateExamCbtWindow({
         </div>
       )}
 
-      {/* Main Workspace */}
+      {/* Section Filter Bar during Exam */}
+      {activeTab === 'exam' && (
+        <div className="bg-slate-800 px-6 py-2 border-b border-slate-700 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <span className="text-slate-400 font-bold">SECTIONS:</span>
+            <button
+              onClick={() => setCurrentQIndex(0)}
+              className={`px-3 py-1 rounded font-bold transition ${
+                currentQIndex < 10 ? 'bg-amber-500 text-slate-950' : 'bg-slate-700 text-slate-300'
+              }`}
+            >
+              General Aptitude (Q1 - Q10 • 15M)
+            </button>
+            <button
+              onClick={() => setCurrentQIndex(10)}
+              className={`px-3 py-1 rounded font-bold transition ${
+                currentQIndex >= 10 ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-300'
+              }`}
+            >
+              Technical Core Subject (Q11 - Q65 • 85M)
+            </button>
+          </div>
+
+          <span className="text-slate-400">Total Marks: <strong>100</strong> • Negative Marking: <strong>Yes (MCQ only)</strong></span>
+        </div>
+      )}
+
+      {/* Main Exam Interface */}
       {activeTab === 'exam' && currentQ && (
         <div className="flex-1 flex overflow-hidden bg-gray-100 text-black">
           <div className="flex-1 flex flex-col justify-between p-6 bg-white overflow-y-auto">
@@ -277,7 +307,7 @@ export default function GateExamCbtWindow({
               )}
             </div>
 
-            {/* Controls */}
+            {/* Bottom Exam Controls */}
             <div className="pt-6 border-t border-gray-200 flex items-center justify-between mt-6 bg-white">
               <button
                 onClick={() => setMarkedForReview(prev => ({ ...prev, [currentQIndex]: !prev[currentQIndex] }))}
@@ -304,7 +334,7 @@ export default function GateExamCbtWindow({
 
                 <button
                   onClick={handleSubmitExam}
-                  className="ml-4 px-5 py-2 bg-[#003366] text-white rounded text-xs font-bold shadow"
+                  className="ml-4 px-6 py-2 bg-[#003366] hover:bg-blue-900 text-white rounded text-xs font-bold shadow"
                 >
                   Submit GATE Test
                 </button>
@@ -312,11 +342,20 @@ export default function GateExamCbtWindow({
             </div>
           </div>
 
-          {/* Question Palette */}
+          {/* Question Palette Sidebar */}
           <div className="w-80 bg-gray-50 border-l border-gray-300 p-4 flex flex-col justify-between overflow-y-auto">
             <div>
               <h4 className="font-bold text-xs text-gray-700 mb-2 uppercase">Question Palette</h4>
-              <div className="grid grid-cols-5 gap-2 max-h-[500px] overflow-y-auto p-1">
+              
+              {/* Legend */}
+              <div className="grid grid-cols-2 gap-1 text-[10px] text-gray-600 mb-3 pb-2 border-b">
+                <span className="flex items-center gap-1"><span className="w-3 h-3 bg-green-600 rounded"></span> Answered</span>
+                <span className="flex items-center gap-1"><span className="w-3 h-3 bg-purple-600 rounded"></span> Marked Review</span>
+                <span className="flex items-center gap-1"><span className="w-3 h-3 bg-red-500 rounded"></span> Not Answered</span>
+                <span className="flex items-center gap-1"><span className="w-3 h-3 bg-gray-200 rounded"></span> Not Visited</span>
+              </div>
+
+              <div className="grid grid-cols-5 gap-2 max-h-[480px] overflow-y-auto p-1">
                 {questions.map((_, idx) => {
                   const q = questions[idx];
                   const isAns = (q.type === 'MCQ' || q.type === 'MSQ') ? (mcqAnswers[idx] && mcqAnswers[idx].length > 0) : (natAnswers[idx] && natAnswers[idx] !== '');
@@ -347,47 +386,145 @@ export default function GateExamCbtWindow({
         </div>
       )}
 
-      {/* Report Screen */}
+      {/* Post-Exam Report Screen with Full 65-Question Step-by-Step Solutions Review */}
       {activeTab === 'report' && (
-        <div className="flex-1 bg-slate-950 p-8 overflow-y-auto max-w-6xl mx-auto w-full">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl mb-8">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-6 mb-6">
+        <div className="flex-1 bg-slate-950 p-6 sm:p-8 overflow-y-auto max-w-6xl mx-auto w-full space-y-8">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
               <div>
-                <span className="text-xs font-bold text-amber-400 uppercase">GATE Scorecard & PSU Qualification</span>
-                <h2 className="text-2xl font-black text-white mt-1">{paperTitle} Result</h2>
+                <span className="text-xs font-mono font-bold text-amber-400 uppercase">Official GATE Scorecard Calibration</span>
+                <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">{paperTitle} Result</h2>
+                <p className="text-xs text-slate-400 mt-1">{paperYearOrType} • Simulated IISc/IIT Cutoff Calibration</p>
               </div>
-              <div className={`px-5 py-2 rounded-xl text-sm font-bold border ${
+              <div className={`px-5 py-2.5 rounded-2xl text-sm font-bold border ${
                 analysis.isQualified ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' : 'bg-red-500/20 text-red-400 border-red-500/40'
               }`}>
-                {analysis.isQualified ? '🎉 GATE QUALIFIED & PSU ELIGIBLE' : '⚠️ BELOW GATE QUALIFYING MARKS'}
+                {analysis.isQualified ? '🎉 GATE QUALIFIED (PSU SHORTLIST ELIGIBLE)' : '⚠️ BELOW QUALIFYING CUTOFF'}
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-              <div className="bg-slate-800/80 p-5 rounded-xl border border-slate-700 text-center">
-                <span className="text-xs text-slate-400 font-medium">GATE Marks</span>
-                <p className="text-3xl font-black text-amber-400 mt-1">{analysis.score} <span className="text-xs text-slate-500">/ 100</span></p>
+            {/* Scorecard KPIs */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 text-center">
+                <span className="text-xs text-slate-400 font-medium">Marks Obtained</span>
+                <p className="text-3xl font-black text-amber-400 mt-1 font-mono">{analysis.score} <span className="text-xs text-slate-500">/ 100</span></p>
               </div>
 
-              <div className="bg-slate-800/80 p-5 rounded-xl border border-slate-700 text-center">
+              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 text-center">
                 <span className="text-xs text-slate-400 font-medium">Normalized GATE Score</span>
-                <p className="text-3xl font-black text-blue-400 mt-1">{analysis.gateScore} <span className="text-xs text-slate-500">/ 1000</span></p>
+                <p className="text-3xl font-black text-blue-400 mt-1 font-mono">{analysis.gateScore} <span className="text-xs text-slate-500">/ 1000</span></p>
               </div>
 
-              <div className="bg-slate-800/80 p-5 rounded-xl border border-slate-700 text-center">
+              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 text-center">
                 <span className="text-xs text-slate-400 font-medium">Predicted AIR Rank</span>
-                <p className="text-3xl font-black text-emerald-400 mt-1">#{analysis.airRank}</p>
+                <p className="text-3xl font-black text-emerald-400 mt-1 font-mono">AIR #{analysis.airRank}</p>
               </div>
 
-              <div className="bg-slate-800/80 p-5 rounded-xl border border-slate-700 text-center">
+              <div className="bg-slate-950 p-5 rounded-2xl border border-slate-800 text-center">
                 <span className="text-xs text-slate-400 font-medium">Accuracy</span>
-                <p className="text-3xl font-black text-purple-400 mt-1">{analysis.accuracy}%</p>
+                <p className="text-3xl font-black text-purple-400 mt-1 font-mono">{analysis.accuracy}%</p>
               </div>
             </div>
 
-            <button onClick={onClose} className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition border border-slate-700">
-              Close CBT Window
-            </button>
+            {/* Complete Question-by-Question Step Solutions */}
+            <div className="space-y-4 pt-4 border-t border-slate-800">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-lg text-white flex items-center gap-2">
+                  <HelpCircle className="w-5 h-5 text-amber-400" /> Complete 65-Question Step-by-Step Solutions & Answer Key
+                </h3>
+                <span className="text-xs text-slate-400">
+                  {analysis.correctCount} Correct • {analysis.incorrectCount} Incorrect • {analysis.unattemptedCount} Unattempted
+                </span>
+              </div>
+
+              <div className="space-y-4 max-h-[600px] overflow-y-auto p-1">
+                {questions.map((q, idx) => {
+                  let isUserCorrect = false;
+                  let userAnsDisplay = 'Unattempted';
+
+                  if (q.type === 'MCQ') {
+                    const ans = mcqAnswers[idx];
+                    if (ans && ans.length > 0) {
+                      userAnsDisplay = String.fromCharCode(65 + ans[0]);
+                      isUserCorrect = ans[0] === (q.correctOptionIndices ? q.correctOptionIndices[0] : 0);
+                    }
+                  } else if (q.type === 'MSQ') {
+                    const ans = (mcqAnswers[idx] || []).sort();
+                    const exp = (q.correctOptionIndices || []).sort();
+                    if (ans.length > 0) {
+                      userAnsDisplay = ans.map(i => String.fromCharCode(65 + i)).join(', ');
+                      isUserCorrect = JSON.stringify(ans) === JSON.stringify(exp);
+                    }
+                  } else if (q.type === 'NAT') {
+                    const str = natAnswers[idx];
+                    if (str && str !== '') {
+                      userAnsDisplay = str;
+                      const val = parseFloat(str);
+                      const exp = q.correctNatValue || 0;
+                      const tol = q.natTolerance || 0.1;
+                      isUserCorrect = Math.abs(val - exp) <= tol;
+                    }
+                  }
+
+                  const correctAnsDisplay = q.type === 'NAT' ? String(q.correctNatValue) : (q.correctOptionIndices || []).map(i => String.fromCharCode(65 + i)).join(', ');
+
+                  return (
+                    <div
+                      key={q.id}
+                      className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3"
+                    >
+                      <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono font-bold text-amber-400">Q{idx + 1}.</span>
+                          <span className="font-bold text-slate-200">{q.topicName} [{q.type} • {q.marks}M]</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className={`px-2 py-0.5 rounded font-bold text-[11px] ${
+                            userAnsDisplay === 'Unattempted' ? 'bg-slate-800 text-slate-400' :
+                            isUserCorrect ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
+                          }`}>
+                            Your Ans: {userAnsDisplay}
+                          </span>
+                          <span className="px-2 py-0.5 rounded font-bold text-[11px] bg-emerald-500/20 text-emerald-300">
+                            Correct: {correctAnsDisplay}
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                        {q.questionText}
+                      </p>
+
+                      <div className="bg-slate-900/90 border border-amber-500/20 rounded-xl p-3.5 space-y-2">
+                        <span className="text-[11px] font-bold text-amber-400 uppercase tracking-wider block">
+                          Step-by-Step Solution:
+                        </span>
+                        <p className="text-xs text-slate-300 leading-relaxed">{q.explanation}</p>
+                        {q.stepByStepSolution && (
+                          <div className="space-y-1 pt-1">
+                            {q.stepByStepSolution.map((st, sIdx) => (
+                              <div key={sIdx} className="text-xs text-slate-400 flex items-start gap-1.5">
+                                <span className="text-amber-400 font-mono font-bold">{sIdx + 1}.</span>
+                                <span>{st}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-800 flex justify-end">
+              <button
+                onClick={onClose}
+                className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition border border-slate-700"
+              >
+                Close CBT Window & Return to Hub
+              </button>
+            </div>
           </div>
         </div>
       )}
