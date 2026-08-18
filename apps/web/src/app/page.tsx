@@ -387,9 +387,14 @@ export default function WorkspacePage() {
               <div className="w-8 h-8 rounded-lg bg-[#1A1D1E] text-[#FAFAF8] flex items-center justify-center font-black text-sm group-hover:scale-105 transition-transform">
                 T
               </div>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5">
                 <span className="text-2xl font-extrabold tracking-tight text-[#1A1D1E] font-display">Tejas</span>
-                <span className="w-2 h-2 rounded-full bg-[#FAA114]"></span>
+                <div className="flex items-center gap-1 ml-0.5">
+                  <span className="w-2 h-2 rounded-full bg-[#4285F4] animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-[#EA4335] animate-pulse delay-75"></span>
+                  <span className="w-2 h-2 rounded-full bg-[#FBBC04] animate-pulse delay-150"></span>
+                  <span className="w-2 h-2 rounded-full bg-[#34A853] animate-pulse delay-200"></span>
+                </div>
               </div>
             </div>
 
@@ -431,7 +436,13 @@ export default function WorkspacePage() {
           <div className="max-w-5xl mx-auto text-center relative z-10">
             
             <div className="animate-fadeInUp inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FAF3E6] border border-[#E8D5B7] text-[#C88410] mb-8 text-xs font-mono font-bold tracking-wider uppercase">
-              <span>✦ NEXT-GEN AI STUDY OPERATING SYSTEM</span>
+              <div className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#EA4335]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FBBC04]"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#34A853]"></span>
+              </div>
+              <span>NEXT-GEN AI STUDY OPERATING SYSTEM</span>
             </div>
 
             <h1 className="animate-fadeInUp delay-100 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.06] mb-6 font-display text-[#1A1D1E]">
@@ -489,7 +500,13 @@ export default function WorkspacePage() {
               
               <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAA114]/20 border border-[#FAA114]/40 text-[#FAA114] text-xs font-mono font-bold uppercase tracking-wider">
-                  <span>✦ AFCAT 2026 MENTOR EDITION</span>
+                  <div className="flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#4285F4]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#EA4335]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#FBBC04]"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#34A853]"></span>
+                  </div>
+                  <span>AFCAT 2026 MENTOR EDITION</span>
                 </div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display">
                   Preparing for Air Force Common Admission Test (AFCAT)?
