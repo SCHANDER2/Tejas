@@ -657,11 +657,11 @@ export default function WorkspacePage() {
               <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
                 {[
                   { id: 'all', label: 'All Exams (9)' },
-                  { id: 'defence', label: '⚔️ Defence (AFCAT, CDS, NDA)' },
-                  { id: 'engineering', label: '⚛️ Engineering (JEE, GATE)' },
-                  { id: 'medical', label: '🩺 Medical (NEET UG)' },
-                  { id: 'civil', label: '🏛️ Civil Services (UPSC CSE)' },
-                  { id: 'aptitude', label: '📊 Aptitude & MBA (SSC, CAT)' },
+                  { id: 'defence', label: 'Defence (AFCAT, CDS, NDA)' },
+                  { id: 'engineering', label: 'Engineering (JEE, GATE)' },
+                  { id: 'medical', label: 'Medical (NEET UG)' },
+                  { id: 'civil', label: 'Civil Services (UPSC CSE)' },
+                  { id: 'aptitude', label: 'Aptitude & MBA (SSC, CAT)' },
                 ].map((pill) => (
                   <button
                     key={pill.id}
@@ -1097,23 +1097,23 @@ export default function WorkspacePage() {
 
           <nav className="p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-160px)] no-scrollbar">
             {[
-              { id: 'afcat', label: '✈️ AFCAT 2026 Hub', icon: Shield },
-              { id: 'cds', label: '🛡️ CDS (IMA/OTA) Hub', icon: Shield },
-              { id: 'nda', label: '⚔️ NDA & NA Hub', icon: Shield },
-              { id: 'jee_mains', label: '⚛️ JEE Main Hub', icon: Zap },
-              { id: 'neet', label: '🩺 NEET UG Hub', icon: Award },
-              { id: 'upsc', label: '🏛️ UPSC CSE Hub', icon: BookOpen },
-              { id: 'ssc_cgl', label: '📋 SSC CGL Hub', icon: FileText },
-              { id: 'gate', label: '⚡ GATE Engine', icon: Sparkles },
-              { id: 'cat', label: '📊 CAT Engine', icon: TrendingUp },
-              { id: 'dashboard', label: '📊 Dashboard', icon: BookOpen },
-              { id: 'planner', label: '📅 Study Planner', icon: Calendar },
-              { id: 'explorer', label: '🔍 Exam Explorer', icon: Search },
-              { id: 'learning', label: '📚 Learning Hub', icon: BookMarked },
-              { id: 'pdf', label: '📄 PDF Workspace', icon: FileText },
-              { id: 'revision', label: '🧠 Revision (FSRS)', icon: RotateCcw },
-              { id: 'analytics', label: '📈 Analytics', icon: TrendingUp },
-              { id: 'profile', label: '👤 Profile', icon: User },
+              { id: 'afcat', label: 'AFCAT 2026 Hub', icon: Shield },
+              { id: 'cds', label: 'CDS (IMA/OTA) Hub', icon: Shield },
+              { id: 'nda', label: 'NDA & NA Hub', icon: Shield },
+              { id: 'jee_mains', label: 'JEE Main Hub', icon: Zap },
+              { id: 'neet', label: 'NEET UG Hub', icon: Award },
+              { id: 'upsc', label: 'UPSC CSE Hub', icon: BookOpen },
+              { id: 'ssc_cgl', label: 'SSC CGL Hub', icon: FileText },
+              { id: 'gate', label: 'GATE Engine', icon: Sparkles },
+              { id: 'cat', label: 'CAT Engine', icon: TrendingUp },
+              { id: 'dashboard', label: 'Dashboard', icon: BookOpen },
+              { id: 'planner', label: 'Study Planner', icon: Calendar },
+              { id: 'explorer', label: 'Exam Explorer', icon: Search },
+              { id: 'learning', label: 'Learning Hub', icon: BookMarked },
+              { id: 'pdf', label: 'PDF Workspace', icon: FileText },
+              { id: 'revision', label: 'Revision (FSRS)', icon: RotateCcw },
+              { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+              { id: 'profile', label: 'Profile', icon: User },
             ].map((item) => {
               const isActive = activeTab === item.id;
               return (
@@ -1154,16 +1154,16 @@ export default function WorkspacePage() {
                 className="px-3.5 py-1 bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] text-xs font-bold rounded-full hover:bg-[#F5E8D0] transition-all flex items-center gap-1.5 shadow-sm"
               >
                 <span>
-                  {activeTab === 'afcat' && '✈️ AFCAT 2026 (Air Force)'}
-                  {activeTab === 'cds' && '🛡️ CDS 2026 (IMA / OTA)'}
-                  {activeTab === 'nda' && '⚔️ NDA & NA 2026 (Defence)'}
-                  {activeTab === 'jee_mains' && '⚛️ JEE Main 2026 (Engineering)'}
-                  {activeTab === 'neet' && '🩺 NEET UG 2026 (Medical)'}
-                  {activeTab === 'upsc' && '🏛️ UPSC CSE 2026 (Civil Services)'}
-                  {activeTab === 'ssc_cgl' && '📋 SSC CGL 2026 (Staff Selection)'}
-                  {activeTab === 'gate' && '⚡ GATE 2026 (Engineering Core)'}
-                  {activeTab === 'cat' && '📊 CAT 2026 (IIM Management)'}
-                  {!['afcat','cds','nda','jee_mains','neet','upsc','ssc_cgl','gate','cat'].includes(activeTab) && '🎯 Switch Exam'}
+                  {activeTab === 'afcat' && 'AFCAT 2026 (Air Force)'}
+                  {activeTab === 'cds' && 'CDS 2026 (IMA / OTA)'}
+                  {activeTab === 'nda' && 'NDA & NA 2026 (Defence)'}
+                  {activeTab === 'jee_mains' && 'JEE Main 2026 (Engineering)'}
+                  {activeTab === 'neet' && 'NEET UG 2026 (Medical)'}
+                  {activeTab === 'upsc' && 'UPSC CSE 2026 (Civil Services)'}
+                  {activeTab === 'ssc_cgl' && 'SSC CGL 2026 (Staff Selection)'}
+                  {activeTab === 'gate' && 'GATE 2026 (Engineering Core)'}
+                  {activeTab === 'cat' && 'CAT 2026 (IIM Management)'}
+                  {!['afcat','cds','nda','jee_mains','neet','upsc','ssc_cgl','gate','cat'].includes(activeTab) && 'Switch Exam'}
                 </span>
                 <span className="text-[10px] text-[#C88410]">▼</span>
               </button>
@@ -1174,15 +1174,15 @@ export default function WorkspacePage() {
                     Select Target Course Room
                   </div>
                   {[
-                    { id: 'gate', label: '⚡ GATE 2026 (6 Streams)' },
-                    { id: 'afcat', label: '✈️ AFCAT 2026 (Air Force)' },
-                    { id: 'cds', label: '🛡️ CDS 2026 (IMA/OTA)' },
-                    { id: 'nda', label: '⚔️ NDA & NA 2026 (Defence)' },
-                    { id: 'jee_mains', label: '⚛️ JEE Main 2026' },
-                    { id: 'neet', label: '🩺 NEET UG 2026' },
-                    { id: 'upsc', label: '🏛️ UPSC CSE 2026' },
-                    { id: 'ssc_cgl', label: '📋 SSC CGL 2026' },
-                    { id: 'cat', label: '📊 CAT 2026 (IIM)' },
+                    { id: 'gate', label: 'GATE 2026 (6 Streams)' },
+                    { id: 'afcat', label: 'AFCAT 2026 (Air Force)' },
+                    { id: 'cds', label: 'CDS 2026 (IMA/OTA)' },
+                    { id: 'nda', label: 'NDA & NA 2026 (Defence)' },
+                    { id: 'jee_mains', label: 'JEE Main 2026' },
+                    { id: 'neet', label: 'NEET UG 2026' },
+                    { id: 'upsc', label: 'UPSC CSE 2026' },
+                    { id: 'ssc_cgl', label: 'SSC CGL 2026' },
+                    { id: 'cat', label: 'CAT 2026 (IIM)' },
                   ].map(ex => (
                     <button
                       key={ex.id}
@@ -1412,15 +1412,15 @@ export default function WorkspacePage() {
                   
                   <div className="grid grid-cols-3 gap-2">
                     {[
-                      { id: 'gate', label: '⚡ GATE 2026' },
-                      { id: 'afcat', label: '✈️ AFCAT' },
-                      { id: 'cds', label: '🛡️ CDS' },
-                      { id: 'nda', label: '⚔️ NDA' },
-                      { id: 'jee', label: '⚛️ JEE Main' },
-                      { id: 'neet', label: '🩺 NEET UG' },
-                      { id: 'upsc', label: '🏛️ UPSC' },
-                      { id: 'ssc', label: '📋 SSC CGL' },
-                      { id: 'cat', label: '📊 CAT' },
+                      { id: 'gate', label: 'GATE 2026' },
+                      { id: 'afcat', label: 'AFCAT' },
+                      { id: 'cds', label: 'CDS' },
+                      { id: 'nda', label: 'NDA' },
+                      { id: 'jee', label: 'JEE Main' },
+                      { id: 'neet', label: 'NEET UG' },
+                      { id: 'upsc', label: 'UPSC' },
+                      { id: 'ssc', label: 'SSC CGL' },
+                      { id: 'cat', label: 'CAT' },
                     ].map(ex => (
                       <button
                         key={ex.id}
