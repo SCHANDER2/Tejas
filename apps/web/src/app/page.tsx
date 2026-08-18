@@ -584,12 +584,6 @@ export default function WorkspacePage() {
                 Start Free Workspace
                 <ArrowRight className="w-5 h-5" />
               </button>
-              <button 
-                onClick={() => { document.getElementById('exams')?.scrollIntoView({ behavior: 'smooth' }); }}
-                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-[#F5F4F0] text-[#1A1D1E] font-bold rounded-xl flex items-center justify-center gap-2.5 transition-all text-base border border-[#E5E2D9] shadow-sm"
-              >
-                Simulate Live CBT Exam 🚀
-              </button>
             </div>
 
             <div className="animate-fadeInUp delay-400 border-t border-[#E5E2D9] pt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-[#66625D]">
