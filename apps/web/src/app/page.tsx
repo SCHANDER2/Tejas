@@ -55,21 +55,6 @@ import {
 } from 'lucide-react';
 
 /* ──────────────────────────────────────────────────
-   GOOGLE COLOROGRAPHY BRAND EMBLEM
-   ────────────────────────────────────────────────── */
-function Google4ColorDots({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
-  const dotSize = size === 'sm' ? 'w-2 h-2' : size === 'lg' ? 'w-3.5 h-3.5' : 'w-2.5 h-2.5';
-  return (
-    <div className="flex items-center gap-1">
-      <span className={`${dotSize} rounded-full bg-[#4285F4] animate-pulse`}></span>
-      <span className={`${dotSize} rounded-full bg-[#EA4335]`}></span>
-      <span className={`${dotSize} rounded-full bg-[#FBBC04]`}></span>
-      <span className={`${dotSize} rounded-full bg-[#34A853]`}></span>
-    </div>
-  );
-}
-
-/* ──────────────────────────────────────────────────
    SCROLL REVEAL HOOK
    ────────────────────────────────────────────────── */
 function useRevealOnScroll() {
@@ -102,61 +87,18 @@ function RevealSection({ children, className = '' }: { children: React.ReactNode
 }
 
 /* ──────────────────────────────────────────────────
-   ANIMATED COUNTER COMPONENT
-   ────────────────────────────────────────────────── */
-function AnimatedCounter({ end, suffix = '', label }: { end: number; suffix?: string; label: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const duration = 1600;
-          const startTime = performance.now();
-          const animate = (now: number) => {
-            const elapsed = now - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(eased * end));
-            if (progress < 1) requestAnimationFrame(animate);
-          };
-          requestAnimationFrame(animate);
-        }
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [end]);
-
-  return (
-    <div ref={ref} className="text-center p-4">
-      <div className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight font-display">
-        {count}{suffix}
-      </div>
-      <div className="text-xs md:text-sm text-slate-400 mt-2 font-medium tracking-wide uppercase">{label}</div>
-    </div>
-  );
-}
-
-/* ──────────────────────────────────────────────────
-   EXAM CARD DATA (GOOGLE COLOR SYSTEM)
+   EXAM CARD DATA
    ────────────────────────────────────────────────── */
 const examCategories = [
-  { id: 'afcat', name: 'AFCAT 2026 (Air Force)', category: 'defence', icon: Shield, candidates: '5L+', color: '#EA4335', badge: 'AIR FORCE', tag: 'CBT Suite Ready' },
-  { id: 'cds', name: 'CDS (IMA / OTA)', category: 'defence', icon: Shield, candidates: '6L+', color: '#EA4335', badge: 'DEFENCE', tag: 'Official CDAC' },
-  { id: 'nda', name: 'NDA & NA (UPSC)', category: 'defence', icon: Shield, candidates: '8L+', color: '#FBBC04', badge: 'UPSC DEFENCE', tag: 'Maths & GAT' },
-  { id: 'jee_mains', name: 'JEE Main & Advanced', category: 'engineering', icon: Zap, candidates: '25L+', color: '#4285F4', badge: 'IIT / NTA', tag: 'Physics & Chem' },
-  { id: 'neet', name: 'NEET UG Medical', category: 'medical', icon: GraduationCap, candidates: '21L+', color: '#34A853', badge: 'MEDICAL / NTA', tag: 'NCERT Ingestion' },
-  { id: 'upsc', name: 'UPSC CSE (IAS / IPS)', category: 'civil', icon: BookOpen, candidates: '12L+', color: '#EA4335', badge: 'CIVIL SERVICES', tag: 'Prelims + Mains' },
-  { id: 'ssc_cgl', name: 'SSC CGL Tier 1 & 2', category: 'aptitude', icon: Target, candidates: '30L+', color: '#FBBC04', badge: 'GOVERNMENT', tag: 'Speed Math' },
-  { id: 'gate', name: 'GATE (IISc / IITs)', category: 'engineering', icon: Brain, candidates: '9L+', color: '#4285F4', badge: 'ENGINEERING', tag: 'NAT & MSQ' },
-  { id: 'cat', name: 'CAT (IIMs B-Schools)', category: 'aptitude', icon: BarChart3, candidates: '3.5L+', color: '#FBBC04', badge: 'MANAGEMENT', tag: 'DILR & VARC' },
+  { id: 'afcat', name: 'AFCAT 2026 (Air Force)', category: 'defence', icon: Shield, candidates: '5L+', color: '#FAA114', badge: 'AIR FORCE', tag: 'CBT Suite Ready' },
+  { id: 'cds', name: 'CDS (IMA / OTA)', category: 'defence', icon: Shield, candidates: '6L+', color: '#22C55E', badge: 'DEFENCE', tag: 'Official CDAC' },
+  { id: 'nda', name: 'NDA & NA (UPSC)', category: 'defence', icon: Shield, candidates: '8L+', color: '#FAA114', badge: 'UPSC DEFENCE', tag: 'Maths & GAT' },
+  { id: 'jee_mains', name: 'JEE Main & Advanced', category: 'engineering', icon: Zap, candidates: '25L+', color: '#3B82F6', badge: 'IIT / NTA', tag: 'Physics & Chem' },
+  { id: 'neet', name: 'NEET UG Medical', category: 'medical', icon: GraduationCap, candidates: '21L+', color: '#22C55E', badge: 'MEDICAL / NTA', tag: 'NCERT Ingestion' },
+  { id: 'upsc', name: 'UPSC CSE (IAS / IPS)', category: 'civil', icon: BookOpen, candidates: '12L+', color: '#A855F7', badge: 'CIVIL SERVICES', tag: 'Prelims + Mains' },
+  { id: 'ssc_cgl', name: 'SSC CGL Tier 1 & 2', category: 'aptitude', icon: Target, candidates: '30L+', color: '#F97316', badge: 'GOVERNMENT', tag: 'Speed Math' },
+  { id: 'gate', name: 'GATE (IISc / IITs)', category: 'engineering', icon: Brain, candidates: '9L+', color: '#6366F1', badge: 'ENGINEERING', tag: 'NAT & MSQ' },
+  { id: 'cat', name: 'CAT (IIMs B-Schools)', category: 'aptitude', icon: BarChart3, candidates: '3.5L+', color: '#EC4899', badge: 'MANAGEMENT', tag: 'DILR & VARC' },
 ];
 
 const examHubDetails: Record<string, {
@@ -175,7 +117,7 @@ const examHubDetails: Record<string, {
     mocks: '15 Mocks',
     features: ['Topic Tests', 'Full Mocks', 'PYQ Papers', 'Daily Goals', 'AI Revision Plan', 'AI Explainer', 'Sectional Limits', 'Readiness Report'],
     emoji: '✈️',
-    color: '#EA4335'
+    color: '#FAA114'
   },
   cds: {
     badge: '🛡️ CDS PREPARATION HUB',
@@ -184,7 +126,7 @@ const examHubDetails: Record<string, {
     mocks: '12 Mocks',
     features: ['GK Question Bank', 'English Vocab Boosters', 'OTA Mock Tests', 'FSRS Spaced Repetition', 'CDS Performance Ranker'],
     emoji: '🛡️',
-    color: '#EA4335'
+    color: '#22C55E'
   },
   nda: {
     badge: '⚔️ NDA & NA PREPARATION PLATFORM',
@@ -193,7 +135,7 @@ const examHubDetails: Record<string, {
     mocks: '10 Mocks',
     features: ['Maths Concepts Explorer', 'GAT Practice Drills', 'Formula Cheatsheets', 'Daily Flashcards', 'Performance Tracker'],
     emoji: '⚔️',
-    color: '#FBBC04'
+    color: '#FAA114'
   },
   jee_mains: {
     badge: '⚛️ JEE MAIN & ADVANCED CORE ENGINE',
@@ -202,7 +144,7 @@ const examHubDetails: Record<string, {
     mocks: '20 Mocks',
     features: ['Numerical Solvers', 'Mock Test Engine', 'Physics Visualizers', 'IIT Syllabus Mapping', 'Chapter-wise Quizzes'],
     emoji: '⚛️',
-    color: '#4285F4'
+    color: '#3B82F6'
   },
   neet: {
     badge: '🩺 NEET UG MEDICAL CORE ENGINE',
@@ -211,7 +153,7 @@ const examHubDetails: Record<string, {
     mocks: '18 Mocks',
     features: ['NCERT Map Engine', 'Biology Flashcards', 'Chemistry Drills', 'Weak-Topic Focus', 'CBT Test Simulator'],
     emoji: '🩺',
-    color: '#34A853'
+    color: '#22C55E'
   },
   upsc: {
     badge: '🏛️ UPSC CIVIL SERVICES EXAM HUB',
@@ -220,7 +162,7 @@ const examHubDetails: Record<string, {
     mocks: '10 Mocks',
     features: ['Polity Timelines', 'Mains Answer Generator', 'CSAT Practice Portal', 'Current Affairs Hub', 'Syllabus Accordion'],
     emoji: '🏛️',
-    color: '#EA4335'
+    color: '#A855F7'
   },
   ssc_cgl: {
     badge: '📋 SSC CGL TIER 1 & 2 ENGINE',
@@ -229,7 +171,7 @@ const examHubDetails: Record<string, {
     mocks: '25 Mocks',
     features: ['Speed Math Drills', 'Reasoning Sprints', 'General Awareness Logs', 'Tier 2 Simulators', 'Syllabus Tracker'],
     emoji: '📋',
-    color: '#FBBC04'
+    color: '#F97316'
   },
   gate: {
     badge: '⚡ GATE ENGINEERING ENGINE',
@@ -238,7 +180,7 @@ const examHubDetails: Record<string, {
     mocks: '15 Mocks',
     features: ['Numerical Answers (NAT)', 'Aptitude Shortcuts', 'Core Topic Workspaces', 'Formula Sheets', 'Dynamic Assessments'],
     emoji: '⚡',
-    color: '#4285F4'
+    color: '#6366F1'
   },
   cat: {
     badge: '📊 CAT MBA ENTRANCE PLATFORM',
@@ -247,52 +189,52 @@ const examHubDetails: Record<string, {
     mocks: '12 Mocks',
     features: ['DILR Caselets', 'QA Speed Booster', 'VARC Comprehensions', 'Percentile Predictor', 'Adaptive Practice Sets'],
     emoji: '📊',
-    color: '#FBBC04'
+    color: '#EC4899'
   }
 };
 
 const features = [
   {
     icon: Sparkles,
-    title: 'Google-Grade AI Instant Quiz Engine',
-    description: 'Paste any topic, upload a textbook PDF, or drop a YouTube link — generates authentic exam-pattern questions with step explanations.',
-    tag: 'GOOGLE INTEL ENGINE',
-    color: '#4285F4'
+    title: 'AI Instant Quiz Engine',
+    description: 'Paste any topic, upload a textbook PDF, or drop a YouTube link — generates authentic exam-pattern questions with instant step explanations.',
+    tag: 'GENAI ENGINE',
+    color: '#FAA114'
   },
   {
     icon: Calendar,
     title: 'Adaptive Capacity Planner',
     description: 'Personalized daily study schedules that auto-rebalance when you miss sessions or when your target exam date draws closer.',
-    tag: 'SMART SCHEDULER',
-    color: '#34A853'
+    tag: 'DYNAMIC SCHEDULER',
+    color: '#3B82F6'
   },
   {
     icon: RotateCcw,
     title: 'FSRS Spaced Repetition',
     description: 'Scientific active recall scheduling based on the Free Spaced Repetition Scheduler algorithm — eliminates forgetfulness forever.',
     tag: 'RETENTION ALGORITHM',
-    color: '#FBBC04'
+    color: '#22C55E'
   },
   {
     icon: FileText,
-    title: 'Split-Pane Research Workspace',
+    title: 'Split-Pane Research Hub',
     description: 'Read document PDFs on the left, highlight complex formulas, and chat with your dedicated AI tutor on the right in real time.',
     tag: 'INTELLIGENT WORKSPACE',
-    color: '#EA4335'
+    color: '#A855F7'
   },
   {
     icon: TrendingUp,
     title: 'Concept Mastery Heatmap',
     description: 'Real-time detection of weak topics, predicted percentile calibration, and tailored recommendations that fix knowledge gaps.',
     tag: 'CALIBRATION RADAR',
-    color: '#4285F4'
+    color: '#F97316'
   },
   {
     icon: Shield,
     title: 'Official CBT Exam Window',
     description: 'Authentic CDAC and NTA exam simulation interface featuring sectional timers, question palettes, and instant post-exam rank reports.',
     tag: 'REAL SIMULATION',
-    color: '#34A853'
+    color: '#6366F1'
   },
 ];
 
@@ -778,7 +720,7 @@ export default function WorkspacePage() {
     .then(res => res.json())
     .then(data => {
       if (data && data.profile) {
-        alert('Profile saved to PostgreSQL database!');
+        alert('Profile saved to database!');
         setProfileFullName(data.profile.fullName);
         setProfileGoal(data.profile.dailyStudyGoalMinutes);
         setProfileLanguage(data.profile.preferredLanguage);
@@ -825,158 +767,120 @@ export default function WorkspacePage() {
   });
 
   /* ────────────────────────────────────────
-     LANDING PAGE RENDER (GOOGLE COLOROGRAPHY)
+     LANDING PAGE RENDER (EXACT DESIGN MATCH)
      ──────────────────────────────────────── */
   if (activeTab === 'landing') {
     return (
-      <div className="min-h-screen bg-[#17181c] text-[#e8eaed] font-sans selection:bg-[#4285F4]/30 selection:text-white">
+      <div className="min-h-screen bg-[#FAFAF8] text-[#1A1D1E] font-sans selection:bg-[#FAA114]/30 selection:text-[#1A1D1E]">
 
-        {/* ═══════════ STICKY GOOGLE-STYLED NAVIGATION ═══════════ */}
+        {/* ═══════════ STICKY NAVIGATION BAR ═══════════ */}
         <header 
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 google-ribbon-border ${
+          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
             scrolled 
-              ? 'glass-header py-3.5 shadow-google-elevation-2' 
+              ? 'glass-header py-3.5 shadow-sm' 
               : 'bg-transparent py-5'
           }`}
         >
           <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-            {/* Logo with Google 4-Color Emblem */}
+            {/* Logo */}
             <div 
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="flex items-center gap-3 cursor-pointer group"
+              className="flex items-center gap-2 cursor-pointer group"
             >
-              <div className="w-10 h-10 rounded-2xl bg-[#202125] border border-white/10 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
-                <Google4ColorDots size="md" />
+              <div className="w-8 h-8 rounded-lg bg-[#1A1D1E] text-[#FAFAF8] flex items-center justify-center font-black text-sm group-hover:scale-105 transition-transform">
+                T
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-black tracking-tight text-white font-display">
+              <div className="flex items-center gap-1">
+                <span className="text-2xl font-extrabold tracking-tight text-[#1A1D1E] font-display">
                   Tejas
                 </span>
-                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[#4285F4]/15 text-[#8AB4F8] border border-[#4285F4]/30">
-                  Google OS Edition
-                </span>
+                <span className="w-2 h-2 rounded-full bg-[#FAA114]"></span>
               </div>
             </div>
 
             {/* Desktop Nav Links */}
-            <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-300">
-              <a href="#demo" className="hover:text-[#4285F4] transition-colors">Live Console</a>
-              <a href="#exams" className="hover:text-[#EA4335] transition-colors">Exam Hubs</a>
-              <a href="#features" className="hover:text-[#FBBC04] transition-colors">AI Engine</a>
-              <a href="#testimonials" className="hover:text-[#34A853] transition-colors">Success Stories</a>
-              <a href="#pricing" className="hover:text-[#8AB4F8] transition-colors">Pricing</a>
+            <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-[#66625D]">
+              <a href="#demo" className="hover:text-[#1A1D1E] transition-colors">Live Console</a>
+              <a href="#exams" className="hover:text-[#1A1D1E] transition-colors">Exam Hubs</a>
+              <a href="#features" className="hover:text-[#1A1D1E] transition-colors">AI Capabilities</a>
+              <a href="#testimonials" className="hover:text-[#1A1D1E] transition-colors">Success Stories</a>
+              <a href="#pricing" className="hover:text-[#1A1D1E] transition-colors">Pricing</a>
             </nav>
 
             {/* Desktop Action Buttons */}
             <div className="hidden md:flex items-center gap-3">
               <button 
                 onClick={() => { setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }}
-                className="px-5 py-2.5 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 rounded-xl transition-all"
+                className="px-5 py-2.5 text-sm font-bold text-[#1A1D1E] hover:bg-[#E5E2D9]/50 rounded-xl transition-all"
               >
                 Sign In
               </button>
               <button 
                 onClick={() => { setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }}
-                className="group relative px-6 py-2.5 text-sm font-bold bg-[#4285F4] text-white rounded-xl hover:bg-[#1A73E8] transition-all active:scale-95 shadow-glow-google-blue flex items-center gap-2"
+                className="px-6 py-2.5 text-sm font-bold bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] rounded-xl transition-all active:scale-95 shadow-sm flex items-center gap-2"
               >
                 <span>Get Started Free</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Mobile menu toggle */}
+            {/* Mobile Menu Toggle */}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-slate-300 hover:text-white rounded-lg bg-white/10"
+              className="md:hidden p-2 text-[#1A1D1E] hover:bg-[#E5E2D9]/50 rounded-lg"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
 
-          {/* Mobile menu overlay */}
+          {/* Mobile Menu Overlay */}
           {mobileMenuOpen && (
-            <div className="md:hidden glass-panel border-t border-white/10 mx-4 mt-3 rounded-2xl p-6 space-y-4 shadow-2xl animate-fadeInUp">
-              <a href="#demo" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#4285F4]">Live Console</a>
-              <a href="#exams" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#EA4335]">Exam Hubs</a>
-              <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#FBBC04]">AI Engine</a>
-              <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#34A853]">Success Stories</a>
-              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-semibold text-slate-300 hover:text-[#8AB4F8]">Pricing</a>
-              <div className="pt-4 border-t border-white/10 space-y-3">
-                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-semibold text-slate-300 bg-white/10 rounded-xl">Sign In</button>
-                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-bold bg-[#4285F4] text-white rounded-xl">Get Started Free</button>
+            <div className="md:hidden bg-[#FAFAF8] border-t border-[#E5E2D9] mx-4 mt-3 rounded-2xl p-6 space-y-4 shadow-xl animate-fadeInUp">
+              <a href="#demo" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-bold text-[#66625D] hover:text-[#1A1D1E]">Live Console</a>
+              <a href="#exams" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-bold text-[#66625D] hover:text-[#1A1D1E]">Exam Hubs</a>
+              <a href="#features" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-bold text-[#66625D] hover:text-[#1A1D1E]">AI Capabilities</a>
+              <a href="#testimonials" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-bold text-[#66625D] hover:text-[#1A1D1E]">Success Stories</a>
+              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="block text-sm font-bold text-[#66625D] hover:text-[#1A1D1E]">Pricing</a>
+              <div className="pt-4 border-t border-[#E5E2D9] space-y-3">
+                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-bold text-[#1A1D1E] bg-[#E5E2D9]/50 rounded-xl">Sign In</button>
+                <button onClick={() => { setMobileMenuOpen(false); setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }} className="w-full py-3 text-sm font-bold bg-[#FAA114] text-[#1A1D1E] rounded-xl">Get Started Free</button>
               </div>
             </div>
           )}
         </header>
 
-        {/* ═══════════ HERO SECTION (GOOGLE COLOROGRAPHY & MATERIAL MESH) ═══════════ */}
-        <section className="ambient-mesh relative pt-32 md:pt-44 pb-20 md:pb-28 px-6 md:px-12 overflow-hidden">
-          {/* Background Grid & 4-Color Glow Orbs */}
-          <div className="absolute inset-0 grid-pattern opacity-40 pointer-events-none"></div>
-          <div className="absolute top-24 left-1/4 -translate-x-1/2 w-[450px] h-[300px] bg-[#4285F4]/15 rounded-full blur-[120px] pointer-events-none"></div>
-          <div className="absolute top-40 right-1/4 w-[400px] h-[300px] bg-[#EA4335]/12 rounded-full blur-[110px] pointer-events-none"></div>
-          <div className="absolute top-96 left-1/2 -translate-x-1/2 w-[500px] h-[350px] bg-[#FBBC04]/10 rounded-full blur-[130px] pointer-events-none"></div>
-
+        {/* ═══════════ HERO SECTION (WARM ALABASTER CREAM & GOLD) ═══════════ */}
+        <section className="ambient-mesh relative pt-32 md:pt-44 pb-20 md:pb-24 px-6 md:px-12 overflow-hidden">
           <div className="max-w-5xl mx-auto text-center relative z-10">
-            {/* Top Announcement Badge */}
-            <div className="animate-fadeInUp inline-flex items-center gap-3 px-4 py-2 rounded-full bg-[#202125] border border-white/15 text-white mb-8 shadow-google-elevation-1 backdrop-blur-md">
-              <Google4ColorDots size="sm" />
-              <span className="text-xs font-bold tracking-wider uppercase font-mono text-[#8AB4F8]">✦ GOOGLE COLOROGRAPHY EDITION</span>
-              <ChevronRight className="w-3.5 h-3.5 opacity-60 text-[#4285F4]" />
+            
+            {/* Pill Badge */}
+            <div className="animate-fadeInUp inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FAF3E6] border border-[#E8D5B7] text-[#C88410] mb-8 text-xs font-mono font-bold tracking-wider uppercase">
+              <span>✦ NEXT-GEN AI STUDY OPERATING SYSTEM</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="animate-fadeInUp delay-100 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.04] mb-6 font-display text-white">
-              Master Any Exam.<br />
-              <span className="text-gradient-google drop-shadow-[0_0_35px_rgba(66,133,244,0.3)]">
-                Faster. Smarter. Guaranteed.
-              </span>
+            <h1 className="animate-fadeInUp delay-100 text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[1.06] mb-6 font-display text-[#1A1D1E]">
+              One Platform.<br />
+              <span className="text-[#FAA114]">Every Exam.</span><br />
+              Infinite Mastery.
             </h1>
 
             {/* Subheading */}
-            <p className="animate-fadeInUp delay-200 text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
-              Unifying 120+ Indian competitive examinations, university curriculums, and document intelligence into one cohesive, AI-personalized operating system.
+            <p className="animate-fadeInUp delay-200 text-base md:text-lg text-[#66625D] max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+              Unifying competitive exams, university subjects, and document intelligence into one cohesive, personalized AI workspace for 500 million Indian learners.
             </p>
 
-            {/* Interactive Prompt / Quick Trigger Bar */}
-            <div className="animate-fadeInUp delay-300 max-w-2xl mx-auto mb-10">
-              <div className="glass-panel p-2 rounded-2xl flex flex-col sm:flex-row items-center gap-2 border-white/20 focus-within:border-[#4285F4] shadow-google-elevation-2 transition-all">
-                <div className="flex items-center gap-3 px-3 flex-1 w-full">
-                  <div className="w-6 h-6 rounded-lg bg-[#4285F4]/20 flex items-center justify-center">
-                    <Sparkles className="w-4 h-4 text-[#8AB4F8]" />
-                  </div>
-                  <input 
-                    type="text"
-                    value={heroPromptInput}
-                    onChange={(e) => setHeroPromptInput(e.target.value)}
-                    placeholder="Try: Test me on AFCAT Reasoning or UPSC Polity..."
-                    className="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none py-2"
-                  />
-                </div>
-                <button 
-                  onClick={() => {
-                    const el = document.getElementById('demo');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                    setHeroConsoleTab('quiz');
-                  }}
-                  className="w-full sm:w-auto px-6 py-3 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-extrabold text-xs tracking-wider rounded-xl transition-all active:scale-95 shadow-glow-google-blue whitespace-nowrap"
-                >
-                  ⚡ Launch AI Quiz
-                </button>
-              </div>
-            </div>
-
-            {/* Primary CTAs */}
-            <div className="animate-fadeInUp delay-400 flex flex-col sm:flex-row items-center justify-center gap-4">
+            {/* Action Buttons */}
+            <div className="animate-fadeInUp delay-300 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
               <button 
                 onClick={() => {
                   setAuthMode('signup');
                   resetAuthState();
                   triggerLoadingState('auth');
                 }}
-                className="w-full sm:w-auto px-8 py-4 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-black rounded-2xl flex items-center justify-center gap-3 shadow-glow-google-blue transition-all active:scale-[0.98] text-base"
+                className="w-full sm:w-auto px-8 py-4 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black rounded-xl flex items-center justify-center gap-3 shadow-md transition-all active:scale-[0.98] text-base"
               >
-                Launch Free Workspace
+                Start Free Workspace
                 <ArrowRight className="w-5 h-5" />
               </button>
               <button 
@@ -984,401 +888,113 @@ export default function WorkspacePage() {
                   const el = document.getElementById('demo');
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="w-full sm:w-auto px-8 py-4 glass-panel hover:bg-white/10 text-white font-bold rounded-2xl flex items-center justify-center gap-2.5 transition-all text-base border-white/20"
+                className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-[#F5F4F0] text-[#1A1D1E] font-bold rounded-xl flex items-center justify-center gap-2.5 transition-all text-base border border-[#E5E2D9] shadow-sm"
               >
-                <Play className="w-4 h-4 text-[#8AB4F8] fill-[#8AB4F8]" />
-                Live Interactive Console
+                Simulate Live CBT Exam 🚀
               </button>
             </div>
 
             {/* Trust Metrics Bar */}
-            <div className="animate-fadeInUp delay-500 mt-16 pt-10 border-t border-white/10 grid grid-cols-2 md:grid-cols-4 gap-6 text-slate-300">
-              <div className="text-center p-3 rounded-2xl bg-white/5 border border-white/5">
-                <div className="text-2xl md:text-3xl font-extrabold text-[#8AB4F8] font-display">50,000+</div>
-                <div className="text-xs text-slate-400 mt-1 font-semibold">Active Aspirants</div>
+            <div className="animate-fadeInUp delay-400 border-t border-[#E5E2D9] pt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-[#66625D]">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-black text-[#1A1D1E] font-display">50,000+</div>
+                <div className="text-xs font-semibold text-[#66625D] mt-1">Active Aspirants</div>
               </div>
-              <div className="text-center p-3 rounded-2xl bg-white/5 border border-white/5">
-                <div className="text-2xl md:text-3xl font-extrabold text-[#F28B82] font-display">120+</div>
-                <div className="text-xs text-slate-400 mt-1 font-semibold">Exams Supported</div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-black text-[#FAA114] font-display">120+</div>
+                <div className="text-xs font-semibold text-[#66625D] mt-1">Exams Supported</div>
               </div>
-              <div className="text-center p-3 rounded-2xl bg-white/5 border border-white/5">
-                <div className="text-2xl md:text-3xl font-extrabold text-[#FDD663] font-display">2.4M+</div>
-                <div className="text-xs text-slate-400 mt-1 font-semibold">Quizzes Completed</div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-black text-[#1A1D1E] font-display">2.4M+</div>
+                <div className="text-xs font-semibold text-[#66625D] mt-1">Quizzes Completed</div>
               </div>
-              <div className="text-center p-3 rounded-2xl bg-white/5 border border-white/5">
-                <div className="text-2xl md:text-3xl font-extrabold text-[#81C995] font-display">98.4%</div>
-                <div className="text-xs text-slate-400 mt-1 font-semibold">Score Calibration</div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-black text-[#22C55E] font-display">98.4%</div>
+                <div className="text-xs font-semibold text-[#66625D] mt-1">Score Calibration</div>
               </div>
             </div>
+
           </div>
         </section>
 
-        {/* ═══════════ LIVE INTERACTIVE CONSOLE DEMO (GOOGLE MATERIAL 3) ═══════════ */}
-        <section id="demo" className="px-6 md:px-12 py-16 md:py-24 relative">
-          <div className="max-w-6xl mx-auto space-y-8">
+        {/* ═══════════ HERO DEMO CONSOLE CARD (DARK CHARCOAL #262A2B) ═══════════ */}
+        <section id="demo" className="px-6 md:px-12 py-12 md:py-20 relative">
+          <div className="max-w-5xl mx-auto">
             
-            <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4285F4]/15 border border-[#4285F4]/30 text-[#8AB4F8] text-xs font-bold uppercase tracking-wider font-mono">
-                <Google4ColorDots size="sm" />
-                <span>LIVE INTERACTIVE CONSOLE</span>
-              </div>
-              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
-                Try The Tejas Engine Right Now
-              </h2>
-              <p className="text-slate-300 text-sm md:text-base max-w-xl mx-auto">
-                No sign-up required to test our core capabilities. Switch between tools below to experience real-time AI learning.
-              </p>
-            </div>
-
-            {/* Console Frame */}
-            <div className="glass-panel rounded-3xl border border-white/15 p-3 md:p-6 shadow-google-elevation-3 google-ribbon-border">
+            <div className="dark-container p-8 md:p-12 space-y-8 shadow-2xl relative overflow-hidden">
               
-              {/* Console Tabs in Google 4 Colors */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-3 border-b border-white/10 no-scrollbar">
+              {/* Header */}
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAA114]/20 border border-[#FAA114]/40 text-[#FAA114] text-xs font-mono font-bold uppercase tracking-wider">
+                  <span>✦ AFCAT 2026 MENTOR EDITION</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white font-display">
+                  Preparing for Air Force Common Admission Test (AFCAT)?
+                </h2>
+                <p className="text-sm text-slate-300 leading-relaxed max-w-3xl font-normal">
+                  Complete mentor-led AFCAT hub featuring comprehensive syllabus roadmaps, 15 full-length model papers, authentic PYQ PDFs (2018-2025), subject video playlists, and official AFCAT CBT quiz simulations.
+                </p>
+              </div>
+
+              {/* Colored Pill Tags */}
+              <div className="flex flex-wrap gap-2.5">
                 {[
-                  { id: 'cbt', label: '🎯 CBT Exam Console', desc: 'Simulate Live Test', activeColor: 'bg-[#4285F4] text-white shadow-glow-google-blue' },
-                  { id: 'quiz', label: '⚡ Instant AI Quiz', desc: 'Active Questioning', activeColor: 'bg-[#FBBC04] text-slate-950 shadow-glow-google-yellow' },
-                  { id: 'planner', label: '📅 Adaptive Planner', desc: 'Capacity Rebalance', activeColor: 'bg-[#34A853] text-white shadow-glow-google-green' },
-                  { id: 'fsrs', label: '🧠 Spaced Recall (FSRS)', desc: 'Ebbinghaus Decay', activeColor: 'bg-[#EA4335] text-white shadow-glow-google-red' },
-                  { id: 'mastery', label: '📊 Concept Mastery Radar', desc: 'Readiness Heatmap', activeColor: 'bg-[#4285F4] text-white shadow-glow-google-blue' },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setHeroConsoleTab(tab.id as any)}
-                    className={`px-4 py-3 rounded-2xl text-xs font-bold transition-all duration-200 whitespace-nowrap shrink-0 flex flex-col items-start gap-0.5 ${
-                      heroConsoleTab === tab.id
-                        ? `${tab.activeColor} scale-[1.02]`
-                        : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white'
-                    }`}
+                  { name: 'Topic Tests', bg: 'bg-[#EAB308]', text: 'text-slate-950' },
+                  { name: 'Full Mocks', bg: 'bg-[#22C55E]', text: 'text-slate-950' },
+                  { name: 'PYQ Papers', bg: 'bg-[#F97316]', text: 'text-slate-950' },
+                  { name: 'Daily Goals', bg: 'bg-[#3B82F6]', text: 'text-white' },
+                  { name: 'AI Revision Plan', bg: 'bg-[#14B8A6]', text: 'text-slate-950' },
+                  { name: 'AI Explainer', bg: 'bg-[#A855F7]', text: 'text-white' },
+                  { name: 'Sectional Limits', bg: 'bg-[#EF4444]', text: 'text-white' },
+                  { name: 'Readiness Report', bg: 'bg-[#8B5CF6]', text: 'text-white' },
+                ].map((tag, i) => (
+                  <button 
+                    key={i} 
+                    onClick={() => openExamWorkspace('afcat')}
+                    className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all hover:scale-105 shadow-sm ${tag.bg} ${tag.text}`}
                   >
-                    <span>{tab.label}</span>
-                    <span className={`text-[10px] font-normal ${heroConsoleTab === tab.id ? 'text-white/90 font-semibold' : 'text-slate-400'}`}>
-                      {tab.desc}
-                    </span>
+                    ✓ {tag.name}
                   </button>
                 ))}
               </div>
 
-              {/* Console Screen Content */}
-              <div className="mt-6 bg-[#1a1b1f] border border-white/10 rounded-2xl p-6 md:p-8 min-h-[420px] flex flex-col justify-between">
-
-                {/* TAB 1: CBT EXAM CONSOLE */}
-                {heroConsoleTab === 'cbt' && (
-                  <div className="space-y-6 animate-fadeInUp">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-white/10">
-                      <div>
-                        <div className="text-xs font-mono text-[#8AB4F8] font-bold uppercase tracking-wider">AFCAT 2026 OFFICIAL CBT SIMULATOR</div>
-                        <h3 className="text-xl font-bold text-white font-display mt-0.5">Section: Reasoning & Military Aptitude Test</h3>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#EA4335]/15 border border-[#EA4335]/30 text-[#F28B82] font-mono text-xs font-bold">
-                          <Clock className="w-3.5 h-3.5 animate-pulse" /> 01:58:42 REMAINING
-                        </div>
-                        <span className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-slate-300">+3.0 / -1.0</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="text-xs text-slate-400 font-mono">Question 1 of 100 • Multiple Choice Question</div>
-                      <p className="text-base text-slate-100 font-medium leading-relaxed">
-                        In a certain code language, if <strong>&quot;FIGHTER&quot;</strong> is coded as <strong>&quot;HKIJVGT&quot;</strong>, how will the word <strong>&quot;MIRAGE&quot;</strong> be coded in that same system?
-                      </p>
-
-                      <div className="grid sm:grid-cols-2 gap-3 pt-2">
-                        {[
-                          { key: 'A', text: 'OKTCIG' },
-                          { key: 'B', text: 'OKTCHG' },
-                          { key: 'C', text: 'NKTCIH' },
-                          { key: 'D', text: 'PKUDIG' },
-                        ].map((opt) => (
-                          <button
-                            key={opt.key}
-                            onClick={() => setHeroQuizOption(opt.key)}
-                            className={`p-4 rounded-xl border text-left text-sm font-semibold transition-all flex items-center gap-3 ${
-                              heroQuizOption === opt.key
-                                ? 'bg-[#4285F4]/20 border-[#4285F4] text-[#8AB4F8]'
-                                : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30'
-                            }`}
-                          >
-                            <span className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold ${
-                              heroQuizOption === opt.key ? 'bg-[#4285F4] text-white' : 'bg-white/10 text-slate-300'
-                            }`}>
-                              {opt.key}
-                            </span>
-                            <span>{opt.text}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-white/10">
-                      <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
-                        <span className="w-2.5 h-2.5 rounded-full bg-[#34A853]"></span> 1 Answered
-                        <span className="w-2.5 h-2.5 rounded-full bg-slate-600 ml-2"></span> 99 Unanswered
-                      </div>
-                      <button 
-                        onClick={() => openExamWorkspace('afcat')}
-                        className="px-5 py-2.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-extrabold text-xs rounded-xl shadow-glow-google-blue transition-all"
-                      >
-                        Launch Full 100-Q CBT Engine →
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* TAB 2: INSTANT AI QUIZ GENERATOR */}
-                {heroConsoleTab === 'quiz' && (
-                  <div className="space-y-6 animate-fadeInUp">
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <div>
-                        <span className="text-xs font-mono text-[#FDD663] font-bold uppercase">UPSC CSE • INDIAN POLITY & CONSTITUTION</span>
-                        <h3 className="text-lg font-bold text-white font-display">Article 32 & Constitutional Remedies</h3>
-                      </div>
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-[#FBBC04]/20 text-[#FDD663] border border-[#FBBC04]/40 font-bold">
-                        AI Generated
-                      </span>
-                    </div>
-
-                    <div className="space-y-4">
-                      <p className="text-base text-slate-100 font-medium">
-                        Which of the following Writs can be issued against private individuals as well as public bodies?
-                      </p>
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        {[
-                          { key: 'A', text: 'Habeas Corpus', correct: true },
-                          { key: 'B', text: 'Mandamus', correct: false },
-                          { key: 'C', text: 'Quo-Warranto', correct: false },
-                          { key: 'D', text: 'Certiorari', correct: false },
-                        ].map((opt) => (
-                          <button
-                            key={opt.key}
-                            onClick={() => {
-                              setHeroQuizOption(opt.key);
-                              setHeroQuizSubmitted(true);
-                            }}
-                            className={`p-4 rounded-xl border text-left text-sm font-semibold transition-all flex items-center justify-between ${
-                              heroQuizSubmitted
-                                ? opt.correct
-                                  ? 'bg-[#34A853]/20 border-[#34A853] text-[#81C995]'
-                                  : heroQuizOption === opt.key
-                                  ? 'bg-[#EA4335]/20 border-[#EA4335] text-[#F28B82]'
-                                  : 'bg-white/5 border-white/10 text-slate-500'
-                                : heroQuizOption === opt.key
-                                ? 'bg-[#FBBC04]/20 border-[#FBBC04] text-[#FDD663]'
-                                : 'bg-white/5 border-white/10 text-slate-300 hover:border-white/30'
-                            }`}
-                          >
-                            <div className="flex items-center gap-3">
-                              <span className="w-6 h-6 rounded-lg bg-white/10 flex items-center justify-center text-xs font-bold">{opt.key}</span>
-                              <span>{opt.text}</span>
-                            </div>
-                            {heroQuizSubmitted && opt.correct && <Check className="w-5 h-5 text-[#34A853]" />}
-                          </button>
-                        ))}
-                      </div>
-
-                      {heroQuizSubmitted && (
-                        <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2 animate-fadeInUp">
-                          <div className="text-xs font-bold text-[#FDD663] flex items-center gap-1.5">
-                            <Sparkles className="w-4 h-4 text-[#FBBC04]" /> AI Explanation
-                          </div>
-                          <p className="text-xs text-slate-300 leading-relaxed">
-                            <strong>Habeas Corpus</strong> (literally &quot;to have the body of&quot;) can be issued against both public authorities and private individuals who have unlawfully detained a person. Mandamus and Certiorari only apply to public officials and judicial bodies.
-                          </p>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex justify-between items-center pt-2">
-                      <button 
-                        onClick={() => {
-                          setHeroQuizOption(null);
-                          setHeroQuizSubmitted(false);
-                        }}
-                        className="text-xs font-semibold text-slate-400 hover:text-white"
-                      >
-                        Reset Question
-                      </button>
-                      <button 
-                        onClick={() => openExamWorkspace('upsc')}
-                        className="px-4 py-2 bg-[#4285F4] text-white font-bold text-xs rounded-xl shadow-glow-google-blue hover:bg-[#1A73E8] transition-all"
-                      >
-                        Generate More Quizzes →
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* TAB 3: ADAPTIVE STUDY PLANNER */}
-                {heroConsoleTab === 'planner' && (
-                  <div className="space-y-6 animate-fadeInUp">
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <div>
-                        <span className="text-xs font-mono text-[#81C995] font-bold uppercase">DYNAMIC ROADMAP SCHEDULER</span>
-                        <h3 className="text-lg font-bold text-white font-display">Set Daily Time Budget: {heroPlannerHours} Hours</h3>
-                      </div>
-                      <div className="text-xs text-[#81C995] font-mono font-bold bg-[#34A853]/15 px-3 py-1 rounded-lg border border-[#34A853]/30">
-                        100% Syllabus Coverage in 90 Days
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <input 
-                        type="range" 
-                        min="2" 
-                        max="8" 
-                        value={heroPlannerHours}
-                        onChange={(e) => setHeroPlannerHours(parseInt(e.target.value, 10))}
-                        className="w-full accent-[#34A853] h-2 bg-white/10 rounded-lg cursor-pointer"
-                      />
-                      <div className="flex justify-between text-xs text-slate-400 font-mono">
-                        <span>2 Hours/Day (Working Professional)</span>
-                        <span>4 Hours/Day (Balanced)</span>
-                        <span>8 Hours/Day (Dropper/Full-Time)</span>
-                      </div>
-
-                      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 pt-2">
-                        {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, i) => (
-                          <div key={day} className="p-3 bg-white/5 border border-white/10 rounded-xl space-y-2">
-                            <div className="text-xs font-mono font-bold text-slate-300">{day}</div>
-                            <div className="p-2 rounded-lg bg-[#34A853]/20 border border-[#34A853]/40 text-[10px] font-bold text-[#81C995]">
-                              {i % 2 === 0 ? 'Polity & GK' : 'Maths & Speed'}
-                            </div>
-                            <div className="text-[10px] text-slate-400 font-mono">{heroPlannerHours}h Target</div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end pt-2">
-                      <button 
-                        onClick={() => openExamWorkspace('afcat')}
-                        className="px-5 py-2.5 bg-[#34A853] text-white font-extrabold text-xs rounded-xl shadow-glow-google-green hover:bg-[#188038] transition-all"
-                      >
-                        Adopt Personalized Schedule →
-                      </button>
-                    </div>
-                  </div>
-                )}
-
-                {/* TAB 4: SPACED RECALL (FSRS) */}
-                {heroConsoleTab === 'fsrs' && (
-                  <div className="space-y-6 animate-fadeInUp">
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <div>
-                        <span className="text-xs font-mono text-[#F28B82] font-bold uppercase">SCIENTIFIC MEMORY ENGINE (FSRS)</span>
-                        <h3 className="text-lg font-bold text-white font-display">Active Recall Flashcard Deck</h3>
-                      </div>
-                      <span className="text-xs font-mono px-3 py-1 bg-[#EA4335]/15 text-[#F28B82] border border-[#EA4335]/30 rounded-lg">
-                        14 Cards Due Today
-                      </span>
-                    </div>
-
-                    <div 
-                      onClick={() => setHeroFlashcardFlipped(!heroFlashcardFlipped)}
-                      className="p-8 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/15 cursor-pointer hover:border-[#EA4335]/50 transition-all min-h-[180px] flex flex-col justify-center text-center space-y-3 relative group"
-                    >
-                      <div className="text-xs font-mono font-bold text-[#F28B82] uppercase tracking-wider">
-                        {heroFlashcardFlipped ? '✦ REVEALED ANSWER' : '✦ CLICK TO FLIP / TEST RECALL'}
-                      </div>
-                      <p className="text-base sm:text-lg font-semibold text-white">
-                        {heroFlashcardFlipped 
-                          ? 'Chlorophyll absorbs Light Energy in Blue (430 nm) and Red (660 nm) wavelengths, while reflecting Green light.' 
-                          : 'Which wavelengths of visible light are maximally absorbed by Chlorophyll-a in photosynthesis?'}
-                      </p>
-                      <span className="text-[10px] text-slate-400">Card 1 of 14 • Biology & General Science</span>
-                    </div>
-
-                    <div className="grid grid-cols-4 gap-2 pt-2">
-                      {[
-                        { label: 'Again (<1m)', color: 'bg-[#EA4335]/20 text-[#F28B82] border-[#EA4335]/30' },
-                        { label: 'Hard (12h)', color: 'bg-[#FBBC04]/20 text-[#FDD663] border-[#FBBC04]/30' },
-                        { label: 'Good (3d)', color: 'bg-[#34A853]/20 text-[#81C995] border-[#34A853]/30' },
-                        { label: 'Easy (7d)', color: 'bg-[#4285F4]/20 text-[#8AB4F8] border-[#4285F4]/30' },
-                      ].map((btn, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setHeroFlashcardFlipped(false)}
-                          className={`py-2.5 rounded-xl border text-xs font-bold transition-all hover:scale-105 ${btn.color}`}
-                        >
-                          {btn.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* TAB 5: CONCEPT MASTERY RADAR */}
-                {heroConsoleTab === 'mastery' && (
-                  <div className="space-y-6 animate-fadeInUp">
-                    <div className="flex justify-between items-center pb-4 border-b border-white/10">
-                      <div>
-                        <span className="text-xs font-mono text-[#8AB4F8] font-bold uppercase">SYLLABUS MASTERY RADAR</span>
-                        <h3 className="text-lg font-bold text-white font-display">Predicted Score: 184 / 300 (Cutoff: 155+)</h3>
-                      </div>
-                      <span className="text-xs font-bold px-3 py-1 bg-[#4285F4]/20 text-[#8AB4F8] border border-[#4285F4]/30 rounded-lg">
-                        98.6% Predicted Cutoff Clearance
-                      </span>
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
-                      {[
-                        { topic: 'Reasoning Logic', score: 94, status: 'Mastered', color: 'text-[#81C995]', bar: 'bg-[#34A853]' },
-                        { topic: 'Numerical Ability', score: 78, status: 'Strong', color: 'text-[#FDD663]', bar: 'bg-[#FBBC04]' },
-                        { topic: 'English Comprehension', score: 88, status: 'Mastered', color: 'text-[#81C995]', bar: 'bg-[#34A853]' },
-                        { topic: 'Current Affairs & Defense', score: 62, status: 'Needs Practice', color: 'text-[#F28B82]', bar: 'bg-[#EA4335]' },
-                      ].map((item, i) => (
-                        <div key={i} className="p-4 bg-white/5 border border-white/10 rounded-2xl space-y-2">
-                          <div className="text-xs font-semibold text-slate-300">{item.topic}</div>
-                          <div className="flex justify-between items-baseline">
-                            <span className="text-2xl font-bold font-display text-white">{item.score}%</span>
-                            <span className={`text-[10px] font-bold ${item.color}`}>{item.status}</span>
-                          </div>
-                          <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                            <div className={`h-full rounded-full ${item.bar}`} style={{ width: `${item.score}%` }}></div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="p-4 rounded-2xl bg-[#4285F4]/10 border border-[#4285F4]/30 flex flex-col sm:flex-row justify-between items-center gap-4">
-                      <div className="space-y-1">
-                        <div className="text-xs font-bold text-[#8AB4F8] flex items-center gap-2">
-                          <Google4ColorDots size="sm" /> AI Recommendation for Today
-                        </div>
-                        <p className="text-xs text-slate-300">Attempt 15 questions on Indian Air Force Commands & Joint Military Exercises to boost Defense GK by +12 Marks.</p>
-                      </div>
-                      <button 
-                        onClick={() => openExamWorkspace('afcat')}
-                        className="px-4 py-2 bg-[#4285F4] text-white font-bold text-xs rounded-xl shadow-glow-google-blue whitespace-nowrap"
-                      >
-                        Start Targeted Drill →
-                      </button>
-                    </div>
-                  </div>
-                )}
-
+              {/* Readiness Assessment Inner Gauge Box */}
+              <div className="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div className="space-y-1 text-center sm:text-left">
+                  <div className="text-4xl font-black text-[#FAA114] font-display">98.4% READY</div>
+                  <div className="text-xs text-slate-300 font-semibold uppercase tracking-wide">Readiness Assessment Score</div>
+                </div>
+                <div className="flex items-center gap-4 text-xs font-mono text-slate-300">
+                  <span className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/10">8 / 8 Completed</span>
+                  <span className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/10">15 Mocks</span>
+                  <button 
+                    onClick={() => openExamWorkspace('afcat')}
+                    className="px-5 py-2.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition-all"
+                  >
+                    Launch AFCAT Engine →
+                  </button>
+                </div>
               </div>
+
             </div>
 
           </div>
         </section>
 
-        {/* ═══════════ ALL MAJOR INDIAN EXAMINATIONS (GOOGLE COLOR MATRIX) ═══════════ */}
+        {/* ═══════════ ALL MAJOR INDIAN EXAMINATIONS SECTION ═══════════ */}
         <RevealSection>
-          <section id="exams" className="px-6 md:px-12 py-20 relative bg-[#1c1d22] border-y border-white/10">
+          <section id="exams" className="px-6 md:px-12 py-20 relative bg-[#F5F4F0] border-y border-[#E5E2D9]">
             <div className="max-w-7xl mx-auto space-y-12">
               
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div className="space-y-3">
-                  <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#EA4335]/15 border border-[#EA4335]/30 text-[#F28B82] text-xs font-bold uppercase tracking-wider font-mono">
-                    <Shield className="w-3.5 h-3.5 text-[#EA4335]" />
-                    <span>FULL EXAMINATION SUITES</span>
+                  <div className="pill-badge">
+                    <span>✦ FULL EXAMINATION SUITES</span>
                   </div>
-                  <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
+                  <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#1A1D1E] font-display">
                     All Major Indian Examinations
                   </h2>
-                  <p className="text-slate-300 text-sm md:text-base max-w-xl">
+                  <p className="text-[#66625D] text-sm md:text-base max-w-xl">
                     Dedicated CBT environments, curated model test papers, authentic past-year questions, and adaptive study roadmaps for every national target.
                   </p>
                 </div>
@@ -1390,9 +1006,9 @@ export default function WorkspacePage() {
                       placeholder="Search exam, category, or tag..."
                       value={heroExamSearch}
                       onChange={(e) => setHeroExamSearch(e.target.value)}
-                      className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/15 rounded-xl text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#4285F4] transition-colors"
+                      className="w-full px-4 py-3 pl-10 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] placeholder-[#94A3B8] focus:outline-none focus:border-[#FAA114] transition-colors"
                     />
-                    <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                    <Search className="w-4 h-4 text-[#66625D] absolute left-3.5 top-3.5" />
                   </div>
                 </div>
               </div>
@@ -1400,20 +1016,20 @@ export default function WorkspacePage() {
               {/* Category Filter Pills */}
               <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
                 {[
-                  { id: 'all', label: 'All Exams (9)', activeStyle: 'bg-white text-slate-950 font-black' },
-                  { id: 'defence', label: '⚔️ Defence (AFCAT, CDS, NDA)', activeStyle: 'bg-[#EA4335] text-white shadow-glow-google-red font-black' },
-                  { id: 'engineering', label: '⚛️ Engineering (JEE, GATE)', activeStyle: 'bg-[#4285F4] text-white shadow-glow-google-blue font-black' },
-                  { id: 'medical', label: '🩺 Medical (NEET UG)', activeStyle: 'bg-[#34A853] text-white shadow-glow-google-green font-black' },
-                  { id: 'civil', label: '🏛️ Civil Services (UPSC CSE)', activeStyle: 'bg-[#EA4335] text-white shadow-glow-google-red font-black' },
-                  { id: 'aptitude', label: '📊 Aptitude & MBA (SSC, CAT)', activeStyle: 'bg-[#FBBC04] text-slate-950 shadow-glow-google-yellow font-black' },
+                  { id: 'all', label: 'All Exams (9)' },
+                  { id: 'defence', label: '⚔️ Defence (AFCAT, CDS, NDA)' },
+                  { id: 'engineering', label: '⚛️ Engineering (JEE, GATE)' },
+                  { id: 'medical', label: '🩺 Medical (NEET UG)' },
+                  { id: 'civil', label: '🏛️ Civil Services (UPSC CSE)' },
+                  { id: 'aptitude', label: '📊 Aptitude & MBA (SSC, CAT)' },
                 ].map((pill) => (
                   <button
                     key={pill.id}
                     onClick={() => setHeroExamFilter(pill.id as any)}
                     className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 ${
                       heroExamFilter === pill.id
-                        ? pill.activeStyle
-                        : 'bg-white/5 text-slate-300 hover:text-white hover:bg-white/10'
+                        ? 'bg-[#1A1D1E] text-[#FAFAF8] shadow-sm'
+                        : 'bg-white text-[#66625D] hover:text-[#1A1D1E] border border-[#E5E2D9]'
                     }`}
                   >
                     {pill.label}
@@ -1430,44 +1046,44 @@ export default function WorkspacePage() {
                     <div
                       key={exam.id}
                       onClick={() => openExamWorkspace(exam.id)}
-                      className="glass-panel glass-panel-hover p-6 rounded-3xl cursor-pointer group flex flex-col justify-between space-y-6 relative overflow-hidden"
+                      className="light-card light-card-hover p-6 rounded-3xl cursor-pointer group flex flex-col justify-between space-y-6 relative overflow-hidden"
                     >
                       <div className="space-y-4">
                         <div className="flex items-center justify-between">
                           <div 
                             className="w-12 h-12 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-110"
-                            style={{ backgroundColor: `${exam.color}20`, border: `1px solid ${exam.color}40` }}
+                            style={{ backgroundColor: `${exam.color}15`, border: `1px solid ${exam.color}30` }}
                           >
                             <Icon className="w-6 h-6" style={{ color: exam.color }} />
                           </div>
-                          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-300">
+                          <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-[#F5F4F0] border border-[#E5E2D9] text-[#66625D]">
                             {exam.badge}
                           </span>
                         </div>
 
                         <div>
-                          <h3 className="text-xl font-bold text-white font-display group-hover:text-[#8AB4F8] transition-colors">
+                          <h3 className="text-xl font-bold text-[#1A1D1E] font-display group-hover:text-[#FAA114] transition-colors">
                             {exam.name}
                           </h3>
-                          <p className="text-xs text-slate-400 mt-1 font-mono">
+                          <p className="text-xs text-[#66625D] mt-1 font-mono">
                             {exam.candidates} Aspirants • {info?.mocks || 'Full Mock Series'}
                           </p>
                         </div>
 
-                        <p className="text-xs text-slate-300 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-[#66625D] line-clamp-2 leading-relaxed">
                           {info?.description}
                         </p>
 
                         <div className="flex flex-wrap gap-1.5">
                           {info?.features.slice(0, 3).map((f, i) => (
-                            <span key={i} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-white/5 text-slate-300 border border-white/5">
+                            <span key={i} className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#F5F4F0] text-[#66625D] border border-[#E5E2D9]">
                               ✓ {f}
                             </span>
                           ))}
                         </div>
                       </div>
 
-                      <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-[#8AB4F8] group-hover:text-white">
+                      <div className="pt-4 border-t border-[#E5E2D9] flex items-center justify-between text-xs font-bold text-[#FAA114] group-hover:text-[#E8940F]">
                         <span>Launch CBT Engine</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
@@ -1480,19 +1096,18 @@ export default function WorkspacePage() {
           </section>
         </RevealSection>
 
-        {/* ═══════════ CORE FEATURES BENTO GRID MATRIX ═══════════ */}
+        {/* ═══════════ CORE FEATURES BENTO GRID ═══════════ */}
         <RevealSection>
           <section id="features" className="px-6 md:px-12 py-20 md:py-28 max-w-7xl mx-auto space-y-16">
             
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FBBC04]/15 border border-[#FBBC04]/30 text-[#FDD663] text-xs font-bold uppercase tracking-wider font-mono">
-                <Google4ColorDots size="sm" />
-                <span>GOOGLE ARCHITECTURE & MODULES</span>
+              <div className="pill-badge">
+                <span>✦ ARCHITECTURE & MODULES</span>
               </div>
-              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
-                Engineered for Academic Mastery
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#1A1D1E] font-display">
+                Every tool you need to pass faster.
               </h2>
-              <p className="text-slate-300 text-sm md:text-base max-w-xl mx-auto">
+              <p className="text-[#66625D] text-sm md:text-base max-w-xl mx-auto">
                 Six interconnected AI modules working together to transform raw syllabus into deep conceptual retention.
               </p>
             </div>
@@ -1503,31 +1118,31 @@ export default function WorkspacePage() {
                 return (
                   <div 
                     key={i} 
-                    className="glass-panel glass-panel-hover p-8 rounded-3xl space-y-5 flex flex-col justify-between group"
+                    className="light-card light-card-hover p-8 rounded-3xl space-y-5 flex flex-col justify-between group"
                   >
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
                         <div 
                           className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
-                          style={{ backgroundColor: `${feature.color}20`, border: `1px solid ${feature.color}40` }}
+                          style={{ backgroundColor: `${feature.color}15`, border: `1px solid ${feature.color}30` }}
                         >
                           <Icon className="w-6 h-6" style={{ color: feature.color }} />
                         </div>
-                        <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-slate-300">
+                        <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-md bg-[#F5F4F0] border border-[#E5E2D9] text-[#66625D]">
                           {feature.tag}
                         </span>
                       </div>
 
-                      <h3 className="text-xl font-bold text-white font-display group-hover:text-[#8AB4F8] transition-colors">
+                      <h3 className="text-xl font-bold text-[#1A1D1E] font-display group-hover:text-[#FAA114] transition-colors">
                         {feature.title}
                       </h3>
 
-                      <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                      <p className="text-sm text-[#66625D] leading-relaxed font-normal">
                         {feature.description}
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-white/10 flex items-center gap-2 text-xs font-bold text-[#8AB4F8]">
+                    <div className="pt-4 border-t border-[#E5E2D9] flex items-center gap-2 text-xs font-bold text-[#FAA114]">
                       <span>Explore Module</span>
                       <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -1541,14 +1156,17 @@ export default function WorkspacePage() {
 
         {/* ═══════════ THREE STEPS TO MASTERY ═══════════ */}
         <RevealSection>
-          <section className="px-6 md:px-12 py-20 bg-[#1c1d22] border-y border-white/10">
+          <section className="px-6 md:px-12 py-20 bg-[#F5F4F0] border-y border-[#E5E2D9]">
             <div className="max-w-6xl mx-auto space-y-16">
               
               <div className="text-center space-y-3">
-                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
-                  Three Steps from Zero to Ranker
+                <div className="pill-badge">
+                  <span>✦ SIMPLE 3-STEP WORKFLOW</span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#1A1D1E] font-display">
+                  Three Steps to Mastery
                 </h2>
-                <p className="text-slate-300 text-sm md:text-base max-w-lg mx-auto">
+                <p className="text-[#66625D] text-sm md:text-base max-w-lg mx-auto">
                   A frictionless transition from chaotic preparation to structured, algorithmic confidence.
                 </p>
               </div>
@@ -1560,35 +1178,29 @@ export default function WorkspacePage() {
                     title: 'Pick Target & Timeline',
                     description: 'Select your target examination. Tejas automatically maps the exact official syllabus and generates your daily study capacity timetable.',
                     icon: Target,
-                    color: '#4285F4'
                   },
                   {
                     step: '02',
                     title: 'Active Recall Practice',
                     description: 'Ingest notes or textbooks. The AI quiz engine breaks down concepts into targeted drills, live simulations, and spaced review cards.',
                     icon: Brain,
-                    color: '#FBBC04'
                   },
                   {
                     step: '03',
                     title: 'Rank Prediction & Exam Day',
                     description: 'Take full-length CBT papers in authentic CDAC windows. Receive precision cutoff percentiles and weak-area surgery before the real exam.',
                     icon: Award,
-                    color: '#34A853'
                   },
                 ].map((item, i) => {
                   const Icon = item.icon;
                   return (
-                    <div key={i} className="glass-panel p-8 rounded-3xl space-y-4 text-center relative group">
-                      <div 
-                        className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
-                        style={{ backgroundColor: `${item.color}20`, border: `1px solid ${item.color}40` }}
-                      >
-                        <Icon className="w-7 h-7" style={{ color: item.color }} />
+                    <div key={i} className="light-card p-8 rounded-3xl space-y-4 text-center relative group">
+                      <div className="w-14 h-14 mx-auto rounded-2xl bg-[#FAF3E6] border border-[#E8D5B7] flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <Icon className="w-7 h-7 text-[#FAA114]" />
                       </div>
-                      <div className="text-xs font-mono font-bold tracking-widest uppercase text-slate-300">STEP {item.step}</div>
-                      <h3 className="text-xl font-bold text-white font-display">{item.title}</h3>
-                      <p className="text-sm text-slate-300 leading-relaxed">{item.description}</p>
+                      <div className="text-xs font-mono font-bold text-[#C88410] tracking-widest uppercase">STEP {item.step}</div>
+                      <h3 className="text-xl font-bold text-[#1A1D1E] font-display">{item.title}</h3>
+                      <p className="text-sm text-[#66625D] leading-relaxed">{item.description}</p>
                     </div>
                   );
                 })}
@@ -1598,51 +1210,50 @@ export default function WorkspacePage() {
           </section>
         </RevealSection>
 
-        {/* ═══════════ TESTIMONIALS / SUCCESS STORIES ═══════════ */}
+        {/* ═══════════ TESTIMONIALS / LOVED BY TOP RANKERS ═══════════ */}
         <RevealSection>
           <section id="testimonials" className="px-6 md:px-12 py-20 md:py-28 max-w-7xl mx-auto space-y-16">
             
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#34A853]/15 border border-[#34A853]/30 text-[#81C995] text-xs font-bold uppercase tracking-wider font-mono">
-                <CheckCircle className="w-3.5 h-3.5 text-[#34A853]" />
-                <span>VERIFIED RANKERS</span>
+              <div className="pill-badge">
+                <span>✦ VERIFIED RANKERS</span>
               </div>
-              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
-                Trusted by Top Aspirants Across India
+              <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#1A1D1E] font-display">
+                Loved by Top Rankers
               </h2>
-              <p className="text-slate-300 text-sm md:text-base max-w-lg mx-auto">
+              <p className="text-[#66625D] text-sm md:text-base max-w-lg mx-auto">
                 Real aspirants who transformed their preparation discipline and cleared their dream cutoffs.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
               {testimonials.map((t, i) => (
-                <div key={i} className="glass-panel p-8 rounded-3xl space-y-6 flex flex-col justify-between relative group">
-                  <Quote className="w-8 h-8 text-[#4285F4]/30 absolute top-6 right-6" />
+                <div key={i} className="light-card p-8 rounded-3xl space-y-6 flex flex-col justify-between relative group">
+                  <Quote className="w-8 h-8 text-[#FAA114]/20 absolute top-6 right-6" />
                   
                   <div className="space-y-4">
                     <div className="flex items-center gap-3.5">
-                      <div className="w-12 h-12 rounded-2xl bg-[#4285F4]/20 border border-[#4285F4]/40 flex items-center justify-center text-sm font-extrabold text-[#8AB4F8] font-display">
+                      <div className="w-12 h-12 rounded-2xl bg-[#FAF3E6] border border-[#E8D5B7] flex items-center justify-center text-sm font-extrabold text-[#C88410] font-display">
                         {t.avatar}
                       </div>
                       <div>
-                        <div className="text-base font-bold text-white">{t.name}</div>
-                        <div className="text-xs text-[#8AB4F8] font-mono font-semibold">{t.role}</div>
+                        <div className="text-base font-bold text-[#1A1D1E]">{t.name}</div>
+                        <div className="text-xs text-[#FAA114] font-mono font-semibold">{t.role}</div>
                       </div>
                     </div>
 
-                    <p className="text-sm text-slate-300 leading-relaxed italic">
+                    <p className="text-sm text-[#66625D] leading-relaxed italic">
                       &ldquo;{t.quote}&rdquo;
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                  <div className="pt-4 border-t border-[#E5E2D9] flex items-center justify-between">
                     <div className="flex gap-1">
                       {[...Array(5)].map((_, j) => (
-                        <Star key={j} className="w-4 h-4 fill-[#FBBC04] text-[#FBBC04]" />
+                        <Star key={j} className="w-4 h-4 fill-[#FAA114] text-[#FAA114]" />
                       ))}
                     </div>
-                    <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#34A853]/20 text-[#81C995] border border-[#34A853]/40">
+                    <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-[#F5F4F0] text-[#66625D] border border-[#E5E2D9]">
                       {t.badge}
                     </span>
                   </div>
@@ -1655,18 +1266,17 @@ export default function WorkspacePage() {
 
         {/* ═══════════ TRANSPARENT PRICING TIERS ═══════════ */}
         <RevealSection>
-          <section id="pricing" className="px-6 md:px-12 py-20 bg-[#1c1d22] border-t border-white/10">
+          <section id="pricing" className="px-6 md:px-12 py-20 bg-[#F5F4F0] border-t border-[#E5E2D9]">
             <div className="max-w-5xl mx-auto space-y-16">
               
               <div className="text-center space-y-3">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#4285F4]/15 border border-[#4285F4]/30 text-[#8AB4F8] text-xs font-bold uppercase tracking-wider font-mono">
-                  <Google4ColorDots size="sm" />
-                  <span>TRANSPARENT MEMBERSHIP</span>
+                <div className="pill-badge">
+                  <span>✦ TRANSPARENT MEMBERSHIP</span>
                 </div>
-                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white font-display">
-                  Start Free. Upgrade for Unlimited Power.
+                <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight text-[#1A1D1E] font-display">
+                  Plans That Scale With Your Prep
                 </h2>
-                <p className="text-slate-300 text-sm md:text-base max-w-lg mx-auto">
+                <p className="text-[#66625D] text-sm md:text-base max-w-lg mx-auto">
                   Every serious aspirant deserves world-class AI preparation tools at an affordable price.
                 </p>
               </div>
@@ -1674,14 +1284,14 @@ export default function WorkspacePage() {
               <div className="grid md:grid-cols-2 gap-8 items-stretch">
                 
                 {/* Free Tier */}
-                <div className="glass-panel p-8 md:p-10 rounded-3xl flex flex-col justify-between space-y-8">
+                <div className="light-card p-8 md:p-10 rounded-3xl flex flex-col justify-between space-y-8">
                   <div className="space-y-6">
                     <div>
-                      <span className="text-xs font-mono font-bold text-slate-400 uppercase">FREE LEARNER</span>
-                      <div className="text-5xl font-black text-white font-display mt-2">
-                        ₹0 <span className="text-sm font-medium text-slate-400">/ forever</span>
+                      <span className="text-xs font-mono font-bold text-[#66625D] uppercase">FREE LEARNER</span>
+                      <div className="text-5xl font-black text-[#1A1D1E] font-display mt-2">
+                        ₹0 <span className="text-sm font-medium text-[#66625D]">/ month</span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-2">Essential study tools for getting started.</p>
+                      <p className="text-xs text-[#66625D] mt-2">Essential study tools for getting started.</p>
                     </div>
 
                     <ul className="space-y-3">
@@ -1692,8 +1302,8 @@ export default function WorkspacePage() {
                         'Official exam pattern guides',
                         'Community forum access'
                       ].map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-sm text-slate-300">
-                          <CheckCircle className="w-4 h-4 text-slate-500 shrink-0" />
+                        <li key={i} className="flex items-center gap-3 text-sm text-[#66625D]">
+                          <CheckCircle className="w-4 h-4 text-[#FAA114] shrink-0" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -1706,25 +1316,25 @@ export default function WorkspacePage() {
                       resetAuthState();
                       triggerLoadingState('auth');
                     }}
-                    className="w-full py-4 glass-panel hover:bg-white/10 text-white font-bold text-sm rounded-xl transition-all active:scale-[0.98]"
+                    className="w-full py-4 border border-[#E5E2D9] hover:bg-[#F5F4F0] text-[#1A1D1E] font-bold text-sm rounded-xl transition-all active:scale-[0.98]"
                   >
-                    Start Free Plan
+                    Current Active Plan
                   </button>
                 </div>
 
-                {/* Premium Tier (Google Blue Highlight) */}
-                <div className="glass-panel p-8 md:p-10 rounded-3xl flex flex-col justify-between space-y-8 border-[#4285F4]/50 relative shadow-glow-google-blue google-ribbon-border">
-                  <div className="absolute -top-3.5 right-8 bg-[#4285F4] text-white text-[10px] font-extrabold font-mono px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg">
-                    ✦ HIGHLY RECOMMENDED
+                {/* Premium Tier */}
+                <div className="light-card p-8 md:p-10 rounded-3xl flex flex-col justify-between space-y-8 border-2 border-[#FAA114] relative shadow-md">
+                  <div className="absolute -top-3.5 right-8 bg-[#FAA114] text-[#1A1D1E] text-[10px] font-extrabold font-mono px-3.5 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                    ✦ RECOMMENDED
                   </div>
 
                   <div className="space-y-6">
                     <div>
-                      <span className="text-xs font-mono font-bold text-[#8AB4F8] uppercase">ELITE ASPIRANT PRO</span>
-                      <div className="text-5xl font-black text-white font-display mt-2">
-                        ₹499 <span className="text-sm font-medium text-slate-400">/ month</span>
+                      <span className="text-xs font-mono font-bold text-[#FAA114] uppercase">ELITE PREMIUM</span>
+                      <div className="text-5xl font-black text-[#1A1D1E] font-display mt-2">
+                        ₹499 <span className="text-sm font-medium text-[#66625D]">/ month</span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-2">For dedicated aspirants targeting top AIR ranks.</p>
+                      <p className="text-xs text-[#66625D] mt-2">For dedicated aspirants targeting top AIR ranks.</p>
                     </div>
 
                     <ul className="space-y-3">
@@ -1737,8 +1347,8 @@ export default function WorkspacePage() {
                         'Priority neural processing speed',
                         'All future exam hubs included'
                       ].map((item, i) => (
-                        <li key={i} className="flex items-center gap-3 text-sm text-slate-100 font-medium">
-                          <CheckCircle className="w-4 h-4 text-[#4285F4] shrink-0" />
+                        <li key={i} className="flex items-center gap-3 text-sm text-[#1A1D1E] font-medium">
+                          <CheckCircle className="w-4 h-4 text-[#FAA114] shrink-0" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -1751,9 +1361,9 @@ export default function WorkspacePage() {
                       setIsLoggedIn(true);
                       triggerLoadingState('afcat');
                     }}
-                    className="w-full py-4 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-black text-sm rounded-xl transition-all active:scale-[0.98] shadow-glow-google-blue"
+                    className="w-full py-4 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-sm rounded-xl transition-all active:scale-[0.98] shadow-sm"
                   >
-                    Unlock Elite Membership
+                    Upgrade Workspace
                   </button>
                 </div>
 
@@ -1763,20 +1373,14 @@ export default function WorkspacePage() {
           </section>
         </RevealSection>
 
-        {/* ═══════════ FINAL CALL TO ACTION ═══════════ */}
+        {/* ═══════════ FINAL CALL TO ACTION (DARK CHARCOAL #262A2B) ═══════════ */}
         <RevealSection>
-          <section className="px-6 md:px-12 py-20 md:py-28 relative">
-            <div className="max-w-5xl mx-auto glass-panel p-10 md:p-16 rounded-[36px] border border-[#4285F4]/40 text-center relative overflow-hidden shadow-2xl google-ribbon-border">
+          <section className="px-6 md:px-12 py-20 md:py-24 relative">
+            <div className="max-w-5xl mx-auto dark-container p-10 md:p-16 text-center relative overflow-hidden shadow-2xl">
               
-              <div className="absolute -top-24 -right-24 w-80 h-80 bg-[#4285F4]/20 rounded-full blur-[100px] pointer-events-none"></div>
-              <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-[#34A853]/15 rounded-full blur-[100px] pointer-events-none"></div>
-
               <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-                <div className="flex justify-center">
-                  <Google4ColorDots size="lg" />
-                </div>
                 <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white font-display tracking-tight leading-tight">
-                  Ready to Crack Your Target Exam in 2026?
+                  Ready to Transform Your Preparation?
                 </h2>
                 <p className="text-slate-300 text-sm md:text-base leading-relaxed">
                   Join over 50,000 aspirants who are preparing with algorithmic precision and daily clarity.
@@ -1788,9 +1392,9 @@ export default function WorkspacePage() {
                       resetAuthState();
                       triggerLoadingState('auth');
                     }}
-                    className="w-full sm:w-auto px-10 py-4 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-black text-base rounded-2xl shadow-glow-google-blue transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full sm:w-auto px-10 py-4 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-base rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
                   >
-                    Create Free Account
+                    Start Free Workspace
                     <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
@@ -1801,58 +1405,56 @@ export default function WorkspacePage() {
         </RevealSection>
 
         {/* ═══════════ FOOTER ═══════════ */}
-        <footer className="border-t border-white/10 py-16 px-6 md:px-12 bg-[#121316] text-slate-400">
+        <footer className="border-t border-[#E5E2D9] py-16 px-6 md:px-12 bg-[#FAFAF8] text-[#66625D]">
           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8">
             <div className="col-span-2 space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-[#202125] border border-white/10 flex items-center justify-center">
-                  <Google4ColorDots size="sm" />
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-[#1A1D1E] text-[#FAFAF8] flex items-center justify-center font-black text-sm">
+                  T
                 </div>
-                <span className="text-xl font-bold text-white font-display">Tejas</span>
+                <span className="text-xl font-bold text-[#1A1D1E] font-display">Tejas</span>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
+              <p className="text-xs text-[#66625D] leading-relaxed max-w-sm">
                 The unified AI study operating system for competitive exams, university subjects, and document intelligence across India.
               </p>
-              <div className="text-xs font-mono text-slate-400 pt-2">
-                Designed in Google Colorography for 500 Million Indian Learners.
+              <div className="text-xs font-mono text-[#94A3B8] pt-2">
+                Built for 500 Million Indian Aspirants.
               </div>
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Exams</h4>
+              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-[#1A1D1E]">Exams</h4>
               <ul className="space-y-2 text-xs">
                 {['AFCAT 2026', 'CDS IMA/OTA', 'NDA & NA', 'JEE Main', 'NEET UG', 'UPSC CSE', 'GATE Engineering', 'CAT MBA'].map((e) => (
-                  <li key={e} className="hover:text-[#4285F4] cursor-pointer transition-colors">{e}</li>
+                  <li key={e} className="hover:text-[#1A1D1E] cursor-pointer transition-colors">{e}</li>
                 ))}
               </ul>
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Platform</h4>
+              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-[#1A1D1E]">Platform</h4>
               <ul className="space-y-2 text-xs">
                 {['CBT Exam Engine', 'Instant AI Quiz', 'Study Planner', 'FSRS Revision', 'PYQ Paper Vault', 'Research Hub'].map((p) => (
-                  <li key={p} className="hover:text-[#4285F4] cursor-pointer transition-colors">{p}</li>
+                  <li key={p} className="hover:text-[#1A1D1E] cursor-pointer transition-colors">{p}</li>
                 ))}
               </ul>
             </div>
 
             <div className="space-y-3">
-              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-slate-200">Company & Legal</h4>
+              <h4 className="text-xs font-bold font-mono uppercase tracking-wider text-[#1A1D1E]">Company & Legal</h4>
               <ul className="space-y-2 text-xs">
                 {['Privacy Policy', 'Terms of Service', 'Security & Safety', 'Contact Support', 'WhatsApp Helpline'].map((l) => (
-                  <li key={l} className="hover:text-[#4285F4] cursor-pointer transition-colors">{l}</li>
+                  <li key={l} className="hover:text-[#1A1D1E] cursor-pointer transition-colors">{l}</li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-400">
+          <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-[#E5E2D9] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-[#66625D]">
             <p>© 2026 Tejas Learning Technologies. All rights reserved.</p>
-            <div className="flex items-center gap-2">
-              <span>Made with</span>
-              <Google4ColorDots size="sm" />
-              <span>for Bharat</span>
-            </div>
+            <p className="flex items-center gap-1">
+              Made with <span className="text-[#FAA114]">⚡</span> for Bharat
+            </p>
           </div>
         </footer>
 
@@ -1861,7 +1463,7 @@ export default function WorkspacePage() {
   }
 
   /* ────────────────────────────────────────
-     ONBOARDING WIZARD SCREEN (GOOGLE STYLED)
+     ONBOARDING WIZARD SCREEN
      ──────────────────────────────────────── */
   if (isLoggedIn && !profileOnboardingCompleted) {
     const handleOnboardingSubmit = () => {
@@ -1911,24 +1513,23 @@ export default function WorkspacePage() {
     };
 
     return (
-      <div className="min-h-screen bg-[#17181c] text-[#e8eaed] flex items-center justify-center p-4 md:p-12 font-sans">
-        <div className="max-w-xl w-full glass-panel border border-white/15 p-8 md:p-12 rounded-[32px] shadow-2xl space-y-8 relative overflow-hidden google-ribbon-border">
+      <div className="min-h-screen bg-[#FAFAF8] text-[#1A1D1E] flex items-center justify-center p-4 md:p-12 font-sans">
+        <div className="max-w-xl w-full light-card p-8 md:p-12 rounded-3xl shadow-xl space-y-8 relative overflow-hidden">
           
-          <div className="flex justify-between items-center border-b border-white/10 pb-5">
-            <div className="flex items-center gap-2">
-              <Google4ColorDots size="sm" />
-              <span className="text-xl font-bold tracking-tight text-white font-display">Tejas</span>
-            </div>
+          <div className="flex justify-between items-center border-b border-[#E5E2D9] pb-5">
+            <span className="text-xl font-bold tracking-tight flex items-center text-[#1A1D1E] font-display">
+              Tejas<span className="w-2.5 h-2.5 rounded-full bg-[#FAA114] ml-1"></span>
+            </span>
             <div className="flex gap-1.5">
               {[1, 2, 3, 4, 5].map((s) => (
                 <div 
                   key={s} 
                   className={`h-1.5 rounded-full transition-all duration-300 ${
                     s === onboardingStep 
-                      ? 'w-6 bg-[#4285F4]' 
+                      ? 'w-6 bg-[#FAA114]' 
                       : s < onboardingStep 
-                        ? 'w-2.5 bg-[#4285F4]/40' 
-                        : 'w-2.5 bg-white/10'
+                        ? 'w-2.5 bg-[#FAA114]/40' 
+                        : 'w-2.5 bg-[#E5E2D9]'
                   }`}
                 ></div>
               ))}
@@ -1938,8 +1539,8 @@ export default function WorkspacePage() {
           {onboardingStep === 1 && (
             <div className="space-y-6">
               <div className="space-y-1">
-                <h2 className="text-2xl font-bold tracking-tight text-white font-display">What is your primary study goal?</h2>
-                <p className="text-sm text-slate-400">Select a vertical to customize your AI dashboard and roadmaps.</p>
+                <h2 className="text-2xl font-bold tracking-tight text-[#1A1D1E] font-display">What is your primary study goal?</h2>
+                <p className="text-sm text-[#66625D]">Select a vertical to customize your AI dashboard and roadmaps.</p>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {[
@@ -1956,10 +1557,10 @@ export default function WorkspacePage() {
                       setOnboardingCategory(cat.id);
                       setOnboardingStep(2);
                     }}
-                    className="p-5 border border-white/10 bg-white/5 hover:border-[#4285F4] hover:bg-[#4285F4]/10 rounded-2xl text-left space-y-2 transition-all group"
+                    className="p-5 border border-[#E5E2D9] bg-white hover:border-[#FAA114] hover:bg-[#FAF3E6] rounded-2xl text-left space-y-2 transition-all group"
                   >
-                    <span className="font-bold text-sm block text-white group-hover:text-[#8AB4F8] transition-colors">{cat.label}</span>
-                    <span className="text-[11px] text-slate-400 block">{cat.desc}</span>
+                    <span className="font-bold text-sm block text-[#1A1D1E] group-hover:text-[#C88410] transition-colors">{cat.label}</span>
+                    <span className="text-[11px] text-[#66625D] block">{cat.desc}</span>
                   </button>
                 ))}
               </div>
@@ -1969,17 +1570,17 @@ export default function WorkspacePage() {
           {onboardingStep === 2 && (
             <div className="space-y-6">
               <div className="space-y-1">
-                <h2 className="text-2xl font-bold tracking-tight text-white font-display">Select your Target Exam</h2>
-                <p className="text-sm text-slate-400">This binds the correct syllabus roadmap to your calendar.</p>
+                <h2 className="text-2xl font-bold tracking-tight text-[#1A1D1E] font-display">Select your Target Exam</h2>
+                <p className="text-sm text-[#66625D]">This binds the correct syllabus roadmap to your calendar.</p>
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-400">Target Examination</label>
+                  <label className="text-xs font-semibold text-[#66625D]">Target Examination</label>
                   <select 
                     value={onboardingExamId}
                     onChange={(e) => setOnboardingExamId(e.target.value)}
-                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none transition-colors"
                   >
                     <option value="">Select Target Exam</option>
                     {examsList.length > 0 ? (
@@ -2002,11 +1603,11 @@ export default function WorkspacePage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-400">Target Attempt Year</label>
+                  <label className="text-xs font-semibold text-[#66625D]">Target Attempt Year</label>
                   <select 
                     value={onboardingYear}
                     onChange={(e) => setOnboardingYear(e.target.value)}
-                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none transition-colors"
                   >
                     <option value="2026">2026</option>
                     <option value="2027">2027</option>
@@ -2017,11 +1618,11 @@ export default function WorkspacePage() {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <button onClick={() => setOnboardingStep(1)} className="flex-1 py-3 border border-white/10 text-slate-300 hover:bg-white/5 font-bold rounded-xl transition-all">← Back</button>
+                <button onClick={() => setOnboardingStep(1)} className="flex-1 py-3 border border-[#E5E2D9] text-[#1A1D1E] hover:bg-[#F5F4F0] font-bold rounded-xl transition-all">← Back</button>
                 <button 
                   onClick={() => setOnboardingStep(3)} 
                   disabled={!onboardingExamId}
-                  className="flex-1 py-3 bg-[#4285F4] text-white hover:bg-[#1A73E8] font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-google-blue"
+                  className="flex-1 py-3 bg-[#FAA114] text-[#1A1D1E] hover:bg-[#E8940F] font-bold rounded-xl disabled:opacity-50 transition-all shadow-sm"
                 >
                   Continue
                 </button>
@@ -2032,17 +1633,17 @@ export default function WorkspacePage() {
           {onboardingStep === 3 && (
             <div className="space-y-6">
               <div className="space-y-1">
-                <h2 className="text-2xl font-bold tracking-tight text-white font-display">Set Your Preferences</h2>
-                <p className="text-sm text-slate-400">These values dictate your daily planner limits and learning medium.</p>
+                <h2 className="text-2xl font-bold tracking-tight text-[#1A1D1E] font-display">Set Your Preferences</h2>
+                <p className="text-sm text-[#66625D]">These values dictate your daily planner limits and learning medium.</p>
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-400">Preferred Study Medium</label>
+                  <label className="text-xs font-semibold text-[#66625D]">Preferred Study Medium</label>
                   <select 
                     value={onboardingLanguage}
                     onChange={(e) => setOnboardingLanguage(e.target.value)}
-                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none transition-colors"
                   >
                     <option value="en">English (Default)</option>
                     <option value="hi">Hindi (हिन्दी)</option>
@@ -2051,11 +1652,11 @@ export default function WorkspacePage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-400">Preparation Status</label>
+                  <label className="text-xs font-semibold text-[#66625D]">Preparation Status</label>
                   <select 
                     value={onboardingPrepStatus}
                     onChange={(e) => setOnboardingPrepStatus(e.target.value)}
-                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none transition-colors"
                   >
                     <option value="">Select Status</option>
                     <option value="dropper">Dropper / Full-Time Aspirant</option>
@@ -2067,11 +1668,11 @@ export default function WorkspacePage() {
               </div>
 
               <div className="flex gap-3 pt-4">
-                <button onClick={() => setOnboardingStep(2)} className="flex-1 py-3 border border-white/10 text-slate-300 hover:bg-white/5 font-bold rounded-xl transition-all">← Back</button>
+                <button onClick={() => setOnboardingStep(2)} className="flex-1 py-3 border border-[#E5E2D9] text-[#1A1D1E] hover:bg-[#F5F4F0] font-bold rounded-xl transition-all">← Back</button>
                 <button 
                   onClick={() => setOnboardingStep(4)} 
                   disabled={!onboardingPrepStatus}
-                  className="flex-1 py-3 bg-[#4285F4] text-white hover:bg-[#1A73E8] font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-google-blue"
+                  className="flex-1 py-3 bg-[#FAA114] text-[#1A1D1E] hover:bg-[#E8940F] font-bold rounded-xl disabled:opacity-50 transition-all shadow-sm"
                 >
                   Continue
                 </button>
@@ -2082,17 +1683,17 @@ export default function WorkspacePage() {
           {onboardingStep === 4 && (
             <div className="space-y-6">
               <div className="space-y-1">
-                <h2 className="text-2xl font-bold tracking-tight text-white font-display">One Last Thing...</h2>
-                <p className="text-sm text-slate-400">Provide details to customize state recommendations.</p>
+                <h2 className="text-2xl font-bold tracking-tight text-[#1A1D1E] font-display">One Last Thing...</h2>
+                <p className="text-sm text-[#66625D]">Provide details to customize state recommendations.</p>
               </div>
               
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-400">State of Residence</label>
+                  <label className="text-xs font-semibold text-[#66625D]">State of Residence</label>
                   <select 
                     value={onboardingState}
                     onChange={(e) => setOnboardingState(e.target.value)}
-                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none transition-colors"
                   >
                     <option value="">Select State</option>
                     <option value="Uttar Pradesh">Uttar Pradesh</option>
@@ -2108,26 +1709,26 @@ export default function WorkspacePage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-400">Mobile Number (Optional)</label>
+                  <label className="text-xs font-semibold text-[#66625D]">Mobile Number (Optional)</label>
                   <input 
                     type="tel" 
                     placeholder="+91 XXXXX XXXXX"
                     value={onboardingPhoneNumber}
                     onChange={(e) => setOnboardingPhoneNumber(e.target.value)}
-                    className="w-full p-3.5 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none transition-colors"
+                    className="w-full p-3.5 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none transition-colors"
                   />
                 </div>
               </div>
 
               <div className="flex gap-3 pt-4">
-                <button onClick={() => setOnboardingStep(3)} className="flex-1 py-3 border border-white/10 text-slate-300 hover:bg-white/5 font-bold rounded-xl transition-all">← Back</button>
+                <button onClick={() => setOnboardingStep(3)} className="flex-1 py-3 border border-[#E5E2D9] text-[#1A1D1E] hover:bg-[#F5F4F0] font-bold rounded-xl transition-all">← Back</button>
                 <button 
                   onClick={() => {
                     setOnboardingStep(5);
                     handleOnboardingSubmit();
                   }} 
                   disabled={!onboardingState}
-                  className="flex-1 py-3 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold rounded-xl disabled:opacity-50 transition-all shadow-glow-google-blue"
+                  className="flex-1 py-3 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-bold rounded-xl disabled:opacity-50 transition-all shadow-sm"
                 >
                   Generate My Workspace
                 </button>
@@ -2139,24 +1740,24 @@ export default function WorkspacePage() {
             <div className="text-center py-12 space-y-6 flex flex-col items-center justify-center">
               {onboardingGenerating ? (
                 <>
-                  <div className="w-16 h-16 border-4 border-[#4285F4] border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-16 h-16 border-4 border-[#FAA114] border-t-transparent rounded-full animate-spin"></div>
                   <div className="space-y-2">
-                    <h3 className="text-lg font-bold text-white font-display">Personalizing Your Workspace</h3>
-                    <p className="text-xs text-slate-400 animate-pulse">AI is compiling roadmaps, custom timetables, and spacing reviews...</p>
+                    <h3 className="text-lg font-bold text-[#1A1D1E] font-display">Personalizing Your Workspace</h3>
+                    <p className="text-xs text-[#66625D] animate-pulse">AI is compiling roadmaps, custom timetables, and spacing reviews...</p>
                   </div>
                 </>
               ) : (
                 <>
-                  <div className="w-16 h-16 bg-[#4285F4]/20 rounded-full flex items-center justify-center border border-[#4285F4]/40">
-                    <CheckCircle className="w-10 h-10 text-[#4285F4]" />
+                  <div className="w-16 h-16 bg-[#FAF3E6] rounded-full flex items-center justify-center border border-[#E8D5B7]">
+                    <CheckCircle className="w-10 h-10 text-[#FAA114]" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="text-lg font-bold text-white font-display">Setup Complete!</h3>
-                    <p className="text-xs text-slate-400">Your AI Learning Space is ready for launch.</p>
+                    <h3 className="text-lg font-bold text-[#1A1D1E] font-display">Setup Complete!</h3>
+                    <p className="text-xs text-[#66625D]">Your AI Learning Space is ready for launch.</p>
                   </div>
                   <button 
                     onClick={() => setProfileOnboardingCompleted(true)}
-                    className="mt-6 px-8 py-3 bg-[#4285F4] text-white hover:bg-[#1A73E8] font-bold rounded-xl transition-all shadow-glow-google-blue"
+                    className="mt-6 px-8 py-3 bg-[#FAA114] text-[#1A1D1E] hover:bg-[#E8940F] font-bold rounded-xl transition-all shadow-sm"
                   >
                     Enter Workspace
                   </button>
@@ -2174,19 +1775,19 @@ export default function WorkspacePage() {
      APP WORKSPACE (DASHBOARD & ALL HUBS)
      ──────────────────────────────────────── */
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#17181c] text-[#e8eaed] font-sans">
+    <div className="min-h-screen flex flex-col md:flex-row bg-[#FAFAF8] text-[#1A1D1E] font-sans">
       
       {/* LEFT SIDEBAR NAVIGATION (Desktop) */}
       {activeTab !== 'auth' && activeTab !== 'pricing' && (
-        <aside className="hidden md:flex w-64 bg-[#1f2024] border-r border-white/10 flex-col justify-between shrink-0 sticky top-0 h-screen">
+        <aside className="hidden md:flex w-64 bg-[#FFFFFF] border-r border-[#E5E2D9] flex-col justify-between shrink-0 sticky top-0 h-screen">
           <div>
             {/* Logo */}
-            <div className="p-6 border-b border-white/10 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Google4ColorDots size="sm" />
-                <span className="text-xl font-black tracking-tight text-white font-display">Tejas</span>
+            <div className="p-6 border-b border-[#E5E2D9] flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <span className="text-xl font-extrabold tracking-tight text-[#1A1D1E] font-display">Tejas</span>
+                <span className="w-2 h-2 rounded-full bg-[#FAA114]"></span>
               </div>
-              <button onClick={() => triggerLoadingState('landing')} className="text-[11px] text-[#8AB4F8] hover:underline font-mono">
+              <button onClick={() => triggerLoadingState('landing')} className="text-[11px] text-[#FAA114] hover:underline font-mono">
                 ← Home
               </button>
             </div>
@@ -2224,8 +1825,8 @@ export default function WorkspacePage() {
                       onClick={() => triggerLoadingState(item.id)}
                       className={`w-full flex items-center gap-3 px-3.5 py-2.5 text-xs font-semibold rounded-xl transition-all duration-150 ${
                         isActive 
-                          ? 'bg-[#4285F4]/20 text-[#8AB4F8] border border-[#4285F4]/40 font-bold' 
-                          : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                          ? 'bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] font-bold' 
+                          : 'text-[#66625D] hover:bg-[#F5F4F0] hover:text-[#1A1D1E]'
                       }`}
                     >
                       {item.label}
@@ -2237,14 +1838,14 @@ export default function WorkspacePage() {
           </div>
 
           {/* Quick Quiz FAB */}
-          <div className="p-4 border-t border-white/10">
+          <div className="p-4 border-t border-[#E5E2D9]">
             <button
               onClick={() => {
                 setQuizStarted(false);
                 setQuizScore(null);
                 triggerLoadingState('quiz-gen');
               }}
-              className="w-full py-3 px-4 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold rounded-xl flex items-center justify-center gap-2 shadow-glow-google-blue transition-all duration-150 active:scale-95 text-xs"
+              className="w-full py-3 px-4 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-150 active:scale-95 text-xs"
             >
               <Plus className="w-4 h-4" />
               Instant AI Quiz
@@ -2258,12 +1859,12 @@ export default function WorkspacePage() {
         
         {/* TOP HEADER BAR */}
         {activeTab !== 'auth' && activeTab !== 'pricing' && (
-          <header className="h-16 border-b border-white/10 px-6 flex items-center justify-between bg-[#1f2024]/90 backdrop-blur-md sticky top-0 z-40">
+          <header className="h-16 border-b border-[#E5E2D9] px-6 flex items-center justify-between bg-white/90 backdrop-blur-md sticky top-0 z-40">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-medium text-slate-400">Current Target:</span>
+              <span className="text-xs font-medium text-[#66625D]">Current Target:</span>
               <button 
                 onClick={() => triggerLoadingState('afcat')}
-                className="px-3.5 py-1 bg-[#4285F4]/15 text-[#8AB4F8] border border-[#4285F4]/30 text-xs font-bold rounded-full hover:bg-[#4285F4]/25 transition-all flex items-center gap-1.5 shadow-sm"
+                className="px-3.5 py-1 bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] text-xs font-bold rounded-full hover:bg-[#F5E8D0] transition-all flex items-center gap-1.5 shadow-sm"
               >
                 ✈️ AFCAT 2026 (Air Force)
               </button>
@@ -2271,7 +1872,7 @@ export default function WorkspacePage() {
             <div className="flex items-center gap-4">
               <button 
                 onClick={() => triggerLoadingState('pricing')}
-                className="text-xs font-bold text-[#8AB4F8] hover:underline"
+                className="text-xs font-bold text-[#FAA114] hover:underline"
               >
                 ✦ Upgrade Pro
               </button>
@@ -2280,7 +1881,7 @@ export default function WorkspacePage() {
                   setIsLoggedIn(false);
                   triggerLoadingState('landing');
                 }}
-                className="text-xs font-semibold text-slate-400 hover:text-white"
+                className="text-xs font-semibold text-[#66625D] hover:text-[#1A1D1E]"
               >
                 Sign Out
               </button>
@@ -2307,43 +1908,43 @@ export default function WorkspacePage() {
             {/* AUTH SCREEN */}
             {activeTab === 'auth' && (
               <div className="min-h-[85vh] flex items-center justify-center py-12">
-                <div className="w-full max-w-md glass-panel border border-white/15 p-8 rounded-3xl space-y-6 shadow-2xl google-ribbon-border">
+                <div className="w-full max-w-md light-card p-8 rounded-3xl space-y-6 shadow-xl border border-[#E5E2D9]">
                   
                   <div className="text-center space-y-2">
-                    <div className="flex items-center justify-center gap-2 mb-4">
-                      <Google4ColorDots size="md" />
-                      <span className="text-3xl font-black text-white font-display">Tejas</span>
+                    <div className="flex items-center justify-center gap-1 mb-4">
+                      <span className="text-3xl font-black text-[#1A1D1E] font-display">Tejas</span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FAA114]"></span>
                     </div>
                     {authMode === 'signup' ? (
                       signupStep === 1 ? (
                         <>
-                          <h1 className="text-2xl font-bold text-white font-display">Create Aspirant Account</h1>
-                          <p className="text-xs text-slate-400">Verify your email address to unlock your personalized AI prep space.</p>
+                          <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Create Aspirant Account</h1>
+                          <p className="text-xs text-[#66625D]">Verify your email address to unlock your personalized AI prep space.</p>
                         </>
                       ) : (
                         <>
-                          <h1 className="text-2xl font-bold text-white font-display">Secure Your Account</h1>
-                          <p className="text-xs text-slate-400">Set up a strong password for {authFullName || 'your account'}.</p>
+                          <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Secure Your Account</h1>
+                          <p className="text-xs text-[#66625D]">Set up a strong password for {authFullName || 'your account'}.</p>
                         </>
                       )
                     ) : (
                       <>
-                        <h1 className="text-2xl font-bold text-white font-display">Welcome Back</h1>
-                        <p className="text-xs text-slate-400">Sign in to resume your active test sessions and revisions.</p>
+                        <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Welcome Back</h1>
+                        <p className="text-xs text-[#66625D]">Sign in to resume your active test sessions and revisions.</p>
                       </>
                     )}
                   </div>
 
                   {errorMsg && (
-                    <div className="p-3.5 bg-[#EA4335]/15 border border-[#EA4335]/30 text-[#F28B82] text-xs font-medium rounded-xl flex items-start gap-2.5">
-                      <AlertCircle className="w-4 h-4 text-[#EA4335] flex-shrink-0 mt-0.5" />
+                    <div className="p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs font-medium rounded-xl flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0 mt-0.5" />
                       <span>{errorMsg}</span>
                     </div>
                   )}
 
                   {otpSuccessMsg && (
-                    <div className="p-3.5 bg-[#34A853]/15 border border-[#34A853]/30 text-[#81C995] text-xs font-medium rounded-xl flex items-start gap-2.5">
-                      <CheckCircle className="w-4 h-4 text-[#34A853] flex-shrink-0 mt-0.5" />
+                    <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium rounded-xl flex items-start gap-2.5">
+                      <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
                       <span>{otpSuccessMsg}</span>
                     </div>
                   )}
@@ -2353,7 +1954,7 @@ export default function WorkspacePage() {
                     signupStep === 1 ? (
                       <form onSubmit={otpSent ? handleSignupVerify : handleSignupInitiate} className="space-y-4">
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Full Name</label>
+                          <label className="text-xs font-bold text-[#66625D] uppercase tracking-wider">Full Name</label>
                           <div className="relative">
                             <input 
                               type="text" 
@@ -2362,14 +1963,14 @@ export default function WorkspacePage() {
                               placeholder="Priya Sharma" 
                               value={authFullName}
                               onChange={(e) => setAuthFullName(e.target.value)}
-                              className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors disabled:opacity-50" 
+                              className="w-full px-4 py-3 pl-10 bg-white border border-[#E5E2D9] rounded-xl focus:outline-none focus:border-[#FAA114] text-sm text-[#1A1D1E] transition-colors disabled:opacity-50" 
                             />
-                            <User className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                            <User className="w-4 h-4 text-[#66625D] absolute left-3.5 top-3.5" />
                           </div>
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
+                          <label className="text-xs font-bold text-[#66625D] uppercase tracking-wider">Email Address</label>
                           <div className="relative">
                             <input 
                               type="email" 
@@ -2378,15 +1979,15 @@ export default function WorkspacePage() {
                               placeholder="priya@example.com" 
                               value={authEmail}
                               onChange={(e) => setAuthEmail(e.target.value)}
-                              className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors disabled:opacity-50" 
+                              className="w-full px-4 py-3 pl-10 bg-white border border-[#E5E2D9] rounded-xl focus:outline-none focus:border-[#FAA114] text-sm text-[#1A1D1E] transition-colors disabled:opacity-50" 
                             />
-                            <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                            <Mail className="w-4 h-4 text-[#66625D] absolute left-3.5 top-3.5" />
                           </div>
                         </div>
 
                         {otpSent && (
-                          <div className="space-y-1 pt-4 border-t border-white/10 animate-fadeInUp">
-                            <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Verification Code (OTP)</label>
+                          <div className="space-y-1 pt-4 border-t border-[#E5E2D9] animate-fadeInUp">
+                            <label className="text-xs font-bold text-[#66625D] uppercase tracking-wider">Verification Code (OTP)</label>
                             <div className="relative">
                               <input 
                                 type="text" 
@@ -2395,12 +1996,12 @@ export default function WorkspacePage() {
                                 placeholder="123456" 
                                 value={otpCode}
                                 onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                                className="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white text-center tracking-[0.5em] font-mono transition-colors" 
+                                className="w-full px-4 py-3 pl-10 bg-white border border-[#E5E2D9] rounded-xl focus:outline-none focus:border-[#FAA114] text-sm text-[#1A1D1E] text-center tracking-[0.5em] font-mono transition-colors" 
                               />
-                              <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+                              <Lock className="w-4 h-4 text-[#66625D] absolute left-3.5 top-3.5" />
                             </div>
                             {otpError && (
-                              <p className="text-xs font-semibold text-[#F28B82] mt-1 flex items-center gap-1">
+                              <p className="text-xs font-semibold text-red-600 mt-1 flex items-center gap-1">
                                 <AlertCircle className="w-3.5 h-3.5" /> {otpError}
                               </p>
                             )}
@@ -2409,7 +2010,7 @@ export default function WorkspacePage() {
                               <button 
                                 type="button" 
                                 onClick={handleResendOtp}
-                                className="text-[#8AB4F8] hover:underline font-semibold flex items-center gap-1"
+                                className="text-[#FAA114] hover:underline font-semibold flex items-center gap-1"
                               >
                                 <RefreshCw className="w-3 h-3" /> Resend OTP
                               </button>
@@ -2420,7 +2021,7 @@ export default function WorkspacePage() {
                         <button 
                           type="submit" 
                           disabled={loading}
-                          className="w-full py-3.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 shadow-glow-google-blue text-sm mt-4"
+                          className="w-full py-3.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-bold rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 shadow-sm text-sm mt-4"
                         >
                           {loading ? 'Processing...' : otpSent ? 'Verify OTP & Continue' : 'Send Verification OTP'}
                         </button>
@@ -2428,33 +2029,33 @@ export default function WorkspacePage() {
                     ) : (
                       <form onSubmit={handleSignupComplete} className="space-y-4">
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Set Password</label>
+                          <label className="text-xs font-bold text-[#66625D] uppercase tracking-wider">Set Password</label>
                           <input 
                             type="password" 
                             required 
                             placeholder="••••••••" 
                             value={authPassword}
                             onChange={(e) => setAuthPassword(e.target.value)}
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors" 
+                            className="w-full px-4 py-3 bg-white border border-[#E5E2D9] rounded-xl focus:outline-none focus:border-[#FAA114] text-sm text-[#1A1D1E] transition-colors" 
                           />
                         </div>
 
                         <div className="space-y-1">
-                          <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Confirm Password</label>
+                          <label className="text-xs font-bold text-[#66625D] uppercase tracking-wider">Confirm Password</label>
                           <input 
                             type="password" 
                             required 
                             placeholder="••••••••" 
                             value={authConfirmPassword}
                             onChange={(e) => setAuthConfirmPassword(e.target.value)}
-                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors" 
+                            className="w-full px-4 py-3 bg-white border border-[#E5E2D9] rounded-xl focus:outline-none focus:border-[#FAA114] text-sm text-[#1A1D1E] transition-colors" 
                           />
                         </div>
 
                         <button 
                           type="submit" 
                           disabled={loading}
-                          className="w-full py-3.5 bg-[#4285F4] text-white font-bold rounded-xl hover:bg-[#1A73E8] transition-all shadow-glow-google-blue text-sm"
+                          className="w-full py-3.5 bg-[#FAA114] text-[#1A1D1E] font-bold rounded-xl hover:bg-[#E8940F] transition-all shadow-sm text-sm"
                         >
                           {loading ? 'Saving...' : 'Complete Registration'}
                         </button>
@@ -2463,33 +2064,33 @@ export default function WorkspacePage() {
                   ) : (
                     <form onSubmit={handleLogin} className="space-y-4">
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Email Address</label>
+                        <label className="text-xs font-bold text-[#66625D] uppercase tracking-wider">Email Address</label>
                         <input 
                           type="email" 
                           required 
                           placeholder="priya@example.com" 
                           value={authEmail}
                           onChange={(e) => setAuthEmail(e.target.value)}
-                          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors" 
+                          className="w-full px-4 py-3 bg-white border border-[#E5E2D9] rounded-xl focus:outline-none focus:border-[#FAA114] text-sm text-[#1A1D1E] transition-colors" 
                         />
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
+                        <label className="text-xs font-bold text-[#66625D] uppercase tracking-wider">Password</label>
                         <input 
                           type="password" 
                           required 
                           placeholder="••••••••" 
                           value={authPassword}
                           onChange={(e) => setAuthPassword(e.target.value)}
-                          className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-[#4285F4] text-sm text-white transition-colors" 
+                          className="w-full px-4 py-3 bg-white border border-[#E5E2D9] rounded-xl focus:outline-none focus:border-[#FAA114] text-sm text-[#1A1D1E] transition-colors" 
                         />
                       </div>
 
                       <button 
                         type="submit" 
                         disabled={loading}
-                        className="w-full py-3.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold rounded-xl transition-all shadow-glow-google-blue text-sm"
+                        className="w-full py-3.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-bold rounded-xl transition-all shadow-sm text-sm"
                       >
                         {loading ? 'Signing in...' : 'Sign In'}
                       </button>
@@ -2502,7 +2103,7 @@ export default function WorkspacePage() {
                         setAuthMode(authMode === 'signup' ? 'login' : 'signup');
                         resetAuthState();
                       }}
-                      className="text-xs text-[#8AB4F8] hover:underline font-semibold"
+                      className="text-xs text-[#FAA114] hover:underline font-semibold"
                     >
                       {authMode === 'signup' ? 'Already have an account? Sign In' : "Don't have an account? Sign Up Free"}
                     </button>
@@ -2525,49 +2126,49 @@ export default function WorkspacePage() {
             {/* DASHBOARD SCREEN */}
             {activeTab === 'dashboard' && (
               <div className="space-y-8 animate-fadeInUp">
-                <div className="glass-panel p-6 rounded-3xl border-[#4285F4]/30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 google-ribbon-border">
+                <div className="light-card p-6 rounded-3xl border-[#E5E2D9] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                   <div className="space-y-1">
-                    <h2 className="text-2xl font-bold text-white font-display flex items-center gap-2">
-                      <Google4ColorDots size="sm" /> Welcome, {profileFullName}!
+                    <h2 className="text-2xl font-bold text-[#1A1D1E] font-display flex items-center gap-2">
+                      <Flame className="w-6 h-6 text-[#FAA114]" /> Welcome, {profileFullName}!
                     </h2>
-                    <p className="text-sm text-slate-300">
+                    <p className="text-sm text-[#66625D]">
                       Consistency Streak: <strong>{dashboardOverview.consistencyRating}%</strong> • Daily Target: <strong>{dashboardOverview.studyTimeMinutes}m / {profileGoal}m</strong>
                     </p>
                   </div>
-                  <button onClick={() => triggerLoadingState('afcat')} className="px-5 py-2.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold text-xs rounded-xl shadow-glow-google-blue transition-all">
+                  <button onClick={() => triggerLoadingState('afcat')} className="px-5 py-2.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-bold text-xs rounded-xl shadow-sm transition-all">
                     Launch CBT Mock Simulator →
                   </button>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="md:col-span-2 space-y-4">
-                    <h3 className="text-lg font-bold text-white font-display">Active Daily Target Blocks</h3>
+                    <h3 className="text-lg font-bold text-[#1A1D1E] font-display">Active Daily Target Blocks</h3>
                     <div className="space-y-3">
                       {[
                         { title: `Complete daily syllabus topic block (${profileGoal} mins)`, duration: `${profileGoal}m`, done: dashboardOverview.studyTimeMinutes >= profileGoal },
                         { title: `Solve competitive exam practice test (Completed: ${dashboardOverview.quizzesCompleted})`, duration: '25m', done: dashboardOverview.quizzesCompleted > 0 },
                         { title: `Review ${dueCardsCount} due active recall flashcards`, duration: '15m', done: dueCardsCount === 0 }
                       ].map((task, idx) => (
-                        <div key={idx} className="p-4 glass-panel rounded-2xl flex items-center justify-between">
+                        <div key={idx} className="p-4 light-card rounded-2xl flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <input type="checkbox" checked={task.done} readOnly className="accent-[#4285F4] w-4 h-4" />
-                            <span className={`text-sm ${task.done ? 'line-through text-slate-500' : 'text-slate-200 font-medium'}`}>
+                            <input type="checkbox" checked={task.done} readOnly className="accent-[#FAA114] w-4 h-4" />
+                            <span className={`text-sm ${task.done ? 'line-through text-[#94A3B8]' : 'text-[#1A1D1E] font-medium'}`}>
                               {task.title}
                             </span>
                           </div>
-                          <span className="text-xs font-mono text-[#8AB4F8] font-bold">{task.duration}</span>
+                          <span className="text-xs font-mono text-[#FAA114] font-bold">{task.duration}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <h3 className="text-lg font-bold text-white font-display">Document AI Ingest</h3>
-                    <div onClick={() => triggerLoadingState('pdf')} className="border-2 border-dashed border-white/20 p-8 rounded-3xl text-center space-y-3 hover:border-[#4285F4] transition-colors cursor-pointer glass-panel">
-                      <UploadCloud className="w-10 h-10 text-[#4285F4] mx-auto" />
+                    <h3 className="text-lg font-bold text-[#1A1D1E] font-display">Document AI Ingest</h3>
+                    <div onClick={() => triggerLoadingState('pdf')} className="border-2 border-dashed border-[#E5E2D9] p-8 rounded-3xl text-center space-y-3 hover:border-[#FAA114] transition-colors cursor-pointer bg-white">
+                      <UploadCloud className="w-10 h-10 text-[#FAA114] mx-auto" />
                       <div className="space-y-1">
-                        <p className="text-sm font-bold text-white">Ingest Study PDF / Notes</p>
-                        <p className="text-xs text-slate-400">Click to upload document</p>
+                        <p className="text-sm font-bold text-[#1A1D1E]">Ingest Study PDF / Notes</p>
+                        <p className="text-xs text-[#66625D]">Click to upload document</p>
                       </div>
                     </div>
                   </div>
@@ -2579,26 +2180,26 @@ export default function WorkspacePage() {
             {activeTab === 'planner' && (
               <div className="space-y-8 animate-fadeInUp">
                 <div className="flex justify-between items-center">
-                  <h1 className="text-2xl font-bold text-white font-display">Adaptive Study Planner</h1>
-                  <button onClick={() => alert('Syllabus timeline auto-rebalanced across active calendar!')} className="px-4 py-2 bg-[#34A853] text-white font-bold text-xs rounded-xl shadow-glow-google-green">
+                  <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Adaptive Study Planner</h1>
+                  <button onClick={() => alert('Syllabus timeline auto-rebalanced across active calendar!')} className="px-4 py-2 bg-[#FAA114] text-[#1A1D1E] font-bold text-xs rounded-xl shadow-sm">
                     Rebalance Schedule
                   </button>
                 </div>
                 <div className="grid md:grid-cols-3 gap-6">
-                  <div className="glass-panel p-6 rounded-3xl space-y-4">
-                    <h3 className="text-base font-bold text-white">Daily Capacity Budget</h3>
+                  <div className="light-card p-6 rounded-3xl space-y-4">
+                    <h3 className="text-base font-bold text-[#1A1D1E]">Daily Capacity Budget</h3>
                     <div className="space-y-3">
-                      <input type="range" min="1" max="12" defaultValue="4" className="w-full accent-[#34A853]" />
-                      <div className="text-xs font-mono text-[#81C995] font-bold text-right">4.0 Hours / Day</div>
+                      <input type="range" min="1" max="12" defaultValue="4" className="w-full accent-[#FAA114]" />
+                      <div className="text-xs font-mono text-[#FAA114] font-bold text-right">4.0 Hours / Day</div>
                     </div>
                   </div>
-                  <div className="md:col-span-2 glass-panel p-6 rounded-3xl space-y-4">
-                    <h3 className="text-base font-bold text-white">Weekly Allocation Grid</h3>
+                  <div className="md:col-span-2 light-card p-6 rounded-3xl space-y-4">
+                    <h3 className="text-base font-bold text-[#1A1D1E]">Weekly Allocation Grid</h3>
                     <div className="grid grid-cols-7 gap-2">
                       {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
-                        <div key={day} className="p-3 bg-white/5 rounded-2xl text-center space-y-1 border border-white/5">
-                          <span className="text-xs font-bold text-slate-300 block">{day}</span>
-                          <div className="p-1.5 rounded-lg bg-[#34A853]/20 text-[#81C995] text-[10px] font-bold">
+                        <div key={day} className="p-3 bg-[#F5F4F0] rounded-2xl text-center space-y-1 border border-[#E5E2D9]">
+                          <span className="text-xs font-bold text-[#1A1D1E] block">{day}</span>
+                          <div className="p-1.5 rounded-lg bg-[#FAF3E6] text-[#C88410] text-[10px] font-bold">
                             Module Drills
                           </div>
                         </div>
@@ -2612,18 +2213,18 @@ export default function WorkspacePage() {
             {/* EXAM EXPLORER */}
             {activeTab === 'explorer' && (
               <div className="space-y-6 animate-fadeInUp">
-                <h1 className="text-2xl font-bold text-white font-display">Exam Exploration Database</h1>
+                <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Exam Exploration Database</h1>
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
                   {examCategories.map((exam) => (
-                    <div key={exam.id} className="glass-panel p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+                    <div key={exam.id} className="light-card p-6 rounded-3xl space-y-4 flex flex-col justify-between">
                       <div className="space-y-2">
-                        <span className="text-[10px] font-mono font-bold text-[#8AB4F8] uppercase">{exam.badge}</span>
-                        <h3 className="text-lg font-bold text-white font-display">{exam.name}</h3>
-                        <p className="text-xs text-slate-400">{exam.candidates} Candidates yearly</p>
+                        <span className="text-[10px] font-mono font-bold text-[#FAA114] uppercase">{exam.badge}</span>
+                        <h3 className="text-lg font-bold text-[#1A1D1E] font-display">{exam.name}</h3>
+                        <p className="text-xs text-[#66625D]">{exam.candidates} Candidates yearly</p>
                       </div>
                       <button 
                         onClick={() => openExamWorkspace(exam.id)}
-                        className="w-full py-2.5 bg-[#4285F4] hover:bg-[#1A73E8] text-white font-bold text-xs rounded-xl shadow-glow-google-blue transition-all"
+                        className="w-full py-2.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-bold text-xs rounded-xl shadow-sm transition-all"
                       >
                         Launch Examination Workspace →
                       </button>
@@ -2637,33 +2238,33 @@ export default function WorkspacePage() {
             {activeTab === 'learning' && (
               <div className="space-y-8 animate-fadeInUp">
                 <div className="flex justify-between items-center">
-                  <h1 className="text-2xl font-bold text-white font-display">Syllabus Explorer</h1>
-                  <button onClick={() => triggerLoadingState('quiz-gen')} className="px-4 py-2 bg-[#4285F4] text-white text-xs font-bold rounded-xl shadow-glow-google-blue">
+                  <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Syllabus Explorer</h1>
+                  <button onClick={() => triggerLoadingState('quiz-gen')} className="px-4 py-2 bg-[#FAA114] text-[#1A1D1E] text-xs font-bold rounded-xl shadow-sm">
                     + Generate Test
                   </button>
                 </div>
                 <div className="grid md:grid-cols-3 gap-6">
-                  <div className="glass-panel p-6 rounded-3xl space-y-4">
-                    <h3 className="text-xs font-bold font-mono uppercase text-slate-400">Syllabus Hierarchy</h3>
+                  <div className="light-card p-6 rounded-3xl space-y-4">
+                    <h3 className="text-xs font-bold font-mono uppercase text-[#66625D]">Syllabus Hierarchy</h3>
                     <div className="space-y-2 text-sm">
-                      <div className="font-bold text-[#8AB4F8] flex items-center gap-2">
+                      <div className="font-bold text-[#FAA114] flex items-center gap-2">
                         <ChevronDown className="w-4 h-4" /> 1. Indian Constitution & Polity
                       </div>
-                      <div className="pl-6 space-y-1.5 text-xs text-slate-300">
-                        <div className="text-white font-semibold">1.1 Historical Background</div>
+                      <div className="pl-6 space-y-1.5 text-xs text-[#66625D]">
+                        <div className="text-[#1A1D1E] font-semibold">1.1 Historical Background</div>
                         <div>1.2 Preamble & Fundamental Rights</div>
                         <div>1.3 Directive Principles & Union Judiciary</div>
                       </div>
                     </div>
                   </div>
-                  <div className="md:col-span-2 glass-panel p-8 rounded-3xl space-y-4">
-                    <h2 className="text-xl font-bold text-white font-display">1.1 Historical Background (1773 to 1947)</h2>
-                    <p className="text-sm text-slate-300 leading-relaxed">
+                  <div className="md:col-span-2 light-card p-8 rounded-3xl space-y-4">
+                    <h2 className="text-xl font-bold text-[#1A1D1E] font-display">1.1 Historical Background (1773 to 1947)</h2>
+                    <p className="text-sm text-[#66625D] leading-relaxed">
                       The constitutional development in British India commenced systematically with the Regulating Act of 1773, which established the Supreme Court of Calcutta and subordinated Bombay/Madras presidencies. Pitt&apos;s India Act of 1784 established the Board of Control, creating dual control over administration.
                     </p>
-                    <div className="pt-4 border-t border-white/10 flex justify-between items-center text-xs">
-                      <span className="text-slate-400 font-mono">Reference: Official UPSC Syllabus GS Paper 2</span>
-                      <button onClick={() => triggerLoadingState('afcat')} className="text-[#8AB4F8] font-bold hover:underline">
+                    <div className="pt-4 border-t border-[#E5E2D9] flex justify-between items-center text-xs">
+                      <span className="text-[#66625D] font-mono">Reference: Official UPSC Syllabus GS Paper 2</span>
+                      <button onClick={() => triggerLoadingState('afcat')} className="text-[#FAA114] font-bold hover:underline">
                         Launch Related CBT Drills →
                       </button>
                     </div>
@@ -2675,37 +2276,37 @@ export default function WorkspacePage() {
             {/* PDF WORKSPACE */}
             {activeTab === 'pdf' && (
               <div className="grid md:grid-cols-3 gap-6 h-[75vh] animate-fadeInUp">
-                <div className="md:col-span-2 glass-panel rounded-3xl flex flex-col justify-between overflow-hidden">
-                  <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/5">
-                    <span className="text-xs font-mono font-bold text-slate-300">UPSC_Syllabus_2026.pdf (Page 1 of 12)</span>
+                <div className="md:col-span-2 light-card rounded-3xl flex flex-col justify-between overflow-hidden">
+                  <div className="p-4 border-b border-[#E5E2D9] flex justify-between items-center bg-[#F5F4F0]">
+                    <span className="text-xs font-mono font-bold text-[#1A1D1E]">UPSC_Syllabus_2026.pdf (Page 1 of 12)</span>
                     <div className="flex gap-2">
-                      <button className="px-3 py-1 bg-white/10 rounded-lg text-xs hover:bg-white/20">Prev</button>
-                      <button className="px-3 py-1 bg-white/10 rounded-lg text-xs hover:bg-white/20">Next</button>
+                      <button className="px-3 py-1 bg-white border border-[#E5E2D9] rounded-lg text-xs hover:bg-[#F5F4F0]">Prev</button>
+                      <button className="px-3 py-1 bg-white border border-[#E5E2D9] rounded-lg text-xs hover:bg-[#F5F4F0]">Next</button>
                     </div>
                   </div>
                   <div className="flex-1 p-8 flex items-center justify-center text-center">
                     <div className="max-w-md space-y-3">
-                      <FileText className="w-16 h-16 text-[#4285F4] mx-auto" />
-                      <h3 className="text-lg font-bold text-white font-display">PDF Document Ingestion Engine</h3>
-                      <p className="text-xs text-slate-400">
+                      <FileText className="w-16 h-16 text-[#FAA114] mx-auto" />
+                      <h3 className="text-lg font-bold text-[#1A1D1E] font-display">PDF Document Ingestion Engine</h3>
+                      <p className="text-xs text-[#66625D]">
                         Select any passage in your textbook to trigger contextual explanations, formula derivations, or instant active recall flashcard generation.
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className="glass-panel rounded-3xl flex flex-col justify-between overflow-hidden">
-                  <div className="p-4 border-b border-white/10 flex items-center gap-2 bg-white/5">
-                    <Sparkles className="w-4 h-4 text-[#FBBC04]" />
-                    <span className="text-xs font-bold text-white font-display">AI Document Explainer</span>
+                <div className="light-card rounded-3xl flex flex-col justify-between overflow-hidden">
+                  <div className="p-4 border-b border-[#E5E2D9] flex items-center gap-2 bg-[#F5F4F0]">
+                    <Sparkles className="w-4 h-4 text-[#FAA114]" />
+                    <span className="text-xs font-bold text-[#1A1D1E] font-display">AI Document Explainer</span>
                   </div>
                   <div className="flex-1 p-4 space-y-3 overflow-y-auto">
-                    <div className="p-3 bg-white/5 border border-white/10 text-xs rounded-xl max-w-[90%] text-slate-200">
+                    <div className="p-3 bg-[#F5F4F0] border border-[#E5E2D9] text-xs rounded-xl max-w-[90%] text-[#1A1D1E]">
                       Hello! I have fully indexed this textbook. What concept would you like me to clarify?
                     </div>
                   </div>
-                  <div className="p-3 border-t border-white/10 flex gap-2">
-                    <input type="text" placeholder="Ask about this document..." className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-[#4285F4]" />
-                    <button className="px-4 py-2 bg-[#4285F4] text-white font-bold text-xs rounded-xl shadow-glow-google-blue">Send</button>
+                  <div className="p-3 border-t border-[#E5E2D9] flex gap-2">
+                    <input type="text" placeholder="Ask about this document..." className="flex-1 px-3 py-2 bg-white border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]" />
+                    <button className="px-4 py-2 bg-[#FAA114] text-[#1A1D1E] font-bold text-xs rounded-xl shadow-sm">Send</button>
                   </div>
                 </div>
               </div>
@@ -2714,18 +2315,18 @@ export default function WorkspacePage() {
             {/* ANALYTICS */}
             {activeTab === 'analytics' && (
               <div className="space-y-8 animate-fadeInUp">
-                <h1 className="text-2xl font-bold text-white font-display">Performance Analytics & Concept Mastery</h1>
-                <div className="glass-panel p-8 rounded-3xl space-y-6">
-                  <h3 className="text-lg font-bold text-white font-display">Concept Mastery Radar (Past 30 Days)</h3>
+                <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Performance Analytics & Concept Mastery</h1>
+                <div className="light-card p-8 rounded-3xl space-y-6">
+                  <h3 className="text-lg font-bold text-[#1A1D1E] font-display">Concept Mastery Radar (Past 30 Days)</h3>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                     {[
-                      { topic: 'Reasoning Logic', mastery: '94%', color: 'text-[#81C995]', bg: 'bg-[#34A853]/20' },
-                      { topic: 'General Knowledge', mastery: '76%', color: 'text-[#FDD663]', bg: 'bg-[#FBBC04]/20' },
-                      { topic: 'Numerical Ability', mastery: '82%', color: 'text-[#81C995]', bg: 'bg-[#34A853]/20' },
-                      { topic: 'English Verbal', mastery: '90%', color: 'text-[#81C995]', bg: 'bg-[#34A853]/20' }
+                      { topic: 'Reasoning Logic', mastery: '94%', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' },
+                      { topic: 'General Knowledge', mastery: '76%', color: 'text-amber-600', bg: 'bg-amber-50 border-amber-200' },
+                      { topic: 'Numerical Ability', mastery: '82%', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' },
+                      { topic: 'English Verbal', mastery: '90%', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' }
                     ].map((item, idx) => (
-                      <div key={idx} className={`p-4 rounded-2xl border border-white/10 ${item.bg} space-y-1`}>
-                        <div className="text-xs text-slate-300">{item.topic}</div>
+                      <div key={idx} className={`p-4 rounded-2xl border ${item.bg} space-y-1`}>
+                        <div className="text-xs text-[#66625D]">{item.topic}</div>
                         <div className={`text-2xl font-black font-display ${item.color}`}>{item.mastery}</div>
                       </div>
                     ))}
@@ -2739,19 +2340,19 @@ export default function WorkspacePage() {
               <div className="max-w-2xl mx-auto space-y-6 animate-fadeInUp">
                 <div className="flex justify-between items-center">
                   <div>
-                    <h1 className="text-2xl font-bold text-white font-display">Active Recall Deck</h1>
-                    <p className="text-xs text-slate-400 font-mono">FSRS Spaced Repetition Queue</p>
+                    <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Active Recall Deck</h1>
+                    <p className="text-xs text-[#66625D] font-mono">FSRS Spaced Repetition Queue</p>
                   </div>
-                  <span className="px-3 py-1 bg-[#FBBC04]/20 text-[#FDD663] border border-[#FBBC04]/30 text-xs font-bold rounded-full">
+                  <span className="px-3 py-1 bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] text-xs font-bold rounded-full">
                     {dueCards.length} due for review
                   </span>
                 </div>
 
                 {dueCards.length === 0 ? (
-                  <div className="glass-panel p-12 rounded-3xl text-center space-y-4">
-                    <RotateCcw className="w-12 h-12 text-[#FBBC04] mx-auto animate-spin-slow" />
-                    <h3 className="text-lg font-bold text-white font-display">All Caught Up!</h3>
-                    <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                  <div className="light-card p-12 rounded-3xl text-center space-y-4">
+                    <RotateCcw className="w-12 h-12 text-[#FAA114] mx-auto animate-spin-slow" />
+                    <h3 className="text-lg font-bold text-[#1A1D1E] font-display">All Caught Up!</h3>
+                    <p className="text-xs text-[#66625D] max-w-sm mx-auto">
                       No flashcards due right now. Attempt exam quizzes to automatically generate active recall cards for challenging topics.
                     </p>
                   </div>
@@ -2759,46 +2360,46 @@ export default function WorkspacePage() {
                   (() => {
                     const card = dueCards[activeCardIndex] || dueCards[0];
                     return (
-                      <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl flex flex-col min-h-[300px] justify-between google-ribbon-border">
-                        <div className="p-4 bg-white/5 border-b border-white/10 flex justify-between items-center text-xs text-slate-400 font-mono">
+                      <div className="light-card rounded-3xl overflow-hidden shadow-md flex flex-col min-h-[300px] justify-between">
+                        <div className="p-4 bg-[#F5F4F0] border-b border-[#E5E2D9] flex justify-between items-center text-xs text-[#66625D] font-mono">
                           <span>Difficulty: {Number(card.difficulty || 4.5).toFixed(1)}/10</span>
                           <span>Repetitions: {card.repetitionCount || 0}</span>
                         </div>
 
                         <div className="p-8 flex-1 flex flex-col justify-center space-y-6 text-center">
                           <div className="space-y-2">
-                            <span className="text-[10px] font-mono font-bold text-[#F28B82] uppercase tracking-wider">QUESTION / FRONT</span>
-                            <p className="text-lg font-semibold text-white">{card.frontText}</p>
+                            <span className="text-[10px] font-mono font-bold text-[#FAA114] uppercase tracking-wider">QUESTION / FRONT</span>
+                            <p className="text-lg font-semibold text-[#1A1D1E]">{card.frontText}</p>
                           </div>
 
                           {showAnswer && (
-                            <div className="pt-6 border-t border-white/10 space-y-2 animate-fadeInUp">
-                              <span className="text-[10px] font-mono font-bold text-[#81C995] uppercase tracking-wider">ANSWER / BACK</span>
-                              <p className="text-sm text-slate-200 leading-relaxed">{card.backText}</p>
+                            <div className="pt-6 border-t border-[#E5E2D9] space-y-2 animate-fadeInUp">
+                              <span className="text-[10px] font-mono font-bold text-[#22C55E] uppercase tracking-wider">ANSWER / BACK</span>
+                              <p className="text-sm text-[#66625D] leading-relaxed">{card.backText}</p>
                             </div>
                           )}
                         </div>
 
-                        <div className="p-6 bg-white/5 border-t border-white/10">
+                        <div className="p-6 bg-[#F5F4F0] border-t border-[#E5E2D9]">
                           {!showAnswer ? (
                             <button
                               onClick={() => setShowAnswer(true)}
-                              className="w-full py-3 bg-[#4285F4] text-white font-bold rounded-xl hover:bg-[#1A73E8] transition-all shadow-glow-google-blue text-xs"
+                              className="w-full py-3 bg-[#FAA114] text-[#1A1D1E] font-bold rounded-xl hover:bg-[#E8940F] transition-all shadow-sm text-xs"
                             >
                               Reveal Answer
                             </button>
                           ) : (
                             <div className="grid grid-cols-4 gap-2">
                               {[
-                                { label: 'Again', rating: 1, color: 'bg-[#EA4335] hover:bg-[#D93025]' },
-                                { label: 'Hard', rating: 2, color: 'bg-[#FBBC04] text-slate-950 hover:bg-[#F4B400]' },
-                                { label: 'Good', rating: 3, color: 'bg-[#34A853] hover:bg-[#188038]' },
-                                { label: 'Easy', rating: 4, color: 'bg-[#4285F4] hover:bg-[#1A73E8]' }
+                                { label: 'Again', rating: 1, color: 'bg-red-500 hover:bg-red-600 text-white' },
+                                { label: 'Hard', rating: 2, color: 'bg-amber-500 hover:bg-amber-600 text-slate-950' },
+                                { label: 'Good', rating: 3, color: 'bg-emerald-500 hover:bg-emerald-600 text-white' },
+                                { label: 'Easy', rating: 4, color: 'bg-blue-500 hover:bg-blue-600 text-white' }
                               ].map((btn) => (
                                 <button
                                   key={btn.rating}
                                   onClick={() => handleReviewCard(card.id, btn.rating)}
-                                  className={`py-2 px-1 text-[11px] font-bold text-white rounded-xl transition-colors ${btn.color}`}
+                                  className={`py-2 px-1 text-[11px] font-bold rounded-xl transition-colors ${btn.color}`}
                                 >
                                   {btn.label}
                                 </button>
@@ -2815,47 +2416,47 @@ export default function WorkspacePage() {
 
             {/* PROFILE SETTINGS */}
             {activeTab === 'profile' && (
-              <div className="max-w-xl mx-auto glass-panel p-8 rounded-3xl space-y-6 animate-fadeInUp google-ribbon-border">
-                <h1 className="text-2xl font-bold text-white font-display">Aspirant Profile & Preferences</h1>
+              <div className="max-w-xl mx-auto light-card p-8 rounded-3xl space-y-6 animate-fadeInUp">
+                <h1 className="text-2xl font-bold text-[#1A1D1E] font-display">Aspirant Profile & Preferences</h1>
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-400">Full Name</label>
+                    <label className="text-xs font-semibold text-[#66625D]">Full Name</label>
                     <input 
                       type="text" 
                       value={profileFullName} 
                       onChange={(e) => setProfileFullName(e.target.value)} 
-                      className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none" 
+                      className="w-full p-3 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none" 
                     />
                   </div>
                   
                   <div className="space-y-1">
-                    <label className="text-xs font-semibold text-slate-400">Mobile Number</label>
+                    <label className="text-xs font-semibold text-[#66625D]">Mobile Number</label>
                     <input 
                       type="tel" 
                       placeholder="+91 XXXXX XXXXX"
                       value={profilePhoneNumber} 
                       onChange={(e) => setProfilePhoneNumber(e.target.value)} 
-                      className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none" 
+                      className="w-full p-3 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none" 
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold text-slate-400">Daily Goal (Minutes)</label>
+                      <label className="text-xs font-semibold text-[#66625D]">Daily Goal (Minutes)</label>
                       <input 
                         type="number" 
                         value={profileGoal} 
                         onChange={(e) => setProfileGoal(parseInt(e.target.value, 10) || 0)} 
-                        className="w-full p-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none" 
+                        className="w-full p-3 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none" 
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="text-xs font-semibold text-slate-400">Target Year</label>
+                      <label className="text-xs font-semibold text-[#66625D]">Target Year</label>
                       <select 
                         value={profileTargetYear} 
                         onChange={(e) => setProfileTargetYear(e.target.value)} 
-                        className="w-full p-3 bg-[#202125] border border-white/10 rounded-xl text-sm text-white focus:border-[#4285F4] focus:outline-none"
+                        className="w-full p-3 bg-white border border-[#E5E2D9] rounded-xl text-sm text-[#1A1D1E] focus:border-[#FAA114] focus:outline-none"
                       >
                         <option value="2026">2026</option>
                         <option value="2027">2027</option>
@@ -2866,7 +2467,7 @@ export default function WorkspacePage() {
 
                   <button 
                     onClick={handleSaveProfile} 
-                    className="w-full py-3.5 bg-[#4285F4] text-white font-bold rounded-xl hover:bg-[#1A73E8] transition-all shadow-glow-google-blue text-sm mt-4"
+                    className="w-full py-3.5 bg-[#FAA114] text-[#1A1D1E] font-bold rounded-xl hover:bg-[#E8940F] transition-all shadow-sm text-sm mt-4"
                   >
                     Save Changes
                   </button>
@@ -2877,17 +2478,17 @@ export default function WorkspacePage() {
             {/* ADMIN CONSOLE */}
             {activeTab === 'admin' && (
               <div className="space-y-8 animate-fadeInUp">
-                <h1 className="text-3xl font-bold text-white font-display">System Administration Console</h1>
+                <h1 className="text-3xl font-bold text-[#1A1D1E] font-display">System Administration Console</h1>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {[
-                    { label: 'Total Users', value: adminStats.totalUsers.toLocaleString(), color: 'border-l-4 border-[#4285F4]' },
-                    { label: 'Active Premium', value: adminStats.activePremium.toLocaleString(), color: 'border-l-4 border-[#34A853]' },
-                    { label: 'Monthly Revenue', value: `₹${(adminStats.totalRevenue * 80).toFixed(0)}`, color: 'border-l-4 border-[#FBBC04]' },
-                    { label: 'GenAI Tokens', value: adminStats.totalTokensUsed.toLocaleString(), color: 'border-l-4 border-[#EA4335]' },
+                    { label: 'Total Users', value: adminStats.totalUsers.toLocaleString(), color: 'border-l-4 border-blue-500' },
+                    { label: 'Active Premium', value: adminStats.activePremium.toLocaleString(), color: 'border-l-4 border-emerald-500' },
+                    { label: 'Monthly Revenue', value: `₹${(adminStats.totalRevenue * 80).toFixed(0)}`, color: 'border-l-4 border-amber-500' },
+                    { label: 'GenAI Tokens', value: adminStats.totalTokensUsed.toLocaleString(), color: 'border-l-4 border-indigo-500' },
                   ].map((kpi, i) => (
-                    <div key={i} className={`glass-panel p-5 rounded-2xl space-y-1 border-white/10 ${kpi.color}`}>
-                      <span className="text-xs text-slate-400 uppercase font-mono">{kpi.label}</span>
-                      <div className="text-2xl font-bold text-white font-display">{kpi.value}</div>
+                    <div key={i} className={`light-card p-5 rounded-2xl space-y-1 ${kpi.color}`}>
+                      <span className="text-xs text-[#66625D] uppercase font-mono">{kpi.label}</span>
+                      <div className="text-2xl font-bold text-[#1A1D1E] font-display">{kpi.value}</div>
                     </div>
                   ))}
                 </div>
@@ -2900,7 +2501,7 @@ export default function WorkspacePage() {
 
       {/* MOBILE BOTTOM NAV */}
       {activeTab !== 'auth' && activeTab !== 'pricing' && activeTab !== 'landing' && (
-        <nav className="md:hidden h-16 border-t border-white/10 bg-[#1f2024]/95 backdrop-blur-md flex items-center justify-around fixed bottom-0 left-0 right-0 z-50">
+        <nav className="md:hidden h-16 border-t border-[#E5E2D9] bg-white/95 backdrop-blur-md flex items-center justify-around fixed bottom-0 left-0 right-0 z-50">
           {[
             { id: 'afcat', icon: Shield },
             { id: 'dashboard', icon: BookOpen },
@@ -2915,7 +2516,7 @@ export default function WorkspacePage() {
                 key={item.id}
                 onClick={() => triggerLoadingState(item.id)}
                 className={`p-2.5 rounded-xl transition-all ${
-                  isActive ? 'text-[#8AB4F8]' : 'text-slate-400 hover:text-white'
+                  isActive ? 'text-[#FAA114]' : 'text-[#66625D] hover:text-[#1A1D1E]'
                 }`}
               >
                 <Icon className="w-5 h-5" />
