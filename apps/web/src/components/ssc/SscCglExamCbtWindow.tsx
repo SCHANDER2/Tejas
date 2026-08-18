@@ -273,9 +273,65 @@ export default function SscCglExamCbtWindow({
               </div>
             </div>
 
-            <button onClick={onClose} className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition border border-slate-700">
-              Close CBT Window
-            </button>
+            {/* Complete Question-by-Question Solutions & Answer Key */}
+            <div className="space-y-4 pt-4 border-t border-slate-800">
+              <div className="flex items-center justify-between">
+                <h3 className="font-bold text-lg text-white flex items-center gap-2">
+                  <Award className="w-5 h-5 text-orange-400" /> Complete Question-by-Question Solutions & Speed Math Shortcuts
+                </h3>
+                <span className="text-xs text-slate-400">
+                  {analysis.correctCount} Correct • {analysis.incorrectCount} Incorrect • {analysis.unattemptedCount} Unattempted
+                </span>
+              </div>
+
+              <div className="space-y-4 max-h-[550px] overflow-y-auto p-1">
+                {questions.map((q, idx) => {
+                  const userAns = userAnswers[idx];
+                  const isUserCorrect = userAns !== undefined && userAns === q.correctOptionIndex;
+                  const userAnsDisplay = userAns !== undefined ? `Option ${String.fromCharCode(65 + userAns)}` : 'Unattempted';
+                  const correctAnsDisplay = `Option ${String.fromCharCode(65 + q.correctOptionIndex)} (${q.options[q.correctOptionIndex]})`;
+
+                  return (
+                    <div key={q.id} className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-3">
+                      <div className="flex items-center justify-between text-xs border-b border-slate-800/80 pb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono font-bold text-orange-400">Q{idx + 1}.</span>
+                          <span className="font-bold text-slate-200">{q.topicName}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className={`px-2 py-0.5 rounded font-bold text-[11px] ${
+                            userAnsDisplay === 'Unattempted' ? 'bg-slate-800 text-slate-400' :
+                            isUserCorrect ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
+                          }`}>
+                            Your Ans: {userAnsDisplay}
+                          </span>
+                          <span className="px-2 py-0.5 rounded font-bold text-[11px] bg-emerald-500/20 text-emerald-300">
+                            Correct: {correctAnsDisplay}
+                          </span>
+                        </div>
+                      </div>
+
+                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
+                        {q.questionText}
+                      </p>
+
+                      <div className="bg-slate-900/90 border border-orange-500/20 rounded-xl p-3.5 space-y-1.5">
+                        <span className="text-[11px] font-bold text-orange-400 uppercase tracking-wider block">
+                          Shortcut Method & Explanation:
+                        </span>
+                        <p className="text-xs text-slate-300 leading-relaxed">{q.explanation}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-800 flex justify-end">
+              <button onClick={onClose} className="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition border border-slate-700">
+                Close CBT Window & Return to Hub
+              </button>
+            </div>
           </div>
         </div>
       )}

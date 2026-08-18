@@ -290,6 +290,13 @@ export default function WorkspacePage() {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
 
+  // Auth Modal & Stream selection state
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authTargetExam, setAuthTargetExam] = useState<string>('gate');
+  const [authGateBranch, setAuthGateBranch] = useState<string>('cs');
+  const [authDefenceTrack, setAuthDefenceTrack] = useState<string>('ima');
+  const [targetSwitcherOpen, setTargetSwitcherOpen] = useState<boolean>(false);
+
   const resetAuthState = () => {
     setErrorMsg(null);
     setOtpError(null);
@@ -300,6 +307,26 @@ export default function WorkspacePage() {
     setSignupToken(null);
     setAuthPassword('');
     setAuthConfirmPassword('');
+  };
+
+  const openAuth = (mode: 'login' | 'signup', targetExam: string = 'gate') => {
+    setAuthMode(mode);
+    setAuthTargetExam(targetExam);
+    resetAuthState();
+    setShowAuthModal(true);
+  };
+
+  const handleAuthComplete = (examId: string = authTargetExam) => {
+    setIsLoggedIn(true);
+    setProfileOnboardingCompleted(true);
+    setProfileTargetExamId(examId);
+    setShowAuthModal(false);
+    const targetMap: Record<string, string> = {
+      jee: 'jee_mains',
+      ssc: 'ssc_cgl',
+    };
+    const finalTab = targetMap[examId] || examId;
+    triggerLoadingState(finalTab);
   };
 
   const triggerLoadingState = (targetTab: string) => {
@@ -317,7 +344,12 @@ export default function WorkspacePage() {
     setIsLoggedIn(true);
     setProfileOnboardingCompleted(true);
     setProfileTargetExamId(examId);
-    triggerLoadingState(examId);
+    const targetMap: Record<string, string> = {
+      jee: 'jee_mains',
+      ssc: 'ssc_cgl',
+    };
+    const finalTab = targetMap[examId] || examId;
+    triggerLoadingState(finalTab);
   };
 
   useEffect(() => {
@@ -371,13 +403,13 @@ export default function WorkspacePage() {
 
             <div className="hidden md:flex items-center gap-3">
               <button 
-                onClick={() => { setAuthMode('login'); resetAuthState(); triggerLoadingState('auth'); }}
+                onClick={() => openAuth('login')}
                 className="px-5 py-2.5 text-sm font-bold text-[#1A1D1E] hover:bg-[#E5E2D9]/50 rounded-xl transition-all"
               >
                 Sign In
               </button>
               <button 
-                onClick={() => { setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }}
+                onClick={() => openAuth('signup')}
                 className="px-6 py-2.5 text-sm font-bold bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] rounded-xl transition-all active:scale-95 shadow-sm flex items-center gap-2"
               >
                 <span>Get Started Free</span>
@@ -414,7 +446,7 @@ export default function WorkspacePage() {
 
             <div className="animate-fadeInUp delay-300 flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
               <button 
-                onClick={() => { setAuthMode('signup'); resetAuthState(); triggerLoadingState('auth'); }}
+                onClick={() => openAuth('signup')}
                 className="w-full sm:w-auto px-8 py-4 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black rounded-xl flex items-center justify-center gap-3 shadow-md transition-all active:scale-[0.98] text-base"
               >
                 Start Free Workspace
@@ -1029,14 +1061,57 @@ export default function WorkspacePage() {
 
       <main className="flex-1 flex flex-col min-h-0 overflow-y-auto">
         <header className="h-16 border-b border-[#E5E2D9] px-6 flex items-center justify-between bg-white/90 backdrop-blur-md sticky top-0 z-40">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 relative">
             <span className="text-xs font-medium text-[#66625D]">Current Target:</span>
-            <button 
-              onClick={() => triggerLoadingState('afcat')}
-              className="px-3.5 py-1 bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] text-xs font-bold rounded-full hover:bg-[#F5E8D0] transition-all flex items-center gap-1.5 shadow-sm"
-            >
-              ✈️ AFCAT 2026 (Air Force)
-            </button>
+            <div className="relative">
+              <button 
+                onClick={() => setTargetSwitcherOpen(!targetSwitcherOpen)}
+                className="px-3.5 py-1 bg-[#FAF3E6] text-[#C88410] border border-[#E8D5B7] text-xs font-bold rounded-full hover:bg-[#F5E8D0] transition-all flex items-center gap-1.5 shadow-sm"
+              >
+                <span>
+                  {activeTab === 'afcat' && '✈️ AFCAT 2026 (Air Force)'}
+                  {activeTab === 'cds' && '🛡️ CDS 2026 (IMA / OTA)'}
+                  {activeTab === 'nda' && '⚔️ NDA & NA 2026 (Defence)'}
+                  {activeTab === 'jee_mains' && '⚛️ JEE Main 2026 (Engineering)'}
+                  {activeTab === 'neet' && '🩺 NEET UG 2026 (Medical)'}
+                  {activeTab === 'upsc' && '🏛️ UPSC CSE 2026 (Civil Services)'}
+                  {activeTab === 'ssc_cgl' && '📋 SSC CGL 2026 (Staff Selection)'}
+                  {activeTab === 'gate' && '⚡ GATE 2026 (Engineering Core)'}
+                  {activeTab === 'cat' && '📊 CAT 2026 (IIM Management)'}
+                  {!['afcat','cds','nda','jee_mains','neet','upsc','ssc_cgl','gate','cat'].includes(activeTab) && '🎯 Switch Exam'}
+                </span>
+                <span className="text-[10px] text-[#C88410]">▼</span>
+              </button>
+
+              {targetSwitcherOpen && (
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-[#E5E2D9] rounded-2xl shadow-xl z-50 p-2 space-y-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-[#66625D] px-3 py-1">
+                    Select Target Course Room
+                  </div>
+                  {[
+                    { id: 'gate', label: '⚡ GATE 2026 (6 Streams)' },
+                    { id: 'afcat', label: '✈️ AFCAT 2026 (Air Force)' },
+                    { id: 'cds', label: '🛡️ CDS 2026 (IMA/OTA)' },
+                    { id: 'nda', label: '⚔️ NDA & NA 2026 (Defence)' },
+                    { id: 'jee_mains', label: '⚛️ JEE Main 2026' },
+                    { id: 'neet', label: '🩺 NEET UG 2026' },
+                    { id: 'upsc', label: '🏛️ UPSC CSE 2026' },
+                    { id: 'ssc_cgl', label: '📋 SSC CGL 2026' },
+                    { id: 'cat', label: '📊 CAT 2026 (IIM)' },
+                  ].map(ex => (
+                    <button
+                      key={ex.id}
+                      onClick={() => { setTargetSwitcherOpen(false); triggerLoadingState(ex.id); }}
+                      className={`w-full text-left px-3 py-2 text-xs font-semibold rounded-xl transition ${
+                        activeTab === ex.id ? 'bg-[#FAF3E6] text-[#C88410] font-bold' : 'text-[#1A1D1E] hover:bg-[#F5F4F0]'
+                      }`}
+                    >
+                      {ex.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <button onClick={() => triggerLoadingState('landing')} className="text-xs font-bold text-[#FAA114] hover:underline">
@@ -1067,6 +1142,169 @@ export default function WorkspacePage() {
           </div>
         )}
       </main>
+
+      {/* ═══════════ AUTHENTICATION & TARGET SPECIALIZATION MODAL ═══════════ */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-[#E5E2D9] my-8 animate-fadeInUp">
+            
+            {/* Modal Header */}
+            <div className="bg-[#1A1D1E] text-white p-6 relative">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-mono font-bold tracking-wider text-[#FAA114] uppercase">
+                    TEJAS PREPARATION SUITE 2026
+                  </span>
+                  <h3 className="text-xl font-black mt-1">
+                    {authMode === 'signup' ? 'Create Your Free Account' : 'Sign In to Your Workspace'}
+                  </h3>
+                </div>
+                <button 
+                  onClick={() => setShowAuthModal(false)}
+                  className="p-2 hover:bg-white/10 rounded-full transition"
+                >
+                  <X className="w-5 h-5 text-white/80" />
+                </button>
+              </div>
+
+              {/* Mode Toggle */}
+              <div className="flex bg-white/10 p-1 rounded-xl mt-4">
+                <button
+                  onClick={() => setAuthMode('signup')}
+                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition ${
+                    authMode === 'signup' ? 'bg-[#FAA114] text-[#1A1D1E]' : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  Register Free
+                </button>
+                <button
+                  onClick={() => setAuthMode('login')}
+                  className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition ${
+                    authMode === 'login' ? 'bg-[#FAA114] text-[#1A1D1E]' : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-5 max-h-[70vh] overflow-y-auto">
+              
+              {/* Profile Inputs */}
+              {authMode === 'signup' && (
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-[#1A1D1E]">Full Name</label>
+                  <input
+                    type="text"
+                    value={authFullName}
+                    onChange={(e) => setAuthFullName(e.target.value)}
+                    placeholder="e.g. Priya Sharma"
+                    className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]"
+                  />
+                </div>
+              )}
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#1A1D1E]">Email Address</label>
+                <input
+                  type="email"
+                  value={authEmail}
+                  onChange={(e) => setAuthEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-[#1A1D1E]">Password</label>
+                <input
+                  type="password"
+                  value={authPassword}
+                  onChange={(e) => setAuthPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full px-3.5 py-2.5 bg-[#F5F4F0] border border-[#E5E2D9] rounded-xl text-xs text-[#1A1D1E] focus:outline-none focus:border-[#FAA114]"
+                />
+              </div>
+
+              {/* Target Exam Selection */}
+              <div className="space-y-3 pt-2 border-t border-[#E5E2D9]">
+                <label className="text-xs font-bold text-[#1A1D1E] flex items-center justify-between">
+                  <span>Select Target Examination</span>
+                  <span className="text-[10px] text-[#FAA114] font-mono font-bold">Directs to Course</span>
+                </label>
+                
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: 'gate', label: '⚡ GATE 2026' },
+                    { id: 'afcat', label: '✈️ AFCAT' },
+                    { id: 'cds', label: '🛡️ CDS' },
+                    { id: 'nda', label: '⚔️ NDA' },
+                    { id: 'jee', label: '⚛️ JEE Main' },
+                    { id: 'neet', label: '🩺 NEET UG' },
+                    { id: 'upsc', label: '🏛️ UPSC' },
+                    { id: 'ssc', label: '📋 SSC CGL' },
+                    { id: 'cat', label: '📊 CAT' },
+                  ].map(ex => (
+                    <button
+                      key={ex.id}
+                      type="button"
+                      onClick={() => setAuthTargetExam(ex.id)}
+                      className={`py-2 px-2.5 rounded-xl text-xs font-bold text-center border transition ${
+                        authTargetExam === ex.id
+                          ? 'bg-[#1A1D1E] text-white border-[#1A1D1E] shadow-sm'
+                          : 'bg-[#F5F4F0] text-[#66625D] border-[#E5E2D9] hover:bg-white'
+                      }`}
+                    >
+                      {ex.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* GATE Branch Specialization Selection */}
+              {authTargetExam === 'gate' && (
+                <div className="p-3.5 bg-purple-50 border border-purple-200 rounded-2xl space-y-2">
+                  <span className="text-xs font-bold text-purple-950 block">Select Engineering Stream:</span>
+                  <div className="grid grid-cols-3 gap-1.5 text-xs font-bold">
+                    {[
+                      { id: 'cs', label: 'CS / IT' },
+                      { id: 'da', label: 'Data Science & AI' },
+                      { id: 'me', label: 'Mechanical' },
+                      { id: 'ce', label: 'Civil' },
+                      { id: 'ee', label: 'Electrical' },
+                      { id: 'ec', label: 'Electronics' },
+                    ].map(br => (
+                      <button
+                        key={br.id}
+                        type="button"
+                        onClick={() => setAuthGateBranch(br.id)}
+                        className={`py-1.5 px-2 rounded-lg text-[11px] font-bold border transition ${
+                          authGateBranch === br.id
+                            ? 'bg-purple-900 text-white border-purple-900'
+                            : 'bg-white text-purple-800 border-purple-200 hover:bg-purple-100'
+                        }`}
+                      >
+                        {br.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Action Submit */}
+              <button
+                type="button"
+                onClick={() => handleAuthComplete(authTargetExam)}
+                className="w-full py-3.5 bg-[#FAA114] hover:bg-[#E8940F] text-[#1A1D1E] font-black text-xs rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+              >
+                <span>Enter {authTargetExam.toUpperCase()} Course Section →</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 }
